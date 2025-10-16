@@ -49,6 +49,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine spline_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='spline_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spline_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! spline_struct%y0: 0D_NOT_real
 
   subroutine spline_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='spline_struct_get_y0')
@@ -59,6 +68,15 @@ contains
     value_out = struct_obj%y0
   end subroutine
 
+
+  subroutine spline_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='spline_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spline_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
+  end subroutine
+
   ! spline_struct%x1: 0D_NOT_real
 
   subroutine spline_struct_get_x1(struct_obj_ptr, value_out) bind(c, name='spline_struct_get_x1')
@@ -67,6 +85,15 @@ contains
     type(spline_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x1
+  end subroutine
+
+
+  subroutine spline_struct_set_x1(struct_obj_ptr, value_in) bind(c, name='spline_struct_set_x1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spline_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x1 = value_in
   end subroutine
 
   ! spline_struct%coef: 1D_NOT_real
@@ -128,6 +155,15 @@ contains
     value_out = struct_obj%polarization
   end subroutine
 
+
+  subroutine spin_polar_struct_set_polarization(struct_obj_ptr, value_in) bind(c, name='spin_polar_struct_set_polarization')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spin_polar_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%polarization = value_in
+  end subroutine
+
   ! spin_polar_struct%theta: 0D_NOT_real
 
   subroutine spin_polar_struct_get_theta(struct_obj_ptr, value_out) bind(c, name='spin_polar_struct_get_theta')
@@ -136,6 +172,15 @@ contains
     type(spin_polar_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%theta
+  end subroutine
+
+
+  subroutine spin_polar_struct_set_theta(struct_obj_ptr, value_in) bind(c, name='spin_polar_struct_set_theta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spin_polar_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%theta = value_in
   end subroutine
 
   ! spin_polar_struct%phi: 0D_NOT_real
@@ -148,6 +193,15 @@ contains
     value_out = struct_obj%phi
   end subroutine
 
+
+  subroutine spin_polar_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='spin_polar_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spin_polar_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
+  end subroutine
+
   ! spin_polar_struct%xi: 0D_NOT_real
 
   subroutine spin_polar_struct_get_xi(struct_obj_ptr, value_out) bind(c, name='spin_polar_struct_get_xi')
@@ -156,6 +210,15 @@ contains
     type(spin_polar_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%xi
+  end subroutine
+
+
+  subroutine spin_polar_struct_set_xi(struct_obj_ptr, value_in) bind(c, name='spin_polar_struct_set_xi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(spin_polar_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%xi = value_in
   end subroutine
 
   !! ac_kicker_time_struct
@@ -203,6 +266,15 @@ contains
     value_out = struct_obj%amp
   end subroutine
 
+
+  subroutine ac_kicker_time_struct_set_amp(struct_obj_ptr, value_in) bind(c, name='ac_kicker_time_struct_set_amp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ac_kicker_time_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%amp = value_in
+  end subroutine
+
   ! ac_kicker_time_struct%time: 0D_NOT_real
 
   subroutine ac_kicker_time_struct_get_time(struct_obj_ptr, value_out) bind(c, name='ac_kicker_time_struct_get_time')
@@ -213,6 +285,15 @@ contains
     value_out = struct_obj%time
   end subroutine
 
+
+  subroutine ac_kicker_time_struct_set_time(struct_obj_ptr, value_in) bind(c, name='ac_kicker_time_struct_set_time')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ac_kicker_time_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%time = value_in
+  end subroutine
+
   ! ac_kicker_time_struct%spline: 0D_NOT_type
 
   subroutine ac_kicker_time_struct_get_spline(struct_obj_ptr, ptr_out) bind(c, name='ac_kicker_time_struct_get_spline')
@@ -221,6 +302,17 @@ contains
     type(ac_kicker_time_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spline)
+  end subroutine
+
+
+  subroutine ac_kicker_time_struct_set_spline(struct_obj_ptr, src_ptr) bind(c, name='ac_kicker_time_struct_set_spline')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ac_kicker_time_struct), pointer :: struct_obj
+    type(spline_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%spline = src_obj
   end subroutine
 
   !! ac_kicker_freq_struct
@@ -268,6 +360,15 @@ contains
     value_out = struct_obj%f
   end subroutine
 
+
+  subroutine ac_kicker_freq_struct_set_f(struct_obj_ptr, value_in) bind(c, name='ac_kicker_freq_struct_set_f')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ac_kicker_freq_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f = value_in
+  end subroutine
+
   ! ac_kicker_freq_struct%amp: 0D_NOT_real
 
   subroutine ac_kicker_freq_struct_get_amp(struct_obj_ptr, value_out) bind(c, name='ac_kicker_freq_struct_get_amp')
@@ -276,6 +377,15 @@ contains
     type(ac_kicker_freq_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp
+  end subroutine
+
+
+  subroutine ac_kicker_freq_struct_set_amp(struct_obj_ptr, value_in) bind(c, name='ac_kicker_freq_struct_set_amp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ac_kicker_freq_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%amp = value_in
   end subroutine
 
   ! ac_kicker_freq_struct%phi: 0D_NOT_real
@@ -288,6 +398,15 @@ contains
     value_out = struct_obj%phi
   end subroutine
 
+
+  subroutine ac_kicker_freq_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='ac_kicker_freq_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ac_kicker_freq_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
+  end subroutine
+
   ! ac_kicker_freq_struct%rf_clock_harmonic: 0D_NOT_integer
 
   subroutine ac_kicker_freq_struct_get_rf_clock_harmonic(struct_obj_ptr, value_out) bind(c, name='ac_kicker_freq_struct_get_rf_clock_harmonic')
@@ -296,6 +415,15 @@ contains
     type(ac_kicker_freq_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_clock_harmonic
+  end subroutine
+
+
+  subroutine ac_kicker_freq_struct_set_rf_clock_harmonic(struct_obj_ptr, value_in) bind(c, name='ac_kicker_freq_struct_set_rf_clock_harmonic')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ac_kicker_freq_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rf_clock_harmonic = value_in
   end subroutine
 
   !! ac_kicker_struct
@@ -432,6 +560,15 @@ contains
     value_out = struct_obj%c0
   end subroutine
 
+
+  subroutine interval1_coef_struct_set_c0(struct_obj_ptr, value_in) bind(c, name='interval1_coef_struct_set_c0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(interval1_coef_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%c0 = value_in
+  end subroutine
+
   ! interval1_coef_struct%c1: 0D_NOT_real
 
   subroutine interval1_coef_struct_get_c1(struct_obj_ptr, value_out) bind(c, name='interval1_coef_struct_get_c1')
@@ -442,6 +579,15 @@ contains
     value_out = struct_obj%c1
   end subroutine
 
+
+  subroutine interval1_coef_struct_set_c1(struct_obj_ptr, value_in) bind(c, name='interval1_coef_struct_set_c1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(interval1_coef_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%c1 = value_in
+  end subroutine
+
   ! interval1_coef_struct%n_exp: 0D_NOT_real
 
   subroutine interval1_coef_struct_get_n_exp(struct_obj_ptr, value_out) bind(c, name='interval1_coef_struct_get_n_exp')
@@ -450,6 +596,15 @@ contains
     type(interval1_coef_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_exp
+  end subroutine
+
+
+  subroutine interval1_coef_struct_set_n_exp(struct_obj_ptr, value_in) bind(c, name='interval1_coef_struct_set_n_exp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(interval1_coef_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_exp = value_in
   end subroutine
 
   !! photon_reflect_table_struct
@@ -604,6 +759,15 @@ contains
     type(photon_reflect_table_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_energy
+  end subroutine
+
+
+  subroutine photon_reflect_table_struct_set_max_energy(struct_obj_ptr, value_in) bind(c, name='photon_reflect_table_struct_set_max_energy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(photon_reflect_table_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%max_energy = value_in
   end subroutine
 
   ! photon_reflect_table_struct%p_reflect_scratch: 1D_ALLOC_real
@@ -768,6 +932,15 @@ contains
     value_out = struct_obj%surface_roughness_rms
   end subroutine
 
+
+  subroutine photon_reflect_surface_struct_set_surface_roughness_rms(struct_obj_ptr, value_in) bind(c, name='photon_reflect_surface_struct_set_surface_roughness_rms')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%surface_roughness_rms = value_in
+  end subroutine
+
   ! photon_reflect_surface_struct%roughness_correlation_len: 0D_NOT_real
 
   subroutine photon_reflect_surface_struct_get_roughness_correlation_len(struct_obj_ptr, value_out) bind(c, name='photon_reflect_surface_struct_get_roughness_correlation_len')
@@ -778,6 +951,15 @@ contains
     value_out = struct_obj%roughness_correlation_len
   end subroutine
 
+
+  subroutine photon_reflect_surface_struct_set_roughness_correlation_len(struct_obj_ptr, value_in) bind(c, name='photon_reflect_surface_struct_set_roughness_correlation_len')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%roughness_correlation_len = value_in
+  end subroutine
+
   ! photon_reflect_surface_struct%ix_surface: 0D_NOT_integer
 
   subroutine photon_reflect_surface_struct_get_ix_surface(struct_obj_ptr, value_out) bind(c, name='photon_reflect_surface_struct_get_ix_surface')
@@ -786,6 +968,15 @@ contains
     type(photon_reflect_surface_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_surface
+  end subroutine
+
+
+  subroutine photon_reflect_surface_struct_set_ix_surface(struct_obj_ptr, value_in) bind(c, name='photon_reflect_surface_struct_set_ix_surface')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_surface = value_in
   end subroutine
 
   !! coord_struct
@@ -847,6 +1038,15 @@ contains
     value_out = struct_obj%s
   end subroutine
 
+
+  subroutine coord_struct_set_s(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
+  end subroutine
+
   ! coord_struct%t: 0D_NOT_real16
 
   subroutine coord_struct_get_t(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_t')
@@ -855,6 +1055,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t
+  end subroutine
+
+
+  subroutine coord_struct_set_t(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_t')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_long_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t = value_in
   end subroutine
 
   ! coord_struct%spin: 1D_NOT_real
@@ -909,6 +1118,15 @@ contains
     value_out = struct_obj%charge
   end subroutine
 
+
+  subroutine coord_struct_set_charge(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_charge')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%charge = value_in
+  end subroutine
+
   ! coord_struct%dt_ref: 0D_NOT_real
 
   subroutine coord_struct_get_dt_ref(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_dt_ref')
@@ -917,6 +1135,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_ref
+  end subroutine
+
+
+  subroutine coord_struct_set_dt_ref(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_dt_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dt_ref = value_in
   end subroutine
 
   ! coord_struct%r: 0D_NOT_real
@@ -929,6 +1156,15 @@ contains
     value_out = struct_obj%r
   end subroutine
 
+
+  subroutine coord_struct_set_r(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_r')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%r = value_in
+  end subroutine
+
   ! coord_struct%p0c: 0D_NOT_real
 
   subroutine coord_struct_get_p0c(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_p0c')
@@ -937,6 +1173,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%p0c
+  end subroutine
+
+
+  subroutine coord_struct_set_p0c(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_p0c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%p0c = value_in
   end subroutine
 
   ! coord_struct%E_potential: 0D_NOT_real
@@ -949,6 +1194,15 @@ contains
     value_out = struct_obj%E_potential
   end subroutine
 
+
+  subroutine coord_struct_set_E_potential(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_E_potential')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%E_potential = value_in
+  end subroutine
+
   ! coord_struct%beta: 0D_NOT_real
 
   subroutine coord_struct_get_beta(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_beta')
@@ -957,6 +1211,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%beta
+  end subroutine
+
+
+  subroutine coord_struct_set_beta(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_beta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%beta = value_in
   end subroutine
 
   ! coord_struct%ix_ele: 0D_NOT_integer
@@ -969,6 +1232,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine coord_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! coord_struct%ix_branch: 0D_NOT_integer
 
   subroutine coord_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_ix_branch')
@@ -977,6 +1249,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
+  end subroutine
+
+
+  subroutine coord_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
   end subroutine
 
   ! coord_struct%ix_turn: 0D_NOT_integer
@@ -989,6 +1270,15 @@ contains
     value_out = struct_obj%ix_turn
   end subroutine
 
+
+  subroutine coord_struct_set_ix_turn(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_ix_turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_turn = value_in
+  end subroutine
+
   ! coord_struct%ix_user: 0D_NOT_integer
 
   subroutine coord_struct_get_ix_user(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_ix_user')
@@ -997,6 +1287,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_user
+  end subroutine
+
+
+  subroutine coord_struct_set_ix_user(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_ix_user')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_user = value_in
   end subroutine
 
   ! coord_struct%state: 0D_NOT_integer
@@ -1009,6 +1308,15 @@ contains
     value_out = struct_obj%state
   end subroutine
 
+
+  subroutine coord_struct_set_state(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%state = value_in
+  end subroutine
+
   ! coord_struct%direction: 0D_NOT_integer
 
   subroutine coord_struct_get_direction(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_direction')
@@ -1017,6 +1325,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%direction
+  end subroutine
+
+
+  subroutine coord_struct_set_direction(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_direction')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%direction = value_in
   end subroutine
 
   ! coord_struct%time_dir: 0D_NOT_integer
@@ -1029,6 +1346,15 @@ contains
     value_out = struct_obj%time_dir
   end subroutine
 
+
+  subroutine coord_struct_set_time_dir(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_time_dir')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%time_dir = value_in
+  end subroutine
+
   ! coord_struct%species: 0D_NOT_integer
 
   subroutine coord_struct_get_species(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_species')
@@ -1039,6 +1365,15 @@ contains
     value_out = struct_obj%species
   end subroutine
 
+
+  subroutine coord_struct_set_species(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_species')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%species = value_in
+  end subroutine
+
   ! coord_struct%location: 0D_NOT_integer
 
   subroutine coord_struct_get_location(struct_obj_ptr, value_out) bind(c, name='coord_struct_get_location')
@@ -1047,6 +1382,15 @@ contains
     type(coord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%location
+  end subroutine
+
+
+  subroutine coord_struct_set_location(struct_obj_ptr, value_in) bind(c, name='coord_struct_set_location')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(coord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%location = value_in
   end subroutine
 
   !! coord_array_struct
@@ -1156,6 +1500,15 @@ contains
     value_out = struct_obj%K_22a
   end subroutine
 
+
+  subroutine bpm_phase_coupling_struct_set_K_22a(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_K_22a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%K_22a = value_in
+  end subroutine
+
   ! bpm_phase_coupling_struct%K_12a: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_K_12a(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_K_12a')
@@ -1164,6 +1517,15 @@ contains
     type(bpm_phase_coupling_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_12a
+  end subroutine
+
+
+  subroutine bpm_phase_coupling_struct_set_K_12a(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_K_12a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%K_12a = value_in
   end subroutine
 
   ! bpm_phase_coupling_struct%K_11b: 0D_NOT_real
@@ -1176,6 +1538,15 @@ contains
     value_out = struct_obj%K_11b
   end subroutine
 
+
+  subroutine bpm_phase_coupling_struct_set_K_11b(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_K_11b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%K_11b = value_in
+  end subroutine
+
   ! bpm_phase_coupling_struct%K_12b: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_K_12b(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_K_12b')
@@ -1184,6 +1555,15 @@ contains
     type(bpm_phase_coupling_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_12b
+  end subroutine
+
+
+  subroutine bpm_phase_coupling_struct_set_K_12b(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_K_12b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%K_12b = value_in
   end subroutine
 
   ! bpm_phase_coupling_struct%Cbar22_a: 0D_NOT_real
@@ -1196,6 +1576,15 @@ contains
     value_out = struct_obj%Cbar22_a
   end subroutine
 
+
+  subroutine bpm_phase_coupling_struct_set_Cbar22_a(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_Cbar22_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%Cbar22_a = value_in
+  end subroutine
+
   ! bpm_phase_coupling_struct%Cbar12_a: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_Cbar12_a(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_Cbar12_a')
@@ -1204,6 +1593,15 @@ contains
     type(bpm_phase_coupling_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar12_a
+  end subroutine
+
+
+  subroutine bpm_phase_coupling_struct_set_Cbar12_a(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_Cbar12_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%Cbar12_a = value_in
   end subroutine
 
   ! bpm_phase_coupling_struct%Cbar11_b: 0D_NOT_real
@@ -1216,6 +1614,15 @@ contains
     value_out = struct_obj%Cbar11_b
   end subroutine
 
+
+  subroutine bpm_phase_coupling_struct_set_Cbar11_b(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_Cbar11_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%Cbar11_b = value_in
+  end subroutine
+
   ! bpm_phase_coupling_struct%Cbar12_b: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_Cbar12_b(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_Cbar12_b')
@@ -1224,6 +1631,15 @@ contains
     type(bpm_phase_coupling_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar12_b
+  end subroutine
+
+
+  subroutine bpm_phase_coupling_struct_set_Cbar12_b(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_Cbar12_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%Cbar12_b = value_in
   end subroutine
 
   ! bpm_phase_coupling_struct%phi_a: 0D_NOT_real
@@ -1236,6 +1652,15 @@ contains
     value_out = struct_obj%phi_a
   end subroutine
 
+
+  subroutine bpm_phase_coupling_struct_set_phi_a(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_phi_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi_a = value_in
+  end subroutine
+
   ! bpm_phase_coupling_struct%phi_b: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_phi_b(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_phi_b')
@@ -1244,6 +1669,15 @@ contains
     type(bpm_phase_coupling_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_b
+  end subroutine
+
+
+  subroutine bpm_phase_coupling_struct_set_phi_b(struct_obj_ptr, value_in) bind(c, name='bpm_phase_coupling_struct_set_phi_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bpm_phase_coupling_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi_b = value_in
   end subroutine
 
   !! expression_atom_struct
@@ -1305,6 +1739,15 @@ contains
     value_out = struct_obj%type
   end subroutine
 
+
+  subroutine expression_atom_struct_set_type(struct_obj_ptr, value_in) bind(c, name='expression_atom_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(expression_atom_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%type = value_in
+  end subroutine
+
   ! expression_atom_struct%value: 0D_NOT_real
 
   subroutine expression_atom_struct_get_value(struct_obj_ptr, value_out) bind(c, name='expression_atom_struct_get_value')
@@ -1313,6 +1756,15 @@ contains
     type(expression_atom_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%value
+  end subroutine
+
+
+  subroutine expression_atom_struct_set_value(struct_obj_ptr, value_in) bind(c, name='expression_atom_struct_set_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(expression_atom_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%value = value_in
   end subroutine
 
   !! wake_sr_z_long_struct
@@ -1387,6 +1839,15 @@ contains
     value_out = struct_obj%dz
   end subroutine
 
+
+  subroutine wake_sr_z_long_struct_set_dz(struct_obj_ptr, value_in) bind(c, name='wake_sr_z_long_struct_set_dz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz = value_in
+  end subroutine
+
   ! wake_sr_z_long_struct%z0: 0D_NOT_real
 
   subroutine wake_sr_z_long_struct_get_z0(struct_obj_ptr, value_out) bind(c, name='wake_sr_z_long_struct_get_z0')
@@ -1395,6 +1856,15 @@ contains
     type(wake_sr_z_long_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z0
+  end subroutine
+
+
+  subroutine wake_sr_z_long_struct_set_z0(struct_obj_ptr, value_in) bind(c, name='wake_sr_z_long_struct_set_z0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z0 = value_in
   end subroutine
 
   ! wake_sr_z_long_struct%smoothing_sigma: 0D_NOT_real
@@ -1407,6 +1877,15 @@ contains
     value_out = struct_obj%smoothing_sigma
   end subroutine
 
+
+  subroutine wake_sr_z_long_struct_set_smoothing_sigma(struct_obj_ptr, value_in) bind(c, name='wake_sr_z_long_struct_set_smoothing_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%smoothing_sigma = value_in
+  end subroutine
+
   ! wake_sr_z_long_struct%position_dependence: 0D_NOT_integer
 
   subroutine wake_sr_z_long_struct_get_position_dependence(struct_obj_ptr, value_out) bind(c, name='wake_sr_z_long_struct_get_position_dependence')
@@ -1417,6 +1896,15 @@ contains
     value_out = struct_obj%position_dependence
   end subroutine
 
+
+  subroutine wake_sr_z_long_struct_set_position_dependence(struct_obj_ptr, value_in) bind(c, name='wake_sr_z_long_struct_set_position_dependence')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%position_dependence = value_in
+  end subroutine
+
   ! wake_sr_z_long_struct%time_based: 0D_NOT_logical
 
   subroutine wake_sr_z_long_struct_get_time_based(struct_obj_ptr, value_out) bind(c, name='wake_sr_z_long_struct_get_time_based')
@@ -1425,6 +1913,15 @@ contains
     type(wake_sr_z_long_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time_based
+  end subroutine
+
+
+  subroutine wake_sr_z_long_struct_set_time_based(struct_obj_ptr, value_in) bind(c, name='wake_sr_z_long_struct_set_time_based')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%time_based = value_in
   end subroutine
 
   !! wake_sr_mode_struct
@@ -1472,6 +1969,15 @@ contains
     value_out = struct_obj%amp
   end subroutine
 
+
+  subroutine wake_sr_mode_struct_set_amp(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_amp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%amp = value_in
+  end subroutine
+
   ! wake_sr_mode_struct%damp: 0D_NOT_real
 
   subroutine wake_sr_mode_struct_get_damp(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_damp')
@@ -1480,6 +1986,15 @@ contains
     type(wake_sr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%damp
+  end subroutine
+
+
+  subroutine wake_sr_mode_struct_set_damp(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_damp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%damp = value_in
   end subroutine
 
   ! wake_sr_mode_struct%k: 0D_NOT_real
@@ -1492,6 +2007,15 @@ contains
     value_out = struct_obj%k
   end subroutine
 
+
+  subroutine wake_sr_mode_struct_set_k(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_k')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%k = value_in
+  end subroutine
+
   ! wake_sr_mode_struct%phi: 0D_NOT_real
 
   subroutine wake_sr_mode_struct_get_phi(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_phi')
@@ -1500,6 +2024,15 @@ contains
     type(wake_sr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
+  end subroutine
+
+
+  subroutine wake_sr_mode_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
   end subroutine
 
   ! wake_sr_mode_struct%b_sin: 0D_NOT_real
@@ -1512,6 +2045,15 @@ contains
     value_out = struct_obj%b_sin
   end subroutine
 
+
+  subroutine wake_sr_mode_struct_set_b_sin(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_b_sin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_sin = value_in
+  end subroutine
+
   ! wake_sr_mode_struct%b_cos: 0D_NOT_real
 
   subroutine wake_sr_mode_struct_get_b_cos(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_b_cos')
@@ -1520,6 +2062,15 @@ contains
     type(wake_sr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_cos
+  end subroutine
+
+
+  subroutine wake_sr_mode_struct_set_b_cos(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_b_cos')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_cos = value_in
   end subroutine
 
   ! wake_sr_mode_struct%a_sin: 0D_NOT_real
@@ -1532,6 +2083,15 @@ contains
     value_out = struct_obj%a_sin
   end subroutine
 
+
+  subroutine wake_sr_mode_struct_set_a_sin(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_a_sin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_sin = value_in
+  end subroutine
+
   ! wake_sr_mode_struct%a_cos: 0D_NOT_real
 
   subroutine wake_sr_mode_struct_get_a_cos(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_a_cos')
@@ -1540,6 +2100,15 @@ contains
     type(wake_sr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_cos
+  end subroutine
+
+
+  subroutine wake_sr_mode_struct_set_a_cos(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_a_cos')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_cos = value_in
   end subroutine
 
   ! wake_sr_mode_struct%polarization: 0D_NOT_integer
@@ -1552,6 +2121,15 @@ contains
     value_out = struct_obj%polarization
   end subroutine
 
+
+  subroutine wake_sr_mode_struct_set_polarization(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_polarization')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%polarization = value_in
+  end subroutine
+
   ! wake_sr_mode_struct%position_dependence: 0D_NOT_integer
 
   subroutine wake_sr_mode_struct_get_position_dependence(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_position_dependence')
@@ -1560,6 +2138,15 @@ contains
     type(wake_sr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%position_dependence
+  end subroutine
+
+
+  subroutine wake_sr_mode_struct_set_position_dependence(struct_obj_ptr, value_in) bind(c, name='wake_sr_mode_struct_set_position_dependence')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wake_sr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%position_dependence = value_in
   end subroutine
 
   !! wake_sr_struct
@@ -1619,6 +2206,17 @@ contains
     type(wake_sr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z_long)
+  end subroutine
+
+
+  subroutine wake_sr_struct_set_z_long(struct_obj_ptr, src_ptr) bind(c, name='wake_sr_struct_set_z_long')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(wake_sr_struct), pointer :: struct_obj
+    type(wake_sr_z_long_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%z_long = src_obj
   end subroutine
 
   ! wake_sr_struct%long: 1D_ALLOC_type
@@ -1685,6 +2283,15 @@ contains
     value_out = struct_obj%z_ref_long
   end subroutine
 
+
+  subroutine wake_sr_struct_set_z_ref_long(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_z_ref_long')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z_ref_long = value_in
+  end subroutine
+
   ! wake_sr_struct%z_ref_trans: 0D_NOT_real
 
   subroutine wake_sr_struct_get_z_ref_trans(struct_obj_ptr, value_out) bind(c, name='wake_sr_struct_get_z_ref_trans')
@@ -1693,6 +2300,15 @@ contains
     type(wake_sr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_ref_trans
+  end subroutine
+
+
+  subroutine wake_sr_struct_set_z_ref_trans(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_z_ref_trans')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z_ref_trans = value_in
   end subroutine
 
   ! wake_sr_struct%z_max: 0D_NOT_real
@@ -1705,6 +2321,15 @@ contains
     value_out = struct_obj%z_max
   end subroutine
 
+
+  subroutine wake_sr_struct_set_z_max(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_z_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z_max = value_in
+  end subroutine
+
   ! wake_sr_struct%amp_scale: 0D_NOT_real
 
   subroutine wake_sr_struct_get_amp_scale(struct_obj_ptr, value_out) bind(c, name='wake_sr_struct_get_amp_scale')
@@ -1713,6 +2338,15 @@ contains
     type(wake_sr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp_scale
+  end subroutine
+
+
+  subroutine wake_sr_struct_set_amp_scale(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_amp_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%amp_scale = value_in
   end subroutine
 
   ! wake_sr_struct%z_scale: 0D_NOT_real
@@ -1725,6 +2359,15 @@ contains
     value_out = struct_obj%z_scale
   end subroutine
 
+
+  subroutine wake_sr_struct_set_z_scale(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_z_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z_scale = value_in
+  end subroutine
+
   ! wake_sr_struct%scale_with_length: 0D_NOT_logical
 
   subroutine wake_sr_struct_get_scale_with_length(struct_obj_ptr, value_out) bind(c, name='wake_sr_struct_get_scale_with_length')
@@ -1733,6 +2376,15 @@ contains
     type(wake_sr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale_with_length
+  end subroutine
+
+
+  subroutine wake_sr_struct_set_scale_with_length(struct_obj_ptr, value_in) bind(c, name='wake_sr_struct_set_scale_with_length')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wake_sr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%scale_with_length = value_in
   end subroutine
 
   !! wake_lr_mode_struct
@@ -1780,6 +2432,15 @@ contains
     value_out = struct_obj%freq
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_freq(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_freq')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%freq = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%freq_in: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_freq_in(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_freq_in')
@@ -1788,6 +2449,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%freq_in
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_freq_in(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_freq_in')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%freq_in = value_in
   end subroutine
 
   ! wake_lr_mode_struct%R_over_Q: 0D_NOT_real
@@ -1800,6 +2470,15 @@ contains
     value_out = struct_obj%R_over_Q
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_R_over_Q(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_R_over_Q')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%R_over_Q = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%Q: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_Q(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_Q')
@@ -1808,6 +2487,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Q
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_Q(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_Q')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%Q = value_in
   end subroutine
 
   ! wake_lr_mode_struct%damp: 0D_NOT_real
@@ -1820,6 +2508,15 @@ contains
     value_out = struct_obj%damp
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_damp(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_damp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%damp = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%phi: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_phi(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_phi')
@@ -1828,6 +2525,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
   end subroutine
 
   ! wake_lr_mode_struct%angle: 0D_NOT_real
@@ -1840,6 +2546,15 @@ contains
     value_out = struct_obj%angle
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_angle(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_angle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%angle = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%b_sin: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_b_sin(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_b_sin')
@@ -1848,6 +2563,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_sin
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_b_sin(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_b_sin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_sin = value_in
   end subroutine
 
   ! wake_lr_mode_struct%b_cos: 0D_NOT_real
@@ -1860,6 +2584,15 @@ contains
     value_out = struct_obj%b_cos
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_b_cos(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_b_cos')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_cos = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%a_sin: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_a_sin(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_a_sin')
@@ -1868,6 +2601,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_sin
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_a_sin(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_a_sin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_sin = value_in
   end subroutine
 
   ! wake_lr_mode_struct%a_cos: 0D_NOT_real
@@ -1880,6 +2622,15 @@ contains
     value_out = struct_obj%a_cos
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_a_cos(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_a_cos')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_cos = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%m: 0D_NOT_integer
 
   subroutine wake_lr_mode_struct_get_m(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_m')
@@ -1890,6 +2641,15 @@ contains
     value_out = struct_obj%m
   end subroutine
 
+
+  subroutine wake_lr_mode_struct_set_m(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_m')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%m = value_in
+  end subroutine
+
   ! wake_lr_mode_struct%polarized: 0D_NOT_logical
 
   subroutine wake_lr_mode_struct_get_polarized(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_polarized')
@@ -1898,6 +2658,15 @@ contains
     type(wake_lr_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%polarized
+  end subroutine
+
+
+  subroutine wake_lr_mode_struct_set_polarized(struct_obj_ptr, value_in) bind(c, name='wake_lr_mode_struct_set_polarized')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wake_lr_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%polarized = value_in
   end subroutine
 
   !! wake_lr_struct
@@ -1986,6 +2755,15 @@ contains
     value_out = struct_obj%t_ref
   end subroutine
 
+
+  subroutine wake_lr_struct_set_t_ref(struct_obj_ptr, value_in) bind(c, name='wake_lr_struct_set_t_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t_ref = value_in
+  end subroutine
+
   ! wake_lr_struct%freq_spread: 0D_NOT_real
 
   subroutine wake_lr_struct_get_freq_spread(struct_obj_ptr, value_out) bind(c, name='wake_lr_struct_get_freq_spread')
@@ -1994,6 +2772,15 @@ contains
     type(wake_lr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%freq_spread
+  end subroutine
+
+
+  subroutine wake_lr_struct_set_freq_spread(struct_obj_ptr, value_in) bind(c, name='wake_lr_struct_set_freq_spread')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%freq_spread = value_in
   end subroutine
 
   ! wake_lr_struct%amp_scale: 0D_NOT_real
@@ -2006,6 +2793,15 @@ contains
     value_out = struct_obj%amp_scale
   end subroutine
 
+
+  subroutine wake_lr_struct_set_amp_scale(struct_obj_ptr, value_in) bind(c, name='wake_lr_struct_set_amp_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%amp_scale = value_in
+  end subroutine
+
   ! wake_lr_struct%time_scale: 0D_NOT_real
 
   subroutine wake_lr_struct_get_time_scale(struct_obj_ptr, value_out) bind(c, name='wake_lr_struct_get_time_scale')
@@ -2016,6 +2812,15 @@ contains
     value_out = struct_obj%time_scale
   end subroutine
 
+
+  subroutine wake_lr_struct_set_time_scale(struct_obj_ptr, value_in) bind(c, name='wake_lr_struct_set_time_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wake_lr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%time_scale = value_in
+  end subroutine
+
   ! wake_lr_struct%self_wake_on: 0D_NOT_logical
 
   subroutine wake_lr_struct_get_self_wake_on(struct_obj_ptr, value_out) bind(c, name='wake_lr_struct_get_self_wake_on')
@@ -2024,6 +2829,15 @@ contains
     type(wake_lr_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%self_wake_on
+  end subroutine
+
+
+  subroutine wake_lr_struct_set_self_wake_on(struct_obj_ptr, value_in) bind(c, name='wake_lr_struct_set_self_wake_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wake_lr_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%self_wake_on = value_in
   end subroutine
 
   !! lat_ele_loc_struct
@@ -2071,6 +2885,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine lat_ele_loc_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='lat_ele_loc_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_ele_loc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! lat_ele_loc_struct%ix_branch: 0D_NOT_integer
 
   subroutine lat_ele_loc_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='lat_ele_loc_struct_get_ix_branch')
@@ -2079,6 +2902,15 @@ contains
     type(lat_ele_loc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
+  end subroutine
+
+
+  subroutine lat_ele_loc_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='lat_ele_loc_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_ele_loc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
   end subroutine
 
   !! wake_struct
@@ -2126,6 +2958,17 @@ contains
     ptr_out = c_loc(struct_obj%sr)
   end subroutine
 
+
+  subroutine wake_struct_set_sr(struct_obj_ptr, src_ptr) bind(c, name='wake_struct_set_sr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(wake_struct), pointer :: struct_obj
+    type(wake_sr_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%sr = src_obj
+  end subroutine
+
   ! wake_struct%lr: 0D_NOT_type
 
   subroutine wake_struct_get_lr(struct_obj_ptr, ptr_out) bind(c, name='wake_struct_get_lr')
@@ -2134,6 +2977,17 @@ contains
     type(wake_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lr)
+  end subroutine
+
+
+  subroutine wake_struct_set_lr(struct_obj_ptr, src_ptr) bind(c, name='wake_struct_set_lr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(wake_struct), pointer :: struct_obj
+    type(wake_lr_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%lr = src_obj
   end subroutine
 
   !! taylor_term_struct
@@ -2179,6 +3033,15 @@ contains
     type(taylor_term_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
+  end subroutine
+
+
+  subroutine taylor_term_struct_set_coef(struct_obj_ptr, value_in) bind(c, name='taylor_term_struct_set_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(taylor_term_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%coef = value_in
   end subroutine
 
   ! taylor_term_struct%expn: 1D_NOT_integer
@@ -2238,6 +3101,15 @@ contains
     type(taylor_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
+  end subroutine
+
+
+  subroutine taylor_struct_set_ref(struct_obj_ptr, value_in) bind(c, name='taylor_struct_set_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(taylor_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref = value_in
   end subroutine
 
   ! taylor_struct%term: 1D_PTR_type
@@ -2312,6 +3184,15 @@ contains
     value_out = struct_obj%coef
   end subroutine
 
+
+  subroutine em_taylor_term_struct_set_coef(struct_obj_ptr, value_in) bind(c, name='em_taylor_term_struct_set_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(em_taylor_term_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%coef = value_in
+  end subroutine
+
   ! em_taylor_term_struct%expn: 1D_NOT_integer
 
   subroutine em_taylor_term_struct_get_expn_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='em_taylor_term_struct_get_expn_info')
@@ -2369,6 +3250,15 @@ contains
     type(em_taylor_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
+  end subroutine
+
+
+  subroutine em_taylor_struct_set_ref(struct_obj_ptr, value_in) bind(c, name='em_taylor_struct_set_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(em_taylor_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref = value_in
   end subroutine
 
   ! em_taylor_struct%term: 1D_ALLOC_type
@@ -2443,6 +3333,15 @@ contains
     value_out = struct_obj%coef
   end subroutine
 
+
+  subroutine cartesian_map_term1_struct_set_coef(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%coef = value_in
+  end subroutine
+
   ! cartesian_map_term1_struct%kx: 0D_NOT_real
 
   subroutine cartesian_map_term1_struct_get_kx(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_kx')
@@ -2451,6 +3350,15 @@ contains
     type(cartesian_map_term1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kx
+  end subroutine
+
+
+  subroutine cartesian_map_term1_struct_set_kx(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_kx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%kx = value_in
   end subroutine
 
   ! cartesian_map_term1_struct%ky: 0D_NOT_real
@@ -2463,6 +3371,15 @@ contains
     value_out = struct_obj%ky
   end subroutine
 
+
+  subroutine cartesian_map_term1_struct_set_ky(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_ky')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ky = value_in
+  end subroutine
+
   ! cartesian_map_term1_struct%kz: 0D_NOT_real
 
   subroutine cartesian_map_term1_struct_get_kz(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_kz')
@@ -2471,6 +3388,15 @@ contains
     type(cartesian_map_term1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kz
+  end subroutine
+
+
+  subroutine cartesian_map_term1_struct_set_kz(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_kz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%kz = value_in
   end subroutine
 
   ! cartesian_map_term1_struct%x0: 0D_NOT_real
@@ -2483,6 +3409,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine cartesian_map_term1_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! cartesian_map_term1_struct%y0: 0D_NOT_real
 
   subroutine cartesian_map_term1_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_y0')
@@ -2491,6 +3426,15 @@ contains
     type(cartesian_map_term1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
+  end subroutine
+
+
+  subroutine cartesian_map_term1_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
   end subroutine
 
   ! cartesian_map_term1_struct%phi_z: 0D_NOT_real
@@ -2503,6 +3447,15 @@ contains
     value_out = struct_obj%phi_z
   end subroutine
 
+
+  subroutine cartesian_map_term1_struct_set_phi_z(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_phi_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi_z = value_in
+  end subroutine
+
   ! cartesian_map_term1_struct%family: 0D_NOT_integer
 
   subroutine cartesian_map_term1_struct_get_family(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_family')
@@ -2513,6 +3466,15 @@ contains
     value_out = struct_obj%family
   end subroutine
 
+
+  subroutine cartesian_map_term1_struct_set_family(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_family')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%family = value_in
+  end subroutine
+
   ! cartesian_map_term1_struct%form: 0D_NOT_integer
 
   subroutine cartesian_map_term1_struct_get_form(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_form')
@@ -2521,6 +3483,15 @@ contains
     type(cartesian_map_term1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%form
+  end subroutine
+
+
+  subroutine cartesian_map_term1_struct_set_form(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term1_struct_set_form')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%form = value_in
   end subroutine
 
   !! cartesian_map_term_struct
@@ -2580,6 +3551,15 @@ contains
     type(cartesian_map_term_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
+  end subroutine
+
+
+  subroutine cartesian_map_term_struct_set_n_link(struct_obj_ptr, value_in) bind(c, name='cartesian_map_term_struct_set_n_link')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_term_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_link = value_in
   end subroutine
 
   ! cartesian_map_term_struct%term: 1D_ALLOC_type
@@ -2654,6 +3634,15 @@ contains
     value_out = struct_obj%field_scale
   end subroutine
 
+
+  subroutine cartesian_map_struct_set_field_scale(struct_obj_ptr, value_in) bind(c, name='cartesian_map_struct_set_field_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cartesian_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_scale = value_in
+  end subroutine
+
   ! cartesian_map_struct%r0: 1D_NOT_real
 
   subroutine cartesian_map_struct_get_r0_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='cartesian_map_struct_get_r0_info')
@@ -2678,6 +3667,15 @@ contains
     value_out = struct_obj%master_parameter
   end subroutine
 
+
+  subroutine cartesian_map_struct_set_master_parameter(struct_obj_ptr, value_in) bind(c, name='cartesian_map_struct_set_master_parameter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%master_parameter = value_in
+  end subroutine
+
   ! cartesian_map_struct%ele_anchor_pt: 0D_NOT_integer
 
   subroutine cartesian_map_struct_get_ele_anchor_pt(struct_obj_ptr, value_out) bind(c, name='cartesian_map_struct_get_ele_anchor_pt')
@@ -2688,6 +3686,15 @@ contains
     value_out = struct_obj%ele_anchor_pt
   end subroutine
 
+
+  subroutine cartesian_map_struct_set_ele_anchor_pt(struct_obj_ptr, value_in) bind(c, name='cartesian_map_struct_set_ele_anchor_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ele_anchor_pt = value_in
+  end subroutine
+
   ! cartesian_map_struct%field_type: 0D_NOT_integer
 
   subroutine cartesian_map_struct_get_field_type(struct_obj_ptr, value_out) bind(c, name='cartesian_map_struct_get_field_type')
@@ -2696,6 +3703,15 @@ contains
     type(cartesian_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_type
+  end subroutine
+
+
+  subroutine cartesian_map_struct_set_field_type(struct_obj_ptr, value_in) bind(c, name='cartesian_map_struct_set_field_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cartesian_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_type = value_in
   end subroutine
 
   ! cartesian_map_struct%ptr: 0D_PTR_type
@@ -2709,6 +3725,19 @@ contains
       ptr_out = c_loc(struct_obj%ptr)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine cartesian_map_struct_set_ptr(struct_obj_ptr, src_ptr) bind(c, name='cartesian_map_struct_set_ptr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(cartesian_map_struct), pointer :: struct_obj
+    type(cartesian_map_term_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ptr)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ptr = src_obj
     endif
   end subroutine
 
@@ -2757,6 +3786,15 @@ contains
     value_out = struct_obj%e_coef
   end subroutine
 
+
+  subroutine cylindrical_map_term1_struct_set_e_coef(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_term1_struct_set_e_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(cylindrical_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%e_coef = value_in
+  end subroutine
+
   ! cylindrical_map_term1_struct%b_coef: 0D_NOT_complex
 
   subroutine cylindrical_map_term1_struct_get_b_coef(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_term1_struct_get_b_coef')
@@ -2765,6 +3803,15 @@ contains
     type(cylindrical_map_term1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_coef
+  end subroutine
+
+
+  subroutine cylindrical_map_term1_struct_set_b_coef(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_term1_struct_set_b_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(cylindrical_map_term1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_coef = value_in
   end subroutine
 
   !! cylindrical_map_term_struct
@@ -2824,6 +3871,15 @@ contains
     type(cylindrical_map_term_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
+  end subroutine
+
+
+  subroutine cylindrical_map_term_struct_set_n_link(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_term_struct_set_n_link')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cylindrical_map_term_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_link = value_in
   end subroutine
 
   ! cylindrical_map_term_struct%term: 1D_ALLOC_type
@@ -2898,6 +3954,15 @@ contains
     value_out = struct_obj%m
   end subroutine
 
+
+  subroutine cylindrical_map_struct_set_m(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_m')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%m = value_in
+  end subroutine
+
   ! cylindrical_map_struct%harmonic: 0D_NOT_integer
 
   subroutine cylindrical_map_struct_get_harmonic(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_struct_get_harmonic')
@@ -2906,6 +3971,15 @@ contains
     type(cylindrical_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%harmonic
+  end subroutine
+
+
+  subroutine cylindrical_map_struct_set_harmonic(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_harmonic')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%harmonic = value_in
   end subroutine
 
   ! cylindrical_map_struct%phi0_fieldmap: 0D_NOT_real
@@ -2918,6 +3992,15 @@ contains
     value_out = struct_obj%phi0_fieldmap
   end subroutine
 
+
+  subroutine cylindrical_map_struct_set_phi0_fieldmap(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_phi0_fieldmap')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi0_fieldmap = value_in
+  end subroutine
+
   ! cylindrical_map_struct%theta0_azimuth: 0D_NOT_real
 
   subroutine cylindrical_map_struct_get_theta0_azimuth(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_struct_get_theta0_azimuth')
@@ -2926,6 +4009,15 @@ contains
     type(cylindrical_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%theta0_azimuth
+  end subroutine
+
+
+  subroutine cylindrical_map_struct_set_theta0_azimuth(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_theta0_azimuth')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%theta0_azimuth = value_in
   end subroutine
 
   ! cylindrical_map_struct%field_scale: 0D_NOT_real
@@ -2938,6 +4030,15 @@ contains
     value_out = struct_obj%field_scale
   end subroutine
 
+
+  subroutine cylindrical_map_struct_set_field_scale(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_field_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_scale = value_in
+  end subroutine
+
   ! cylindrical_map_struct%master_parameter: 0D_NOT_integer
 
   subroutine cylindrical_map_struct_get_master_parameter(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_struct_get_master_parameter')
@@ -2946,6 +4047,15 @@ contains
     type(cylindrical_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
+  end subroutine
+
+
+  subroutine cylindrical_map_struct_set_master_parameter(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_master_parameter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%master_parameter = value_in
   end subroutine
 
   ! cylindrical_map_struct%ele_anchor_pt: 0D_NOT_integer
@@ -2958,6 +4068,15 @@ contains
     value_out = struct_obj%ele_anchor_pt
   end subroutine
 
+
+  subroutine cylindrical_map_struct_set_ele_anchor_pt(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_ele_anchor_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ele_anchor_pt = value_in
+  end subroutine
+
   ! cylindrical_map_struct%dz: 0D_NOT_real
 
   subroutine cylindrical_map_struct_get_dz(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_struct_get_dz')
@@ -2966,6 +4085,15 @@ contains
     type(cylindrical_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz
+  end subroutine
+
+
+  subroutine cylindrical_map_struct_set_dz(struct_obj_ptr, value_in) bind(c, name='cylindrical_map_struct_set_dz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(cylindrical_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz = value_in
   end subroutine
 
   ! cylindrical_map_struct%r0: 1D_NOT_real
@@ -2993,6 +4121,19 @@ contains
       ptr_out = c_loc(struct_obj%ptr)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine cylindrical_map_struct_set_ptr(struct_obj_ptr, src_ptr) bind(c, name='cylindrical_map_struct_set_ptr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(cylindrical_map_struct), pointer :: struct_obj
+    type(cylindrical_map_term_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ptr)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ptr = src_obj
     endif
   end subroutine
 
@@ -3218,6 +4359,15 @@ contains
     value_out = struct_obj%n_link
   end subroutine
 
+
+  subroutine grid_field_pt_struct_set_n_link(struct_obj_ptr, value_in) bind(c, name='grid_field_pt_struct_set_n_link')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_link = value_in
+  end subroutine
+
   ! skipped grid_field_pt_struct%pt: Unsupported type: 3D_ALLOC_type
   !! grid_field_struct
 
@@ -3264,6 +4414,15 @@ contains
     value_out = struct_obj%geometry
   end subroutine
 
+
+  subroutine grid_field_struct_set_geometry(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_geometry')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%geometry = value_in
+  end subroutine
+
   ! grid_field_struct%harmonic: 0D_NOT_integer
 
   subroutine grid_field_struct_get_harmonic(struct_obj_ptr, value_out) bind(c, name='grid_field_struct_get_harmonic')
@@ -3272,6 +4431,15 @@ contains
     type(grid_field_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%harmonic
+  end subroutine
+
+
+  subroutine grid_field_struct_set_harmonic(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_harmonic')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%harmonic = value_in
   end subroutine
 
   ! grid_field_struct%phi0_fieldmap: 0D_NOT_real
@@ -3284,6 +4452,15 @@ contains
     value_out = struct_obj%phi0_fieldmap
   end subroutine
 
+
+  subroutine grid_field_struct_set_phi0_fieldmap(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_phi0_fieldmap')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi0_fieldmap = value_in
+  end subroutine
+
   ! grid_field_struct%field_scale: 0D_NOT_real
 
   subroutine grid_field_struct_get_field_scale(struct_obj_ptr, value_out) bind(c, name='grid_field_struct_get_field_scale')
@@ -3292,6 +4469,15 @@ contains
     type(grid_field_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_scale
+  end subroutine
+
+
+  subroutine grid_field_struct_set_field_scale(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_field_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_scale = value_in
   end subroutine
 
   ! grid_field_struct%field_type: 0D_NOT_integer
@@ -3304,6 +4490,15 @@ contains
     value_out = struct_obj%field_type
   end subroutine
 
+
+  subroutine grid_field_struct_set_field_type(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_field_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_type = value_in
+  end subroutine
+
   ! grid_field_struct%master_parameter: 0D_NOT_integer
 
   subroutine grid_field_struct_get_master_parameter(struct_obj_ptr, value_out) bind(c, name='grid_field_struct_get_master_parameter')
@@ -3312,6 +4507,15 @@ contains
     type(grid_field_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
+  end subroutine
+
+
+  subroutine grid_field_struct_set_master_parameter(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_master_parameter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%master_parameter = value_in
   end subroutine
 
   ! grid_field_struct%ele_anchor_pt: 0D_NOT_integer
@@ -3324,6 +4528,15 @@ contains
     value_out = struct_obj%ele_anchor_pt
   end subroutine
 
+
+  subroutine grid_field_struct_set_ele_anchor_pt(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_ele_anchor_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ele_anchor_pt = value_in
+  end subroutine
+
   ! grid_field_struct%interpolation_order: 0D_NOT_integer
 
   subroutine grid_field_struct_get_interpolation_order(struct_obj_ptr, value_out) bind(c, name='grid_field_struct_get_interpolation_order')
@@ -3332,6 +4545,15 @@ contains
     type(grid_field_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%interpolation_order
+  end subroutine
+
+
+  subroutine grid_field_struct_set_interpolation_order(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_interpolation_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%interpolation_order = value_in
   end subroutine
 
   ! grid_field_struct%dr: 1D_NOT_real
@@ -3372,6 +4594,15 @@ contains
     value_out = struct_obj%curved_ref_frame
   end subroutine
 
+
+  subroutine grid_field_struct_set_curved_ref_frame(struct_obj_ptr, value_in) bind(c, name='grid_field_struct_set_curved_ref_frame')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%curved_ref_frame = value_in
+  end subroutine
+
   ! grid_field_struct%ptr: 0D_PTR_type
 
   subroutine grid_field_struct_get_ptr(struct_obj_ptr, ptr_out) bind(c, name='grid_field_struct_get_ptr')
@@ -3383,6 +4614,19 @@ contains
       ptr_out = c_loc(struct_obj%ptr)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine grid_field_struct_set_ptr(struct_obj_ptr, src_ptr) bind(c, name='grid_field_struct_set_ptr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(grid_field_struct), pointer :: struct_obj
+    type(grid_field_pt_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ptr)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ptr = src_obj
     endif
   end subroutine
 
@@ -3448,6 +4692,15 @@ contains
     value_out = struct_obj%theta
   end subroutine
 
+
+  subroutine floor_position_struct_set_theta(struct_obj_ptr, value_in) bind(c, name='floor_position_struct_set_theta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(floor_position_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%theta = value_in
+  end subroutine
+
   ! floor_position_struct%phi: 0D_NOT_real
 
   subroutine floor_position_struct_get_phi(struct_obj_ptr, value_out) bind(c, name='floor_position_struct_get_phi')
@@ -3458,6 +4711,15 @@ contains
     value_out = struct_obj%phi
   end subroutine
 
+
+  subroutine floor_position_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='floor_position_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(floor_position_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
+  end subroutine
+
   ! floor_position_struct%psi: 0D_NOT_real
 
   subroutine floor_position_struct_get_psi(struct_obj_ptr, value_out) bind(c, name='floor_position_struct_get_psi')
@@ -3466,6 +4728,15 @@ contains
     type(floor_position_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%psi
+  end subroutine
+
+
+  subroutine floor_position_struct_set_psi(struct_obj_ptr, value_in) bind(c, name='floor_position_struct_set_psi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(floor_position_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%psi = value_in
   end subroutine
 
   !! high_energy_space_charge_struct
@@ -3513,6 +4784,17 @@ contains
     ptr_out = c_loc(struct_obj%closed_orb)
   end subroutine
 
+
+  subroutine high_energy_space_charge_struct_set_closed_orb(struct_obj_ptr, src_ptr) bind(c, name='high_energy_space_charge_struct_set_closed_orb')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%closed_orb = src_obj
+  end subroutine
+
   ! high_energy_space_charge_struct%kick_const: 0D_NOT_real
 
   subroutine high_energy_space_charge_struct_get_kick_const(struct_obj_ptr, value_out) bind(c, name='high_energy_space_charge_struct_get_kick_const')
@@ -3521,6 +4803,15 @@ contains
     type(high_energy_space_charge_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kick_const
+  end subroutine
+
+
+  subroutine high_energy_space_charge_struct_set_kick_const(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_kick_const')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%kick_const = value_in
   end subroutine
 
   ! high_energy_space_charge_struct%sig_x: 0D_NOT_real
@@ -3533,6 +4824,15 @@ contains
     value_out = struct_obj%sig_x
   end subroutine
 
+
+  subroutine high_energy_space_charge_struct_set_sig_x(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_sig_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_x = value_in
+  end subroutine
+
   ! high_energy_space_charge_struct%sig_y: 0D_NOT_real
 
   subroutine high_energy_space_charge_struct_get_sig_y(struct_obj_ptr, value_out) bind(c, name='high_energy_space_charge_struct_get_sig_y')
@@ -3541,6 +4841,15 @@ contains
     type(high_energy_space_charge_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_y
+  end subroutine
+
+
+  subroutine high_energy_space_charge_struct_set_sig_y(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_sig_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_y = value_in
   end subroutine
 
   ! high_energy_space_charge_struct%phi: 0D_NOT_real
@@ -3553,6 +4862,15 @@ contains
     value_out = struct_obj%phi
   end subroutine
 
+
+  subroutine high_energy_space_charge_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
+  end subroutine
+
   ! high_energy_space_charge_struct%sin_phi: 0D_NOT_real
 
   subroutine high_energy_space_charge_struct_get_sin_phi(struct_obj_ptr, value_out) bind(c, name='high_energy_space_charge_struct_get_sin_phi')
@@ -3561,6 +4879,15 @@ contains
     type(high_energy_space_charge_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sin_phi
+  end subroutine
+
+
+  subroutine high_energy_space_charge_struct_set_sin_phi(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_sin_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sin_phi = value_in
   end subroutine
 
   ! high_energy_space_charge_struct%cos_phi: 0D_NOT_real
@@ -3573,6 +4900,15 @@ contains
     value_out = struct_obj%cos_phi
   end subroutine
 
+
+  subroutine high_energy_space_charge_struct_set_cos_phi(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_cos_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%cos_phi = value_in
+  end subroutine
+
   ! high_energy_space_charge_struct%sig_z: 0D_NOT_real
 
   subroutine high_energy_space_charge_struct_get_sig_z(struct_obj_ptr, value_out) bind(c, name='high_energy_space_charge_struct_get_sig_z')
@@ -3581,6 +4917,15 @@ contains
     type(high_energy_space_charge_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z
+  end subroutine
+
+
+  subroutine high_energy_space_charge_struct_set_sig_z(struct_obj_ptr, value_in) bind(c, name='high_energy_space_charge_struct_set_sig_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(high_energy_space_charge_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_z = value_in
   end subroutine
 
   !! xy_disp_struct
@@ -3628,6 +4973,15 @@ contains
     value_out = struct_obj%eta
   end subroutine
 
+
+  subroutine xy_disp_struct_set_eta(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_eta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%eta = value_in
+  end subroutine
+
   ! xy_disp_struct%etap: 0D_NOT_real
 
   subroutine xy_disp_struct_get_etap(struct_obj_ptr, value_out) bind(c, name='xy_disp_struct_get_etap')
@@ -3636,6 +4990,15 @@ contains
     type(xy_disp_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%etap
+  end subroutine
+
+
+  subroutine xy_disp_struct_set_etap(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_etap')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%etap = value_in
   end subroutine
 
   ! xy_disp_struct%deta_ds: 0D_NOT_real
@@ -3648,6 +5011,15 @@ contains
     value_out = struct_obj%deta_ds
   end subroutine
 
+
+  subroutine xy_disp_struct_set_deta_ds(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_deta_ds')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%deta_ds = value_in
+  end subroutine
+
   ! xy_disp_struct%sigma: 0D_NOT_real
 
   subroutine xy_disp_struct_get_sigma(struct_obj_ptr, value_out) bind(c, name='xy_disp_struct_get_sigma')
@@ -3656,6 +5028,15 @@ contains
     type(xy_disp_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma
+  end subroutine
+
+
+  subroutine xy_disp_struct_set_sigma(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma = value_in
   end subroutine
 
   ! xy_disp_struct%deta_dpz: 0D_NOT_real
@@ -3668,6 +5049,15 @@ contains
     value_out = struct_obj%deta_dpz
   end subroutine
 
+
+  subroutine xy_disp_struct_set_deta_dpz(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_deta_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%deta_dpz = value_in
+  end subroutine
+
   ! xy_disp_struct%detap_dpz: 0D_NOT_real
 
   subroutine xy_disp_struct_get_detap_dpz(struct_obj_ptr, value_out) bind(c, name='xy_disp_struct_get_detap_dpz')
@@ -3676,6 +5066,15 @@ contains
     type(xy_disp_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%detap_dpz
+  end subroutine
+
+
+  subroutine xy_disp_struct_set_detap_dpz(struct_obj_ptr, value_in) bind(c, name='xy_disp_struct_set_detap_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(xy_disp_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%detap_dpz = value_in
   end subroutine
 
   !! twiss_struct
@@ -3723,6 +5122,15 @@ contains
     value_out = struct_obj%beta
   end subroutine
 
+
+  subroutine twiss_struct_set_beta(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_beta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%beta = value_in
+  end subroutine
+
   ! twiss_struct%alpha: 0D_NOT_real
 
   subroutine twiss_struct_get_alpha(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_alpha')
@@ -3731,6 +5139,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%alpha
+  end subroutine
+
+
+  subroutine twiss_struct_set_alpha(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_alpha')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%alpha = value_in
   end subroutine
 
   ! twiss_struct%gamma: 0D_NOT_real
@@ -3743,6 +5160,15 @@ contains
     value_out = struct_obj%gamma
   end subroutine
 
+
+  subroutine twiss_struct_set_gamma(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_gamma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%gamma = value_in
+  end subroutine
+
   ! twiss_struct%phi: 0D_NOT_real
 
   subroutine twiss_struct_get_phi(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_phi')
@@ -3751,6 +5177,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
+  end subroutine
+
+
+  subroutine twiss_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
   end subroutine
 
   ! twiss_struct%eta: 0D_NOT_real
@@ -3763,6 +5198,15 @@ contains
     value_out = struct_obj%eta
   end subroutine
 
+
+  subroutine twiss_struct_set_eta(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_eta')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%eta = value_in
+  end subroutine
+
   ! twiss_struct%etap: 0D_NOT_real
 
   subroutine twiss_struct_get_etap(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_etap')
@@ -3771,6 +5215,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%etap
+  end subroutine
+
+
+  subroutine twiss_struct_set_etap(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_etap')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%etap = value_in
   end subroutine
 
   ! twiss_struct%deta_ds: 0D_NOT_real
@@ -3783,6 +5236,15 @@ contains
     value_out = struct_obj%deta_ds
   end subroutine
 
+
+  subroutine twiss_struct_set_deta_ds(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_deta_ds')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%deta_ds = value_in
+  end subroutine
+
   ! twiss_struct%sigma: 0D_NOT_real
 
   subroutine twiss_struct_get_sigma(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_sigma')
@@ -3791,6 +5253,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma
+  end subroutine
+
+
+  subroutine twiss_struct_set_sigma(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma = value_in
   end subroutine
 
   ! twiss_struct%sigma_p: 0D_NOT_real
@@ -3803,6 +5274,15 @@ contains
     value_out = struct_obj%sigma_p
   end subroutine
 
+
+  subroutine twiss_struct_set_sigma_p(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_sigma_p')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma_p = value_in
+  end subroutine
+
   ! twiss_struct%emit: 0D_NOT_real
 
   subroutine twiss_struct_get_emit(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_emit')
@@ -3811,6 +5291,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emit
+  end subroutine
+
+
+  subroutine twiss_struct_set_emit(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%emit = value_in
   end subroutine
 
   ! twiss_struct%norm_emit: 0D_NOT_real
@@ -3823,6 +5312,15 @@ contains
     value_out = struct_obj%norm_emit
   end subroutine
 
+
+  subroutine twiss_struct_set_norm_emit(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_norm_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%norm_emit = value_in
+  end subroutine
+
   ! twiss_struct%chrom: 0D_NOT_real
 
   subroutine twiss_struct_get_chrom(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_chrom')
@@ -3831,6 +5329,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom
+  end subroutine
+
+
+  subroutine twiss_struct_set_chrom(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_chrom')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom = value_in
   end subroutine
 
   ! twiss_struct%dbeta_dpz: 0D_NOT_real
@@ -3843,6 +5350,15 @@ contains
     value_out = struct_obj%dbeta_dpz
   end subroutine
 
+
+  subroutine twiss_struct_set_dbeta_dpz(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_dbeta_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dbeta_dpz = value_in
+  end subroutine
+
   ! twiss_struct%dalpha_dpz: 0D_NOT_real
 
   subroutine twiss_struct_get_dalpha_dpz(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_dalpha_dpz')
@@ -3851,6 +5367,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dalpha_dpz
+  end subroutine
+
+
+  subroutine twiss_struct_set_dalpha_dpz(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_dalpha_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dalpha_dpz = value_in
   end subroutine
 
   ! twiss_struct%deta_dpz: 0D_NOT_real
@@ -3863,6 +5388,15 @@ contains
     value_out = struct_obj%deta_dpz
   end subroutine
 
+
+  subroutine twiss_struct_set_deta_dpz(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_deta_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%deta_dpz = value_in
+  end subroutine
+
   ! twiss_struct%detap_dpz: 0D_NOT_real
 
   subroutine twiss_struct_get_detap_dpz(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_detap_dpz')
@@ -3871,6 +5405,15 @@ contains
     type(twiss_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%detap_dpz
+  end subroutine
+
+
+  subroutine twiss_struct_set_detap_dpz(struct_obj_ptr, value_in) bind(c, name='twiss_struct_set_detap_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(twiss_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%detap_dpz = value_in
   end subroutine
 
   !! mode3_struct
@@ -3919,6 +5462,17 @@ contains
     ptr_out = c_loc(struct_obj%a)
   end subroutine
 
+
+  subroutine mode3_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='mode3_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(mode3_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%a = src_obj
+  end subroutine
+
   ! mode3_struct%b: 0D_NOT_type
 
   subroutine mode3_struct_get_b(struct_obj_ptr, ptr_out) bind(c, name='mode3_struct_get_b')
@@ -3927,6 +5481,17 @@ contains
     type(mode3_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
+  end subroutine
+
+
+  subroutine mode3_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='mode3_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(mode3_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%b = src_obj
   end subroutine
 
   ! mode3_struct%c: 0D_NOT_type
@@ -3939,6 +5504,17 @@ contains
     ptr_out = c_loc(struct_obj%c)
   end subroutine
 
+
+  subroutine mode3_struct_set_c(struct_obj_ptr, src_ptr) bind(c, name='mode3_struct_set_c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(mode3_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%c = src_obj
+  end subroutine
+
   ! mode3_struct%x: 0D_NOT_type
 
   subroutine mode3_struct_get_x(struct_obj_ptr, ptr_out) bind(c, name='mode3_struct_get_x')
@@ -3949,6 +5525,17 @@ contains
     ptr_out = c_loc(struct_obj%x)
   end subroutine
 
+
+  subroutine mode3_struct_set_x(struct_obj_ptr, src_ptr) bind(c, name='mode3_struct_set_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(mode3_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%x = src_obj
+  end subroutine
+
   ! mode3_struct%y: 0D_NOT_type
 
   subroutine mode3_struct_get_y(struct_obj_ptr, ptr_out) bind(c, name='mode3_struct_get_y')
@@ -3957,6 +5544,17 @@ contains
     type(mode3_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%y)
+  end subroutine
+
+
+  subroutine mode3_struct_set_y(struct_obj_ptr, src_ptr) bind(c, name='mode3_struct_set_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(mode3_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%y = src_obj
   end subroutine
 
   !! bookkeeping_state_struct
@@ -4004,6 +5602,15 @@ contains
     value_out = struct_obj%attributes
   end subroutine
 
+
+  subroutine bookkeeping_state_struct_set_attributes(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_attributes')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%attributes = value_in
+  end subroutine
+
   ! bookkeeping_state_struct%control: 0D_NOT_integer
 
   subroutine bookkeeping_state_struct_get_control(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_control')
@@ -4012,6 +5619,15 @@ contains
     type(bookkeeping_state_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%control
+  end subroutine
+
+
+  subroutine bookkeeping_state_struct_set_control(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_control')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%control = value_in
   end subroutine
 
   ! bookkeeping_state_struct%floor_position: 0D_NOT_integer
@@ -4024,6 +5640,15 @@ contains
     value_out = struct_obj%floor_position
   end subroutine
 
+
+  subroutine bookkeeping_state_struct_set_floor_position(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_floor_position')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%floor_position = value_in
+  end subroutine
+
   ! bookkeeping_state_struct%s_position: 0D_NOT_integer
 
   subroutine bookkeeping_state_struct_get_s_position(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_s_position')
@@ -4032,6 +5657,15 @@ contains
     type(bookkeeping_state_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_position
+  end subroutine
+
+
+  subroutine bookkeeping_state_struct_set_s_position(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_s_position')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s_position = value_in
   end subroutine
 
   ! bookkeeping_state_struct%ref_energy: 0D_NOT_integer
@@ -4044,6 +5678,15 @@ contains
     value_out = struct_obj%ref_energy
   end subroutine
 
+
+  subroutine bookkeeping_state_struct_set_ref_energy(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_ref_energy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref_energy = value_in
+  end subroutine
+
   ! bookkeeping_state_struct%mat6: 0D_NOT_integer
 
   subroutine bookkeeping_state_struct_get_mat6(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_mat6')
@@ -4052,6 +5695,15 @@ contains
     type(bookkeeping_state_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mat6
+  end subroutine
+
+
+  subroutine bookkeeping_state_struct_set_mat6(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_mat6')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%mat6 = value_in
   end subroutine
 
   ! bookkeeping_state_struct%rad_int: 0D_NOT_integer
@@ -4064,6 +5716,15 @@ contains
     value_out = struct_obj%rad_int
   end subroutine
 
+
+  subroutine bookkeeping_state_struct_set_rad_int(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_rad_int')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rad_int = value_in
+  end subroutine
+
   ! bookkeeping_state_struct%ptc: 0D_NOT_integer
 
   subroutine bookkeeping_state_struct_get_ptc(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_ptc')
@@ -4074,6 +5735,15 @@ contains
     value_out = struct_obj%ptc
   end subroutine
 
+
+  subroutine bookkeeping_state_struct_set_ptc(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_ptc')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ptc = value_in
+  end subroutine
+
   ! bookkeeping_state_struct%has_misalign: 0D_NOT_logical
 
   subroutine bookkeeping_state_struct_get_has_misalign(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_has_misalign')
@@ -4082,6 +5752,15 @@ contains
     type(bookkeeping_state_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%has_misalign
+  end subroutine
+
+
+  subroutine bookkeeping_state_struct_set_has_misalign(struct_obj_ptr, value_in) bind(c, name='bookkeeping_state_struct_set_has_misalign')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bookkeeping_state_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%has_misalign = value_in
   end subroutine
 
   !! rad_map_struct
@@ -4195,6 +5874,17 @@ contains
     ptr_out = c_loc(struct_obj%rm0)
   end subroutine
 
+
+  subroutine rad_map_ele_struct_set_rm0(struct_obj_ptr, src_ptr) bind(c, name='rad_map_ele_struct_set_rm0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(rad_map_ele_struct), pointer :: struct_obj
+    type(rad_map_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%rm0 = src_obj
+  end subroutine
+
   ! rad_map_ele_struct%rm1: 0D_NOT_type
 
   subroutine rad_map_ele_struct_get_rm1(struct_obj_ptr, ptr_out) bind(c, name='rad_map_ele_struct_get_rm1')
@@ -4205,6 +5895,17 @@ contains
     ptr_out = c_loc(struct_obj%rm1)
   end subroutine
 
+
+  subroutine rad_map_ele_struct_set_rm1(struct_obj_ptr, src_ptr) bind(c, name='rad_map_ele_struct_set_rm1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(rad_map_ele_struct), pointer :: struct_obj
+    type(rad_map_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%rm1 = src_obj
+  end subroutine
+
   ! rad_map_ele_struct%stale: 0D_NOT_logical
 
   subroutine rad_map_ele_struct_get_stale(struct_obj_ptr, value_out) bind(c, name='rad_map_ele_struct_get_stale')
@@ -4213,6 +5914,15 @@ contains
     type(rad_map_ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%stale
+  end subroutine
+
+
+  subroutine rad_map_ele_struct_set_stale(struct_obj_ptr, value_in) bind(c, name='rad_map_ele_struct_set_stale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(rad_map_ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%stale = value_in
   end subroutine
 
   !! gen_grad1_struct
@@ -4260,6 +5970,15 @@ contains
     value_out = struct_obj%m
   end subroutine
 
+
+  subroutine gen_grad1_struct_set_m(struct_obj_ptr, value_in) bind(c, name='gen_grad1_struct_set_m')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%m = value_in
+  end subroutine
+
   ! gen_grad1_struct%sincos: 0D_NOT_integer
 
   subroutine gen_grad1_struct_get_sincos(struct_obj_ptr, value_out) bind(c, name='gen_grad1_struct_get_sincos')
@@ -4270,6 +5989,15 @@ contains
     value_out = struct_obj%sincos
   end subroutine
 
+
+  subroutine gen_grad1_struct_set_sincos(struct_obj_ptr, value_in) bind(c, name='gen_grad1_struct_set_sincos')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sincos = value_in
+  end subroutine
+
   ! gen_grad1_struct%n_deriv_max: 0D_NOT_integer
 
   subroutine gen_grad1_struct_get_n_deriv_max(struct_obj_ptr, value_out) bind(c, name='gen_grad1_struct_get_n_deriv_max')
@@ -4278,6 +6006,15 @@ contains
     type(gen_grad1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_deriv_max
+  end subroutine
+
+
+  subroutine gen_grad1_struct_set_n_deriv_max(struct_obj_ptr, value_in) bind(c, name='gen_grad1_struct_set_n_deriv_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_deriv_max = value_in
   end subroutine
 
   ! gen_grad1_struct%deriv: 2D_ALLOC_real
@@ -4400,6 +6137,15 @@ contains
     value_out = struct_obj%ele_anchor_pt
   end subroutine
 
+
+  subroutine gen_grad_map_struct_set_ele_anchor_pt(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_ele_anchor_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ele_anchor_pt = value_in
+  end subroutine
+
   ! gen_grad_map_struct%field_type: 0D_NOT_integer
 
   subroutine gen_grad_map_struct_get_field_type(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_field_type')
@@ -4408,6 +6154,15 @@ contains
     type(gen_grad_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_type
+  end subroutine
+
+
+  subroutine gen_grad_map_struct_set_field_type(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_field_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_type = value_in
   end subroutine
 
   ! gen_grad_map_struct%iz0: 0D_NOT_integer
@@ -4420,6 +6175,15 @@ contains
     value_out = struct_obj%iz0
   end subroutine
 
+
+  subroutine gen_grad_map_struct_set_iz0(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_iz0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%iz0 = value_in
+  end subroutine
+
   ! gen_grad_map_struct%iz1: 0D_NOT_integer
 
   subroutine gen_grad_map_struct_get_iz1(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_iz1')
@@ -4430,6 +6194,15 @@ contains
     value_out = struct_obj%iz1
   end subroutine
 
+
+  subroutine gen_grad_map_struct_set_iz1(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_iz1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%iz1 = value_in
+  end subroutine
+
   ! gen_grad_map_struct%dz: 0D_NOT_real
 
   subroutine gen_grad_map_struct_get_dz(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_dz')
@@ -4438,6 +6211,15 @@ contains
     type(gen_grad_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz
+  end subroutine
+
+
+  subroutine gen_grad_map_struct_set_dz(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_dz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz = value_in
   end subroutine
 
   ! gen_grad_map_struct%r0: 1D_NOT_real
@@ -4464,6 +6246,15 @@ contains
     value_out = struct_obj%field_scale
   end subroutine
 
+
+  subroutine gen_grad_map_struct_set_field_scale(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_field_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_scale = value_in
+  end subroutine
+
   ! gen_grad_map_struct%master_parameter: 0D_NOT_integer
 
   subroutine gen_grad_map_struct_get_master_parameter(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_master_parameter')
@@ -4474,6 +6265,15 @@ contains
     value_out = struct_obj%master_parameter
   end subroutine
 
+
+  subroutine gen_grad_map_struct_set_master_parameter(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_master_parameter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%master_parameter = value_in
+  end subroutine
+
   ! gen_grad_map_struct%curved_ref_frame: 0D_NOT_logical
 
   subroutine gen_grad_map_struct_get_curved_ref_frame(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_curved_ref_frame')
@@ -4482,6 +6282,15 @@ contains
     type(gen_grad_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%curved_ref_frame
+  end subroutine
+
+
+  subroutine gen_grad_map_struct_set_curved_ref_frame(struct_obj_ptr, value_in) bind(c, name='gen_grad_map_struct_set_curved_ref_frame')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(gen_grad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%curved_ref_frame = value_in
   end subroutine
 
   !! surface_segmented_pt_struct
@@ -4529,6 +6338,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine surface_segmented_pt_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='surface_segmented_pt_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_segmented_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! surface_segmented_pt_struct%y0: 0D_NOT_real
 
   subroutine surface_segmented_pt_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='surface_segmented_pt_struct_get_y0')
@@ -4537,6 +6355,15 @@ contains
     type(surface_segmented_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
+  end subroutine
+
+
+  subroutine surface_segmented_pt_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='surface_segmented_pt_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_segmented_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
   end subroutine
 
   ! surface_segmented_pt_struct%z0: 0D_NOT_real
@@ -4549,6 +6376,15 @@ contains
     value_out = struct_obj%z0
   end subroutine
 
+
+  subroutine surface_segmented_pt_struct_set_z0(struct_obj_ptr, value_in) bind(c, name='surface_segmented_pt_struct_set_z0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_segmented_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z0 = value_in
+  end subroutine
+
   ! surface_segmented_pt_struct%dz_dx: 0D_NOT_real
 
   subroutine surface_segmented_pt_struct_get_dz_dx(struct_obj_ptr, value_out) bind(c, name='surface_segmented_pt_struct_get_dz_dx')
@@ -4559,6 +6395,15 @@ contains
     value_out = struct_obj%dz_dx
   end subroutine
 
+
+  subroutine surface_segmented_pt_struct_set_dz_dx(struct_obj_ptr, value_in) bind(c, name='surface_segmented_pt_struct_set_dz_dx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_segmented_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz_dx = value_in
+  end subroutine
+
   ! surface_segmented_pt_struct%dz_dy: 0D_NOT_real
 
   subroutine surface_segmented_pt_struct_get_dz_dy(struct_obj_ptr, value_out) bind(c, name='surface_segmented_pt_struct_get_dz_dy')
@@ -4567,6 +6412,15 @@ contains
     type(surface_segmented_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dy
+  end subroutine
+
+
+  subroutine surface_segmented_pt_struct_set_dz_dy(struct_obj_ptr, value_in) bind(c, name='surface_segmented_pt_struct_set_dz_dy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_segmented_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz_dy = value_in
   end subroutine
 
   !! surface_segmented_struct
@@ -4612,6 +6466,15 @@ contains
     type(surface_segmented_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
+  end subroutine
+
+
+  subroutine surface_segmented_struct_set_active(struct_obj_ptr, value_in) bind(c, name='surface_segmented_struct_set_active')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(surface_segmented_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%active = value_in
   end subroutine
 
   ! surface_segmented_struct%dr: 1D_NOT_real
@@ -4688,6 +6551,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine surface_h_misalign_pt_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! surface_h_misalign_pt_struct%y0: 0D_NOT_real
 
   subroutine surface_h_misalign_pt_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='surface_h_misalign_pt_struct_get_y0')
@@ -4696,6 +6568,15 @@ contains
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
+  end subroutine
+
+
+  subroutine surface_h_misalign_pt_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
   end subroutine
 
   ! surface_h_misalign_pt_struct%rot_y: 0D_NOT_real
@@ -4708,6 +6589,15 @@ contains
     value_out = struct_obj%rot_y
   end subroutine
 
+
+  subroutine surface_h_misalign_pt_struct_set_rot_y(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_rot_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rot_y = value_in
+  end subroutine
+
   ! surface_h_misalign_pt_struct%rot_t: 0D_NOT_real
 
   subroutine surface_h_misalign_pt_struct_get_rot_t(struct_obj_ptr, value_out) bind(c, name='surface_h_misalign_pt_struct_get_rot_t')
@@ -4716,6 +6606,15 @@ contains
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_t
+  end subroutine
+
+
+  subroutine surface_h_misalign_pt_struct_set_rot_t(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_rot_t')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rot_t = value_in
   end subroutine
 
   ! surface_h_misalign_pt_struct%rot_y_rms: 0D_NOT_real
@@ -4728,6 +6627,15 @@ contains
     value_out = struct_obj%rot_y_rms
   end subroutine
 
+
+  subroutine surface_h_misalign_pt_struct_set_rot_y_rms(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_rot_y_rms')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rot_y_rms = value_in
+  end subroutine
+
   ! surface_h_misalign_pt_struct%rot_t_rms: 0D_NOT_real
 
   subroutine surface_h_misalign_pt_struct_get_rot_t_rms(struct_obj_ptr, value_out) bind(c, name='surface_h_misalign_pt_struct_get_rot_t_rms')
@@ -4736,6 +6644,15 @@ contains
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_t_rms
+  end subroutine
+
+
+  subroutine surface_h_misalign_pt_struct_set_rot_t_rms(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_pt_struct_set_rot_t_rms')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_h_misalign_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rot_t_rms = value_in
   end subroutine
 
   !! surface_h_misalign_struct
@@ -4781,6 +6698,15 @@ contains
     type(surface_h_misalign_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
+  end subroutine
+
+
+  subroutine surface_h_misalign_struct_set_active(struct_obj_ptr, value_in) bind(c, name='surface_h_misalign_struct_set_active')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(surface_h_misalign_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%active = value_in
   end subroutine
 
   ! surface_h_misalign_struct%dr: 1D_NOT_real
@@ -4857,6 +6783,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine surface_displacement_pt_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! surface_displacement_pt_struct%y0: 0D_NOT_real
 
   subroutine surface_displacement_pt_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='surface_displacement_pt_struct_get_y0')
@@ -4865,6 +6800,15 @@ contains
     type(surface_displacement_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
+  end subroutine
+
+
+  subroutine surface_displacement_pt_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
   end subroutine
 
   ! surface_displacement_pt_struct%z0: 0D_NOT_real
@@ -4877,6 +6821,15 @@ contains
     value_out = struct_obj%z0
   end subroutine
 
+
+  subroutine surface_displacement_pt_struct_set_z0(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_z0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z0 = value_in
+  end subroutine
+
   ! surface_displacement_pt_struct%dz_dx: 0D_NOT_real
 
   subroutine surface_displacement_pt_struct_get_dz_dx(struct_obj_ptr, value_out) bind(c, name='surface_displacement_pt_struct_get_dz_dx')
@@ -4885,6 +6838,15 @@ contains
     type(surface_displacement_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dx
+  end subroutine
+
+
+  subroutine surface_displacement_pt_struct_set_dz_dx(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_dz_dx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz_dx = value_in
   end subroutine
 
   ! surface_displacement_pt_struct%dz_dy: 0D_NOT_real
@@ -4897,6 +6859,15 @@ contains
     value_out = struct_obj%dz_dy
   end subroutine
 
+
+  subroutine surface_displacement_pt_struct_set_dz_dy(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_dz_dy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dz_dy = value_in
+  end subroutine
+
   ! surface_displacement_pt_struct%d2z_dxdy: 0D_NOT_real
 
   subroutine surface_displacement_pt_struct_get_d2z_dxdy(struct_obj_ptr, value_out) bind(c, name='surface_displacement_pt_struct_get_d2z_dxdy')
@@ -4905,6 +6876,15 @@ contains
     type(surface_displacement_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%d2z_dxdy
+  end subroutine
+
+
+  subroutine surface_displacement_pt_struct_set_d2z_dxdy(struct_obj_ptr, value_in) bind(c, name='surface_displacement_pt_struct_set_d2z_dxdy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_displacement_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%d2z_dxdy = value_in
   end subroutine
 
   !! surface_displacement_struct
@@ -4950,6 +6930,15 @@ contains
     type(surface_displacement_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
+  end subroutine
+
+
+  subroutine surface_displacement_struct_set_active(struct_obj_ptr, value_in) bind(c, name='surface_displacement_struct_set_active')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(surface_displacement_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%active = value_in
   end subroutine
 
   ! surface_displacement_struct%dr: 1D_NOT_real
@@ -5076,6 +7065,15 @@ contains
     value_out = struct_obj%spherical
   end subroutine
 
+
+  subroutine surface_curvature_struct_set_spherical(struct_obj_ptr, value_in) bind(c, name='surface_curvature_struct_set_spherical')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(surface_curvature_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spherical = value_in
+  end subroutine
+
   ! surface_curvature_struct%elliptical: 1D_NOT_real
 
   subroutine surface_curvature_struct_get_elliptical_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='surface_curvature_struct_get_elliptical_info')
@@ -5098,6 +7096,15 @@ contains
     type(surface_curvature_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%has_curvature
+  end subroutine
+
+
+  subroutine surface_curvature_struct_set_has_curvature(struct_obj_ptr, value_in) bind(c, name='surface_curvature_struct_set_has_curvature')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(surface_curvature_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%has_curvature = value_in
   end subroutine
 
   !! photon_target_struct
@@ -5145,6 +7152,15 @@ contains
     value_out = struct_obj%type
   end subroutine
 
+
+  subroutine photon_target_struct_set_type(struct_obj_ptr, value_in) bind(c, name='photon_target_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(photon_target_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%type = value_in
+  end subroutine
+
   ! photon_target_struct%n_corner: 0D_NOT_integer
 
   subroutine photon_target_struct_get_n_corner(struct_obj_ptr, value_out) bind(c, name='photon_target_struct_get_n_corner')
@@ -5155,6 +7171,15 @@ contains
     value_out = struct_obj%n_corner
   end subroutine
 
+
+  subroutine photon_target_struct_set_n_corner(struct_obj_ptr, value_in) bind(c, name='photon_target_struct_set_n_corner')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(photon_target_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_corner = value_in
+  end subroutine
+
   ! photon_target_struct%ele_loc: 0D_NOT_type
 
   subroutine photon_target_struct_get_ele_loc(struct_obj_ptr, ptr_out) bind(c, name='photon_target_struct_get_ele_loc')
@@ -5163,6 +7188,17 @@ contains
     type(photon_target_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_loc)
+  end subroutine
+
+
+  subroutine photon_target_struct_set_ele_loc(struct_obj_ptr, src_ptr) bind(c, name='photon_target_struct_set_ele_loc')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_target_struct), pointer :: struct_obj
+    type(lat_ele_loc_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ele_loc = src_obj
   end subroutine
 
   ! photon_target_struct%corner: 1D_NOT_type
@@ -5189,6 +7225,17 @@ contains
     type(photon_target_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%center)
+  end subroutine
+
+
+  subroutine photon_target_struct_set_center(struct_obj_ptr, src_ptr) bind(c, name='photon_target_struct_set_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_target_struct), pointer :: struct_obj
+    type(target_point_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%center = src_obj
   end subroutine
 
   !! photon_material_struct
@@ -5236,6 +7283,15 @@ contains
     value_out = struct_obj%f0_m1
   end subroutine
 
+
+  subroutine photon_material_struct_set_f0_m1(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f0_m1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f0_m1 = value_in
+  end subroutine
+
   ! photon_material_struct%f0_m2: 0D_NOT_complex
 
   subroutine photon_material_struct_get_f0_m2(struct_obj_ptr, value_out) bind(c, name='photon_material_struct_get_f0_m2')
@@ -5244,6 +7300,15 @@ contains
     type(photon_material_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f0_m2
+  end subroutine
+
+
+  subroutine photon_material_struct_set_f0_m2(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f0_m2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f0_m2 = value_in
   end subroutine
 
   ! photon_material_struct%f_0: 0D_NOT_complex
@@ -5256,6 +7321,15 @@ contains
     value_out = struct_obj%f_0
   end subroutine
 
+
+  subroutine photon_material_struct_set_f_0(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f_0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f_0 = value_in
+  end subroutine
+
   ! photon_material_struct%f_h: 0D_NOT_complex
 
   subroutine photon_material_struct_get_f_h(struct_obj_ptr, value_out) bind(c, name='photon_material_struct_get_f_h')
@@ -5264,6 +7338,15 @@ contains
     type(photon_material_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_h
+  end subroutine
+
+
+  subroutine photon_material_struct_set_f_h(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f_h')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f_h = value_in
   end subroutine
 
   ! photon_material_struct%f_hbar: 0D_NOT_complex
@@ -5276,6 +7359,15 @@ contains
     value_out = struct_obj%f_hbar
   end subroutine
 
+
+  subroutine photon_material_struct_set_f_hbar(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f_hbar')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f_hbar = value_in
+  end subroutine
+
   ! photon_material_struct%f_hkl: 0D_NOT_complex
 
   subroutine photon_material_struct_get_f_hkl(struct_obj_ptr, value_out) bind(c, name='photon_material_struct_get_f_hkl')
@@ -5284,6 +7376,15 @@ contains
     type(photon_material_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_hkl
+  end subroutine
+
+
+  subroutine photon_material_struct_set_f_hkl(struct_obj_ptr, value_in) bind(c, name='photon_material_struct_set_f_hkl')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(photon_material_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%f_hkl = value_in
   end subroutine
 
   ! photon_material_struct%h_norm: 1D_NOT_real
@@ -5359,6 +7460,15 @@ contains
     value_out = struct_obj%n_photon
   end subroutine
 
+
+  subroutine pixel_pt_struct_set_n_photon(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_n_photon')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_long_long), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_photon = value_in
+  end subroutine
+
   ! pixel_pt_struct%E_x: 0D_NOT_complex
 
   subroutine pixel_pt_struct_get_E_x(struct_obj_ptr, value_out) bind(c, name='pixel_pt_struct_get_E_x')
@@ -5367,6 +7477,15 @@ contains
     type(pixel_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_x
+  end subroutine
+
+
+  subroutine pixel_pt_struct_set_E_x(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_E_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%E_x = value_in
   end subroutine
 
   ! pixel_pt_struct%E_y: 0D_NOT_complex
@@ -5379,6 +7498,15 @@ contains
     value_out = struct_obj%E_y
   end subroutine
 
+
+  subroutine pixel_pt_struct_set_E_y(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_E_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%E_y = value_in
+  end subroutine
+
   ! pixel_pt_struct%intensity_x: 0D_NOT_real
 
   subroutine pixel_pt_struct_get_intensity_x(struct_obj_ptr, value_out) bind(c, name='pixel_pt_struct_get_intensity_x')
@@ -5387,6 +7515,15 @@ contains
     type(pixel_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%intensity_x
+  end subroutine
+
+
+  subroutine pixel_pt_struct_set_intensity_x(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_intensity_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%intensity_x = value_in
   end subroutine
 
   ! pixel_pt_struct%intensity_y: 0D_NOT_real
@@ -5399,6 +7536,15 @@ contains
     value_out = struct_obj%intensity_y
   end subroutine
 
+
+  subroutine pixel_pt_struct_set_intensity_y(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_intensity_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%intensity_y = value_in
+  end subroutine
+
   ! pixel_pt_struct%intensity: 0D_NOT_real
 
   subroutine pixel_pt_struct_get_intensity(struct_obj_ptr, value_out) bind(c, name='pixel_pt_struct_get_intensity')
@@ -5407,6 +7553,15 @@ contains
     type(pixel_pt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%intensity
+  end subroutine
+
+
+  subroutine pixel_pt_struct_set_intensity(struct_obj_ptr, value_in) bind(c, name='pixel_pt_struct_set_intensity')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(pixel_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%intensity = value_in
   end subroutine
 
   ! pixel_pt_struct%orbit: 1D_NOT_real
@@ -5538,6 +7693,15 @@ contains
     value_out = struct_obj%n_track_tot
   end subroutine
 
+
+  subroutine pixel_detec_struct_set_n_track_tot(struct_obj_ptr, value_in) bind(c, name='pixel_detec_struct_set_n_track_tot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_long_long), intent(in), value :: value_in
+    type(pixel_detec_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_track_tot = value_in
+  end subroutine
+
   ! pixel_detec_struct%n_hit_detec: 0D_NOT_integer8
 
   subroutine pixel_detec_struct_get_n_hit_detec(struct_obj_ptr, value_out) bind(c, name='pixel_detec_struct_get_n_hit_detec')
@@ -5548,6 +7712,15 @@ contains
     value_out = struct_obj%n_hit_detec
   end subroutine
 
+
+  subroutine pixel_detec_struct_set_n_hit_detec(struct_obj_ptr, value_in) bind(c, name='pixel_detec_struct_set_n_hit_detec')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_long_long), intent(in), value :: value_in
+    type(pixel_detec_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_hit_detec = value_in
+  end subroutine
+
   ! pixel_detec_struct%n_hit_pixel: 0D_NOT_integer8
 
   subroutine pixel_detec_struct_get_n_hit_pixel(struct_obj_ptr, value_out) bind(c, name='pixel_detec_struct_get_n_hit_pixel')
@@ -5556,6 +7729,15 @@ contains
     type(pixel_detec_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_hit_pixel
+  end subroutine
+
+
+  subroutine pixel_detec_struct_set_n_hit_pixel(struct_obj_ptr, value_in) bind(c, name='pixel_detec_struct_set_n_hit_pixel')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_long_long), intent(in), value :: value_in
+    type(pixel_detec_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_hit_pixel = value_in
   end subroutine
 
   ! skipped pixel_detec_struct%pt: Unsupported type: 2D_ALLOC_type
@@ -5604,6 +7786,17 @@ contains
     ptr_out = c_loc(struct_obj%curvature)
   end subroutine
 
+
+  subroutine photon_element_struct_set_curvature(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_curvature')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(surface_curvature_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%curvature = src_obj
+  end subroutine
+
   ! photon_element_struct%target: 0D_NOT_type
 
   subroutine photon_element_struct_get_target(struct_obj_ptr, ptr_out) bind(c, name='photon_element_struct_get_target')
@@ -5612,6 +7805,17 @@ contains
     type(photon_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%target)
+  end subroutine
+
+
+  subroutine photon_element_struct_set_target(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_target')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(photon_target_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%target = src_obj
   end subroutine
 
   ! photon_element_struct%material: 0D_NOT_type
@@ -5624,6 +7828,17 @@ contains
     ptr_out = c_loc(struct_obj%material)
   end subroutine
 
+
+  subroutine photon_element_struct_set_material(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_material')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(photon_material_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%material = src_obj
+  end subroutine
+
   ! photon_element_struct%segmented: 0D_NOT_type
 
   subroutine photon_element_struct_get_segmented(struct_obj_ptr, ptr_out) bind(c, name='photon_element_struct_get_segmented')
@@ -5632,6 +7847,17 @@ contains
     type(photon_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%segmented)
+  end subroutine
+
+
+  subroutine photon_element_struct_set_segmented(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_segmented')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(surface_segmented_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%segmented = src_obj
   end subroutine
 
   ! photon_element_struct%h_misalign: 0D_NOT_type
@@ -5644,6 +7870,17 @@ contains
     ptr_out = c_loc(struct_obj%h_misalign)
   end subroutine
 
+
+  subroutine photon_element_struct_set_h_misalign(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_h_misalign')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(surface_h_misalign_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%h_misalign = src_obj
+  end subroutine
+
   ! photon_element_struct%displacement: 0D_NOT_type
 
   subroutine photon_element_struct_get_displacement(struct_obj_ptr, ptr_out) bind(c, name='photon_element_struct_get_displacement')
@@ -5652,6 +7889,17 @@ contains
     type(photon_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%displacement)
+  end subroutine
+
+
+  subroutine photon_element_struct_set_displacement(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_displacement')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(surface_displacement_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%displacement = src_obj
   end subroutine
 
   ! photon_element_struct%pixel: 0D_NOT_type
@@ -5664,6 +7912,17 @@ contains
     ptr_out = c_loc(struct_obj%pixel)
   end subroutine
 
+
+  subroutine photon_element_struct_set_pixel(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_pixel')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(pixel_detec_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%pixel = src_obj
+  end subroutine
+
   ! photon_element_struct%reflectivity_table_type: 0D_NOT_integer
 
   subroutine photon_element_struct_get_reflectivity_table_type(struct_obj_ptr, value_out) bind(c, name='photon_element_struct_get_reflectivity_table_type')
@@ -5672,6 +7931,15 @@ contains
     type(photon_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%reflectivity_table_type
+  end subroutine
+
+
+  subroutine photon_element_struct_set_reflectivity_table_type(struct_obj_ptr, value_in) bind(c, name='photon_element_struct_set_reflectivity_table_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(photon_element_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%reflectivity_table_type = value_in
   end subroutine
 
   ! photon_element_struct%reflectivity_table_sigma: 0D_NOT_type
@@ -5684,6 +7952,17 @@ contains
     ptr_out = c_loc(struct_obj%reflectivity_table_sigma)
   end subroutine
 
+
+  subroutine photon_element_struct_set_reflectivity_table_sigma(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_reflectivity_table_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(photon_reflect_table_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%reflectivity_table_sigma = src_obj
+  end subroutine
+
   ! photon_element_struct%reflectivity_table_pi: 0D_NOT_type
 
   subroutine photon_element_struct_get_reflectivity_table_pi(struct_obj_ptr, ptr_out) bind(c, name='photon_element_struct_get_reflectivity_table_pi')
@@ -5692,6 +7971,17 @@ contains
     type(photon_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%reflectivity_table_pi)
+  end subroutine
+
+
+  subroutine photon_element_struct_set_reflectivity_table_pi(struct_obj_ptr, src_ptr) bind(c, name='photon_element_struct_set_reflectivity_table_pi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(photon_element_struct), pointer :: struct_obj
+    type(photon_reflect_table_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%reflectivity_table_pi = src_obj
   end subroutine
 
   ! photon_element_struct%init_energy_prob: 1D_ALLOC_type
@@ -5790,6 +8080,15 @@ contains
     value_out = struct_obj%x
   end subroutine
 
+
+  subroutine wall3d_vertex_struct_set_x(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x = value_in
+  end subroutine
+
   ! wall3d_vertex_struct%y: 0D_NOT_real
 
   subroutine wall3d_vertex_struct_get_y(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_y')
@@ -5798,6 +8097,15 @@ contains
     type(wall3d_vertex_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y
+  end subroutine
+
+
+  subroutine wall3d_vertex_struct_set_y(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y = value_in
   end subroutine
 
   ! wall3d_vertex_struct%radius_x: 0D_NOT_real
@@ -5810,6 +8118,15 @@ contains
     value_out = struct_obj%radius_x
   end subroutine
 
+
+  subroutine wall3d_vertex_struct_set_radius_x(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_radius_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%radius_x = value_in
+  end subroutine
+
   ! wall3d_vertex_struct%radius_y: 0D_NOT_real
 
   subroutine wall3d_vertex_struct_get_radius_y(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_radius_y')
@@ -5818,6 +8135,15 @@ contains
     type(wall3d_vertex_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radius_y
+  end subroutine
+
+
+  subroutine wall3d_vertex_struct_set_radius_y(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_radius_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%radius_y = value_in
   end subroutine
 
   ! wall3d_vertex_struct%tilt: 0D_NOT_real
@@ -5830,6 +8156,15 @@ contains
     value_out = struct_obj%tilt
   end subroutine
 
+
+  subroutine wall3d_vertex_struct_set_tilt(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_tilt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%tilt = value_in
+  end subroutine
+
   ! wall3d_vertex_struct%angle: 0D_NOT_real
 
   subroutine wall3d_vertex_struct_get_angle(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_angle')
@@ -5838,6 +8173,15 @@ contains
     type(wall3d_vertex_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%angle
+  end subroutine
+
+
+  subroutine wall3d_vertex_struct_set_angle(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_angle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%angle = value_in
   end subroutine
 
   ! wall3d_vertex_struct%x0: 0D_NOT_real
@@ -5850,6 +8194,15 @@ contains
     value_out = struct_obj%x0
   end subroutine
 
+
+  subroutine wall3d_vertex_struct_set_x0(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_x0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x0 = value_in
+  end subroutine
+
   ! wall3d_vertex_struct%y0: 0D_NOT_real
 
   subroutine wall3d_vertex_struct_get_y0(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_y0')
@@ -5860,6 +8213,15 @@ contains
     value_out = struct_obj%y0
   end subroutine
 
+
+  subroutine wall3d_vertex_struct_set_y0(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_y0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y0 = value_in
+  end subroutine
+
   ! wall3d_vertex_struct%type: 0D_NOT_integer
 
   subroutine wall3d_vertex_struct_get_type(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_type')
@@ -5868,6 +8230,15 @@ contains
     type(wall3d_vertex_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
+  end subroutine
+
+
+  subroutine wall3d_vertex_struct_set_type(struct_obj_ptr, value_in) bind(c, name='wall3d_vertex_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_vertex_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%type = value_in
   end subroutine
 
   !! wall3d_section_struct
@@ -5974,6 +8345,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_surface(struct_obj_ptr, src_ptr) bind(c, name='wall3d_section_struct_set_surface')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(wall3d_section_struct), pointer :: struct_obj
+    type(photon_reflect_surface_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%surface)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%surface = src_obj
+    endif
+  end subroutine
+
   ! wall3d_section_struct%type: 0D_NOT_integer
 
   subroutine wall3d_section_struct_get_type(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_type')
@@ -5982,6 +8366,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_type(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%type = value_in
   end subroutine
 
   ! wall3d_section_struct%n_vertex_input: 0D_NOT_integer
@@ -5994,6 +8387,15 @@ contains
     value_out = struct_obj%n_vertex_input
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_n_vertex_input(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_n_vertex_input')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_vertex_input = value_in
+  end subroutine
+
   ! wall3d_section_struct%ix_ele: 0D_NOT_integer
 
   subroutine wall3d_section_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_ix_ele')
@@ -6002,6 +8404,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
   end subroutine
 
   ! wall3d_section_struct%ix_branch: 0D_NOT_integer
@@ -6014,6 +8425,15 @@ contains
     value_out = struct_obj%ix_branch
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
+  end subroutine
+
   ! wall3d_section_struct%vertices_state: 0D_NOT_integer
 
   subroutine wall3d_section_struct_get_vertices_state(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_vertices_state')
@@ -6022,6 +8442,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%vertices_state
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_vertices_state(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_vertices_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%vertices_state = value_in
   end subroutine
 
   ! wall3d_section_struct%patch_in_region: 0D_NOT_logical
@@ -6034,6 +8463,15 @@ contains
     value_out = struct_obj%patch_in_region
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_patch_in_region(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_patch_in_region')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%patch_in_region = value_in
+  end subroutine
+
   ! wall3d_section_struct%thickness: 0D_NOT_real
 
   subroutine wall3d_section_struct_get_thickness(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_thickness')
@@ -6044,6 +8482,15 @@ contains
     value_out = struct_obj%thickness
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_thickness(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_thickness')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%thickness = value_in
+  end subroutine
+
   ! wall3d_section_struct%s: 0D_NOT_real
 
   subroutine wall3d_section_struct_get_s(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_s')
@@ -6052,6 +8499,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_s(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
   end subroutine
 
   ! wall3d_section_struct%r0: 1D_NOT_real
@@ -6078,6 +8534,15 @@ contains
     value_out = struct_obj%dx0_ds
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_dx0_ds(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_dx0_ds')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dx0_ds = value_in
+  end subroutine
+
   ! wall3d_section_struct%dy0_ds: 0D_NOT_real
 
   subroutine wall3d_section_struct_get_dy0_ds(struct_obj_ptr, value_out) bind(c, name='wall3d_section_struct_get_dy0_ds')
@@ -6086,6 +8551,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dy0_ds
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_dy0_ds(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_dy0_ds')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dy0_ds = value_in
   end subroutine
 
   ! wall3d_section_struct%x0_coef: 1D_NOT_real
@@ -6124,6 +8598,15 @@ contains
     type(wall3d_section_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dr_ds
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_dr_ds(struct_obj_ptr, value_in) bind(c, name='wall3d_section_struct_set_dr_ds')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_section_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dr_ds = value_in
   end subroutine
 
   ! wall3d_section_struct%p1_coef: 1D_NOT_real
@@ -6213,6 +8696,15 @@ contains
     value_out = struct_obj%type
   end subroutine
 
+
+  subroutine wall3d_struct_set_type(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%type = value_in
+  end subroutine
+
   ! wall3d_struct%ix_wall3d: 0D_NOT_integer
 
   subroutine wall3d_struct_get_ix_wall3d(struct_obj_ptr, value_out) bind(c, name='wall3d_struct_get_ix_wall3d')
@@ -6221,6 +8713,15 @@ contains
     type(wall3d_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_wall3d
+  end subroutine
+
+
+  subroutine wall3d_struct_set_ix_wall3d(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_ix_wall3d')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_wall3d = value_in
   end subroutine
 
   ! wall3d_struct%n_link: 0D_NOT_integer
@@ -6233,6 +8734,15 @@ contains
     value_out = struct_obj%n_link
   end subroutine
 
+
+  subroutine wall3d_struct_set_n_link(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_n_link')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_link = value_in
+  end subroutine
+
   ! wall3d_struct%thickness: 0D_NOT_real
 
   subroutine wall3d_struct_get_thickness(struct_obj_ptr, value_out) bind(c, name='wall3d_struct_get_thickness')
@@ -6241,6 +8751,15 @@ contains
     type(wall3d_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%thickness
+  end subroutine
+
+
+  subroutine wall3d_struct_set_thickness(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_thickness')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%thickness = value_in
   end subroutine
 
   ! wall3d_struct%clear_material: 0D_NOT_character
@@ -6281,6 +8800,15 @@ contains
     value_out = struct_obj%superimpose
   end subroutine
 
+
+  subroutine wall3d_struct_set_superimpose(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_superimpose')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%superimpose = value_in
+  end subroutine
+
   ! wall3d_struct%ele_anchor_pt: 0D_NOT_integer
 
   subroutine wall3d_struct_get_ele_anchor_pt(struct_obj_ptr, value_out) bind(c, name='wall3d_struct_get_ele_anchor_pt')
@@ -6289,6 +8817,15 @@ contains
     type(wall3d_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
+  end subroutine
+
+
+  subroutine wall3d_struct_set_ele_anchor_pt(struct_obj_ptr, value_in) bind(c, name='wall3d_struct_set_ele_anchor_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(wall3d_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ele_anchor_pt = value_in
   end subroutine
 
   ! wall3d_struct%section: 1D_ALLOC_type
@@ -6363,6 +8900,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine ramper_lord_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='ramper_lord_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ramper_lord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! ramper_lord_struct%ix_con: 0D_NOT_integer
 
   subroutine ramper_lord_struct_get_ix_con(struct_obj_ptr, value_out) bind(c, name='ramper_lord_struct_get_ix_con')
@@ -6371,6 +8917,15 @@ contains
     type(ramper_lord_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_con
+  end subroutine
+
+
+  subroutine ramper_lord_struct_set_ix_con(struct_obj_ptr, value_in) bind(c, name='ramper_lord_struct_set_ix_con')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ramper_lord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_con = value_in
   end subroutine
 
   ! ramper_lord_struct%attrib_ptr: 0D_PTR_real
@@ -6384,6 +8939,17 @@ contains
       ptr_out = c_loc(struct_obj%attrib_ptr)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ramper_lord_struct_set_attrib_ptr(struct_obj_ptr, value_in) bind(c, name='ramper_lord_struct_set_attrib_ptr')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ramper_lord_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%attrib_ptr)) then
+      struct_obj%attrib_ptr = value_in
     endif
   end subroutine
 
@@ -6430,6 +8996,15 @@ contains
     type(control_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%value
+  end subroutine
+
+
+  subroutine control_struct_set_value(struct_obj_ptr, value_in) bind(c, name='control_struct_set_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(control_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%value = value_in
   end subroutine
 
   ! control_struct%y_knot: 1D_ALLOC_real
@@ -6493,6 +9068,17 @@ contains
     ptr_out = c_loc(struct_obj%slave)
   end subroutine
 
+
+  subroutine control_struct_set_slave(struct_obj_ptr, src_ptr) bind(c, name='control_struct_set_slave')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(control_struct), pointer :: struct_obj
+    type(lat_ele_loc_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%slave = src_obj
+  end subroutine
+
   ! control_struct%lord: 0D_NOT_type
 
   subroutine control_struct_get_lord(struct_obj_ptr, ptr_out) bind(c, name='control_struct_get_lord')
@@ -6501,6 +9087,17 @@ contains
     type(control_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lord)
+  end subroutine
+
+
+  subroutine control_struct_set_lord(struct_obj_ptr, src_ptr) bind(c, name='control_struct_set_lord')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(control_struct), pointer :: struct_obj
+    type(lat_ele_loc_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%lord = src_obj
   end subroutine
 
   ! control_struct%slave_name: 0D_NOT_character
@@ -6539,6 +9136,15 @@ contains
     type(control_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_attrib
+  end subroutine
+
+
+  subroutine control_struct_set_ix_attrib(struct_obj_ptr, value_in) bind(c, name='control_struct_set_ix_attrib')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(control_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_attrib = value_in
   end subroutine
 
   !! control_var1_struct
@@ -6600,6 +9206,15 @@ contains
     value_out = struct_obj%value
   end subroutine
 
+
+  subroutine control_var1_struct_set_value(struct_obj_ptr, value_in) bind(c, name='control_var1_struct_set_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(control_var1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%value = value_in
+  end subroutine
+
   ! control_var1_struct%old_value: 0D_NOT_real
 
   subroutine control_var1_struct_get_old_value(struct_obj_ptr, value_out) bind(c, name='control_var1_struct_get_old_value')
@@ -6608,6 +9223,15 @@ contains
     type(control_var1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%old_value
+  end subroutine
+
+
+  subroutine control_var1_struct_set_old_value(struct_obj_ptr, value_in) bind(c, name='control_var1_struct_set_old_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(control_var1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%old_value = value_in
   end subroutine
 
   !! control_ramp1_struct
@@ -6732,6 +9356,15 @@ contains
     type(control_ramp1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%is_controller
+  end subroutine
+
+
+  subroutine control_ramp1_struct_set_is_controller(struct_obj_ptr, value_in) bind(c, name='control_ramp1_struct_set_is_controller')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(control_ramp1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%is_controller = value_in
   end subroutine
 
   !! controller_struct
@@ -6919,6 +9552,15 @@ contains
     value_out = struct_obj%part_per_ellipse
   end subroutine
 
+
+  subroutine ellipse_beam_init_struct_set_part_per_ellipse(struct_obj_ptr, value_in) bind(c, name='ellipse_beam_init_struct_set_part_per_ellipse')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ellipse_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%part_per_ellipse = value_in
+  end subroutine
+
   ! ellipse_beam_init_struct%n_ellipse: 0D_NOT_integer
 
   subroutine ellipse_beam_init_struct_get_n_ellipse(struct_obj_ptr, value_out) bind(c, name='ellipse_beam_init_struct_get_n_ellipse')
@@ -6929,6 +9571,15 @@ contains
     value_out = struct_obj%n_ellipse
   end subroutine
 
+
+  subroutine ellipse_beam_init_struct_set_n_ellipse(struct_obj_ptr, value_in) bind(c, name='ellipse_beam_init_struct_set_n_ellipse')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ellipse_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_ellipse = value_in
+  end subroutine
+
   ! ellipse_beam_init_struct%sigma_cutoff: 0D_NOT_real
 
   subroutine ellipse_beam_init_struct_get_sigma_cutoff(struct_obj_ptr, value_out) bind(c, name='ellipse_beam_init_struct_get_sigma_cutoff')
@@ -6937,6 +9588,15 @@ contains
     type(ellipse_beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_cutoff
+  end subroutine
+
+
+  subroutine ellipse_beam_init_struct_set_sigma_cutoff(struct_obj_ptr, value_in) bind(c, name='ellipse_beam_init_struct_set_sigma_cutoff')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ellipse_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma_cutoff = value_in
   end subroutine
 
   !! kv_beam_init_struct
@@ -6998,6 +9658,15 @@ contains
     value_out = struct_obj%n_I2
   end subroutine
 
+
+  subroutine kv_beam_init_struct_set_n_I2(struct_obj_ptr, value_in) bind(c, name='kv_beam_init_struct_set_n_I2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(kv_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_I2 = value_in
+  end subroutine
+
   ! kv_beam_init_struct%A: 0D_NOT_real
 
   subroutine kv_beam_init_struct_get_A(struct_obj_ptr, value_out) bind(c, name='kv_beam_init_struct_get_A')
@@ -7006,6 +9675,15 @@ contains
     type(kv_beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%A
+  end subroutine
+
+
+  subroutine kv_beam_init_struct_set_A(struct_obj_ptr, value_in) bind(c, name='kv_beam_init_struct_set_A')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(kv_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%A = value_in
   end subroutine
 
   !! grid_beam_init_struct
@@ -7053,6 +9731,15 @@ contains
     value_out = struct_obj%n_x
   end subroutine
 
+
+  subroutine grid_beam_init_struct_set_n_x(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_n_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_x = value_in
+  end subroutine
+
   ! grid_beam_init_struct%n_px: 0D_NOT_integer
 
   subroutine grid_beam_init_struct_get_n_px(struct_obj_ptr, value_out) bind(c, name='grid_beam_init_struct_get_n_px')
@@ -7061,6 +9748,15 @@ contains
     type(grid_beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_px
+  end subroutine
+
+
+  subroutine grid_beam_init_struct_set_n_px(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_n_px')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_px = value_in
   end subroutine
 
   ! grid_beam_init_struct%x_min: 0D_NOT_real
@@ -7073,6 +9769,15 @@ contains
     value_out = struct_obj%x_min
   end subroutine
 
+
+  subroutine grid_beam_init_struct_set_x_min(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_x_min')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x_min = value_in
+  end subroutine
+
   ! grid_beam_init_struct%x_max: 0D_NOT_real
 
   subroutine grid_beam_init_struct_get_x_max(struct_obj_ptr, value_out) bind(c, name='grid_beam_init_struct_get_x_max')
@@ -7081,6 +9786,15 @@ contains
     type(grid_beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_max
+  end subroutine
+
+
+  subroutine grid_beam_init_struct_set_x_max(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_x_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x_max = value_in
   end subroutine
 
   ! grid_beam_init_struct%px_min: 0D_NOT_real
@@ -7093,6 +9807,15 @@ contains
     value_out = struct_obj%px_min
   end subroutine
 
+
+  subroutine grid_beam_init_struct_set_px_min(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_px_min')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%px_min = value_in
+  end subroutine
+
   ! grid_beam_init_struct%px_max: 0D_NOT_real
 
   subroutine grid_beam_init_struct_get_px_max(struct_obj_ptr, value_out) bind(c, name='grid_beam_init_struct_get_px_max')
@@ -7101,6 +9824,15 @@ contains
     type(grid_beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%px_max
+  end subroutine
+
+
+  subroutine grid_beam_init_struct_set_px_max(struct_obj_ptr, value_in) bind(c, name='grid_beam_init_struct_set_px_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(grid_beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%px_max = value_in
   end subroutine
 
   !! beam_init_struct
@@ -7193,6 +9925,17 @@ contains
     ptr_out = c_loc(struct_obj%KV)
   end subroutine
 
+
+  subroutine beam_init_struct_set_KV(struct_obj_ptr, src_ptr) bind(c, name='beam_init_struct_set_KV')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(beam_init_struct), pointer :: struct_obj
+    type(kv_beam_init_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%KV = src_obj
+  end subroutine
+
   ! beam_init_struct%grid: 1D_NOT_type
 
   subroutine beam_init_struct_get_grid_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='beam_init_struct_get_grid_info')
@@ -7247,6 +9990,15 @@ contains
     value_out = struct_obj%sig_z_jitter
   end subroutine
 
+
+  subroutine beam_init_struct_set_sig_z_jitter(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_sig_z_jitter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_z_jitter = value_in
+  end subroutine
+
   ! beam_init_struct%sig_pz_jitter: 0D_NOT_real
 
   subroutine beam_init_struct_get_sig_pz_jitter(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_sig_pz_jitter')
@@ -7255,6 +10007,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_pz_jitter
+  end subroutine
+
+
+  subroutine beam_init_struct_set_sig_pz_jitter(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_sig_pz_jitter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_pz_jitter = value_in
   end subroutine
 
   ! beam_init_struct%n_particle: 0D_NOT_integer
@@ -7267,6 +10028,15 @@ contains
     value_out = struct_obj%n_particle
   end subroutine
 
+
+  subroutine beam_init_struct_set_n_particle(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_n_particle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_particle = value_in
+  end subroutine
+
   ! beam_init_struct%renorm_center: 0D_NOT_logical
 
   subroutine beam_init_struct_get_renorm_center(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_renorm_center')
@@ -7277,6 +10047,15 @@ contains
     value_out = struct_obj%renorm_center
   end subroutine
 
+
+  subroutine beam_init_struct_set_renorm_center(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_renorm_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%renorm_center = value_in
+  end subroutine
+
   ! beam_init_struct%renorm_sigma: 0D_NOT_logical
 
   subroutine beam_init_struct_get_renorm_sigma(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_renorm_sigma')
@@ -7285,6 +10064,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%renorm_sigma
+  end subroutine
+
+
+  subroutine beam_init_struct_set_renorm_sigma(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_renorm_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%renorm_sigma = value_in
   end subroutine
 
   ! beam_init_struct%random_engine: 0D_NOT_character
@@ -7325,6 +10113,15 @@ contains
     value_out = struct_obj%random_sigma_cutoff
   end subroutine
 
+
+  subroutine beam_init_struct_set_random_sigma_cutoff(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_random_sigma_cutoff')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%random_sigma_cutoff = value_in
+  end subroutine
+
   ! beam_init_struct%a_norm_emit: 0D_NOT_real
 
   subroutine beam_init_struct_get_a_norm_emit(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_a_norm_emit')
@@ -7333,6 +10130,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_norm_emit
+  end subroutine
+
+
+  subroutine beam_init_struct_set_a_norm_emit(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_a_norm_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_norm_emit = value_in
   end subroutine
 
   ! beam_init_struct%b_norm_emit: 0D_NOT_real
@@ -7345,6 +10151,15 @@ contains
     value_out = struct_obj%b_norm_emit
   end subroutine
 
+
+  subroutine beam_init_struct_set_b_norm_emit(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_b_norm_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_norm_emit = value_in
+  end subroutine
+
   ! beam_init_struct%a_emit: 0D_NOT_real
 
   subroutine beam_init_struct_get_a_emit(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_a_emit')
@@ -7353,6 +10168,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_emit
+  end subroutine
+
+
+  subroutine beam_init_struct_set_a_emit(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_a_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_emit = value_in
   end subroutine
 
   ! beam_init_struct%b_emit: 0D_NOT_real
@@ -7365,6 +10189,15 @@ contains
     value_out = struct_obj%b_emit
   end subroutine
 
+
+  subroutine beam_init_struct_set_b_emit(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_b_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_emit = value_in
+  end subroutine
+
   ! beam_init_struct%dPz_dz: 0D_NOT_real
 
   subroutine beam_init_struct_get_dPz_dz(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_dPz_dz')
@@ -7373,6 +10206,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dPz_dz
+  end subroutine
+
+
+  subroutine beam_init_struct_set_dPz_dz(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_dPz_dz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dPz_dz = value_in
   end subroutine
 
   ! beam_init_struct%center: 1D_NOT_real
@@ -7399,6 +10241,15 @@ contains
     value_out = struct_obj%t_offset
   end subroutine
 
+
+  subroutine beam_init_struct_set_t_offset(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_t_offset')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t_offset = value_in
+  end subroutine
+
   ! beam_init_struct%dt_bunch: 0D_NOT_real
 
   subroutine beam_init_struct_get_dt_bunch(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_dt_bunch')
@@ -7407,6 +10258,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_bunch
+  end subroutine
+
+
+  subroutine beam_init_struct_set_dt_bunch(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_dt_bunch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dt_bunch = value_in
   end subroutine
 
   ! beam_init_struct%sig_z: 0D_NOT_real
@@ -7419,6 +10279,15 @@ contains
     value_out = struct_obj%sig_z
   end subroutine
 
+
+  subroutine beam_init_struct_set_sig_z(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_sig_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_z = value_in
+  end subroutine
+
   ! beam_init_struct%sig_pz: 0D_NOT_real
 
   subroutine beam_init_struct_get_sig_pz(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_sig_pz')
@@ -7427,6 +10296,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_pz
+  end subroutine
+
+
+  subroutine beam_init_struct_set_sig_pz(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_sig_pz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_pz = value_in
   end subroutine
 
   ! beam_init_struct%bunch_charge: 0D_NOT_real
@@ -7439,6 +10317,15 @@ contains
     value_out = struct_obj%bunch_charge
   end subroutine
 
+
+  subroutine beam_init_struct_set_bunch_charge(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_bunch_charge')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%bunch_charge = value_in
+  end subroutine
+
   ! beam_init_struct%n_bunch: 0D_NOT_integer
 
   subroutine beam_init_struct_get_n_bunch(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_n_bunch')
@@ -7449,6 +10336,15 @@ contains
     value_out = struct_obj%n_bunch
   end subroutine
 
+
+  subroutine beam_init_struct_set_n_bunch(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_n_bunch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_bunch = value_in
+  end subroutine
+
   ! beam_init_struct%ix_turn: 0D_NOT_integer
 
   subroutine beam_init_struct_get_ix_turn(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_ix_turn')
@@ -7457,6 +10353,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_turn
+  end subroutine
+
+
+  subroutine beam_init_struct_set_ix_turn(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_ix_turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_turn = value_in
   end subroutine
 
   ! beam_init_struct%species: 0D_NOT_character
@@ -7483,6 +10388,15 @@ contains
     value_out = struct_obj%full_6D_coupling_calc
   end subroutine
 
+
+  subroutine beam_init_struct_set_full_6D_coupling_calc(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_full_6D_coupling_calc')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%full_6D_coupling_calc = value_in
+  end subroutine
+
   ! beam_init_struct%use_particle_start: 0D_NOT_logical
 
   subroutine beam_init_struct_get_use_particle_start(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_use_particle_start')
@@ -7491,6 +10405,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%use_particle_start
+  end subroutine
+
+
+  subroutine beam_init_struct_set_use_particle_start(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_use_particle_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%use_particle_start = value_in
   end subroutine
 
   ! beam_init_struct%use_t_coords: 0D_NOT_logical
@@ -7503,6 +10426,15 @@ contains
     value_out = struct_obj%use_t_coords
   end subroutine
 
+
+  subroutine beam_init_struct_set_use_t_coords(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_use_t_coords')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%use_t_coords = value_in
+  end subroutine
+
   ! beam_init_struct%use_z_as_t: 0D_NOT_logical
 
   subroutine beam_init_struct_get_use_z_as_t(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_use_z_as_t')
@@ -7511,6 +10443,15 @@ contains
     type(beam_init_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%use_z_as_t
+  end subroutine
+
+
+  subroutine beam_init_struct_set_use_z_as_t(struct_obj_ptr, value_in) bind(c, name='beam_init_struct_set_use_z_as_t')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%use_z_as_t = value_in
   end subroutine
 
   ! beam_init_struct%file_name: 0D_NOT_character
@@ -7572,6 +10513,15 @@ contains
     value_out = struct_obj%n_part
   end subroutine
 
+
+  subroutine lat_param_struct_set_n_part(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_n_part')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_part = value_in
+  end subroutine
+
   ! lat_param_struct%total_length: 0D_NOT_real
 
   subroutine lat_param_struct_get_total_length(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_total_length')
@@ -7582,6 +10532,15 @@ contains
     value_out = struct_obj%total_length
   end subroutine
 
+
+  subroutine lat_param_struct_set_total_length(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_total_length')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%total_length = value_in
+  end subroutine
+
   ! lat_param_struct%unstable_factor: 0D_NOT_real
 
   subroutine lat_param_struct_get_unstable_factor(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_unstable_factor')
@@ -7590,6 +10549,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%unstable_factor
+  end subroutine
+
+
+  subroutine lat_param_struct_set_unstable_factor(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_unstable_factor')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%unstable_factor = value_in
   end subroutine
 
   ! skipped lat_param_struct%t1_with_RF: Unsupported type: 2D_NOT_real
@@ -7604,6 +10572,15 @@ contains
     value_out = struct_obj%spin_tune
   end subroutine
 
+
+  subroutine lat_param_struct_set_spin_tune(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_spin_tune')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_tune = value_in
+  end subroutine
+
   ! lat_param_struct%particle: 0D_NOT_integer
 
   subroutine lat_param_struct_get_particle(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_particle')
@@ -7612,6 +10589,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle
+  end subroutine
+
+
+  subroutine lat_param_struct_set_particle(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_particle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%particle = value_in
   end subroutine
 
   ! lat_param_struct%default_tracking_species: 0D_NOT_integer
@@ -7624,6 +10610,15 @@ contains
     value_out = struct_obj%default_tracking_species
   end subroutine
 
+
+  subroutine lat_param_struct_set_default_tracking_species(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_default_tracking_species')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%default_tracking_species = value_in
+  end subroutine
+
   ! lat_param_struct%geometry: 0D_NOT_integer
 
   subroutine lat_param_struct_get_geometry(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_geometry')
@@ -7632,6 +10627,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%geometry
+  end subroutine
+
+
+  subroutine lat_param_struct_set_geometry(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_geometry')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%geometry = value_in
   end subroutine
 
   ! lat_param_struct%ixx: 0D_NOT_integer
@@ -7644,6 +10648,15 @@ contains
     value_out = struct_obj%ixx
   end subroutine
 
+
+  subroutine lat_param_struct_set_ixx(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_ixx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ixx = value_in
+  end subroutine
+
   ! lat_param_struct%stable: 0D_NOT_logical
 
   subroutine lat_param_struct_get_stable(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_stable')
@@ -7652,6 +10665,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%stable
+  end subroutine
+
+
+  subroutine lat_param_struct_set_stable(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_stable')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%stable = value_in
   end subroutine
 
   ! lat_param_struct%live_branch: 0D_NOT_logical
@@ -7664,6 +10686,15 @@ contains
     value_out = struct_obj%live_branch
   end subroutine
 
+
+  subroutine lat_param_struct_set_live_branch(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_live_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%live_branch = value_in
+  end subroutine
+
   ! lat_param_struct%g1_integral: 0D_NOT_real
 
   subroutine lat_param_struct_get_g1_integral(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_g1_integral')
@@ -7672,6 +10703,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%g1_integral
+  end subroutine
+
+
+  subroutine lat_param_struct_set_g1_integral(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_g1_integral')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%g1_integral = value_in
   end subroutine
 
   ! lat_param_struct%g2_integral: 0D_NOT_real
@@ -7684,6 +10724,15 @@ contains
     value_out = struct_obj%g2_integral
   end subroutine
 
+
+  subroutine lat_param_struct_set_g2_integral(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_g2_integral')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%g2_integral = value_in
+  end subroutine
+
   ! lat_param_struct%g3_integral: 0D_NOT_real
 
   subroutine lat_param_struct_get_g3_integral(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_g3_integral')
@@ -7692,6 +10741,15 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%g3_integral
+  end subroutine
+
+
+  subroutine lat_param_struct_set_g3_integral(struct_obj_ptr, value_in) bind(c, name='lat_param_struct_set_g3_integral')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%g3_integral = value_in
   end subroutine
 
   ! lat_param_struct%bookkeeping_state: 0D_NOT_type
@@ -7704,6 +10762,17 @@ contains
     ptr_out = c_loc(struct_obj%bookkeeping_state)
   end subroutine
 
+
+  subroutine lat_param_struct_set_bookkeeping_state(struct_obj_ptr, src_ptr) bind(c, name='lat_param_struct_set_bookkeeping_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_param_struct), pointer :: struct_obj
+    type(bookkeeping_state_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%bookkeeping_state = src_obj
+  end subroutine
+
   ! lat_param_struct%beam_init: 0D_NOT_type
 
   subroutine lat_param_struct_get_beam_init(struct_obj_ptr, ptr_out) bind(c, name='lat_param_struct_get_beam_init')
@@ -7712,6 +10781,17 @@ contains
     type(lat_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init)
+  end subroutine
+
+
+  subroutine lat_param_struct_set_beam_init(struct_obj_ptr, src_ptr) bind(c, name='lat_param_struct_set_beam_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_param_struct), pointer :: struct_obj
+    type(beam_init_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam_init = src_obj
   end subroutine
 
   !! mode_info_struct
@@ -7759,6 +10839,15 @@ contains
     value_out = struct_obj%stable
   end subroutine
 
+
+  subroutine mode_info_struct_set_stable(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_stable')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%stable = value_in
+  end subroutine
+
   ! mode_info_struct%tune: 0D_NOT_real
 
   subroutine mode_info_struct_get_tune(struct_obj_ptr, value_out) bind(c, name='mode_info_struct_get_tune')
@@ -7767,6 +10856,15 @@ contains
     type(mode_info_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tune
+  end subroutine
+
+
+  subroutine mode_info_struct_set_tune(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_tune')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%tune = value_in
   end subroutine
 
   ! mode_info_struct%emit: 0D_NOT_real
@@ -7779,6 +10877,15 @@ contains
     value_out = struct_obj%emit
   end subroutine
 
+
+  subroutine mode_info_struct_set_emit(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%emit = value_in
+  end subroutine
+
   ! mode_info_struct%chrom: 0D_NOT_real
 
   subroutine mode_info_struct_get_chrom(struct_obj_ptr, value_out) bind(c, name='mode_info_struct_get_chrom')
@@ -7787,6 +10894,15 @@ contains
     type(mode_info_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom
+  end subroutine
+
+
+  subroutine mode_info_struct_set_chrom(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_chrom')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom = value_in
   end subroutine
 
   ! mode_info_struct%sigma: 0D_NOT_real
@@ -7799,6 +10915,15 @@ contains
     value_out = struct_obj%sigma
   end subroutine
 
+
+  subroutine mode_info_struct_set_sigma(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma = value_in
+  end subroutine
+
   ! mode_info_struct%sigmap: 0D_NOT_real
 
   subroutine mode_info_struct_get_sigmap(struct_obj_ptr, value_out) bind(c, name='mode_info_struct_get_sigmap')
@@ -7807,6 +10932,15 @@ contains
     type(mode_info_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigmap
+  end subroutine
+
+
+  subroutine mode_info_struct_set_sigmap(struct_obj_ptr, value_in) bind(c, name='mode_info_struct_set_sigmap')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(mode_info_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigmap = value_in
   end subroutine
 
   !! pre_tracker_struct
@@ -7854,6 +10988,15 @@ contains
     value_out = struct_obj%who
   end subroutine
 
+
+  subroutine pre_tracker_struct_set_who(struct_obj_ptr, value_in) bind(c, name='pre_tracker_struct_set_who')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(pre_tracker_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%who = value_in
+  end subroutine
+
   ! pre_tracker_struct%ix_ele_start: 0D_NOT_integer
 
   subroutine pre_tracker_struct_get_ix_ele_start(struct_obj_ptr, value_out) bind(c, name='pre_tracker_struct_get_ix_ele_start')
@@ -7864,6 +11007,15 @@ contains
     value_out = struct_obj%ix_ele_start
   end subroutine
 
+
+  subroutine pre_tracker_struct_set_ix_ele_start(struct_obj_ptr, value_in) bind(c, name='pre_tracker_struct_set_ix_ele_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(pre_tracker_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele_start = value_in
+  end subroutine
+
   ! pre_tracker_struct%ix_ele_end: 0D_NOT_integer
 
   subroutine pre_tracker_struct_get_ix_ele_end(struct_obj_ptr, value_out) bind(c, name='pre_tracker_struct_get_ix_ele_end')
@@ -7872,6 +11024,15 @@ contains
     type(pre_tracker_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_end
+  end subroutine
+
+
+  subroutine pre_tracker_struct_set_ix_ele_end(struct_obj_ptr, value_in) bind(c, name='pre_tracker_struct_set_ix_ele_end')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(pre_tracker_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele_end = value_in
   end subroutine
 
   ! pre_tracker_struct%input_file: 0D_NOT_character
@@ -7933,6 +11094,15 @@ contains
     value_out = struct_obj%emittance
   end subroutine
 
+
+  subroutine anormal_mode_struct_set_emittance(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_emittance')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%emittance = value_in
+  end subroutine
+
   ! anormal_mode_struct%emittance_no_vert: 0D_NOT_real
 
   subroutine anormal_mode_struct_get_emittance_no_vert(struct_obj_ptr, value_out) bind(c, name='anormal_mode_struct_get_emittance_no_vert')
@@ -7941,6 +11111,15 @@ contains
     type(anormal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emittance_no_vert
+  end subroutine
+
+
+  subroutine anormal_mode_struct_set_emittance_no_vert(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_emittance_no_vert')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%emittance_no_vert = value_in
   end subroutine
 
   ! anormal_mode_struct%synch_int: 1D_NOT_real
@@ -7967,6 +11146,15 @@ contains
     value_out = struct_obj%j_damp
   end subroutine
 
+
+  subroutine anormal_mode_struct_set_j_damp(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_j_damp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%j_damp = value_in
+  end subroutine
+
   ! anormal_mode_struct%alpha_damp: 0D_NOT_real
 
   subroutine anormal_mode_struct_get_alpha_damp(struct_obj_ptr, value_out) bind(c, name='anormal_mode_struct_get_alpha_damp')
@@ -7975,6 +11163,15 @@ contains
     type(anormal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%alpha_damp
+  end subroutine
+
+
+  subroutine anormal_mode_struct_set_alpha_damp(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_alpha_damp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%alpha_damp = value_in
   end subroutine
 
   ! anormal_mode_struct%chrom: 0D_NOT_real
@@ -7987,6 +11184,15 @@ contains
     value_out = struct_obj%chrom
   end subroutine
 
+
+  subroutine anormal_mode_struct_set_chrom(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_chrom')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom = value_in
+  end subroutine
+
   ! anormal_mode_struct%tune: 0D_NOT_real
 
   subroutine anormal_mode_struct_get_tune(struct_obj_ptr, value_out) bind(c, name='anormal_mode_struct_get_tune')
@@ -7995,6 +11201,15 @@ contains
     type(anormal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tune
+  end subroutine
+
+
+  subroutine anormal_mode_struct_set_tune(struct_obj_ptr, value_in) bind(c, name='anormal_mode_struct_set_tune')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(anormal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%tune = value_in
   end subroutine
 
   !! linac_normal_mode_struct
@@ -8042,6 +11257,15 @@ contains
     value_out = struct_obj%i2_E4
   end subroutine
 
+
+  subroutine linac_normal_mode_struct_set_i2_E4(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_i2_E4')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i2_E4 = value_in
+  end subroutine
+
   ! linac_normal_mode_struct%i3_E7: 0D_NOT_real
 
   subroutine linac_normal_mode_struct_get_i3_E7(struct_obj_ptr, value_out) bind(c, name='linac_normal_mode_struct_get_i3_E7')
@@ -8050,6 +11274,15 @@ contains
     type(linac_normal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i3_E7
+  end subroutine
+
+
+  subroutine linac_normal_mode_struct_set_i3_E7(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_i3_E7')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i3_E7 = value_in
   end subroutine
 
   ! linac_normal_mode_struct%i5a_E6: 0D_NOT_real
@@ -8062,6 +11295,15 @@ contains
     value_out = struct_obj%i5a_E6
   end subroutine
 
+
+  subroutine linac_normal_mode_struct_set_i5a_E6(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_i5a_E6')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i5a_E6 = value_in
+  end subroutine
+
   ! linac_normal_mode_struct%i5b_E6: 0D_NOT_real
 
   subroutine linac_normal_mode_struct_get_i5b_E6(struct_obj_ptr, value_out) bind(c, name='linac_normal_mode_struct_get_i5b_E6')
@@ -8070,6 +11312,15 @@ contains
     type(linac_normal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5b_E6
+  end subroutine
+
+
+  subroutine linac_normal_mode_struct_set_i5b_E6(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_i5b_E6')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i5b_E6 = value_in
   end subroutine
 
   ! linac_normal_mode_struct%sig_E1: 0D_NOT_real
@@ -8082,6 +11333,15 @@ contains
     value_out = struct_obj%sig_E1
   end subroutine
 
+
+  subroutine linac_normal_mode_struct_set_sig_E1(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_sig_E1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_E1 = value_in
+  end subroutine
+
   ! linac_normal_mode_struct%a_emittance_end: 0D_NOT_real
 
   subroutine linac_normal_mode_struct_get_a_emittance_end(struct_obj_ptr, value_out) bind(c, name='linac_normal_mode_struct_get_a_emittance_end')
@@ -8092,6 +11352,15 @@ contains
     value_out = struct_obj%a_emittance_end
   end subroutine
 
+
+  subroutine linac_normal_mode_struct_set_a_emittance_end(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_a_emittance_end')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_emittance_end = value_in
+  end subroutine
+
   ! linac_normal_mode_struct%b_emittance_end: 0D_NOT_real
 
   subroutine linac_normal_mode_struct_get_b_emittance_end(struct_obj_ptr, value_out) bind(c, name='linac_normal_mode_struct_get_b_emittance_end')
@@ -8100,6 +11369,15 @@ contains
     type(linac_normal_mode_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_emittance_end
+  end subroutine
+
+
+  subroutine linac_normal_mode_struct_set_b_emittance_end(struct_obj_ptr, value_in) bind(c, name='linac_normal_mode_struct_set_b_emittance_end')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(linac_normal_mode_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_emittance_end = value_in
   end subroutine
 
   !! normal_modes_struct
@@ -8161,6 +11439,15 @@ contains
     value_out = struct_obj%sigE_E
   end subroutine
 
+
+  subroutine normal_modes_struct_set_sigE_E(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_sigE_E')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigE_E = value_in
+  end subroutine
+
   ! normal_modes_struct%sig_z: 0D_NOT_real
 
   subroutine normal_modes_struct_get_sig_z(struct_obj_ptr, value_out) bind(c, name='normal_modes_struct_get_sig_z')
@@ -8169,6 +11456,15 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_sig_z(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_sig_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sig_z = value_in
   end subroutine
 
   ! normal_modes_struct%e_loss: 0D_NOT_real
@@ -8181,6 +11477,15 @@ contains
     value_out = struct_obj%e_loss
   end subroutine
 
+
+  subroutine normal_modes_struct_set_e_loss(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_e_loss')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%e_loss = value_in
+  end subroutine
+
   ! normal_modes_struct%rf_voltage: 0D_NOT_real
 
   subroutine normal_modes_struct_get_rf_voltage(struct_obj_ptr, value_out) bind(c, name='normal_modes_struct_get_rf_voltage')
@@ -8189,6 +11494,15 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_voltage
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_rf_voltage(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_rf_voltage')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rf_voltage = value_in
   end subroutine
 
   ! normal_modes_struct%pz_aperture: 0D_NOT_real
@@ -8201,6 +11515,15 @@ contains
     value_out = struct_obj%pz_aperture
   end subroutine
 
+
+  subroutine normal_modes_struct_set_pz_aperture(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_pz_aperture')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pz_aperture = value_in
+  end subroutine
+
   ! normal_modes_struct%pz_average: 0D_NOT_real
 
   subroutine normal_modes_struct_get_pz_average(struct_obj_ptr, value_out) bind(c, name='normal_modes_struct_get_pz_average')
@@ -8209,6 +11532,15 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pz_average
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_pz_average(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_pz_average')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pz_average = value_in
   end subroutine
 
   ! normal_modes_struct%momentum_compaction: 0D_NOT_real
@@ -8221,6 +11553,15 @@ contains
     value_out = struct_obj%momentum_compaction
   end subroutine
 
+
+  subroutine normal_modes_struct_set_momentum_compaction(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_momentum_compaction')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%momentum_compaction = value_in
+  end subroutine
+
   ! normal_modes_struct%dpz_damp: 0D_NOT_real
 
   subroutine normal_modes_struct_get_dpz_damp(struct_obj_ptr, value_out) bind(c, name='normal_modes_struct_get_dpz_damp')
@@ -8229,6 +11570,15 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dpz_damp
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_dpz_damp(struct_obj_ptr, value_in) bind(c, name='normal_modes_struct_set_dpz_damp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(normal_modes_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dpz_damp = value_in
   end subroutine
 
   ! normal_modes_struct%a: 0D_NOT_type
@@ -8241,6 +11591,17 @@ contains
     ptr_out = c_loc(struct_obj%a)
   end subroutine
 
+
+  subroutine normal_modes_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='normal_modes_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(normal_modes_struct), pointer :: struct_obj
+    type(anormal_mode_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%a = src_obj
+  end subroutine
+
   ! normal_modes_struct%b: 0D_NOT_type
 
   subroutine normal_modes_struct_get_b(struct_obj_ptr, ptr_out) bind(c, name='normal_modes_struct_get_b')
@@ -8249,6 +11610,17 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='normal_modes_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(normal_modes_struct), pointer :: struct_obj
+    type(anormal_mode_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%b = src_obj
   end subroutine
 
   ! normal_modes_struct%z: 0D_NOT_type
@@ -8261,6 +11633,17 @@ contains
     ptr_out = c_loc(struct_obj%z)
   end subroutine
 
+
+  subroutine normal_modes_struct_set_z(struct_obj_ptr, src_ptr) bind(c, name='normal_modes_struct_set_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(normal_modes_struct), pointer :: struct_obj
+    type(anormal_mode_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%z = src_obj
+  end subroutine
+
   ! normal_modes_struct%lin: 0D_NOT_type
 
   subroutine normal_modes_struct_get_lin(struct_obj_ptr, ptr_out) bind(c, name='normal_modes_struct_get_lin')
@@ -8269,6 +11652,17 @@ contains
     type(normal_modes_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lin)
+  end subroutine
+
+
+  subroutine normal_modes_struct_set_lin(struct_obj_ptr, src_ptr) bind(c, name='normal_modes_struct_set_lin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(normal_modes_struct), pointer :: struct_obj
+    type(linac_normal_mode_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%lin = src_obj
   end subroutine
 
   !! em_field_struct
@@ -8346,6 +11740,15 @@ contains
     value_out = struct_obj%phi
   end subroutine
 
+
+  subroutine em_field_struct_set_phi(struct_obj_ptr, value_in) bind(c, name='em_field_struct_set_phi')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(em_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi = value_in
+  end subroutine
+
   ! em_field_struct%phi_B: 0D_NOT_real
 
   subroutine em_field_struct_get_phi_B(struct_obj_ptr, value_out) bind(c, name='em_field_struct_get_phi_B')
@@ -8354,6 +11757,15 @@ contains
     type(em_field_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_B
+  end subroutine
+
+
+  subroutine em_field_struct_set_phi_B(struct_obj_ptr, value_in) bind(c, name='em_field_struct_set_phi_B')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(em_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%phi_B = value_in
   end subroutine
 
   ! em_field_struct%A: 1D_NOT_real
@@ -8415,6 +11827,15 @@ contains
     value_out = struct_obj%ix_slice
   end subroutine
 
+
+  subroutine strong_beam_struct_set_ix_slice(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_ix_slice')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_slice = value_in
+  end subroutine
+
   ! strong_beam_struct%x_center: 0D_NOT_real
 
   subroutine strong_beam_struct_get_x_center(struct_obj_ptr, value_out) bind(c, name='strong_beam_struct_get_x_center')
@@ -8423,6 +11844,15 @@ contains
     type(strong_beam_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_center
+  end subroutine
+
+
+  subroutine strong_beam_struct_set_x_center(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_x_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x_center = value_in
   end subroutine
 
   ! strong_beam_struct%y_center: 0D_NOT_real
@@ -8435,6 +11865,15 @@ contains
     value_out = struct_obj%y_center
   end subroutine
 
+
+  subroutine strong_beam_struct_set_y_center(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_y_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y_center = value_in
+  end subroutine
+
   ! strong_beam_struct%x_sigma: 0D_NOT_real
 
   subroutine strong_beam_struct_get_x_sigma(struct_obj_ptr, value_out) bind(c, name='strong_beam_struct_get_x_sigma')
@@ -8443,6 +11882,15 @@ contains
     type(strong_beam_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_sigma
+  end subroutine
+
+
+  subroutine strong_beam_struct_set_x_sigma(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_x_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x_sigma = value_in
   end subroutine
 
   ! strong_beam_struct%y_sigma: 0D_NOT_real
@@ -8455,6 +11903,15 @@ contains
     value_out = struct_obj%y_sigma
   end subroutine
 
+
+  subroutine strong_beam_struct_set_y_sigma(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_y_sigma')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y_sigma = value_in
+  end subroutine
+
   ! strong_beam_struct%dx: 0D_NOT_real
 
   subroutine strong_beam_struct_get_dx(struct_obj_ptr, value_out) bind(c, name='strong_beam_struct_get_dx')
@@ -8465,6 +11922,15 @@ contains
     value_out = struct_obj%dx
   end subroutine
 
+
+  subroutine strong_beam_struct_set_dx(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_dx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dx = value_in
+  end subroutine
+
   ! strong_beam_struct%dy: 0D_NOT_real
 
   subroutine strong_beam_struct_get_dy(struct_obj_ptr, value_out) bind(c, name='strong_beam_struct_get_dy')
@@ -8473,6 +11939,15 @@ contains
     type(strong_beam_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dy
+  end subroutine
+
+
+  subroutine strong_beam_struct_set_dy(struct_obj_ptr, value_in) bind(c, name='strong_beam_struct_set_dy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(strong_beam_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dy = value_in
   end subroutine
 
   !! track_point_struct
@@ -8520,6 +11995,15 @@ contains
     value_out = struct_obj%s_lab
   end subroutine
 
+
+  subroutine track_point_struct_set_s_lab(struct_obj_ptr, value_in) bind(c, name='track_point_struct_set_s_lab')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(track_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s_lab = value_in
+  end subroutine
+
   ! track_point_struct%s_body: 0D_NOT_real
 
   subroutine track_point_struct_get_s_body(struct_obj_ptr, value_out) bind(c, name='track_point_struct_get_s_body')
@@ -8528,6 +12012,15 @@ contains
     type(track_point_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_body
+  end subroutine
+
+
+  subroutine track_point_struct_set_s_body(struct_obj_ptr, value_in) bind(c, name='track_point_struct_set_s_body')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(track_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s_body = value_in
   end subroutine
 
   ! track_point_struct%orb: 0D_NOT_type
@@ -8540,6 +12033,17 @@ contains
     ptr_out = c_loc(struct_obj%orb)
   end subroutine
 
+
+  subroutine track_point_struct_set_orb(struct_obj_ptr, src_ptr) bind(c, name='track_point_struct_set_orb')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(track_point_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%orb = src_obj
+  end subroutine
+
   ! track_point_struct%field: 0D_NOT_type
 
   subroutine track_point_struct_get_field(struct_obj_ptr, ptr_out) bind(c, name='track_point_struct_get_field')
@@ -8550,6 +12054,17 @@ contains
     ptr_out = c_loc(struct_obj%field)
   end subroutine
 
+
+  subroutine track_point_struct_set_field(struct_obj_ptr, src_ptr) bind(c, name='track_point_struct_set_field')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(track_point_struct), pointer :: struct_obj
+    type(em_field_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%field = src_obj
+  end subroutine
+
   ! track_point_struct%strong_beam: 0D_NOT_type
 
   subroutine track_point_struct_get_strong_beam(struct_obj_ptr, ptr_out) bind(c, name='track_point_struct_get_strong_beam')
@@ -8558,6 +12073,17 @@ contains
     type(track_point_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%strong_beam)
+  end subroutine
+
+
+  subroutine track_point_struct_set_strong_beam(struct_obj_ptr, src_ptr) bind(c, name='track_point_struct_set_strong_beam')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(track_point_struct), pointer :: struct_obj
+    type(strong_beam_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%strong_beam = src_obj
   end subroutine
 
   ! track_point_struct%vec0: 1D_NOT_real
@@ -8647,6 +12173,15 @@ contains
     value_out = struct_obj%ds_save
   end subroutine
 
+
+  subroutine track_struct_set_ds_save(struct_obj_ptr, value_in) bind(c, name='track_struct_set_ds_save')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ds_save = value_in
+  end subroutine
+
   ! track_struct%n_pt: 0D_NOT_integer
 
   subroutine track_struct_get_n_pt(struct_obj_ptr, value_out) bind(c, name='track_struct_get_n_pt')
@@ -8655,6 +12190,15 @@ contains
     type(track_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_pt
+  end subroutine
+
+
+  subroutine track_struct_set_n_pt(struct_obj_ptr, value_in) bind(c, name='track_struct_set_n_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_pt = value_in
   end subroutine
 
   ! track_struct%n_bad: 0D_NOT_integer
@@ -8667,6 +12211,15 @@ contains
     value_out = struct_obj%n_bad
   end subroutine
 
+
+  subroutine track_struct_set_n_bad(struct_obj_ptr, value_in) bind(c, name='track_struct_set_n_bad')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_bad = value_in
+  end subroutine
+
   ! track_struct%n_ok: 0D_NOT_integer
 
   subroutine track_struct_get_n_ok(struct_obj_ptr, value_out) bind(c, name='track_struct_get_n_ok')
@@ -8675,6 +12228,15 @@ contains
     type(track_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ok
+  end subroutine
+
+
+  subroutine track_struct_set_n_ok(struct_obj_ptr, value_in) bind(c, name='track_struct_set_n_ok')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_ok = value_in
   end subroutine
 
   !! space_charge_common_struct
@@ -8722,6 +12284,15 @@ contains
     value_out = struct_obj%ds_track_step
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_ds_track_step(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_ds_track_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ds_track_step = value_in
+  end subroutine
+
   ! space_charge_common_struct%dt_track_step: 0D_NOT_real
 
   subroutine space_charge_common_struct_get_dt_track_step(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_dt_track_step')
@@ -8730,6 +12301,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_track_step
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_dt_track_step(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_dt_track_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dt_track_step = value_in
   end subroutine
 
   ! space_charge_common_struct%cathode_strength_cutoff: 0D_NOT_real
@@ -8742,6 +12322,15 @@ contains
     value_out = struct_obj%cathode_strength_cutoff
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_cathode_strength_cutoff(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_cathode_strength_cutoff')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%cathode_strength_cutoff = value_in
+  end subroutine
+
   ! space_charge_common_struct%rel_tol_tracking: 0D_NOT_real
 
   subroutine space_charge_common_struct_get_rel_tol_tracking(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_rel_tol_tracking')
@@ -8750,6 +12339,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rel_tol_tracking
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_rel_tol_tracking(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_rel_tol_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rel_tol_tracking = value_in
   end subroutine
 
   ! space_charge_common_struct%abs_tol_tracking: 0D_NOT_real
@@ -8762,6 +12360,15 @@ contains
     value_out = struct_obj%abs_tol_tracking
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_abs_tol_tracking(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_abs_tol_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%abs_tol_tracking = value_in
+  end subroutine
+
   ! space_charge_common_struct%beam_chamber_height: 0D_NOT_real
 
   subroutine space_charge_common_struct_get_beam_chamber_height(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_beam_chamber_height')
@@ -8770,6 +12377,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%beam_chamber_height
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_beam_chamber_height(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_beam_chamber_height')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%beam_chamber_height = value_in
   end subroutine
 
   ! space_charge_common_struct%lsc_sigma_cutoff: 0D_NOT_real
@@ -8782,6 +12398,15 @@ contains
     value_out = struct_obj%lsc_sigma_cutoff
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_lsc_sigma_cutoff(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_lsc_sigma_cutoff')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lsc_sigma_cutoff = value_in
+  end subroutine
+
   ! space_charge_common_struct%particle_sigma_cutoff: 0D_NOT_real
 
   subroutine space_charge_common_struct_get_particle_sigma_cutoff(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_particle_sigma_cutoff')
@@ -8790,6 +12415,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle_sigma_cutoff
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_particle_sigma_cutoff(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_particle_sigma_cutoff')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%particle_sigma_cutoff = value_in
   end subroutine
 
   ! space_charge_common_struct%space_charge_mesh_size: 1D_NOT_integer
@@ -8830,6 +12464,15 @@ contains
     value_out = struct_obj%n_bin
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_n_bin(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_n_bin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_bin = value_in
+  end subroutine
+
   ! space_charge_common_struct%particle_bin_span: 0D_NOT_integer
 
   subroutine space_charge_common_struct_get_particle_bin_span(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_particle_bin_span')
@@ -8838,6 +12481,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle_bin_span
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_particle_bin_span(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_particle_bin_span')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%particle_bin_span = value_in
   end subroutine
 
   ! space_charge_common_struct%n_shield_images: 0D_NOT_integer
@@ -8850,6 +12502,15 @@ contains
     value_out = struct_obj%n_shield_images
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_n_shield_images(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_n_shield_images')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_shield_images = value_in
+  end subroutine
+
   ! space_charge_common_struct%sc_min_in_bin: 0D_NOT_integer
 
   subroutine space_charge_common_struct_get_sc_min_in_bin(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_sc_min_in_bin')
@@ -8858,6 +12519,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sc_min_in_bin
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_sc_min_in_bin(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_sc_min_in_bin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sc_min_in_bin = value_in
   end subroutine
 
   ! space_charge_common_struct%lsc_kick_transverse_dependence: 0D_NOT_logical
@@ -8870,6 +12540,15 @@ contains
     value_out = struct_obj%lsc_kick_transverse_dependence
   end subroutine
 
+
+  subroutine space_charge_common_struct_set_lsc_kick_transverse_dependence(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_lsc_kick_transverse_dependence')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lsc_kick_transverse_dependence = value_in
+  end subroutine
+
   ! space_charge_common_struct%debug: 0D_NOT_logical
 
   subroutine space_charge_common_struct_get_debug(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_debug')
@@ -8878,6 +12557,15 @@ contains
     type(space_charge_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%debug
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_debug(struct_obj_ptr, value_in) bind(c, name='space_charge_common_struct_set_debug')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(space_charge_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%debug = value_in
   end subroutine
 
   ! space_charge_common_struct%diagnostic_output_file: 0D_NOT_character
@@ -8939,6 +12627,15 @@ contains
     value_out = struct_obj%max_aperture_limit
   end subroutine
 
+
+  subroutine bmad_common_struct_set_max_aperture_limit(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_max_aperture_limit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%max_aperture_limit = value_in
+  end subroutine
+
   ! bmad_common_struct%d_orb: 1D_NOT_real
 
   subroutine bmad_common_struct_get_d_orb_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='bmad_common_struct_get_d_orb_info')
@@ -8963,6 +12660,15 @@ contains
     value_out = struct_obj%default_ds_step
   end subroutine
 
+
+  subroutine bmad_common_struct_set_default_ds_step(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_default_ds_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%default_ds_step = value_in
+  end subroutine
+
   ! bmad_common_struct%significant_length: 0D_NOT_real
 
   subroutine bmad_common_struct_get_significant_length(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_significant_length')
@@ -8971,6 +12677,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%significant_length
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_significant_length(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_significant_length')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%significant_length = value_in
   end subroutine
 
   ! bmad_common_struct%rel_tol_tracking: 0D_NOT_real
@@ -8983,6 +12698,15 @@ contains
     value_out = struct_obj%rel_tol_tracking
   end subroutine
 
+
+  subroutine bmad_common_struct_set_rel_tol_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_rel_tol_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rel_tol_tracking = value_in
+  end subroutine
+
   ! bmad_common_struct%abs_tol_tracking: 0D_NOT_real
 
   subroutine bmad_common_struct_get_abs_tol_tracking(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_abs_tol_tracking')
@@ -8991,6 +12715,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_tol_tracking
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_abs_tol_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_abs_tol_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%abs_tol_tracking = value_in
   end subroutine
 
   ! bmad_common_struct%rel_tol_adaptive_tracking: 0D_NOT_real
@@ -9003,6 +12736,15 @@ contains
     value_out = struct_obj%rel_tol_adaptive_tracking
   end subroutine
 
+
+  subroutine bmad_common_struct_set_rel_tol_adaptive_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_rel_tol_adaptive_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rel_tol_adaptive_tracking = value_in
+  end subroutine
+
   ! bmad_common_struct%abs_tol_adaptive_tracking: 0D_NOT_real
 
   subroutine bmad_common_struct_get_abs_tol_adaptive_tracking(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_abs_tol_adaptive_tracking')
@@ -9011,6 +12753,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_tol_adaptive_tracking
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_abs_tol_adaptive_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_abs_tol_adaptive_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%abs_tol_adaptive_tracking = value_in
   end subroutine
 
   ! bmad_common_struct%init_ds_adaptive_tracking: 0D_NOT_real
@@ -9023,6 +12774,15 @@ contains
     value_out = struct_obj%init_ds_adaptive_tracking
   end subroutine
 
+
+  subroutine bmad_common_struct_set_init_ds_adaptive_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_init_ds_adaptive_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%init_ds_adaptive_tracking = value_in
+  end subroutine
+
   ! bmad_common_struct%min_ds_adaptive_tracking: 0D_NOT_real
 
   subroutine bmad_common_struct_get_min_ds_adaptive_tracking(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_min_ds_adaptive_tracking')
@@ -9031,6 +12791,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%min_ds_adaptive_tracking
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_min_ds_adaptive_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_min_ds_adaptive_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%min_ds_adaptive_tracking = value_in
   end subroutine
 
   ! bmad_common_struct%fatal_ds_adaptive_tracking: 0D_NOT_real
@@ -9043,6 +12812,15 @@ contains
     value_out = struct_obj%fatal_ds_adaptive_tracking
   end subroutine
 
+
+  subroutine bmad_common_struct_set_fatal_ds_adaptive_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_fatal_ds_adaptive_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%fatal_ds_adaptive_tracking = value_in
+  end subroutine
+
   ! bmad_common_struct%autoscale_amp_abs_tol: 0D_NOT_real
 
   subroutine bmad_common_struct_get_autoscale_amp_abs_tol(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_autoscale_amp_abs_tol')
@@ -9051,6 +12829,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%autoscale_amp_abs_tol
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_autoscale_amp_abs_tol(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_autoscale_amp_abs_tol')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%autoscale_amp_abs_tol = value_in
   end subroutine
 
   ! bmad_common_struct%autoscale_amp_rel_tol: 0D_NOT_real
@@ -9063,6 +12850,15 @@ contains
     value_out = struct_obj%autoscale_amp_rel_tol
   end subroutine
 
+
+  subroutine bmad_common_struct_set_autoscale_amp_rel_tol(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_autoscale_amp_rel_tol')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%autoscale_amp_rel_tol = value_in
+  end subroutine
+
   ! bmad_common_struct%autoscale_phase_tol: 0D_NOT_real
 
   subroutine bmad_common_struct_get_autoscale_phase_tol(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_autoscale_phase_tol')
@@ -9071,6 +12867,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%autoscale_phase_tol
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_autoscale_phase_tol(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_autoscale_phase_tol')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%autoscale_phase_tol = value_in
   end subroutine
 
   ! bmad_common_struct%electric_dipole_moment: 0D_NOT_real
@@ -9083,6 +12888,15 @@ contains
     value_out = struct_obj%electric_dipole_moment
   end subroutine
 
+
+  subroutine bmad_common_struct_set_electric_dipole_moment(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_electric_dipole_moment')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%electric_dipole_moment = value_in
+  end subroutine
+
   ! bmad_common_struct%synch_rad_scale: 0D_NOT_real
 
   subroutine bmad_common_struct_get_synch_rad_scale(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_synch_rad_scale')
@@ -9091,6 +12905,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%synch_rad_scale
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_synch_rad_scale(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_synch_rad_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%synch_rad_scale = value_in
   end subroutine
 
   ! bmad_common_struct%sad_eps_scale: 0D_NOT_real
@@ -9103,6 +12926,15 @@ contains
     value_out = struct_obj%sad_eps_scale
   end subroutine
 
+
+  subroutine bmad_common_struct_set_sad_eps_scale(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_sad_eps_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sad_eps_scale = value_in
+  end subroutine
+
   ! bmad_common_struct%sad_amp_max: 0D_NOT_real
 
   subroutine bmad_common_struct_get_sad_amp_max(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_sad_amp_max')
@@ -9111,6 +12943,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sad_amp_max
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_sad_amp_max(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_sad_amp_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sad_amp_max = value_in
   end subroutine
 
   ! bmad_common_struct%sad_n_div_max: 0D_NOT_integer
@@ -9123,6 +12964,15 @@ contains
     value_out = struct_obj%sad_n_div_max
   end subroutine
 
+
+  subroutine bmad_common_struct_set_sad_n_div_max(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_sad_n_div_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sad_n_div_max = value_in
+  end subroutine
+
   ! bmad_common_struct%taylor_order: 0D_NOT_integer
 
   subroutine bmad_common_struct_get_taylor_order(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_taylor_order')
@@ -9131,6 +12981,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%taylor_order
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_taylor_order(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_taylor_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%taylor_order = value_in
   end subroutine
 
   ! bmad_common_struct%runge_kutta_order: 0D_NOT_integer
@@ -9143,6 +13002,15 @@ contains
     value_out = struct_obj%runge_kutta_order
   end subroutine
 
+
+  subroutine bmad_common_struct_set_runge_kutta_order(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_runge_kutta_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%runge_kutta_order = value_in
+  end subroutine
+
   ! bmad_common_struct%default_integ_order: 0D_NOT_integer
 
   subroutine bmad_common_struct_get_default_integ_order(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_default_integ_order')
@@ -9151,6 +13019,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%default_integ_order
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_default_integ_order(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_default_integ_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%default_integ_order = value_in
   end subroutine
 
   ! bmad_common_struct%max_num_runge_kutta_step: 0D_NOT_integer
@@ -9163,6 +13040,15 @@ contains
     value_out = struct_obj%max_num_runge_kutta_step
   end subroutine
 
+
+  subroutine bmad_common_struct_set_max_num_runge_kutta_step(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_max_num_runge_kutta_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%max_num_runge_kutta_step = value_in
+  end subroutine
+
   ! bmad_common_struct%rf_phase_below_transition_ref: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_rf_phase_below_transition_ref(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_rf_phase_below_transition_ref')
@@ -9171,6 +13057,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_phase_below_transition_ref
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_rf_phase_below_transition_ref(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_rf_phase_below_transition_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rf_phase_below_transition_ref = value_in
   end subroutine
 
   ! bmad_common_struct%sr_wakes_on: 0D_NOT_logical
@@ -9183,6 +13078,15 @@ contains
     value_out = struct_obj%sr_wakes_on
   end subroutine
 
+
+  subroutine bmad_common_struct_set_sr_wakes_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_sr_wakes_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sr_wakes_on = value_in
+  end subroutine
+
   ! bmad_common_struct%lr_wakes_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_lr_wakes_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_lr_wakes_on')
@@ -9191,6 +13095,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lr_wakes_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_lr_wakes_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_lr_wakes_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lr_wakes_on = value_in
   end subroutine
 
   ! bmad_common_struct%auto_bookkeeper: 0D_NOT_logical
@@ -9203,6 +13116,15 @@ contains
     value_out = struct_obj%auto_bookkeeper
   end subroutine
 
+
+  subroutine bmad_common_struct_set_auto_bookkeeper(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_auto_bookkeeper')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%auto_bookkeeper = value_in
+  end subroutine
+
   ! bmad_common_struct%high_energy_space_charge_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_high_energy_space_charge_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_high_energy_space_charge_on')
@@ -9211,6 +13133,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%high_energy_space_charge_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_high_energy_space_charge_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_high_energy_space_charge_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%high_energy_space_charge_on = value_in
   end subroutine
 
   ! bmad_common_struct%csr_and_space_charge_on: 0D_NOT_logical
@@ -9223,6 +13154,15 @@ contains
     value_out = struct_obj%csr_and_space_charge_on
   end subroutine
 
+
+  subroutine bmad_common_struct_set_csr_and_space_charge_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_csr_and_space_charge_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%csr_and_space_charge_on = value_in
+  end subroutine
+
   ! bmad_common_struct%spin_tracking_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_spin_tracking_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_spin_tracking_on')
@@ -9231,6 +13171,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_tracking_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_spin_tracking_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_spin_tracking_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_tracking_on = value_in
   end subroutine
 
   ! bmad_common_struct%spin_sokolov_ternov_flipping_on: 0D_NOT_logical
@@ -9243,6 +13192,15 @@ contains
     value_out = struct_obj%spin_sokolov_ternov_flipping_on
   end subroutine
 
+
+  subroutine bmad_common_struct_set_spin_sokolov_ternov_flipping_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_spin_sokolov_ternov_flipping_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_sokolov_ternov_flipping_on = value_in
+  end subroutine
+
   ! bmad_common_struct%radiation_damping_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_radiation_damping_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_radiation_damping_on')
@@ -9251,6 +13209,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radiation_damping_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_radiation_damping_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_radiation_damping_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%radiation_damping_on = value_in
   end subroutine
 
   ! bmad_common_struct%radiation_zero_average: 0D_NOT_logical
@@ -9263,6 +13230,15 @@ contains
     value_out = struct_obj%radiation_zero_average
   end subroutine
 
+
+  subroutine bmad_common_struct_set_radiation_zero_average(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_radiation_zero_average')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%radiation_zero_average = value_in
+  end subroutine
+
   ! bmad_common_struct%radiation_fluctuations_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_radiation_fluctuations_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_radiation_fluctuations_on')
@@ -9271,6 +13247,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radiation_fluctuations_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_radiation_fluctuations_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_radiation_fluctuations_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%radiation_fluctuations_on = value_in
   end subroutine
 
   ! bmad_common_struct%conserve_taylor_maps: 0D_NOT_logical
@@ -9283,6 +13268,15 @@ contains
     value_out = struct_obj%conserve_taylor_maps
   end subroutine
 
+
+  subroutine bmad_common_struct_set_conserve_taylor_maps(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_conserve_taylor_maps')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%conserve_taylor_maps = value_in
+  end subroutine
+
   ! bmad_common_struct%absolute_time_tracking: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_absolute_time_tracking(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_absolute_time_tracking')
@@ -9291,6 +13285,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%absolute_time_tracking
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_absolute_time_tracking(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_absolute_time_tracking')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%absolute_time_tracking = value_in
   end subroutine
 
   ! bmad_common_struct%absolute_time_ref_shift: 0D_NOT_logical
@@ -9303,6 +13306,15 @@ contains
     value_out = struct_obj%absolute_time_ref_shift
   end subroutine
 
+
+  subroutine bmad_common_struct_set_absolute_time_ref_shift(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_absolute_time_ref_shift')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%absolute_time_ref_shift = value_in
+  end subroutine
+
   ! bmad_common_struct%convert_to_kinetic_momentum: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_convert_to_kinetic_momentum(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_convert_to_kinetic_momentum')
@@ -9311,6 +13323,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%convert_to_kinetic_momentum
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_convert_to_kinetic_momentum(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_convert_to_kinetic_momentum')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%convert_to_kinetic_momentum = value_in
   end subroutine
 
   ! bmad_common_struct%normalize_twiss: 0D_NOT_logical
@@ -9323,6 +13344,15 @@ contains
     value_out = struct_obj%normalize_twiss
   end subroutine
 
+
+  subroutine bmad_common_struct_set_normalize_twiss(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_normalize_twiss')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%normalize_twiss = value_in
+  end subroutine
+
   ! bmad_common_struct%aperture_limit_on: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_aperture_limit_on(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_aperture_limit_on')
@@ -9331,6 +13361,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%aperture_limit_on
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_aperture_limit_on(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_aperture_limit_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%aperture_limit_on = value_in
   end subroutine
 
   ! bmad_common_struct%spin_n0_direction_user_set: 0D_NOT_logical
@@ -9343,6 +13382,15 @@ contains
     value_out = struct_obj%spin_n0_direction_user_set
   end subroutine
 
+
+  subroutine bmad_common_struct_set_spin_n0_direction_user_set(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_spin_n0_direction_user_set')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_n0_direction_user_set = value_in
+  end subroutine
+
   ! bmad_common_struct%debug: 0D_NOT_logical
 
   subroutine bmad_common_struct_get_debug(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_debug')
@@ -9351,6 +13399,15 @@ contains
     type(bmad_common_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%debug
+  end subroutine
+
+
+  subroutine bmad_common_struct_set_debug(struct_obj_ptr, value_in) bind(c, name='bmad_common_struct_set_debug')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bmad_common_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%debug = value_in
   end subroutine
 
   !! rad_int1_struct
@@ -9398,6 +13455,15 @@ contains
     value_out = struct_obj%i0
   end subroutine
 
+
+  subroutine rad_int1_struct_set_i0(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i0 = value_in
+  end subroutine
+
   ! rad_int1_struct%i1: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i1(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i1')
@@ -9406,6 +13472,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i1
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_i1(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i1 = value_in
   end subroutine
 
   ! rad_int1_struct%i2: 0D_NOT_real
@@ -9418,6 +13493,15 @@ contains
     value_out = struct_obj%i2
   end subroutine
 
+
+  subroutine rad_int1_struct_set_i2(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i2 = value_in
+  end subroutine
+
   ! rad_int1_struct%i3: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i3(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i3')
@@ -9426,6 +13510,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i3
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_i3(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i3')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i3 = value_in
   end subroutine
 
   ! rad_int1_struct%i4a: 0D_NOT_real
@@ -9438,6 +13531,15 @@ contains
     value_out = struct_obj%i4a
   end subroutine
 
+
+  subroutine rad_int1_struct_set_i4a(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i4a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i4a = value_in
+  end subroutine
+
   ! rad_int1_struct%i4b: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i4b(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i4b')
@@ -9446,6 +13548,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i4b
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_i4b(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i4b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i4b = value_in
   end subroutine
 
   ! rad_int1_struct%i4z: 0D_NOT_real
@@ -9458,6 +13569,15 @@ contains
     value_out = struct_obj%i4z
   end subroutine
 
+
+  subroutine rad_int1_struct_set_i4z(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i4z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i4z = value_in
+  end subroutine
+
   ! rad_int1_struct%i5a: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i5a(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i5a')
@@ -9466,6 +13586,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5a
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_i5a(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i5a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i5a = value_in
   end subroutine
 
   ! rad_int1_struct%i5b: 0D_NOT_real
@@ -9478,6 +13607,15 @@ contains
     value_out = struct_obj%i5b
   end subroutine
 
+
+  subroutine rad_int1_struct_set_i5b(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i5b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i5b = value_in
+  end subroutine
+
   ! rad_int1_struct%i6b: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i6b(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i6b')
@@ -9486,6 +13624,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i6b
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_i6b(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_i6b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i6b = value_in
   end subroutine
 
   ! rad_int1_struct%lin_i2_E4: 0D_NOT_real
@@ -9498,6 +13645,15 @@ contains
     value_out = struct_obj%lin_i2_E4
   end subroutine
 
+
+  subroutine rad_int1_struct_set_lin_i2_E4(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_i2_E4')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_i2_E4 = value_in
+  end subroutine
+
   ! rad_int1_struct%lin_i3_E7: 0D_NOT_real
 
   subroutine rad_int1_struct_get_lin_i3_E7(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_lin_i3_E7')
@@ -9506,6 +13662,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i3_E7
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_lin_i3_E7(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_i3_E7')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_i3_E7 = value_in
   end subroutine
 
   ! rad_int1_struct%lin_i5a_E6: 0D_NOT_real
@@ -9518,6 +13683,15 @@ contains
     value_out = struct_obj%lin_i5a_E6
   end subroutine
 
+
+  subroutine rad_int1_struct_set_lin_i5a_E6(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_i5a_E6')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_i5a_E6 = value_in
+  end subroutine
+
   ! rad_int1_struct%lin_i5b_E6: 0D_NOT_real
 
   subroutine rad_int1_struct_get_lin_i5b_E6(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_lin_i5b_E6')
@@ -9526,6 +13700,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i5b_E6
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_lin_i5b_E6(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_i5b_E6')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_i5b_E6 = value_in
   end subroutine
 
   ! rad_int1_struct%lin_norm_emit_a: 0D_NOT_real
@@ -9538,6 +13721,15 @@ contains
     value_out = struct_obj%lin_norm_emit_a
   end subroutine
 
+
+  subroutine rad_int1_struct_set_lin_norm_emit_a(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_norm_emit_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_norm_emit_a = value_in
+  end subroutine
+
   ! rad_int1_struct%lin_norm_emit_b: 0D_NOT_real
 
   subroutine rad_int1_struct_get_lin_norm_emit_b(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_lin_norm_emit_b')
@@ -9546,6 +13738,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_norm_emit_b
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_lin_norm_emit_b(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_norm_emit_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_norm_emit_b = value_in
   end subroutine
 
   ! rad_int1_struct%lin_sig_E: 0D_NOT_real
@@ -9558,6 +13759,15 @@ contains
     value_out = struct_obj%lin_sig_E
   end subroutine
 
+
+  subroutine rad_int1_struct_set_lin_sig_E(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_lin_sig_E')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lin_sig_E = value_in
+  end subroutine
+
   ! rad_int1_struct%n_steps: 0D_NOT_real
 
   subroutine rad_int1_struct_get_n_steps(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_n_steps')
@@ -9566,6 +13776,15 @@ contains
     type(rad_int1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_steps
+  end subroutine
+
+
+  subroutine rad_int1_struct_set_n_steps(struct_obj_ptr, value_in) bind(c, name='rad_int1_struct_set_n_steps')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rad_int1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_steps = value_in
   end subroutine
 
   !! rad_int_branch_struct
@@ -9737,6 +13956,15 @@ contains
     value_out = struct_obj%E_tot0
   end subroutine
 
+
+  subroutine rf_stair_step_struct_set_E_tot0(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_E_tot0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%E_tot0 = value_in
+  end subroutine
+
   ! rf_stair_step_struct%E_tot1: 0D_NOT_real
 
   subroutine rf_stair_step_struct_get_E_tot1(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_E_tot1')
@@ -9745,6 +13973,15 @@ contains
     type(rf_stair_step_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_tot1
+  end subroutine
+
+
+  subroutine rf_stair_step_struct_set_E_tot1(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_E_tot1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%E_tot1 = value_in
   end subroutine
 
   ! rf_stair_step_struct%p0c: 0D_NOT_real
@@ -9757,6 +13994,15 @@ contains
     value_out = struct_obj%p0c
   end subroutine
 
+
+  subroutine rf_stair_step_struct_set_p0c(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_p0c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%p0c = value_in
+  end subroutine
+
   ! rf_stair_step_struct%p1c: 0D_NOT_real
 
   subroutine rf_stair_step_struct_get_p1c(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_p1c')
@@ -9765,6 +14011,15 @@ contains
     type(rf_stair_step_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%p1c
+  end subroutine
+
+
+  subroutine rf_stair_step_struct_set_p1c(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_p1c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%p1c = value_in
   end subroutine
 
   ! rf_stair_step_struct%dE_amp: 0D_NOT_real
@@ -9777,6 +14032,15 @@ contains
     value_out = struct_obj%dE_amp
   end subroutine
 
+
+  subroutine rf_stair_step_struct_set_dE_amp(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_dE_amp')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dE_amp = value_in
+  end subroutine
+
   ! rf_stair_step_struct%scale: 0D_NOT_real
 
   subroutine rf_stair_step_struct_get_scale(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_scale')
@@ -9785,6 +14049,15 @@ contains
     type(rf_stair_step_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale
+  end subroutine
+
+
+  subroutine rf_stair_step_struct_set_scale(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%scale = value_in
   end subroutine
 
   ! rf_stair_step_struct%time: 0D_NOT_real
@@ -9797,6 +14070,15 @@ contains
     value_out = struct_obj%time
   end subroutine
 
+
+  subroutine rf_stair_step_struct_set_time(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_time')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%time = value_in
+  end subroutine
+
   ! rf_stair_step_struct%s: 0D_NOT_real
 
   subroutine rf_stair_step_struct_get_s(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_s')
@@ -9807,6 +14089,15 @@ contains
     value_out = struct_obj%s
   end subroutine
 
+
+  subroutine rf_stair_step_struct_set_s(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
+  end subroutine
+
   ! rf_stair_step_struct%ix_step: 0D_NOT_integer
 
   subroutine rf_stair_step_struct_get_ix_step(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_ix_step')
@@ -9815,6 +14106,15 @@ contains
     type(rf_stair_step_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_step
+  end subroutine
+
+
+  subroutine rf_stair_step_struct_set_ix_step(struct_obj_ptr, value_in) bind(c, name='rf_stair_step_struct_set_ix_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(rf_stair_step_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_step = value_in
   end subroutine
 
   !! rf_ele_struct
@@ -9887,6 +14187,15 @@ contains
     type(rf_ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ds_step
+  end subroutine
+
+
+  subroutine rf_ele_struct_set_ds_step(struct_obj_ptr, value_in) bind(c, name='rf_ele_struct_set_ds_step')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(rf_ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ds_step = value_in
   end subroutine
 
   !! ele_struct
@@ -10014,6 +14323,17 @@ contains
     ptr_out = c_loc(struct_obj%a)
   end subroutine
 
+
+  subroutine ele_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%a = src_obj
+  end subroutine
+
   ! ele_struct%b: 0D_NOT_type
 
   subroutine ele_struct_get_b(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_b')
@@ -10022,6 +14342,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
+  end subroutine
+
+
+  subroutine ele_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%b = src_obj
   end subroutine
 
   ! ele_struct%z: 0D_NOT_type
@@ -10034,6 +14365,17 @@ contains
     ptr_out = c_loc(struct_obj%z)
   end subroutine
 
+
+  subroutine ele_struct_set_z(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%z = src_obj
+  end subroutine
+
   ! ele_struct%x: 0D_NOT_type
 
   subroutine ele_struct_get_x(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_x')
@@ -10044,6 +14386,17 @@ contains
     ptr_out = c_loc(struct_obj%x)
   end subroutine
 
+
+  subroutine ele_struct_set_x(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(xy_disp_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%x = src_obj
+  end subroutine
+
   ! ele_struct%y: 0D_NOT_type
 
   subroutine ele_struct_get_y(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_y')
@@ -10052,6 +14405,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%y)
+  end subroutine
+
+
+  subroutine ele_struct_set_y(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(xy_disp_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%y = src_obj
   end subroutine
 
   ! ele_struct%ac_kick: 0D_PTR_type
@@ -10068,6 +14432,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ele_struct_set_ac_kick(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_ac_kick')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(ac_kicker_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ac_kick)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ac_kick = src_obj
+    endif
+  end subroutine
+
   ! ele_struct%bookkeeping_state: 0D_NOT_type
 
   subroutine ele_struct_get_bookkeeping_state(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_bookkeeping_state')
@@ -10076,6 +14453,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%bookkeeping_state)
+  end subroutine
+
+
+  subroutine ele_struct_set_bookkeeping_state(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_bookkeeping_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(bookkeeping_state_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%bookkeeping_state = src_obj
   end subroutine
 
   ! ele_struct%branch: 0D_PTR_type
@@ -10089,6 +14477,19 @@ contains
       ptr_out = c_loc(struct_obj%branch)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_branch(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(branch_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%branch)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%branch = src_obj
     endif
   end subroutine
 
@@ -10106,6 +14507,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ele_struct_set_control(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_control')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(controller_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%control)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%control = src_obj
+    endif
+  end subroutine
+
   ! ele_struct%rf: 0D_PTR_type
 
   subroutine ele_struct_get_rf(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_rf')
@@ -10117,6 +14531,19 @@ contains
       ptr_out = c_loc(struct_obj%rf)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_rf(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_rf')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(rf_ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%rf)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%rf = src_obj
     endif
   end subroutine
 
@@ -10134,6 +14561,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ele_struct_set_lord(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_lord')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%lord)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%lord = src_obj
+    endif
+  end subroutine
+
   ! ele_struct%floor: 0D_NOT_type
 
   subroutine ele_struct_get_floor(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_floor')
@@ -10142,6 +14582,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%floor)
+  end subroutine
+
+
+  subroutine ele_struct_set_floor(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_floor')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(floor_position_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%floor = src_obj
   end subroutine
 
   ! ele_struct%high_energy_space_charge: 0D_PTR_type
@@ -10155,6 +14606,19 @@ contains
       ptr_out = c_loc(struct_obj%high_energy_space_charge)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_high_energy_space_charge(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_high_energy_space_charge')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(high_energy_space_charge_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%high_energy_space_charge)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%high_energy_space_charge = src_obj
     endif
   end subroutine
 
@@ -10172,6 +14636,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ele_struct_set_mode3(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_mode3')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(mode3_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%mode3)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%mode3 = src_obj
+    endif
+  end subroutine
+
   ! ele_struct%photon: 0D_PTR_type
 
   subroutine ele_struct_get_photon(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_photon')
@@ -10186,6 +14663,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ele_struct_set_photon(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_photon')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(photon_element_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%photon)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%photon = src_obj
+    endif
+  end subroutine
+
   ! ele_struct%rad_map: 0D_PTR_type
 
   subroutine ele_struct_get_rad_map(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_rad_map')
@@ -10197,6 +14687,19 @@ contains
       ptr_out = c_loc(struct_obj%rad_map)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_rad_map(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_rad_map')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(rad_map_ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%rad_map)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%rad_map = src_obj
     endif
   end subroutine
 
@@ -10257,6 +14760,19 @@ contains
       ptr_out = c_loc(struct_obj%wake)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_wake(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_wake')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(wake_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%wake)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%wake = src_obj
     endif
   end subroutine
 
@@ -10405,6 +14921,17 @@ contains
     ptr_out = c_loc(struct_obj%map_ref_orb_in)
   end subroutine
 
+
+  subroutine ele_struct_set_map_ref_orb_in(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_map_ref_orb_in')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%map_ref_orb_in = src_obj
+  end subroutine
+
   ! ele_struct%map_ref_orb_out: 0D_NOT_type
 
   subroutine ele_struct_get_map_ref_orb_out(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_map_ref_orb_out')
@@ -10413,6 +14940,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%map_ref_orb_out)
+  end subroutine
+
+
+  subroutine ele_struct_set_map_ref_orb_out(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_map_ref_orb_out')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%map_ref_orb_out = src_obj
   end subroutine
 
   ! ele_struct%time_ref_orb_in: 0D_NOT_type
@@ -10425,6 +14963,17 @@ contains
     ptr_out = c_loc(struct_obj%time_ref_orb_in)
   end subroutine
 
+
+  subroutine ele_struct_set_time_ref_orb_in(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_time_ref_orb_in')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%time_ref_orb_in = src_obj
+  end subroutine
+
   ! ele_struct%time_ref_orb_out: 0D_NOT_type
 
   subroutine ele_struct_get_time_ref_orb_out(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_time_ref_orb_out')
@@ -10433,6 +14982,17 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%time_ref_orb_out)
+  end subroutine
+
+
+  subroutine ele_struct_set_time_ref_orb_out(struct_obj_ptr, src_ptr) bind(c, name='ele_struct_set_time_ref_orb_out')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ele_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%time_ref_orb_out = src_obj
   end subroutine
 
   ! ele_struct%value: 1D_NOT_real
@@ -10490,6 +15050,15 @@ contains
     value_out = struct_obj%gamma_c
   end subroutine
 
+
+  subroutine ele_struct_set_gamma_c(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_gamma_c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%gamma_c = value_in
+  end subroutine
+
   ! ele_struct%s_start: 0D_NOT_real
 
   subroutine ele_struct_get_s_start(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_s_start')
@@ -10498,6 +15067,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_start
+  end subroutine
+
+
+  subroutine ele_struct_set_s_start(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_s_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s_start = value_in
   end subroutine
 
   ! ele_struct%s: 0D_NOT_real
@@ -10510,6 +15088,15 @@ contains
     value_out = struct_obj%s
   end subroutine
 
+
+  subroutine ele_struct_set_s(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
+  end subroutine
+
   ! ele_struct%ref_time: 0D_NOT_real
 
   subroutine ele_struct_get_ref_time(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_ref_time')
@@ -10518,6 +15105,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_time
+  end subroutine
+
+
+  subroutine ele_struct_set_ref_time(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ref_time')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref_time = value_in
   end subroutine
 
   ! skipped ele_struct%a_pole: Unsupported type: 1D_PTR_real
@@ -10536,6 +15132,15 @@ contains
     value_out = struct_obj%key
   end subroutine
 
+
+  subroutine ele_struct_set_key(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_key')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%key = value_in
+  end subroutine
+
   ! ele_struct%sub_key: 0D_NOT_integer
 
   subroutine ele_struct_get_sub_key(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_sub_key')
@@ -10544,6 +15149,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sub_key
+  end subroutine
+
+
+  subroutine ele_struct_set_sub_key(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_sub_key')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sub_key = value_in
   end subroutine
 
   ! ele_struct%ix_ele: 0D_NOT_integer
@@ -10556,6 +15170,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine ele_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! ele_struct%ix_branch: 0D_NOT_integer
 
   subroutine ele_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_ix_branch')
@@ -10564,6 +15187,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
+  end subroutine
+
+
+  subroutine ele_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
   end subroutine
 
   ! ele_struct%lord_status: 0D_NOT_integer
@@ -10576,6 +15208,15 @@ contains
     value_out = struct_obj%lord_status
   end subroutine
 
+
+  subroutine ele_struct_set_lord_status(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_lord_status')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lord_status = value_in
+  end subroutine
+
   ! ele_struct%n_slave: 0D_NOT_integer
 
   subroutine ele_struct_get_n_slave(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_n_slave')
@@ -10584,6 +15225,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_slave
+  end subroutine
+
+
+  subroutine ele_struct_set_n_slave(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_n_slave')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_slave = value_in
   end subroutine
 
   ! ele_struct%n_slave_field: 0D_NOT_integer
@@ -10596,6 +15246,15 @@ contains
     value_out = struct_obj%n_slave_field
   end subroutine
 
+
+  subroutine ele_struct_set_n_slave_field(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_n_slave_field')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_slave_field = value_in
+  end subroutine
+
   ! ele_struct%ix1_slave: 0D_NOT_integer
 
   subroutine ele_struct_get_ix1_slave(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_ix1_slave')
@@ -10604,6 +15263,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix1_slave
+  end subroutine
+
+
+  subroutine ele_struct_set_ix1_slave(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ix1_slave')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix1_slave = value_in
   end subroutine
 
   ! ele_struct%slave_status: 0D_NOT_integer
@@ -10616,6 +15284,15 @@ contains
     value_out = struct_obj%slave_status
   end subroutine
 
+
+  subroutine ele_struct_set_slave_status(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_slave_status')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%slave_status = value_in
+  end subroutine
+
   ! ele_struct%n_lord: 0D_NOT_integer
 
   subroutine ele_struct_get_n_lord(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_n_lord')
@@ -10624,6 +15301,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_lord
+  end subroutine
+
+
+  subroutine ele_struct_set_n_lord(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_n_lord')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_lord = value_in
   end subroutine
 
   ! ele_struct%n_lord_field: 0D_NOT_integer
@@ -10636,6 +15322,15 @@ contains
     value_out = struct_obj%n_lord_field
   end subroutine
 
+
+  subroutine ele_struct_set_n_lord_field(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_n_lord_field')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_lord_field = value_in
+  end subroutine
+
   ! ele_struct%n_lord_ramper: 0D_NOT_integer
 
   subroutine ele_struct_get_n_lord_ramper(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_n_lord_ramper')
@@ -10644,6 +15339,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_lord_ramper
+  end subroutine
+
+
+  subroutine ele_struct_set_n_lord_ramper(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_n_lord_ramper')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_lord_ramper = value_in
   end subroutine
 
   ! ele_struct%ic1_lord: 0D_NOT_integer
@@ -10656,6 +15360,15 @@ contains
     value_out = struct_obj%ic1_lord
   end subroutine
 
+
+  subroutine ele_struct_set_ic1_lord(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ic1_lord')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ic1_lord = value_in
+  end subroutine
+
   ! ele_struct%ix_pointer: 0D_NOT_integer
 
   subroutine ele_struct_get_ix_pointer(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_ix_pointer')
@@ -10664,6 +15377,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_pointer
+  end subroutine
+
+
+  subroutine ele_struct_set_ix_pointer(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ix_pointer')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_pointer = value_in
   end subroutine
 
   ! ele_struct%ixx: 0D_NOT_integer
@@ -10676,6 +15398,15 @@ contains
     value_out = struct_obj%ixx
   end subroutine
 
+
+  subroutine ele_struct_set_ixx(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ixx')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ixx = value_in
+  end subroutine
+
   ! ele_struct%iyy: 0D_NOT_integer
 
   subroutine ele_struct_get_iyy(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_iyy')
@@ -10684,6 +15415,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%iyy
+  end subroutine
+
+
+  subroutine ele_struct_set_iyy(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_iyy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%iyy = value_in
   end subroutine
 
   ! ele_struct%izz: 0D_NOT_integer
@@ -10696,6 +15436,15 @@ contains
     value_out = struct_obj%izz
   end subroutine
 
+
+  subroutine ele_struct_set_izz(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_izz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%izz = value_in
+  end subroutine
+
   ! ele_struct%mat6_calc_method: 0D_NOT_integer
 
   subroutine ele_struct_get_mat6_calc_method(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_mat6_calc_method')
@@ -10704,6 +15453,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mat6_calc_method
+  end subroutine
+
+
+  subroutine ele_struct_set_mat6_calc_method(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_mat6_calc_method')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%mat6_calc_method = value_in
   end subroutine
 
   ! ele_struct%tracking_method: 0D_NOT_integer
@@ -10716,6 +15474,15 @@ contains
     value_out = struct_obj%tracking_method
   end subroutine
 
+
+  subroutine ele_struct_set_tracking_method(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_tracking_method')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%tracking_method = value_in
+  end subroutine
+
   ! ele_struct%spin_tracking_method: 0D_NOT_integer
 
   subroutine ele_struct_get_spin_tracking_method(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_spin_tracking_method')
@@ -10724,6 +15491,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_tracking_method
+  end subroutine
+
+
+  subroutine ele_struct_set_spin_tracking_method(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_spin_tracking_method')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_tracking_method = value_in
   end subroutine
 
   ! ele_struct%csr_method: 0D_NOT_integer
@@ -10736,6 +15512,15 @@ contains
     value_out = struct_obj%csr_method
   end subroutine
 
+
+  subroutine ele_struct_set_csr_method(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_csr_method')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%csr_method = value_in
+  end subroutine
+
   ! ele_struct%space_charge_method: 0D_NOT_integer
 
   subroutine ele_struct_get_space_charge_method(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_space_charge_method')
@@ -10744,6 +15529,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%space_charge_method
+  end subroutine
+
+
+  subroutine ele_struct_set_space_charge_method(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_space_charge_method')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%space_charge_method = value_in
   end subroutine
 
   ! ele_struct%ptc_integration_type: 0D_NOT_integer
@@ -10756,6 +15550,15 @@ contains
     value_out = struct_obj%ptc_integration_type
   end subroutine
 
+
+  subroutine ele_struct_set_ptc_integration_type(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ptc_integration_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ptc_integration_type = value_in
+  end subroutine
+
   ! ele_struct%field_calc: 0D_NOT_integer
 
   subroutine ele_struct_get_field_calc(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_field_calc')
@@ -10764,6 +15567,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_calc
+  end subroutine
+
+
+  subroutine ele_struct_set_field_calc(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_field_calc')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_calc = value_in
   end subroutine
 
   ! ele_struct%aperture_at: 0D_NOT_integer
@@ -10776,6 +15588,15 @@ contains
     value_out = struct_obj%aperture_at
   end subroutine
 
+
+  subroutine ele_struct_set_aperture_at(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_aperture_at')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%aperture_at = value_in
+  end subroutine
+
   ! ele_struct%aperture_type: 0D_NOT_integer
 
   subroutine ele_struct_get_aperture_type(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_aperture_type')
@@ -10784,6 +15605,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%aperture_type
+  end subroutine
+
+
+  subroutine ele_struct_set_aperture_type(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_aperture_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%aperture_type = value_in
   end subroutine
 
   ! ele_struct%ref_species: 0D_NOT_integer
@@ -10796,6 +15626,15 @@ contains
     value_out = struct_obj%ref_species
   end subroutine
 
+
+  subroutine ele_struct_set_ref_species(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_ref_species')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref_species = value_in
+  end subroutine
+
   ! ele_struct%orientation: 0D_NOT_integer
 
   subroutine ele_struct_get_orientation(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_orientation')
@@ -10804,6 +15643,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%orientation
+  end subroutine
+
+
+  subroutine ele_struct_set_orientation(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_orientation')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%orientation = value_in
   end subroutine
 
   ! ele_struct%symplectify: 0D_NOT_logical
@@ -10816,6 +15664,15 @@ contains
     value_out = struct_obj%symplectify
   end subroutine
 
+
+  subroutine ele_struct_set_symplectify(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_symplectify')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%symplectify = value_in
+  end subroutine
+
   ! ele_struct%mode_flip: 0D_NOT_logical
 
   subroutine ele_struct_get_mode_flip(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_mode_flip')
@@ -10824,6 +15681,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mode_flip
+  end subroutine
+
+
+  subroutine ele_struct_set_mode_flip(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_mode_flip')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%mode_flip = value_in
   end subroutine
 
   ! ele_struct%multipoles_on: 0D_NOT_logical
@@ -10836,6 +15702,15 @@ contains
     value_out = struct_obj%multipoles_on
   end subroutine
 
+
+  subroutine ele_struct_set_multipoles_on(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_multipoles_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%multipoles_on = value_in
+  end subroutine
+
   ! ele_struct%scale_multipoles: 0D_NOT_logical
 
   subroutine ele_struct_get_scale_multipoles(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_scale_multipoles')
@@ -10844,6 +15719,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale_multipoles
+  end subroutine
+
+
+  subroutine ele_struct_set_scale_multipoles(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_scale_multipoles')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%scale_multipoles = value_in
   end subroutine
 
   ! ele_struct%taylor_map_includes_offsets: 0D_NOT_logical
@@ -10856,6 +15740,15 @@ contains
     value_out = struct_obj%taylor_map_includes_offsets
   end subroutine
 
+
+  subroutine ele_struct_set_taylor_map_includes_offsets(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_taylor_map_includes_offsets')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%taylor_map_includes_offsets = value_in
+  end subroutine
+
   ! ele_struct%field_master: 0D_NOT_logical
 
   subroutine ele_struct_get_field_master(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_field_master')
@@ -10864,6 +15757,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_master
+  end subroutine
+
+
+  subroutine ele_struct_set_field_master(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_field_master')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%field_master = value_in
   end subroutine
 
   ! ele_struct%is_on: 0D_NOT_logical
@@ -10876,6 +15778,15 @@ contains
     value_out = struct_obj%is_on
   end subroutine
 
+
+  subroutine ele_struct_set_is_on(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_is_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%is_on = value_in
+  end subroutine
+
   ! ele_struct%logic: 0D_NOT_logical
 
   subroutine ele_struct_get_logic(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_logic')
@@ -10884,6 +15795,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%logic
+  end subroutine
+
+
+  subroutine ele_struct_set_logic(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_logic')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%logic = value_in
   end subroutine
 
   ! ele_struct%bmad_logic: 0D_NOT_logical
@@ -10896,6 +15816,15 @@ contains
     value_out = struct_obj%bmad_logic
   end subroutine
 
+
+  subroutine ele_struct_set_bmad_logic(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_bmad_logic')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%bmad_logic = value_in
+  end subroutine
+
   ! ele_struct%select: 0D_NOT_logical
 
   subroutine ele_struct_get_select(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_select')
@@ -10906,6 +15835,15 @@ contains
     value_out = struct_obj%select
   end subroutine
 
+
+  subroutine ele_struct_set_select(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_select')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%select = value_in
+  end subroutine
+
   ! ele_struct%offset_moves_aperture: 0D_NOT_logical
 
   subroutine ele_struct_get_offset_moves_aperture(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_offset_moves_aperture')
@@ -10914,6 +15852,15 @@ contains
     type(ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%offset_moves_aperture
+  end subroutine
+
+
+  subroutine ele_struct_set_offset_moves_aperture(struct_obj_ptr, value_in) bind(c, name='ele_struct_set_offset_moves_aperture')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%offset_moves_aperture = value_in
   end subroutine
 
   !! complex_taylor_term_struct
@@ -10959,6 +15906,15 @@ contains
     type(complex_taylor_term_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
+  end subroutine
+
+
+  subroutine complex_taylor_term_struct_set_coef(struct_obj_ptr, value_in) bind(c, name='complex_taylor_term_struct_set_coef')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(complex_taylor_term_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%coef = value_in
   end subroutine
 
   ! complex_taylor_term_struct%expn: 1D_NOT_integer
@@ -11018,6 +15974,15 @@ contains
     type(complex_taylor_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
+  end subroutine
+
+
+  subroutine complex_taylor_struct_set_ref(struct_obj_ptr, value_in) bind(c, name='complex_taylor_struct_set_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(complex_taylor_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref = value_in
   end subroutine
 
   ! complex_taylor_struct%term: 1D_PTR_type
@@ -11106,6 +16071,15 @@ contains
     value_out = struct_obj%ix_branch
   end subroutine
 
+
+  subroutine branch_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
+  end subroutine
+
   ! branch_struct%ix_from_branch: 0D_NOT_integer
 
   subroutine branch_struct_get_ix_from_branch(struct_obj_ptr, value_out) bind(c, name='branch_struct_get_ix_from_branch')
@@ -11114,6 +16088,15 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_from_branch
+  end subroutine
+
+
+  subroutine branch_struct_set_ix_from_branch(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_ix_from_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_from_branch = value_in
   end subroutine
 
   ! branch_struct%ix_from_ele: 0D_NOT_integer
@@ -11126,6 +16109,15 @@ contains
     value_out = struct_obj%ix_from_ele
   end subroutine
 
+
+  subroutine branch_struct_set_ix_from_ele(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_ix_from_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_from_ele = value_in
+  end subroutine
+
   ! branch_struct%ix_to_ele: 0D_NOT_integer
 
   subroutine branch_struct_get_ix_to_ele(struct_obj_ptr, value_out) bind(c, name='branch_struct_get_ix_to_ele')
@@ -11134,6 +16126,15 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_to_ele
+  end subroutine
+
+
+  subroutine branch_struct_set_ix_to_ele(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_ix_to_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_to_ele = value_in
   end subroutine
 
   ! branch_struct%ix_fixer: 0D_NOT_integer
@@ -11146,6 +16147,15 @@ contains
     value_out = struct_obj%ix_fixer
   end subroutine
 
+
+  subroutine branch_struct_set_ix_fixer(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_ix_fixer')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_fixer = value_in
+  end subroutine
+
   ! branch_struct%n_ele_track: 0D_NOT_integer
 
   subroutine branch_struct_get_n_ele_track(struct_obj_ptr, value_out) bind(c, name='branch_struct_get_n_ele_track')
@@ -11156,6 +16166,15 @@ contains
     value_out = struct_obj%n_ele_track
   end subroutine
 
+
+  subroutine branch_struct_set_n_ele_track(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_n_ele_track')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_ele_track = value_in
+  end subroutine
+
   ! branch_struct%n_ele_max: 0D_NOT_integer
 
   subroutine branch_struct_get_n_ele_max(struct_obj_ptr, value_out) bind(c, name='branch_struct_get_n_ele_max')
@@ -11164,6 +16183,15 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ele_max
+  end subroutine
+
+
+  subroutine branch_struct_set_n_ele_max(struct_obj_ptr, value_in) bind(c, name='branch_struct_set_n_ele_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_ele_max = value_in
   end subroutine
 
   ! branch_struct%lat: 0D_PTR_type
@@ -11180,6 +16208,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine branch_struct_set_lat(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(lat_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%lat)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%lat = src_obj
+    endif
+  end subroutine
+
   ! branch_struct%a: 0D_NOT_type
 
   subroutine branch_struct_get_a(struct_obj_ptr, ptr_out) bind(c, name='branch_struct_get_a')
@@ -11188,6 +16229,17 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
+  end subroutine
+
+
+  subroutine branch_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%a = src_obj
   end subroutine
 
   ! branch_struct%b: 0D_NOT_type
@@ -11200,6 +16252,17 @@ contains
     ptr_out = c_loc(struct_obj%b)
   end subroutine
 
+
+  subroutine branch_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%b = src_obj
+  end subroutine
+
   ! branch_struct%z: 0D_NOT_type
 
   subroutine branch_struct_get_z(struct_obj_ptr, ptr_out) bind(c, name='branch_struct_get_z')
@@ -11208,6 +16271,17 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
+  end subroutine
+
+
+  subroutine branch_struct_set_z(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%z = src_obj
   end subroutine
 
   ! branch_struct%ele: 1D_PTR_type
@@ -11247,6 +16321,17 @@ contains
     ptr_out = c_loc(struct_obj%param)
   end subroutine
 
+
+  subroutine branch_struct_set_param(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_param')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(lat_param_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%param = src_obj
+  end subroutine
+
   ! branch_struct%particle_start: 0D_NOT_type
 
   subroutine branch_struct_get_particle_start(struct_obj_ptr, ptr_out) bind(c, name='branch_struct_get_particle_start')
@@ -11255,6 +16340,17 @@ contains
     type(branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%particle_start)
+  end subroutine
+
+
+  subroutine branch_struct_set_particle_start(struct_obj_ptr, src_ptr) bind(c, name='branch_struct_set_particle_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(branch_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%particle_start = src_obj
   end subroutine
 
   ! branch_struct%wall3d: 1D_PTR_type
@@ -11431,6 +16527,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine lat_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%a)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%a = src_obj
+    endif
+  end subroutine
+
   ! lat_struct%b: 0D_PTR_type
 
   subroutine lat_struct_get_b(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_b')
@@ -11442,6 +16551,19 @@ contains
       ptr_out = c_loc(struct_obj%b)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine lat_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%b)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%b = src_obj
     endif
   end subroutine
 
@@ -11459,6 +16581,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine lat_struct_set_z(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(mode_info_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%z)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%z = src_obj
+    endif
+  end subroutine
+
   ! lat_struct%param: 0D_PTR_type
 
   subroutine lat_struct_get_param(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_param')
@@ -11473,6 +16608,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine lat_struct_set_param(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_param')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(lat_param_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%param)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%param = src_obj
+    endif
+  end subroutine
+
   ! lat_struct%lord_state: 0D_NOT_type
 
   subroutine lat_struct_get_lord_state(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_lord_state')
@@ -11483,6 +16631,17 @@ contains
     ptr_out = c_loc(struct_obj%lord_state)
   end subroutine
 
+
+  subroutine lat_struct_set_lord_state(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_lord_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(bookkeeping_state_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%lord_state = src_obj
+  end subroutine
+
   ! lat_struct%ele_init: 0D_NOT_type
 
   subroutine lat_struct_get_ele_init(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_ele_init')
@@ -11491,6 +16650,17 @@ contains
     type(lat_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_init)
+  end subroutine
+
+
+  subroutine lat_struct_set_ele_init(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_ele_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ele_init = src_obj
   end subroutine
 
   ! lat_struct%ele: 1D_PTR_type
@@ -11588,6 +16758,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine lat_struct_set_particle_start(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_particle_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%particle_start)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%particle_start = src_obj
+    endif
+  end subroutine
+
   ! lat_struct%beam_init: 0D_NOT_type
 
   subroutine lat_struct_get_beam_init(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_beam_init')
@@ -11598,6 +16781,17 @@ contains
     ptr_out = c_loc(struct_obj%beam_init)
   end subroutine
 
+
+  subroutine lat_struct_set_beam_init(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_beam_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(beam_init_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam_init = src_obj
+  end subroutine
+
   ! lat_struct%pre_tracker: 0D_NOT_type
 
   subroutine lat_struct_get_pre_tracker(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_pre_tracker')
@@ -11606,6 +16800,17 @@ contains
     type(lat_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%pre_tracker)
+  end subroutine
+
+
+  subroutine lat_struct_set_pre_tracker(struct_obj_ptr, src_ptr) bind(c, name='lat_struct_set_pre_tracker')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(lat_struct), pointer :: struct_obj
+    type(pre_tracker_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%pre_tracker = src_obj
   end subroutine
 
   ! lat_struct%custom: 1D_ALLOC_real
@@ -11642,6 +16847,15 @@ contains
     value_out = struct_obj%version
   end subroutine
 
+
+  subroutine lat_struct_set_version(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_version')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%version = value_in
+  end subroutine
+
   ! lat_struct%n_ele_track: 0D_PTR_integer
 
   subroutine lat_struct_get_n_ele_track(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_n_ele_track')
@@ -11653,6 +16867,17 @@ contains
       ptr_out = c_loc(struct_obj%n_ele_track)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine lat_struct_set_n_ele_track(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_n_ele_track')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%n_ele_track)) then
+      struct_obj%n_ele_track = value_in
     endif
   end subroutine
 
@@ -11670,6 +16895,17 @@ contains
     endif
   end subroutine
 
+
+  subroutine lat_struct_set_n_ele_max(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_n_ele_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%n_ele_max)) then
+      struct_obj%n_ele_max = value_in
+    endif
+  end subroutine
+
   ! lat_struct%n_control_max: 0D_NOT_integer
 
   subroutine lat_struct_get_n_control_max(struct_obj_ptr, value_out) bind(c, name='lat_struct_get_n_control_max')
@@ -11678,6 +16914,15 @@ contains
     type(lat_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_control_max
+  end subroutine
+
+
+  subroutine lat_struct_set_n_control_max(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_n_control_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_control_max = value_in
   end subroutine
 
   ! lat_struct%n_ic_max: 0D_NOT_integer
@@ -11690,6 +16935,15 @@ contains
     value_out = struct_obj%n_ic_max
   end subroutine
 
+
+  subroutine lat_struct_set_n_ic_max(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_n_ic_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_ic_max = value_in
+  end subroutine
+
   ! lat_struct%input_taylor_order: 0D_NOT_integer
 
   subroutine lat_struct_get_input_taylor_order(struct_obj_ptr, value_out) bind(c, name='lat_struct_get_input_taylor_order')
@@ -11698,6 +16952,15 @@ contains
     type(lat_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%input_taylor_order
+  end subroutine
+
+
+  subroutine lat_struct_set_input_taylor_order(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_input_taylor_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%input_taylor_order = value_in
   end subroutine
 
   ! lat_struct%ic: 1D_ALLOC_integer
@@ -11734,6 +16997,15 @@ contains
     value_out = struct_obj%photon_type
   end subroutine
 
+
+  subroutine lat_struct_set_photon_type(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_photon_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%photon_type = value_in
+  end subroutine
+
   ! lat_struct%creation_hash: 0D_NOT_integer
 
   subroutine lat_struct_get_creation_hash(struct_obj_ptr, value_out) bind(c, name='lat_struct_get_creation_hash')
@@ -11744,6 +17016,15 @@ contains
     value_out = struct_obj%creation_hash
   end subroutine
 
+
+  subroutine lat_struct_set_creation_hash(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_creation_hash')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%creation_hash = value_in
+  end subroutine
+
   ! lat_struct%ramper_slave_bookkeeping: 0D_NOT_integer
 
   subroutine lat_struct_get_ramper_slave_bookkeeping(struct_obj_ptr, value_out) bind(c, name='lat_struct_get_ramper_slave_bookkeeping')
@@ -11752,6 +17033,15 @@ contains
     type(lat_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ramper_slave_bookkeeping
+  end subroutine
+
+
+  subroutine lat_struct_set_ramper_slave_bookkeeping(struct_obj_ptr, value_in) bind(c, name='lat_struct_set_ramper_slave_bookkeeping')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ramper_slave_bookkeeping = value_in
   end subroutine
 
   !! bunch_struct
@@ -11850,6 +17140,15 @@ contains
     value_out = struct_obj%charge_tot
   end subroutine
 
+
+  subroutine bunch_struct_set_charge_tot(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_charge_tot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%charge_tot = value_in
+  end subroutine
+
   ! bunch_struct%charge_live: 0D_NOT_real
 
   subroutine bunch_struct_get_charge_live(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_charge_live')
@@ -11858,6 +17157,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_live
+  end subroutine
+
+
+  subroutine bunch_struct_set_charge_live(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_charge_live')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%charge_live = value_in
   end subroutine
 
   ! bunch_struct%z_center: 0D_NOT_real
@@ -11870,6 +17178,15 @@ contains
     value_out = struct_obj%z_center
   end subroutine
 
+
+  subroutine bunch_struct_set_z_center(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_z_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%z_center = value_in
+  end subroutine
+
   ! bunch_struct%t_center: 0D_NOT_real
 
   subroutine bunch_struct_get_t_center(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_t_center')
@@ -11878,6 +17195,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t_center
+  end subroutine
+
+
+  subroutine bunch_struct_set_t_center(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_t_center')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t_center = value_in
   end subroutine
 
   ! bunch_struct%t0: 0D_NOT_real
@@ -11890,6 +17216,15 @@ contains
     value_out = struct_obj%t0
   end subroutine
 
+
+  subroutine bunch_struct_set_t0(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_t0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t0 = value_in
+  end subroutine
+
   ! bunch_struct%drift_between_t_and_s: 0D_NOT_logical
 
   subroutine bunch_struct_get_drift_between_t_and_s(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_drift_between_t_and_s')
@@ -11898,6 +17233,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%drift_between_t_and_s
+  end subroutine
+
+
+  subroutine bunch_struct_set_drift_between_t_and_s(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_drift_between_t_and_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%drift_between_t_and_s = value_in
   end subroutine
 
   ! bunch_struct%ix_ele: 0D_NOT_integer
@@ -11910,6 +17254,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine bunch_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! bunch_struct%ix_bunch: 0D_NOT_integer
 
   subroutine bunch_struct_get_ix_bunch(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_ix_bunch')
@@ -11918,6 +17271,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_bunch
+  end subroutine
+
+
+  subroutine bunch_struct_set_ix_bunch(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_ix_bunch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_bunch = value_in
   end subroutine
 
   ! bunch_struct%ix_turn: 0D_NOT_integer
@@ -11930,6 +17292,15 @@ contains
     value_out = struct_obj%ix_turn
   end subroutine
 
+
+  subroutine bunch_struct_set_ix_turn(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_ix_turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_turn = value_in
+  end subroutine
+
   ! bunch_struct%n_live: 0D_NOT_integer
 
   subroutine bunch_struct_get_n_live(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_n_live')
@@ -11938,6 +17309,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_live
+  end subroutine
+
+
+  subroutine bunch_struct_set_n_live(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_n_live')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_live = value_in
   end subroutine
 
   ! bunch_struct%n_good: 0D_NOT_integer
@@ -11950,6 +17330,15 @@ contains
     value_out = struct_obj%n_good
   end subroutine
 
+
+  subroutine bunch_struct_set_n_good(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_n_good')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_good = value_in
+  end subroutine
+
   ! bunch_struct%n_bad: 0D_NOT_integer
 
   subroutine bunch_struct_get_n_bad(struct_obj_ptr, value_out) bind(c, name='bunch_struct_get_n_bad')
@@ -11958,6 +17347,15 @@ contains
     type(bunch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bad
+  end subroutine
+
+
+  subroutine bunch_struct_set_n_bad(struct_obj_ptr, value_in) bind(c, name='bunch_struct_set_n_bad')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_bad = value_in
   end subroutine
 
   !! bunch_params_struct
@@ -12005,6 +17403,17 @@ contains
     ptr_out = c_loc(struct_obj%centroid)
   end subroutine
 
+
+  subroutine bunch_params_struct_set_centroid(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_centroid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%centroid = src_obj
+  end subroutine
+
   ! bunch_params_struct%x: 0D_NOT_type
 
   subroutine bunch_params_struct_get_x(struct_obj_ptr, ptr_out) bind(c, name='bunch_params_struct_get_x')
@@ -12013,6 +17422,17 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%x)
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_x(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%x = src_obj
   end subroutine
 
   ! bunch_params_struct%y: 0D_NOT_type
@@ -12025,6 +17445,17 @@ contains
     ptr_out = c_loc(struct_obj%y)
   end subroutine
 
+
+  subroutine bunch_params_struct_set_y(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%y = src_obj
+  end subroutine
+
   ! bunch_params_struct%z: 0D_NOT_type
 
   subroutine bunch_params_struct_get_z(struct_obj_ptr, ptr_out) bind(c, name='bunch_params_struct_get_z')
@@ -12033,6 +17464,17 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_z(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_z')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%z = src_obj
   end subroutine
 
   ! bunch_params_struct%a: 0D_NOT_type
@@ -12045,6 +17487,17 @@ contains
     ptr_out = c_loc(struct_obj%a)
   end subroutine
 
+
+  subroutine bunch_params_struct_set_a(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_a')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%a = src_obj
+  end subroutine
+
   ! bunch_params_struct%b: 0D_NOT_type
 
   subroutine bunch_params_struct_get_b(struct_obj_ptr, ptr_out) bind(c, name='bunch_params_struct_get_b')
@@ -12055,6 +17508,17 @@ contains
     ptr_out = c_loc(struct_obj%b)
   end subroutine
 
+
+  subroutine bunch_params_struct_set_b(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_b')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%b = src_obj
+  end subroutine
+
   ! bunch_params_struct%c: 0D_NOT_type
 
   subroutine bunch_params_struct_get_c(struct_obj_ptr, ptr_out) bind(c, name='bunch_params_struct_get_c')
@@ -12063,6 +17527,17 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%c)
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_c(struct_obj_ptr, src_ptr) bind(c, name='bunch_params_struct_set_c')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bunch_params_struct), pointer :: struct_obj
+    type(twiss_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%c = src_obj
   end subroutine
 
   ! skipped bunch_params_struct%sigma: Unsupported type: 2D_NOT_real
@@ -12104,6 +17579,15 @@ contains
     value_out = struct_obj%s
   end subroutine
 
+
+  subroutine bunch_params_struct_set_s(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
+  end subroutine
+
   ! bunch_params_struct%t: 0D_NOT_real
 
   subroutine bunch_params_struct_get_t(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_t')
@@ -12112,6 +17596,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_t(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_t')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%t = value_in
   end subroutine
 
   ! bunch_params_struct%sigma_t: 0D_NOT_real
@@ -12124,6 +17617,15 @@ contains
     value_out = struct_obj%sigma_t
   end subroutine
 
+
+  subroutine bunch_params_struct_set_sigma_t(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_sigma_t')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma_t = value_in
+  end subroutine
+
   ! bunch_params_struct%charge_live: 0D_NOT_real
 
   subroutine bunch_params_struct_get_charge_live(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_charge_live')
@@ -12132,6 +17634,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_live
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_charge_live(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_charge_live')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%charge_live = value_in
   end subroutine
 
   ! bunch_params_struct%charge_tot: 0D_NOT_real
@@ -12144,6 +17655,15 @@ contains
     value_out = struct_obj%charge_tot
   end subroutine
 
+
+  subroutine bunch_params_struct_set_charge_tot(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_charge_tot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%charge_tot = value_in
+  end subroutine
+
   ! bunch_params_struct%n_particle_tot: 0D_NOT_integer
 
   subroutine bunch_params_struct_get_n_particle_tot(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_n_particle_tot')
@@ -12152,6 +17672,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle_tot
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_n_particle_tot(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_n_particle_tot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_particle_tot = value_in
   end subroutine
 
   ! bunch_params_struct%n_particle_live: 0D_NOT_integer
@@ -12164,6 +17693,15 @@ contains
     value_out = struct_obj%n_particle_live
   end subroutine
 
+
+  subroutine bunch_params_struct_set_n_particle_live(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_n_particle_live')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_particle_live = value_in
+  end subroutine
+
   ! bunch_params_struct%n_particle_lost_in_ele: 0D_NOT_integer
 
   subroutine bunch_params_struct_get_n_particle_lost_in_ele(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_n_particle_lost_in_ele')
@@ -12172,6 +17710,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle_lost_in_ele
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_n_particle_lost_in_ele(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_n_particle_lost_in_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_particle_lost_in_ele = value_in
   end subroutine
 
   ! bunch_params_struct%n_good_steps: 0D_NOT_integer
@@ -12184,6 +17731,15 @@ contains
     value_out = struct_obj%n_good_steps
   end subroutine
 
+
+  subroutine bunch_params_struct_set_n_good_steps(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_n_good_steps')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_good_steps = value_in
+  end subroutine
+
   ! bunch_params_struct%n_bad_steps: 0D_NOT_integer
 
   subroutine bunch_params_struct_get_n_bad_steps(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_n_bad_steps')
@@ -12192,6 +17748,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bad_steps
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_n_bad_steps(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_n_bad_steps')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_bad_steps = value_in
   end subroutine
 
   ! bunch_params_struct%ix_ele: 0D_NOT_integer
@@ -12204,6 +17769,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine bunch_params_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! bunch_params_struct%location: 0D_NOT_integer
 
   subroutine bunch_params_struct_get_location(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_location')
@@ -12214,6 +17788,15 @@ contains
     value_out = struct_obj%location
   end subroutine
 
+
+  subroutine bunch_params_struct_set_location(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_location')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%location = value_in
+  end subroutine
+
   ! bunch_params_struct%twiss_valid: 0D_NOT_logical
 
   subroutine bunch_params_struct_get_twiss_valid(struct_obj_ptr, value_out) bind(c, name='bunch_params_struct_get_twiss_valid')
@@ -12222,6 +17805,15 @@ contains
     type(bunch_params_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%twiss_valid
+  end subroutine
+
+
+  subroutine bunch_params_struct_set_twiss_valid(struct_obj_ptr, value_in) bind(c, name='bunch_params_struct_set_twiss_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%twiss_valid = value_in
   end subroutine
 
   !! beam_struct
@@ -12331,6 +17923,15 @@ contains
     value_out = struct_obj%x
   end subroutine
 
+
+  subroutine aperture_point_struct_set_x(struct_obj_ptr, value_in) bind(c, name='aperture_point_struct_set_x')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x = value_in
+  end subroutine
+
   ! aperture_point_struct%y: 0D_NOT_real
 
   subroutine aperture_point_struct_get_y(struct_obj_ptr, value_out) bind(c, name='aperture_point_struct_get_y')
@@ -12339,6 +17940,15 @@ contains
     type(aperture_point_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y
+  end subroutine
+
+
+  subroutine aperture_point_struct_set_y(struct_obj_ptr, value_in) bind(c, name='aperture_point_struct_set_y')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y = value_in
   end subroutine
 
   ! aperture_point_struct%plane: 0D_NOT_integer
@@ -12351,6 +17961,15 @@ contains
     value_out = struct_obj%plane
   end subroutine
 
+
+  subroutine aperture_point_struct_set_plane(struct_obj_ptr, value_in) bind(c, name='aperture_point_struct_set_plane')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(aperture_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%plane = value_in
+  end subroutine
+
   ! aperture_point_struct%ix_ele: 0D_NOT_integer
 
   subroutine aperture_point_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='aperture_point_struct_get_ix_ele')
@@ -12361,6 +17980,15 @@ contains
     value_out = struct_obj%ix_ele
   end subroutine
 
+
+  subroutine aperture_point_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='aperture_point_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(aperture_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
+  end subroutine
+
   ! aperture_point_struct%i_turn: 0D_NOT_integer
 
   subroutine aperture_point_struct_get_i_turn(struct_obj_ptr, value_out) bind(c, name='aperture_point_struct_get_i_turn')
@@ -12369,6 +17997,15 @@ contains
     type(aperture_point_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i_turn
+  end subroutine
+
+
+  subroutine aperture_point_struct_set_i_turn(struct_obj_ptr, value_in) bind(c, name='aperture_point_struct_set_i_turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(aperture_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%i_turn = value_in
   end subroutine
 
   !! aperture_param_struct
@@ -12416,6 +18053,15 @@ contains
     value_out = struct_obj%min_angle
   end subroutine
 
+
+  subroutine aperture_param_struct_set_min_angle(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_min_angle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%min_angle = value_in
+  end subroutine
+
   ! aperture_param_struct%max_angle: 0D_NOT_real
 
   subroutine aperture_param_struct_get_max_angle(struct_obj_ptr, value_out) bind(c, name='aperture_param_struct_get_max_angle')
@@ -12424,6 +18070,15 @@ contains
     type(aperture_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_angle
+  end subroutine
+
+
+  subroutine aperture_param_struct_set_max_angle(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_max_angle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%max_angle = value_in
   end subroutine
 
   ! aperture_param_struct%n_angle: 0D_NOT_integer
@@ -12436,6 +18091,15 @@ contains
     value_out = struct_obj%n_angle
   end subroutine
 
+
+  subroutine aperture_param_struct_set_n_angle(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_n_angle')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_angle = value_in
+  end subroutine
+
   ! aperture_param_struct%n_turn: 0D_NOT_integer
 
   subroutine aperture_param_struct_get_n_turn(struct_obj_ptr, value_out) bind(c, name='aperture_param_struct_get_n_turn')
@@ -12444,6 +18108,15 @@ contains
     type(aperture_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_turn
+  end subroutine
+
+
+  subroutine aperture_param_struct_set_n_turn(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_n_turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_turn = value_in
   end subroutine
 
   ! aperture_param_struct%x_init: 0D_NOT_real
@@ -12456,6 +18129,15 @@ contains
     value_out = struct_obj%x_init
   end subroutine
 
+
+  subroutine aperture_param_struct_set_x_init(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_x_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%x_init = value_in
+  end subroutine
+
   ! aperture_param_struct%y_init: 0D_NOT_real
 
   subroutine aperture_param_struct_get_y_init(struct_obj_ptr, value_out) bind(c, name='aperture_param_struct_get_y_init')
@@ -12464,6 +18146,15 @@ contains
     type(aperture_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y_init
+  end subroutine
+
+
+  subroutine aperture_param_struct_set_y_init(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_y_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%y_init = value_in
   end subroutine
 
   ! aperture_param_struct%rel_accuracy: 0D_NOT_real
@@ -12476,6 +18167,15 @@ contains
     value_out = struct_obj%rel_accuracy
   end subroutine
 
+
+  subroutine aperture_param_struct_set_rel_accuracy(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_rel_accuracy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rel_accuracy = value_in
+  end subroutine
+
   ! aperture_param_struct%abs_accuracy: 0D_NOT_real
 
   subroutine aperture_param_struct_get_abs_accuracy(struct_obj_ptr, value_out) bind(c, name='aperture_param_struct_get_abs_accuracy')
@@ -12484,6 +18184,15 @@ contains
     type(aperture_param_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_accuracy
+  end subroutine
+
+
+  subroutine aperture_param_struct_set_abs_accuracy(struct_obj_ptr, value_in) bind(c, name='aperture_param_struct_set_abs_accuracy')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%abs_accuracy = value_in
   end subroutine
 
   ! aperture_param_struct%start_ele: 0D_NOT_character
@@ -12572,6 +18281,17 @@ contains
     ptr_out = c_loc(struct_obj%ref_orb)
   end subroutine
 
+
+  subroutine aperture_scan_struct_set_ref_orb(struct_obj_ptr, src_ptr) bind(c, name='aperture_scan_struct_set_ref_orb')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(aperture_scan_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ref_orb = src_obj
+  end subroutine
+
   ! aperture_scan_struct%pz_start: 0D_NOT_real
 
   subroutine aperture_scan_struct_get_pz_start(struct_obj_ptr, value_out) bind(c, name='aperture_scan_struct_get_pz_start')
@@ -12580,6 +18300,15 @@ contains
     type(aperture_scan_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pz_start
+  end subroutine
+
+
+  subroutine aperture_scan_struct_set_pz_start(struct_obj_ptr, value_in) bind(c, name='aperture_scan_struct_set_pz_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(aperture_scan_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pz_start = value_in
   end subroutine
 
   !! tao_spin_dn_dpz_struct
@@ -12690,6 +18419,15 @@ contains
     type(resonance_h_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%c_val
+  end subroutine
+
+
+  subroutine resonance_h_struct_set_c_val(struct_obj_ptr, value_in) bind(c, name='resonance_h_struct_set_c_val')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(resonance_h_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%c_val = value_in
   end subroutine
 
   !! spin_orbit_map1_struct
@@ -12869,6 +18607,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine ptc_normal_form_struct_set_ele_origin(struct_obj_ptr, src_ptr) bind(c, name='ptc_normal_form_struct_set_ele_origin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(ptc_normal_form_struct), pointer :: struct_obj
+    type(ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ele_origin)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ele_origin = src_obj
+    endif
+  end subroutine
+
   ! ptc_normal_form_struct%orb0: 1D_NOT_real
 
   subroutine ptc_normal_form_struct_get_orb0_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ptc_normal_form_struct_get_orb0_info')
@@ -12891,6 +18642,15 @@ contains
     type(ptc_normal_form_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid_map
+  end subroutine
+
+
+  subroutine ptc_normal_form_struct_set_valid_map(struct_obj_ptr, value_in) bind(c, name='ptc_normal_form_struct_set_valid_map')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(ptc_normal_form_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%valid_map = value_in
   end subroutine
 
   !! bmad_normal_form_struct
@@ -12939,6 +18699,19 @@ contains
       ptr_out = c_loc(struct_obj%ele_origin)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine bmad_normal_form_struct_set_ele_origin(struct_obj_ptr, src_ptr) bind(c, name='bmad_normal_form_struct_set_ele_origin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    type(ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ele_origin)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%ele_origin = src_obj
     endif
   end subroutine
 
@@ -13137,6 +18910,15 @@ contains
     value_out = struct_obj%ds_save
   end subroutine
 
+
+  subroutine bunch_track_struct_set_ds_save(struct_obj_ptr, value_in) bind(c, name='bunch_track_struct_set_ds_save')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(bunch_track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ds_save = value_in
+  end subroutine
+
   ! bunch_track_struct%n_pt: 0D_NOT_integer
 
   subroutine bunch_track_struct_get_n_pt(struct_obj_ptr, value_out) bind(c, name='bunch_track_struct_get_n_pt')
@@ -13145,6 +18927,15 @@ contains
     type(bunch_track_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_pt
+  end subroutine
+
+
+  subroutine bunch_track_struct_set_n_pt(struct_obj_ptr, value_in) bind(c, name='bunch_track_struct_set_n_pt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(bunch_track_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_pt = value_in
   end subroutine
 
   !! summation_rdt_struct
@@ -13192,6 +18983,15 @@ contains
     value_out = struct_obj%h11001
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h11001(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h11001')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h11001 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h00111: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h00111(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h00111')
@@ -13200,6 +19000,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00111
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h00111(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h00111')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h00111 = value_in
   end subroutine
 
   ! summation_rdt_struct%h20001: 0D_NOT_complex
@@ -13212,6 +19021,15 @@ contains
     value_out = struct_obj%h20001
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h20001(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h20001')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h20001 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h00201: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h00201(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h00201')
@@ -13220,6 +19038,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00201
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h00201(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h00201')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h00201 = value_in
   end subroutine
 
   ! summation_rdt_struct%h10002: 0D_NOT_complex
@@ -13232,6 +19059,15 @@ contains
     value_out = struct_obj%h10002
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h10002(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h10002')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h10002 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h21000: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h21000(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h21000')
@@ -13240,6 +19076,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h21000
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h21000(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h21000')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h21000 = value_in
   end subroutine
 
   ! summation_rdt_struct%h30000: 0D_NOT_complex
@@ -13252,6 +19097,15 @@ contains
     value_out = struct_obj%h30000
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h30000(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h30000')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h30000 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h10110: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h10110(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h10110')
@@ -13260,6 +19114,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10110
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h10110(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h10110')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h10110 = value_in
   end subroutine
 
   ! summation_rdt_struct%h10020: 0D_NOT_complex
@@ -13272,6 +19135,15 @@ contains
     value_out = struct_obj%h10020
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h10020(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h10020')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h10020 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h10200: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h10200(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h10200')
@@ -13280,6 +19152,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10200
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h10200(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h10200')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h10200 = value_in
   end subroutine
 
   ! summation_rdt_struct%h31000: 0D_NOT_complex
@@ -13292,6 +19173,15 @@ contains
     value_out = struct_obj%h31000
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h31000(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h31000')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h31000 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h40000: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h40000(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h40000')
@@ -13300,6 +19190,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h40000
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h40000(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h40000')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h40000 = value_in
   end subroutine
 
   ! summation_rdt_struct%h20110: 0D_NOT_complex
@@ -13312,6 +19211,15 @@ contains
     value_out = struct_obj%h20110
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h20110(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h20110')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h20110 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h11200: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h11200(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h11200')
@@ -13320,6 +19228,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h11200
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h11200(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h11200')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h11200 = value_in
   end subroutine
 
   ! summation_rdt_struct%h20020: 0D_NOT_complex
@@ -13332,6 +19249,15 @@ contains
     value_out = struct_obj%h20020
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h20020(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h20020')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h20020 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h20200: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h20200(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h20200')
@@ -13340,6 +19266,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h20200
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h20200(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h20200')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h20200 = value_in
   end subroutine
 
   ! summation_rdt_struct%h00310: 0D_NOT_complex
@@ -13352,6 +19287,15 @@ contains
     value_out = struct_obj%h00310
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h00310(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h00310')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h00310 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h00400: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h00400(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h00400')
@@ -13360,6 +19304,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00400
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h00400(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h00400')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h00400 = value_in
   end subroutine
 
   ! summation_rdt_struct%h22000: 0D_NOT_complex
@@ -13372,6 +19325,15 @@ contains
     value_out = struct_obj%h22000
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h22000(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h22000')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h22000 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h00220: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h00220(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h00220')
@@ -13382,6 +19344,15 @@ contains
     value_out = struct_obj%h00220
   end subroutine
 
+
+  subroutine summation_rdt_struct_set_h00220(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h00220')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h00220 = value_in
+  end subroutine
+
   ! summation_rdt_struct%h11110: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h11110(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h11110')
@@ -13390,6 +19361,15 @@ contains
     type(summation_rdt_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h11110
+  end subroutine
+
+
+  subroutine summation_rdt_struct_set_h11110(struct_obj_ptr, value_in) bind(c, name='summation_rdt_struct_set_h11110')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    complex(c_double_complex), intent(in), value :: value_in
+    type(summation_rdt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%h11110 = value_in
   end subroutine
 
   !! lat_ele_order1_struct
@@ -13437,6 +19417,15 @@ contains
     value_out = struct_obj%ix_branch
   end subroutine
 
+
+  subroutine lat_ele_order1_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='lat_ele_order1_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_ele_order1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
+  end subroutine
+
   ! lat_ele_order1_struct%ix_order: 0D_NOT_integer
 
   subroutine lat_ele_order1_struct_get_ix_order(struct_obj_ptr, value_out) bind(c, name='lat_ele_order1_struct_get_ix_order')
@@ -13445,6 +19434,15 @@ contains
     type(lat_ele_order1_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_order
+  end subroutine
+
+
+  subroutine lat_ele_order1_struct_set_ix_order(struct_obj_ptr, value_in) bind(c, name='lat_ele_order1_struct_set_ix_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(lat_ele_order1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_order = value_in
   end subroutine
 
   !! lat_ele_order_array_struct
@@ -13590,6 +19588,17 @@ contains
     ptr_out = c_loc(struct_obj%dn_dpz)
   end subroutine
 
+
+  subroutine tao_spin_ele_struct_set_dn_dpz(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_ele_struct_set_dn_dpz')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_ele_struct), pointer :: struct_obj
+    type(tao_spin_dn_dpz_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%dn_dpz = src_obj
+  end subroutine
+
   ! tao_spin_ele_struct%orb_eigen_val: 1D_NOT_real
 
   subroutine tao_spin_ele_struct_get_orb_eigen_val_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_spin_ele_struct_get_orb_eigen_val_info')
@@ -13614,6 +19623,15 @@ contains
     type(tao_spin_ele_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid
+  end subroutine
+
+
+  subroutine tao_spin_ele_struct_set_valid(struct_obj_ptr, value_in) bind(c, name='tao_spin_ele_struct_set_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_spin_ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%valid = value_in
   end subroutine
 
   !! tao_plot_cache_struct
@@ -13661,6 +19679,17 @@ contains
     ptr_out = c_loc(struct_obj%ele_to_s)
   end subroutine
 
+
+  subroutine tao_plot_cache_struct_set_ele_to_s(struct_obj_ptr, src_ptr) bind(c, name='tao_plot_cache_struct_set_ele_to_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_plot_cache_struct), pointer :: struct_obj
+    type(ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ele_to_s = src_obj
+  end subroutine
+
   ! tao_plot_cache_struct%orbit: 0D_NOT_type
 
   subroutine tao_plot_cache_struct_get_orbit(struct_obj_ptr, ptr_out) bind(c, name='tao_plot_cache_struct_get_orbit')
@@ -13671,6 +19700,17 @@ contains
     ptr_out = c_loc(struct_obj%orbit)
   end subroutine
 
+
+  subroutine tao_plot_cache_struct_set_orbit(struct_obj_ptr, src_ptr) bind(c, name='tao_plot_cache_struct_set_orbit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_plot_cache_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%orbit = src_obj
+  end subroutine
+
   ! tao_plot_cache_struct%err: 0D_NOT_logical
 
   subroutine tao_plot_cache_struct_get_err(struct_obj_ptr, value_out) bind(c, name='tao_plot_cache_struct_get_err')
@@ -13679,6 +19719,15 @@ contains
     type(tao_plot_cache_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%err
+  end subroutine
+
+
+  subroutine tao_plot_cache_struct_set_err(struct_obj_ptr, value_in) bind(c, name='tao_plot_cache_struct_set_err')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_plot_cache_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%err = value_in
   end subroutine
 
   !! tao_spin_polarization_struct
@@ -13726,6 +19775,15 @@ contains
     value_out = struct_obj%tune
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_tune(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_tune')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%tune = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%pol_limit_st: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_pol_limit_st(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_pol_limit_st')
@@ -13736,6 +19794,15 @@ contains
     value_out = struct_obj%pol_limit_st
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_pol_limit_st(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_pol_limit_st')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pol_limit_st = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%pol_limit_dk: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_pol_limit_dk(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_pol_limit_dk')
@@ -13744,6 +19811,15 @@ contains
     type(tao_spin_polarization_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pol_limit_dk
+  end subroutine
+
+
+  subroutine tao_spin_polarization_struct_set_pol_limit_dk(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_pol_limit_dk')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pol_limit_dk = value_in
   end subroutine
 
   ! tao_spin_polarization_struct%pol_limit_dk_partial: 1D_NOT_real
@@ -13784,6 +19860,15 @@ contains
     value_out = struct_obj%pol_rate_bks
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_pol_rate_bks(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_pol_rate_bks')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%pol_rate_bks = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%depol_rate: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_depol_rate(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_depol_rate')
@@ -13792,6 +19877,15 @@ contains
     type(tao_spin_polarization_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%depol_rate
+  end subroutine
+
+
+  subroutine tao_spin_polarization_struct_set_depol_rate(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_depol_rate')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%depol_rate = value_in
   end subroutine
 
   ! tao_spin_polarization_struct%depol_rate_partial: 1D_NOT_real
@@ -13832,6 +19926,15 @@ contains
     value_out = struct_obj%integral_bn
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_integral_bn(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_integral_bn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%integral_bn = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%integral_bdn: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_integral_bdn(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_integral_bdn')
@@ -13840,6 +19943,15 @@ contains
     type(tao_spin_polarization_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_bdn
+  end subroutine
+
+
+  subroutine tao_spin_polarization_struct_set_integral_bdn(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_integral_bdn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%integral_bdn = value_in
   end subroutine
 
   ! tao_spin_polarization_struct%integral_1ns: 0D_NOT_real
@@ -13852,6 +19964,15 @@ contains
     value_out = struct_obj%integral_1ns
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_integral_1ns(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_integral_1ns')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%integral_1ns = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%integral_dn2: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_integral_dn2(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_integral_dn2')
@@ -13860,6 +19981,15 @@ contains
     type(tao_spin_polarization_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_dn2
+  end subroutine
+
+
+  subroutine tao_spin_polarization_struct_set_integral_dn2(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_integral_dn2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%integral_dn2 = value_in
   end subroutine
 
   ! tao_spin_polarization_struct%valid: 0D_NOT_logical
@@ -13872,6 +20002,15 @@ contains
     value_out = struct_obj%valid
   end subroutine
 
+
+  subroutine tao_spin_polarization_struct_set_valid(struct_obj_ptr, value_in) bind(c, name='tao_spin_polarization_struct_set_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%valid = value_in
+  end subroutine
+
   ! tao_spin_polarization_struct%q_1turn: 0D_NOT_type
 
   subroutine tao_spin_polarization_struct_get_q_1turn(struct_obj_ptr, ptr_out) bind(c, name='tao_spin_polarization_struct_get_q_1turn')
@@ -13880,6 +20019,17 @@ contains
     type(tao_spin_polarization_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%q_1turn)
+  end subroutine
+
+
+  subroutine tao_spin_polarization_struct_set_q_1turn(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_polarization_struct_set_q_1turn')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    type(spin_orbit_map1_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%q_1turn = src_obj
   end subroutine
 
   ! tao_spin_polarization_struct%q_ele: 1D_ALLOC_type
@@ -13955,6 +20105,19 @@ contains
       ptr_out = c_loc(struct_obj%tao_lat)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_tao_lat(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_tao_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(tao_lattice_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%tao_lat)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%tao_lat = src_obj
     endif
   end subroutine
 
@@ -14130,6 +20293,17 @@ contains
     ptr_out = c_loc(struct_obj%spin)
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_spin(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_spin')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(tao_spin_polarization_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%spin = src_obj
+  end subroutine
+
   ! tao_lattice_branch_struct%srdt: 0D_NOT_type
 
   subroutine tao_lattice_branch_struct_get_srdt(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_srdt')
@@ -14138,6 +20312,17 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%srdt)
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_srdt(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_srdt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(summation_rdt_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%srdt = src_obj
   end subroutine
 
   ! tao_lattice_branch_struct%orb0: 0D_NOT_type
@@ -14150,6 +20335,17 @@ contains
     ptr_out = c_loc(struct_obj%orb0)
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_orb0(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_orb0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(coord_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%orb0 = src_obj
+  end subroutine
+
   ! tao_lattice_branch_struct%modes_ri: 0D_NOT_type
 
   subroutine tao_lattice_branch_struct_get_modes_ri(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_modes_ri')
@@ -14158,6 +20354,17 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%modes_ri)
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_modes_ri(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_modes_ri')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(normal_modes_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%modes_ri = src_obj
   end subroutine
 
   ! tao_lattice_branch_struct%modes_6d: 0D_NOT_type
@@ -14170,6 +20377,17 @@ contains
     ptr_out = c_loc(struct_obj%modes_6d)
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_modes_6d(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_modes_6d')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(normal_modes_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%modes_6d = src_obj
+  end subroutine
+
   ! tao_lattice_branch_struct%ptc_normal_form: 0D_NOT_type
 
   subroutine tao_lattice_branch_struct_get_ptc_normal_form(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_ptc_normal_form')
@@ -14180,6 +20398,17 @@ contains
     ptr_out = c_loc(struct_obj%ptc_normal_form)
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_ptc_normal_form(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_ptc_normal_form')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(ptc_normal_form_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ptc_normal_form = src_obj
+  end subroutine
+
   ! tao_lattice_branch_struct%bmad_normal_form: 0D_NOT_type
 
   subroutine tao_lattice_branch_struct_get_bmad_normal_form(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_bmad_normal_form')
@@ -14188,6 +20417,17 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%bmad_normal_form)
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_bmad_normal_form(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_branch_struct_set_bmad_normal_form')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    type(bmad_normal_form_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%bmad_normal_form = src_obj
   end subroutine
 
   ! tao_lattice_branch_struct%high_E_orb: 1D_ALLOC_type
@@ -14254,6 +20494,15 @@ contains
     value_out = struct_obj%cache_x_min
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_cache_x_min(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_cache_x_min')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%cache_x_min = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%cache_x_max: 0D_NOT_real
 
   subroutine tao_lattice_branch_struct_get_cache_x_max(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_cache_x_max')
@@ -14262,6 +20511,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cache_x_max
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_cache_x_max(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_cache_x_max')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%cache_x_max = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%comb_ds_save: 0D_NOT_real
@@ -14274,6 +20532,15 @@ contains
     value_out = struct_obj%comb_ds_save
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_comb_ds_save(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_comb_ds_save')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%comb_ds_save = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%track_state: 0D_NOT_integer
 
   subroutine tao_lattice_branch_struct_get_track_state(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_track_state')
@@ -14282,6 +20549,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%track_state
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_track_state(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_track_state')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%track_state = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%cache_n_pts: 0D_NOT_integer
@@ -14294,6 +20570,15 @@ contains
     value_out = struct_obj%cache_n_pts
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_cache_n_pts(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_cache_n_pts')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%cache_n_pts = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%ix_rad_int_cache: 0D_NOT_integer
 
   subroutine tao_lattice_branch_struct_get_ix_rad_int_cache(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_ix_rad_int_cache')
@@ -14302,6 +20587,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_rad_int_cache
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_ix_rad_int_cache(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_ix_rad_int_cache')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_rad_int_cache = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%has_open_match_element: 0D_NOT_logical
@@ -14314,6 +20608,15 @@ contains
     value_out = struct_obj%has_open_match_element
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_has_open_match_element(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_has_open_match_element')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%has_open_match_element = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%plot_cache_valid: 0D_NOT_logical
 
   subroutine tao_lattice_branch_struct_get_plot_cache_valid(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_plot_cache_valid')
@@ -14322,6 +20625,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%plot_cache_valid
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_plot_cache_valid(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_plot_cache_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%plot_cache_valid = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%spin_map_valid: 0D_NOT_logical
@@ -14334,6 +20646,15 @@ contains
     value_out = struct_obj%spin_map_valid
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_spin_map_valid(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_spin_map_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_map_valid = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%twiss_valid: 0D_NOT_logical
 
   subroutine tao_lattice_branch_struct_get_twiss_valid(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_twiss_valid')
@@ -14342,6 +20663,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%twiss_valid
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_twiss_valid(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_twiss_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%twiss_valid = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%mode_flip_here: 0D_NOT_logical
@@ -14354,6 +20684,15 @@ contains
     value_out = struct_obj%mode_flip_here
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_mode_flip_here(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_mode_flip_here')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%mode_flip_here = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%chrom_calc_ok: 0D_NOT_logical
 
   subroutine tao_lattice_branch_struct_get_chrom_calc_ok(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_chrom_calc_ok')
@@ -14362,6 +20701,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom_calc_ok
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_chrom_calc_ok(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_chrom_calc_ok')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom_calc_ok = value_in
   end subroutine
 
   ! tao_lattice_branch_struct%rad_int_calc_ok: 0D_NOT_logical
@@ -14374,6 +20722,15 @@ contains
     value_out = struct_obj%rad_int_calc_ok
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_rad_int_calc_ok(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_rad_int_calc_ok')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rad_int_calc_ok = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%emit_6d_calc_ok: 0D_NOT_logical
 
   subroutine tao_lattice_branch_struct_get_emit_6d_calc_ok(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_emit_6d_calc_ok')
@@ -14384,6 +20741,15 @@ contains
     value_out = struct_obj%emit_6d_calc_ok
   end subroutine
 
+
+  subroutine tao_lattice_branch_struct_set_emit_6d_calc_ok(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_emit_6d_calc_ok')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%emit_6d_calc_ok = value_in
+  end subroutine
+
   ! tao_lattice_branch_struct%sigma_track_ok: 0D_NOT_logical
 
   subroutine tao_lattice_branch_struct_get_sigma_track_ok(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_sigma_track_ok')
@@ -14392,6 +20758,15 @@ contains
     type(tao_lattice_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_track_ok
+  end subroutine
+
+
+  subroutine tao_lattice_branch_struct_set_sigma_track_ok(struct_obj_ptr, value_in) bind(c, name='tao_lattice_branch_struct_set_sigma_track_ok')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%sigma_track_ok = value_in
   end subroutine
 
   !! tao_model_element_struct
@@ -14439,6 +20814,17 @@ contains
     ptr_out = c_loc(struct_obj%beam)
   end subroutine
 
+
+  subroutine tao_model_element_struct_set_beam(struct_obj_ptr, src_ptr) bind(c, name='tao_model_element_struct_set_beam')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_model_element_struct), pointer :: struct_obj
+    type(beam_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam = src_obj
+  end subroutine
+
   ! tao_model_element_struct%save_beam_internally: 0D_NOT_logical
 
   subroutine tao_model_element_struct_get_save_beam_internally(struct_obj_ptr, value_out) bind(c, name='tao_model_element_struct_get_save_beam_internally')
@@ -14449,6 +20835,15 @@ contains
     value_out = struct_obj%save_beam_internally
   end subroutine
 
+
+  subroutine tao_model_element_struct_set_save_beam_internally(struct_obj_ptr, value_in) bind(c, name='tao_model_element_struct_set_save_beam_internally')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_model_element_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%save_beam_internally = value_in
+  end subroutine
+
   ! tao_model_element_struct%save_beam_to_file: 0D_NOT_logical
 
   subroutine tao_model_element_struct_get_save_beam_to_file(struct_obj_ptr, value_out) bind(c, name='tao_model_element_struct_get_save_beam_to_file')
@@ -14457,6 +20852,15 @@ contains
     type(tao_model_element_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%save_beam_to_file
+  end subroutine
+
+
+  subroutine tao_model_element_struct_set_save_beam_to_file(struct_obj_ptr, value_in) bind(c, name='tao_model_element_struct_set_save_beam_to_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_model_element_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%save_beam_to_file = value_in
   end subroutine
 
   !! tao_beam_branch_struct
@@ -14504,6 +20908,17 @@ contains
     ptr_out = c_loc(struct_obj%beam_at_start)
   end subroutine
 
+
+  subroutine tao_beam_branch_struct_set_beam_at_start(struct_obj_ptr, src_ptr) bind(c, name='tao_beam_branch_struct_set_beam_at_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    type(beam_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam_at_start = src_obj
+  end subroutine
+
   ! tao_beam_branch_struct%beam_init: 0D_NOT_type
 
   subroutine tao_beam_branch_struct_get_beam_init(struct_obj_ptr, ptr_out) bind(c, name='tao_beam_branch_struct_get_beam_init')
@@ -14512,6 +20927,17 @@ contains
     type(tao_beam_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init)
+  end subroutine
+
+
+  subroutine tao_beam_branch_struct_set_beam_init(struct_obj_ptr, src_ptr) bind(c, name='tao_beam_branch_struct_set_beam_init')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    type(beam_init_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam_init = src_obj
   end subroutine
 
   ! tao_beam_branch_struct%beam_init_used: 0D_NOT_type
@@ -14524,6 +20950,17 @@ contains
     ptr_out = c_loc(struct_obj%beam_init_used)
   end subroutine
 
+
+  subroutine tao_beam_branch_struct_set_beam_init_used(struct_obj_ptr, src_ptr) bind(c, name='tao_beam_branch_struct_set_beam_init_used')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    type(beam_init_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam_init_used = src_obj
+  end subroutine
+
   ! tao_beam_branch_struct%init_starting_distribution: 0D_NOT_logical
 
   subroutine tao_beam_branch_struct_get_init_starting_distribution(struct_obj_ptr, value_out) bind(c, name='tao_beam_branch_struct_get_init_starting_distribution')
@@ -14532,6 +20969,15 @@ contains
     type(tao_beam_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%init_starting_distribution
+  end subroutine
+
+
+  subroutine tao_beam_branch_struct_set_init_starting_distribution(struct_obj_ptr, value_in) bind(c, name='tao_beam_branch_struct_set_init_starting_distribution')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%init_starting_distribution = value_in
   end subroutine
 
   ! tao_beam_branch_struct%track_start: 0D_NOT_character
@@ -14572,6 +21018,15 @@ contains
     value_out = struct_obj%ix_branch
   end subroutine
 
+
+  subroutine tao_beam_branch_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='tao_beam_branch_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
+  end subroutine
+
   ! tao_beam_branch_struct%ix_track_start: 0D_NOT_integer
 
   subroutine tao_beam_branch_struct_get_ix_track_start(struct_obj_ptr, value_out) bind(c, name='tao_beam_branch_struct_get_ix_track_start')
@@ -14582,6 +21037,15 @@ contains
     value_out = struct_obj%ix_track_start
   end subroutine
 
+
+  subroutine tao_beam_branch_struct_set_ix_track_start(struct_obj_ptr, value_in) bind(c, name='tao_beam_branch_struct_set_ix_track_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_track_start = value_in
+  end subroutine
+
   ! tao_beam_branch_struct%ix_track_end: 0D_NOT_integer
 
   subroutine tao_beam_branch_struct_get_ix_track_end(struct_obj_ptr, value_out) bind(c, name='tao_beam_branch_struct_get_ix_track_end')
@@ -14590,6 +21054,15 @@ contains
     type(tao_beam_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_track_end
+  end subroutine
+
+
+  subroutine tao_beam_branch_struct_set_ix_track_end(struct_obj_ptr, value_in) bind(c, name='tao_beam_branch_struct_set_ix_track_end')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_track_end = value_in
   end subroutine
 
   !! tao_d1_data_struct
@@ -14652,6 +21125,19 @@ contains
       ptr_out = c_loc(struct_obj%d2)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine tao_d1_data_struct_set_d2(struct_obj_ptr, src_ptr) bind(c, name='tao_d1_data_struct_set_d2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_d1_data_struct), pointer :: struct_obj
+    type(tao_d2_data_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%d2)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%d2 = src_obj
     endif
   end subroutine
 
@@ -14741,6 +21227,17 @@ contains
     ptr_out = c_loc(struct_obj%lat)
   end subroutine
 
+
+  subroutine tao_lattice_struct_set_lat(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_struct_set_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_struct), pointer :: struct_obj
+    type(lat_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%lat = src_obj
+  end subroutine
+
   ! tao_lattice_struct%high_E_lat: 0D_NOT_type
 
   subroutine tao_lattice_struct_get_high_E_lat(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_struct_get_high_E_lat')
@@ -14749,6 +21246,17 @@ contains
     type(tao_lattice_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%high_E_lat)
+  end subroutine
+
+
+  subroutine tao_lattice_struct_set_high_E_lat(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_struct_set_high_E_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_struct), pointer :: struct_obj
+    type(lat_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%high_E_lat = src_obj
   end subroutine
 
   ! tao_lattice_struct%low_E_lat: 0D_NOT_type
@@ -14761,6 +21269,17 @@ contains
     ptr_out = c_loc(struct_obj%low_E_lat)
   end subroutine
 
+
+  subroutine tao_lattice_struct_set_low_E_lat(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_struct_set_low_E_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_struct), pointer :: struct_obj
+    type(lat_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%low_E_lat = src_obj
+  end subroutine
+
   ! tao_lattice_struct%rad_int_by_ele_ri: 0D_NOT_type
 
   subroutine tao_lattice_struct_get_rad_int_by_ele_ri(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_struct_get_rad_int_by_ele_ri')
@@ -14771,6 +21290,17 @@ contains
     ptr_out = c_loc(struct_obj%rad_int_by_ele_ri)
   end subroutine
 
+
+  subroutine tao_lattice_struct_set_rad_int_by_ele_ri(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_struct_set_rad_int_by_ele_ri')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_struct), pointer :: struct_obj
+    type(rad_int_all_ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%rad_int_by_ele_ri = src_obj
+  end subroutine
+
   ! tao_lattice_struct%rad_int_by_ele_6d: 0D_NOT_type
 
   subroutine tao_lattice_struct_get_rad_int_by_ele_6d(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_struct_get_rad_int_by_ele_6d')
@@ -14779,6 +21309,17 @@ contains
     type(tao_lattice_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%rad_int_by_ele_6d)
+  end subroutine
+
+
+  subroutine tao_lattice_struct_set_rad_int_by_ele_6d(struct_obj_ptr, src_ptr) bind(c, name='tao_lattice_struct_set_rad_int_by_ele_6d')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_lattice_struct), pointer :: struct_obj
+    type(rad_int_all_ele_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%rad_int_by_ele_6d = src_obj
   end subroutine
 
   ! tao_lattice_struct%tao_branch: 1D_ALLOC_type
@@ -14895,6 +21436,15 @@ contains
     value_out = struct_obj%track_beam_in_universe
   end subroutine
 
+
+  subroutine tao_beam_uni_struct_set_track_beam_in_universe(struct_obj_ptr, value_in) bind(c, name='tao_beam_uni_struct_set_track_beam_in_universe')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_beam_uni_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%track_beam_in_universe = value_in
+  end subroutine
+
   ! tao_beam_uni_struct%always_reinit: 0D_NOT_logical
 
   subroutine tao_beam_uni_struct_get_always_reinit(struct_obj_ptr, value_out) bind(c, name='tao_beam_uni_struct_get_always_reinit')
@@ -14903,6 +21453,15 @@ contains
     type(tao_beam_uni_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%always_reinit
+  end subroutine
+
+
+  subroutine tao_beam_uni_struct_set_always_reinit(struct_obj_ptr, value_in) bind(c, name='tao_beam_uni_struct_set_always_reinit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_beam_uni_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%always_reinit = value_in
   end subroutine
 
   !! tao_dynamic_aperture_struct
@@ -14948,6 +21507,17 @@ contains
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%param)
+  end subroutine
+
+
+  subroutine tao_dynamic_aperture_struct_set_param(struct_obj_ptr, src_ptr) bind(c, name='tao_dynamic_aperture_struct_set_param')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    type(aperture_param_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%param = src_obj
   end subroutine
 
   ! tao_dynamic_aperture_struct%scan: 1D_ALLOC_type
@@ -15011,6 +21581,15 @@ contains
     value_out = struct_obj%ellipse_scale
   end subroutine
 
+
+  subroutine tao_dynamic_aperture_struct_set_ellipse_scale(struct_obj_ptr, value_in) bind(c, name='tao_dynamic_aperture_struct_set_ellipse_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ellipse_scale = value_in
+  end subroutine
+
   ! tao_dynamic_aperture_struct%a_emit: 0D_NOT_real
 
   subroutine tao_dynamic_aperture_struct_get_a_emit(struct_obj_ptr, value_out) bind(c, name='tao_dynamic_aperture_struct_get_a_emit')
@@ -15021,6 +21600,15 @@ contains
     value_out = struct_obj%a_emit
   end subroutine
 
+
+  subroutine tao_dynamic_aperture_struct_set_a_emit(struct_obj_ptr, value_in) bind(c, name='tao_dynamic_aperture_struct_set_a_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_emit = value_in
+  end subroutine
+
   ! tao_dynamic_aperture_struct%b_emit: 0D_NOT_real
 
   subroutine tao_dynamic_aperture_struct_get_b_emit(struct_obj_ptr, value_out) bind(c, name='tao_dynamic_aperture_struct_get_b_emit')
@@ -15029,6 +21617,15 @@ contains
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_emit
+  end subroutine
+
+
+  subroutine tao_dynamic_aperture_struct_set_b_emit(struct_obj_ptr, value_in) bind(c, name='tao_dynamic_aperture_struct_set_b_emit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_emit = value_in
   end subroutine
 
   !! tao_model_branch_struct
@@ -15101,6 +21698,17 @@ contains
     type(tao_model_branch_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam)
+  end subroutine
+
+
+  subroutine tao_model_branch_struct_set_beam(struct_obj_ptr, src_ptr) bind(c, name='tao_model_branch_struct_set_beam')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_model_branch_struct), pointer :: struct_obj
+    type(tao_beam_branch_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam = src_obj
   end subroutine
 
   !! tao_d2_data_struct
@@ -15246,6 +21854,15 @@ contains
     value_out = struct_obj%ix_universe
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_ix_universe(struct_obj_ptr, value_in) bind(c, name='tao_d2_data_struct_set_ix_universe')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_universe = value_in
+  end subroutine
+
   ! tao_d2_data_struct%ix_d2_data: 0D_NOT_integer
 
   subroutine tao_d2_data_struct_get_ix_d2_data(struct_obj_ptr, value_out) bind(c, name='tao_d2_data_struct_get_ix_d2_data')
@@ -15254,6 +21871,15 @@ contains
     type(tao_d2_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_d2_data
+  end subroutine
+
+
+  subroutine tao_d2_data_struct_set_ix_d2_data(struct_obj_ptr, value_in) bind(c, name='tao_d2_data_struct_set_ix_d2_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_d2_data = value_in
   end subroutine
 
   ! tao_d2_data_struct%ix_ref: 0D_NOT_integer
@@ -15266,6 +21892,15 @@ contains
     value_out = struct_obj%ix_ref
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_ix_ref(struct_obj_ptr, value_in) bind(c, name='tao_d2_data_struct_set_ix_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ref = value_in
+  end subroutine
+
   ! tao_d2_data_struct%data_read_in: 0D_NOT_logical
 
   subroutine tao_d2_data_struct_get_data_read_in(struct_obj_ptr, value_out) bind(c, name='tao_d2_data_struct_get_data_read_in')
@@ -15276,6 +21911,15 @@ contains
     value_out = struct_obj%data_read_in
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_data_read_in(struct_obj_ptr, value_in) bind(c, name='tao_d2_data_struct_set_data_read_in')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%data_read_in = value_in
+  end subroutine
+
   ! tao_d2_data_struct%ref_read_in: 0D_NOT_logical
 
   subroutine tao_d2_data_struct_get_ref_read_in(struct_obj_ptr, value_out) bind(c, name='tao_d2_data_struct_get_ref_read_in')
@@ -15284,6 +21928,15 @@ contains
     type(tao_d2_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_read_in
+  end subroutine
+
+
+  subroutine tao_d2_data_struct_set_ref_read_in(struct_obj_ptr, value_in) bind(c, name='tao_d2_data_struct_set_ref_read_in')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref_read_in = value_in
   end subroutine
 
   !! tao_spin_map_struct
@@ -15331,6 +21984,15 @@ contains
     value_out = struct_obj%valid
   end subroutine
 
+
+  subroutine tao_spin_map_struct_set_valid(struct_obj_ptr, value_in) bind(c, name='tao_spin_map_struct_set_valid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%valid = value_in
+  end subroutine
+
   ! tao_spin_map_struct%map1: 0D_NOT_type
 
   subroutine tao_spin_map_struct_get_map1(struct_obj_ptr, ptr_out) bind(c, name='tao_spin_map_struct_get_map1')
@@ -15339,6 +22001,17 @@ contains
     type(tao_spin_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%map1)
+  end subroutine
+
+
+  subroutine tao_spin_map_struct_set_map1(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_map_struct_set_map1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_map_struct), pointer :: struct_obj
+    type(spin_orbit_map1_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%map1 = src_obj
   end subroutine
 
   ! tao_spin_map_struct%axis_input: 0D_NOT_type
@@ -15351,6 +22024,17 @@ contains
     ptr_out = c_loc(struct_obj%axis_input)
   end subroutine
 
+
+  subroutine tao_spin_map_struct_set_axis_input(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_map_struct_set_axis_input')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_map_struct), pointer :: struct_obj
+    type(spin_axis_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%axis_input = src_obj
+  end subroutine
+
   ! tao_spin_map_struct%axis0: 0D_NOT_type
 
   subroutine tao_spin_map_struct_get_axis0(struct_obj_ptr, ptr_out) bind(c, name='tao_spin_map_struct_get_axis0')
@@ -15359,6 +22043,17 @@ contains
     type(tao_spin_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%axis0)
+  end subroutine
+
+
+  subroutine tao_spin_map_struct_set_axis0(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_map_struct_set_axis0')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_map_struct), pointer :: struct_obj
+    type(spin_axis_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%axis0 = src_obj
   end subroutine
 
   ! tao_spin_map_struct%axis1: 0D_NOT_type
@@ -15371,6 +22066,17 @@ contains
     ptr_out = c_loc(struct_obj%axis1)
   end subroutine
 
+
+  subroutine tao_spin_map_struct_set_axis1(struct_obj_ptr, src_ptr) bind(c, name='tao_spin_map_struct_set_axis1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_spin_map_struct), pointer :: struct_obj
+    type(spin_axis_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%axis1 = src_obj
+  end subroutine
+
   ! tao_spin_map_struct%ix_ele: 0D_NOT_integer
 
   subroutine tao_spin_map_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='tao_spin_map_struct_get_ix_ele')
@@ -15379,6 +22085,15 @@ contains
     type(tao_spin_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
+  end subroutine
+
+
+  subroutine tao_spin_map_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='tao_spin_map_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
   end subroutine
 
   ! tao_spin_map_struct%ix_ref: 0D_NOT_integer
@@ -15391,6 +22106,15 @@ contains
     value_out = struct_obj%ix_ref
   end subroutine
 
+
+  subroutine tao_spin_map_struct_set_ix_ref(struct_obj_ptr, value_in) bind(c, name='tao_spin_map_struct_set_ix_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ref = value_in
+  end subroutine
+
   ! tao_spin_map_struct%ix_uni: 0D_NOT_integer
 
   subroutine tao_spin_map_struct_get_ix_uni(struct_obj_ptr, value_out) bind(c, name='tao_spin_map_struct_get_ix_uni')
@@ -15401,6 +22125,15 @@ contains
     value_out = struct_obj%ix_uni
   end subroutine
 
+
+  subroutine tao_spin_map_struct_set_ix_uni(struct_obj_ptr, value_in) bind(c, name='tao_spin_map_struct_set_ix_uni')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_uni = value_in
+  end subroutine
+
   ! tao_spin_map_struct%ix_branch: 0D_NOT_integer
 
   subroutine tao_spin_map_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='tao_spin_map_struct_get_ix_branch')
@@ -15409,6 +22142,15 @@ contains
     type(tao_spin_map_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
+  end subroutine
+
+
+  subroutine tao_spin_map_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='tao_spin_map_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
   end subroutine
 
   ! skipped tao_spin_map_struct%mat8: Unsupported type: 2D_NOT_real
@@ -15556,6 +22298,15 @@ contains
     value_out = struct_obj%ix_uni
   end subroutine
 
+
+  subroutine tao_data_struct_set_ix_uni(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_uni')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_uni = value_in
+  end subroutine
+
   ! tao_data_struct%ix_bunch: 0D_NOT_integer
 
   subroutine tao_data_struct_get_ix_bunch(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_ix_bunch')
@@ -15564,6 +22315,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_bunch
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ix_bunch(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_bunch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_bunch = value_in
   end subroutine
 
   ! tao_data_struct%ix_branch: 0D_NOT_integer
@@ -15576,6 +22336,15 @@ contains
     value_out = struct_obj%ix_branch
   end subroutine
 
+
+  subroutine tao_data_struct_set_ix_branch(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_branch')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_branch = value_in
+  end subroutine
+
   ! tao_data_struct%ix_ele: 0D_NOT_integer
 
   subroutine tao_data_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_ix_ele')
@@ -15584,6 +22353,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ix_ele(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele = value_in
   end subroutine
 
   ! tao_data_struct%ix_ele_start: 0D_NOT_integer
@@ -15596,6 +22374,15 @@ contains
     value_out = struct_obj%ix_ele_start
   end subroutine
 
+
+  subroutine tao_data_struct_set_ix_ele_start(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_ele_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele_start = value_in
+  end subroutine
+
   ! tao_data_struct%ix_ele_ref: 0D_NOT_integer
 
   subroutine tao_data_struct_get_ix_ele_ref(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_ix_ele_ref')
@@ -15604,6 +22391,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_ref
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ix_ele_ref(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_ele_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele_ref = value_in
   end subroutine
 
   ! tao_data_struct%ix_ele_merit: 0D_NOT_integer
@@ -15616,6 +22412,15 @@ contains
     value_out = struct_obj%ix_ele_merit
   end subroutine
 
+
+  subroutine tao_data_struct_set_ix_ele_merit(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_ele_merit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_ele_merit = value_in
+  end subroutine
+
   ! tao_data_struct%ix_d1: 0D_NOT_integer
 
   subroutine tao_data_struct_get_ix_d1(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_ix_d1')
@@ -15624,6 +22429,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_d1
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ix_d1(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_d1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_d1 = value_in
   end subroutine
 
   ! tao_data_struct%ix_data: 0D_NOT_integer
@@ -15636,6 +22450,15 @@ contains
     value_out = struct_obj%ix_data
   end subroutine
 
+
+  subroutine tao_data_struct_set_ix_data(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_data = value_in
+  end subroutine
+
   ! tao_data_struct%ix_dModel: 0D_NOT_integer
 
   subroutine tao_data_struct_get_ix_dModel(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_ix_dModel')
@@ -15644,6 +22467,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_dModel
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ix_dModel(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ix_dModel')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_dModel = value_in
   end subroutine
 
   ! tao_data_struct%eval_point: 0D_NOT_integer
@@ -15656,6 +22488,15 @@ contains
     value_out = struct_obj%eval_point
   end subroutine
 
+
+  subroutine tao_data_struct_set_eval_point(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_eval_point')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%eval_point = value_in
+  end subroutine
+
   ! tao_data_struct%meas_value: 0D_NOT_real
 
   subroutine tao_data_struct_get_meas_value(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_meas_value')
@@ -15664,6 +22505,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%meas_value
+  end subroutine
+
+
+  subroutine tao_data_struct_set_meas_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_meas_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%meas_value = value_in
   end subroutine
 
   ! tao_data_struct%ref_value: 0D_NOT_real
@@ -15676,6 +22526,15 @@ contains
     value_out = struct_obj%ref_value
   end subroutine
 
+
+  subroutine tao_data_struct_set_ref_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_ref_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ref_value = value_in
+  end subroutine
+
   ! tao_data_struct%model_value: 0D_NOT_real
 
   subroutine tao_data_struct_get_model_value(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_model_value')
@@ -15684,6 +22543,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%model_value
+  end subroutine
+
+
+  subroutine tao_data_struct_set_model_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_model_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%model_value = value_in
   end subroutine
 
   ! tao_data_struct%design_value: 0D_NOT_real
@@ -15696,6 +22564,15 @@ contains
     value_out = struct_obj%design_value
   end subroutine
 
+
+  subroutine tao_data_struct_set_design_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_design_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%design_value = value_in
+  end subroutine
+
   ! tao_data_struct%old_value: 0D_NOT_real
 
   subroutine tao_data_struct_get_old_value(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_old_value')
@@ -15704,6 +22581,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%old_value
+  end subroutine
+
+
+  subroutine tao_data_struct_set_old_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_old_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%old_value = value_in
   end subroutine
 
   ! tao_data_struct%base_value: 0D_NOT_real
@@ -15716,6 +22602,15 @@ contains
     value_out = struct_obj%base_value
   end subroutine
 
+
+  subroutine tao_data_struct_set_base_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_base_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%base_value = value_in
+  end subroutine
+
   ! tao_data_struct%error_rms: 0D_NOT_real
 
   subroutine tao_data_struct_get_error_rms(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_error_rms')
@@ -15724,6 +22619,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%error_rms
+  end subroutine
+
+
+  subroutine tao_data_struct_set_error_rms(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_error_rms')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%error_rms = value_in
   end subroutine
 
   ! tao_data_struct%delta_merit: 0D_NOT_real
@@ -15736,6 +22640,15 @@ contains
     value_out = struct_obj%delta_merit
   end subroutine
 
+
+  subroutine tao_data_struct_set_delta_merit(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_delta_merit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%delta_merit = value_in
+  end subroutine
+
   ! tao_data_struct%weight: 0D_NOT_real
 
   subroutine tao_data_struct_get_weight(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_weight')
@@ -15744,6 +22657,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%weight
+  end subroutine
+
+
+  subroutine tao_data_struct_set_weight(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_weight')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%weight = value_in
   end subroutine
 
   ! tao_data_struct%invalid_value: 0D_NOT_real
@@ -15756,6 +22678,15 @@ contains
     value_out = struct_obj%invalid_value
   end subroutine
 
+
+  subroutine tao_data_struct_set_invalid_value(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_invalid_value')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%invalid_value = value_in
+  end subroutine
+
   ! tao_data_struct%merit: 0D_NOT_real
 
   subroutine tao_data_struct_get_merit(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_merit')
@@ -15764,6 +22695,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%merit
+  end subroutine
+
+
+  subroutine tao_data_struct_set_merit(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_merit')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%merit = value_in
   end subroutine
 
   ! tao_data_struct%s: 0D_NOT_real
@@ -15776,6 +22716,15 @@ contains
     value_out = struct_obj%s
   end subroutine
 
+
+  subroutine tao_data_struct_set_s(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_s')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s = value_in
+  end subroutine
+
   ! tao_data_struct%s_offset: 0D_NOT_real
 
   subroutine tao_data_struct_get_s_offset(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_s_offset')
@@ -15784,6 +22733,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_offset
+  end subroutine
+
+
+  subroutine tao_data_struct_set_s_offset(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_s_offset')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%s_offset = value_in
   end subroutine
 
   ! tao_data_struct%err_message_printed: 0D_NOT_logical
@@ -15796,6 +22754,15 @@ contains
     value_out = struct_obj%err_message_printed
   end subroutine
 
+
+  subroutine tao_data_struct_set_err_message_printed(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_err_message_printed')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%err_message_printed = value_in
+  end subroutine
+
   ! tao_data_struct%exists: 0D_NOT_logical
 
   subroutine tao_data_struct_get_exists(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_exists')
@@ -15804,6 +22771,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%exists
+  end subroutine
+
+
+  subroutine tao_data_struct_set_exists(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_exists')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%exists = value_in
   end subroutine
 
   ! tao_data_struct%good_model: 0D_NOT_logical
@@ -15816,6 +22792,15 @@ contains
     value_out = struct_obj%good_model
   end subroutine
 
+
+  subroutine tao_data_struct_set_good_model(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_model')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_model = value_in
+  end subroutine
+
   ! tao_data_struct%good_base: 0D_NOT_logical
 
   subroutine tao_data_struct_get_good_base(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_good_base')
@@ -15824,6 +22809,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_base
+  end subroutine
+
+
+  subroutine tao_data_struct_set_good_base(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_base')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_base = value_in
   end subroutine
 
   ! tao_data_struct%good_design: 0D_NOT_logical
@@ -15836,6 +22830,15 @@ contains
     value_out = struct_obj%good_design
   end subroutine
 
+
+  subroutine tao_data_struct_set_good_design(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_design')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_design = value_in
+  end subroutine
+
   ! tao_data_struct%good_meas: 0D_NOT_logical
 
   subroutine tao_data_struct_get_good_meas(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_good_meas')
@@ -15844,6 +22847,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_meas
+  end subroutine
+
+
+  subroutine tao_data_struct_set_good_meas(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_meas')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_meas = value_in
   end subroutine
 
   ! tao_data_struct%good_ref: 0D_NOT_logical
@@ -15856,6 +22868,15 @@ contains
     value_out = struct_obj%good_ref
   end subroutine
 
+
+  subroutine tao_data_struct_set_good_ref(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_ref = value_in
+  end subroutine
+
   ! tao_data_struct%good_user: 0D_NOT_logical
 
   subroutine tao_data_struct_get_good_user(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_good_user')
@@ -15864,6 +22885,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_user
+  end subroutine
+
+
+  subroutine tao_data_struct_set_good_user(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_user')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_user = value_in
   end subroutine
 
   ! tao_data_struct%good_opt: 0D_NOT_logical
@@ -15876,6 +22906,15 @@ contains
     value_out = struct_obj%good_opt
   end subroutine
 
+
+  subroutine tao_data_struct_set_good_opt(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_opt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_opt = value_in
+  end subroutine
+
   ! tao_data_struct%good_plot: 0D_NOT_logical
 
   subroutine tao_data_struct_get_good_plot(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_good_plot')
@@ -15884,6 +22923,15 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_plot
+  end subroutine
+
+
+  subroutine tao_data_struct_set_good_plot(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_good_plot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%good_plot = value_in
   end subroutine
 
   ! tao_data_struct%useit_plot: 0D_NOT_logical
@@ -15896,6 +22944,15 @@ contains
     value_out = struct_obj%useit_plot
   end subroutine
 
+
+  subroutine tao_data_struct_set_useit_plot(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_useit_plot')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%useit_plot = value_in
+  end subroutine
+
   ! tao_data_struct%useit_opt: 0D_NOT_logical
 
   subroutine tao_data_struct_get_useit_opt(struct_obj_ptr, value_out) bind(c, name='tao_data_struct_get_useit_opt')
@@ -15906,6 +22963,15 @@ contains
     value_out = struct_obj%useit_opt
   end subroutine
 
+
+  subroutine tao_data_struct_set_useit_opt(struct_obj_ptr, value_in) bind(c, name='tao_data_struct_set_useit_opt')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%useit_opt = value_in
+  end subroutine
+
   ! tao_data_struct%spin_map: 0D_NOT_type
 
   subroutine tao_data_struct_get_spin_map(struct_obj_ptr, ptr_out) bind(c, name='tao_data_struct_get_spin_map')
@@ -15914,6 +22980,17 @@ contains
     type(tao_data_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spin_map)
+  end subroutine
+
+
+  subroutine tao_data_struct_set_spin_map(struct_obj_ptr, src_ptr) bind(c, name='tao_data_struct_set_spin_map')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_data_struct), pointer :: struct_obj
+    type(tao_spin_map_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%spin_map = src_obj
   end subroutine
 
   ! tao_data_struct%d1: 0D_PTR_type
@@ -15927,6 +23004,19 @@ contains
       ptr_out = c_loc(struct_obj%d1)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine tao_data_struct_set_d1(struct_obj_ptr, src_ptr) bind(c, name='tao_data_struct_set_d1')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_data_struct), pointer :: struct_obj
+    type(tao_d1_data_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%d1)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%d1 = src_obj
     endif
   end subroutine
 
@@ -15975,6 +23065,15 @@ contains
     value_out = struct_obj%a_mode_meas
   end subroutine
 
+
+  subroutine tao_ping_scale_struct_set_a_mode_meas(struct_obj_ptr, value_in) bind(c, name='tao_ping_scale_struct_set_a_mode_meas')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_ping_scale_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_mode_meas = value_in
+  end subroutine
+
   ! tao_ping_scale_struct%a_mode_ref: 0D_NOT_real
 
   subroutine tao_ping_scale_struct_get_a_mode_ref(struct_obj_ptr, value_out) bind(c, name='tao_ping_scale_struct_get_a_mode_ref')
@@ -15983,6 +23082,15 @@ contains
     type(tao_ping_scale_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_mode_ref
+  end subroutine
+
+
+  subroutine tao_ping_scale_struct_set_a_mode_ref(struct_obj_ptr, value_in) bind(c, name='tao_ping_scale_struct_set_a_mode_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_ping_scale_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%a_mode_ref = value_in
   end subroutine
 
   ! tao_ping_scale_struct%b_mode_meas: 0D_NOT_real
@@ -15995,6 +23103,15 @@ contains
     value_out = struct_obj%b_mode_meas
   end subroutine
 
+
+  subroutine tao_ping_scale_struct_set_b_mode_meas(struct_obj_ptr, value_in) bind(c, name='tao_ping_scale_struct_set_b_mode_meas')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_ping_scale_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_mode_meas = value_in
+  end subroutine
+
   ! tao_ping_scale_struct%b_mode_ref: 0D_NOT_real
 
   subroutine tao_ping_scale_struct_get_b_mode_ref(struct_obj_ptr, value_out) bind(c, name='tao_ping_scale_struct_get_b_mode_ref')
@@ -16003,6 +23120,15 @@ contains
     type(tao_ping_scale_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_mode_ref
+  end subroutine
+
+
+  subroutine tao_ping_scale_struct_set_b_mode_ref(struct_obj_ptr, value_in) bind(c, name='tao_ping_scale_struct_set_b_mode_ref')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    real(c_double), intent(in), value :: value_in
+    type(tao_ping_scale_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%b_mode_ref = value_in
   end subroutine
 
   !! tao_universe_calc_struct
@@ -16050,6 +23176,15 @@ contains
     value_out = struct_obj%srdt_for_data
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_srdt_for_data(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_srdt_for_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%srdt_for_data = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%rad_int_for_data: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_rad_int_for_data(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_rad_int_for_data')
@@ -16058,6 +23193,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rad_int_for_data
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_rad_int_for_data(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_rad_int_for_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rad_int_for_data = value_in
   end subroutine
 
   ! tao_universe_calc_struct%rad_int_for_plotting: 0D_NOT_logical
@@ -16070,6 +23214,15 @@ contains
     value_out = struct_obj%rad_int_for_plotting
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_rad_int_for_plotting(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_rad_int_for_plotting')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%rad_int_for_plotting = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%chrom_for_data: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_chrom_for_data(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_chrom_for_data')
@@ -16078,6 +23231,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom_for_data
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_chrom_for_data(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_chrom_for_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom_for_data = value_in
   end subroutine
 
   ! tao_universe_calc_struct%chrom_for_plotting: 0D_NOT_logical
@@ -16090,6 +23252,15 @@ contains
     value_out = struct_obj%chrom_for_plotting
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_chrom_for_plotting(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_chrom_for_plotting')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%chrom_for_plotting = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%lat_sigma_for_data: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_lat_sigma_for_data(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_lat_sigma_for_data')
@@ -16098,6 +23269,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lat_sigma_for_data
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_lat_sigma_for_data(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_lat_sigma_for_data')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lat_sigma_for_data = value_in
   end subroutine
 
   ! tao_universe_calc_struct%lat_sigma_for_plotting: 0D_NOT_logical
@@ -16110,6 +23290,15 @@ contains
     value_out = struct_obj%lat_sigma_for_plotting
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_lat_sigma_for_plotting(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_lat_sigma_for_plotting')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lat_sigma_for_plotting = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%dynamic_aperture: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_dynamic_aperture(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_dynamic_aperture')
@@ -16118,6 +23307,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dynamic_aperture
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_dynamic_aperture(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_dynamic_aperture')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%dynamic_aperture = value_in
   end subroutine
 
   ! tao_universe_calc_struct%one_turn_map: 0D_NOT_logical
@@ -16130,6 +23328,15 @@ contains
     value_out = struct_obj%one_turn_map
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_one_turn_map(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_one_turn_map')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%one_turn_map = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%lattice: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_lattice(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_lattice')
@@ -16138,6 +23345,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lattice
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_lattice(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_lattice')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%lattice = value_in
   end subroutine
 
   ! tao_universe_calc_struct%twiss: 0D_NOT_logical
@@ -16150,6 +23366,15 @@ contains
     value_out = struct_obj%twiss
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_twiss(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_twiss')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%twiss = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%track: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_track(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_track')
@@ -16160,6 +23385,15 @@ contains
     value_out = struct_obj%track
   end subroutine
 
+
+  subroutine tao_universe_calc_struct_set_track(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_track')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%track = value_in
+  end subroutine
+
   ! tao_universe_calc_struct%spin_matrices: 0D_NOT_logical
 
   subroutine tao_universe_calc_struct_get_spin_matrices(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_spin_matrices')
@@ -16168,6 +23402,15 @@ contains
     type(tao_universe_calc_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_matrices
+  end subroutine
+
+
+  subroutine tao_universe_calc_struct_set_spin_matrices(struct_obj_ptr, value_in) bind(c, name='tao_universe_calc_struct_set_spin_matrices')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_calc_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%spin_matrices = value_in
   end subroutine
 
   !! lat_ele_order_struct
@@ -16281,6 +23524,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine tao_universe_struct_set_model(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_model')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_lattice_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%model)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%model = src_obj
+    endif
+  end subroutine
+
   ! tao_universe_struct%design: 0D_PTR_type
 
   subroutine tao_universe_struct_get_design(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_design')
@@ -16292,6 +23548,19 @@ contains
       ptr_out = c_loc(struct_obj%design)
     else
       ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_design(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_design')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_lattice_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%design)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%design = src_obj
     endif
   end subroutine
 
@@ -16309,6 +23578,19 @@ contains
     endif
   end subroutine
 
+
+  subroutine tao_universe_struct_set_base(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_base')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_lattice_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%base)) then
+      call c_f_pointer(src_ptr, src_obj)
+      struct_obj%base = src_obj
+    endif
+  end subroutine
+
   ! tao_universe_struct%beam: 0D_NOT_type
 
   subroutine tao_universe_struct_get_beam(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_beam')
@@ -16319,6 +23601,17 @@ contains
     ptr_out = c_loc(struct_obj%beam)
   end subroutine
 
+
+  subroutine tao_universe_struct_set_beam(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_beam')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_beam_uni_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%beam = src_obj
+  end subroutine
+
   ! tao_universe_struct%dynamic_aperture: 0D_NOT_type
 
   subroutine tao_universe_struct_get_dynamic_aperture(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_dynamic_aperture')
@@ -16327,6 +23620,17 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%dynamic_aperture)
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_dynamic_aperture(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_dynamic_aperture')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_dynamic_aperture_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%dynamic_aperture = src_obj
   end subroutine
 
   ! tao_universe_struct%model_branch: 1D_PTR_type
@@ -16420,6 +23724,17 @@ contains
     ptr_out = c_loc(struct_obj%ping_scale)
   end subroutine
 
+
+  subroutine tao_universe_struct_set_ping_scale(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_ping_scale')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_ping_scale_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ping_scale = src_obj
+  end subroutine
+
   ! tao_universe_struct%scratch_lat: 0D_NOT_type
 
   subroutine tao_universe_struct_get_scratch_lat(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_scratch_lat')
@@ -16428,6 +23743,17 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%scratch_lat)
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_scratch_lat(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_scratch_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(lat_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%scratch_lat = src_obj
   end subroutine
 
   ! tao_universe_struct%calc: 0D_NOT_type
@@ -16440,6 +23766,17 @@ contains
     ptr_out = c_loc(struct_obj%calc)
   end subroutine
 
+
+  subroutine tao_universe_struct_set_calc(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_calc')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_universe_calc_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%calc = src_obj
+  end subroutine
+
   ! tao_universe_struct%ele_order: 0D_NOT_type
 
   subroutine tao_universe_struct_get_ele_order(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_ele_order')
@@ -16450,6 +23787,17 @@ contains
     ptr_out = c_loc(struct_obj%ele_order)
   end subroutine
 
+
+  subroutine tao_universe_struct_set_ele_order(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_ele_order')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(lat_ele_order_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%ele_order = src_obj
+  end subroutine
+
   ! tao_universe_struct%spin_map: 0D_NOT_type
 
   subroutine tao_universe_struct_get_spin_map(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_spin_map')
@@ -16458,6 +23806,17 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spin_map)
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_spin_map(struct_obj_ptr, src_ptr) bind(c, name='tao_universe_struct_set_spin_map')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: src_ptr
+    type(tao_universe_struct), pointer :: struct_obj
+    type(tao_spin_map_struct), pointer :: src_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    call c_f_pointer(src_ptr, src_obj)
+    struct_obj%spin_map = src_obj
   end subroutine
 
   ! tao_universe_struct%dModel_dVar: 2D_ALLOC_real
@@ -16504,6 +23863,15 @@ contains
     value_out = struct_obj%ix_uni
   end subroutine
 
+
+  subroutine tao_universe_struct_set_ix_uni(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_ix_uni')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%ix_uni = value_in
+  end subroutine
+
   ! tao_universe_struct%n_d2_data_used: 0D_NOT_integer
 
   subroutine tao_universe_struct_get_n_d2_data_used(struct_obj_ptr, value_out) bind(c, name='tao_universe_struct_get_n_d2_data_used')
@@ -16512,6 +23880,15 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_d2_data_used
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_n_d2_data_used(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_n_d2_data_used')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_d2_data_used = value_in
   end subroutine
 
   ! tao_universe_struct%n_data_used: 0D_NOT_integer
@@ -16524,6 +23901,15 @@ contains
     value_out = struct_obj%n_data_used
   end subroutine
 
+
+  subroutine tao_universe_struct_set_n_data_used(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_n_data_used')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    integer(c_int), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%n_data_used = value_in
+  end subroutine
+
   ! tao_universe_struct%is_on: 0D_NOT_logical
 
   subroutine tao_universe_struct_get_is_on(struct_obj_ptr, value_out) bind(c, name='tao_universe_struct_get_is_on')
@@ -16532,6 +23918,15 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%is_on
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_is_on(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_is_on')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%is_on = value_in
   end subroutine
 
   ! tao_universe_struct%design_same_as_previous: 0D_NOT_logical
@@ -16544,6 +23939,15 @@ contains
     value_out = struct_obj%design_same_as_previous
   end subroutine
 
+
+  subroutine tao_universe_struct_set_design_same_as_previous(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_design_same_as_previous')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%design_same_as_previous = value_in
+  end subroutine
+
   ! tao_universe_struct%picked_uni: 0D_NOT_logical
 
   subroutine tao_universe_struct_get_picked_uni(struct_obj_ptr, value_out) bind(c, name='tao_universe_struct_get_picked_uni')
@@ -16552,6 +23956,15 @@ contains
     type(tao_universe_struct), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%picked_uni
+  end subroutine
+
+
+  subroutine tao_universe_struct_set_picked_uni(struct_obj_ptr, value_in) bind(c, name='tao_universe_struct_set_picked_uni')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    logical(c_bool), intent(in), value :: value_in
+    type(tao_universe_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    struct_obj%picked_uni = value_in
   end subroutine
 
 end module
