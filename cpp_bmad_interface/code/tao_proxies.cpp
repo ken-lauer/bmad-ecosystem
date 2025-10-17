@@ -307,6 +307,10 @@ FortranArray1D<char> PhotonReflectSurfaceProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void PhotonReflectSurfaceProxy::set_name(const std::string& value) {
+  photon_reflect_surface_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string PhotonReflectSurfaceProxy::description() const {
   auto char_array = get_description_chars();
   return std::string(char_array.data(), char_array.size());
@@ -318,6 +322,10 @@ FortranArray1D<char> PhotonReflectSurfaceProxy::get_description_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void PhotonReflectSurfaceProxy::set_description(const std::string& value) {
+  photon_reflect_surface_struct_set_description(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string PhotonReflectSurfaceProxy::reflectivity_file() const {
   auto char_array = get_reflectivity_file_chars();
@@ -331,6 +339,11 @@ FortranArray1D<char> PhotonReflectSurfaceProxy::get_reflectivity_file_chars()
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void PhotonReflectSurfaceProxy::set_reflectivity_file(
+    const std::string& value) {
+  photon_reflect_surface_struct_set_reflectivity_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<PhotonReflectTableProxy> PhotonReflectSurfaceProxy::table()
     const {
@@ -651,6 +664,10 @@ FortranArray1D<char> ExpressionAtomProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void ExpressionAtomProxy::set_name(const std::string& value) {
+  expression_atom_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 int ExpressionAtomProxy::type() const {
   int value;
   expression_atom_struct_get_type(fortran_ptr_, &value);
@@ -812,6 +829,10 @@ FortranArray1D<char> WakeSrProxy::get_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void WakeSrProxy::set_file(const std::string& value) {
+  wake_sr_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 WakeSrZLongProxy WakeSrProxy::z_long() const {
   void* ptr;
@@ -1016,6 +1037,10 @@ FortranArray1D<char> WakeLrProxy::get_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void WakeLrProxy::set_file(const std::string& value) {
+  wake_lr_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<WakeLrModeProxy> WakeLrProxy::mode() const {
   void* data_ptr;
@@ -1269,6 +1294,10 @@ FortranArray1D<char> CartesianMapTermProxy::get_file_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void CartesianMapTermProxy::set_file(const std::string& value) {
+  cartesian_map_term_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 int CartesianMapTermProxy::n_link() const {
   int value;
   cartesian_map_term_struct_get_n_link(fortran_ptr_, &value);
@@ -1368,6 +1397,10 @@ FortranArray1D<char> CylindricalMapTermProxy::get_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void CylindricalMapTermProxy::set_file(const std::string& value) {
+  cylindrical_map_term_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 int CylindricalMapTermProxy::n_link() const {
   int value;
@@ -1525,6 +1558,10 @@ FortranArray1D<char> GridFieldPtProxy::get_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void GridFieldPtProxy::set_file(const std::string& value) {
+  grid_field_pt_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 int GridFieldPtProxy::n_link() const {
   int value;
@@ -2120,6 +2157,10 @@ FortranArray1D<char> GenGradMapProxy::get_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void GenGradMapProxy::set_file(const std::string& value) {
+  gen_grad_map_struct_set_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<GenGrad1Proxy> GenGradMapProxy::gg() const {
   void* data_ptr;
@@ -2877,6 +2918,10 @@ FortranArray1D<char> Wall3dSectionProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void Wall3dSectionProxy::set_name(const std::string& value) {
+  wall3d_section_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string Wall3dSectionProxy::material() const {
   auto char_array = get_material_chars();
   return std::string(char_array.data(), char_array.size());
@@ -2888,6 +2933,10 @@ FortranArray1D<char> Wall3dSectionProxy::get_material_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void Wall3dSectionProxy::set_material(const std::string& value) {
+  wall3d_section_struct_set_material(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<Wall3dVertexProxy> Wall3dSectionProxy::v() const {
   void* data_ptr;
@@ -3053,6 +3102,10 @@ FortranArray1D<char> Wall3dProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void Wall3dProxy::set_name(const std::string& value) {
+  wall3d_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 int Wall3dProxy::type() const {
   int value;
   wall3d_struct_get_type(fortran_ptr_, &value);
@@ -3097,6 +3150,10 @@ FortranArray1D<char> Wall3dProxy::get_clear_material_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void Wall3dProxy::set_clear_material(const std::string& value) {
+  wall3d_struct_set_clear_material(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string Wall3dProxy::opaque_material() const {
   auto char_array = get_opaque_material_chars();
   return std::string(char_array.data(), char_array.size());
@@ -3108,6 +3165,10 @@ FortranArray1D<char> Wall3dProxy::get_opaque_material_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void Wall3dProxy::set_opaque_material(const std::string& value) {
+  wall3d_struct_set_opaque_material(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 bool Wall3dProxy::superimpose() const {
   bool value;
@@ -3231,6 +3292,10 @@ FortranArray1D<char> ControlProxy::get_slave_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void ControlProxy::set_slave_name(const std::string& value) {
+  control_struct_set_slave_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string ControlProxy::attribute() const {
   auto char_array = get_attribute_chars();
   return std::string(char_array.data(), char_array.size());
@@ -3242,6 +3307,10 @@ FortranArray1D<char> ControlProxy::get_attribute_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void ControlProxy::set_attribute(const std::string& value) {
+  control_struct_set_attribute(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 int ControlProxy::ix_attrib() const {
   int value;
@@ -3262,6 +3331,10 @@ FortranArray1D<char> ControlVar1Proxy::get_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void ControlVar1Proxy::set_name(const std::string& value) {
+  control_var1_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 double ControlVar1Proxy::value() const {
   double value;
@@ -3321,6 +3394,10 @@ FortranArray1D<char> ControlRamp1Proxy::get_attribute_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void ControlRamp1Proxy::set_attribute(const std::string& value) {
+  control_ramp1_struct_set_attribute(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string ControlRamp1Proxy::slave_name() const {
   auto char_array = get_slave_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -3332,6 +3409,10 @@ FortranArray1D<char> ControlRamp1Proxy::get_slave_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void ControlRamp1Proxy::set_slave_name(const std::string& value) {
+  control_ramp1_struct_set_slave_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 bool ControlRamp1Proxy::is_controller() const {
   bool value;
@@ -3511,6 +3592,10 @@ FortranArray1D<char> BeamInitProxy::get_position_file_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void BeamInitProxy::set_position_file(const std::string& value) {
+  beam_init_struct_set_position_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 FortranArray1D<double> BeamInitProxy::spin() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -3623,6 +3708,10 @@ FortranArray1D<char> BeamInitProxy::get_random_engine_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void BeamInitProxy::set_random_engine(const std::string& value) {
+  beam_init_struct_set_random_engine(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string BeamInitProxy::random_gauss_converter() const {
   auto char_array = get_random_gauss_converter_chars();
   return std::string(char_array.data(), char_array.size());
@@ -3634,6 +3723,10 @@ FortranArray1D<char> BeamInitProxy::get_random_gauss_converter_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void BeamInitProxy::set_random_gauss_converter(const std::string& value) {
+  beam_init_struct_set_random_gauss_converter(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 double BeamInitProxy::random_sigma_cutoff() const {
   double value;
@@ -3759,6 +3852,10 @@ FortranArray1D<char> BeamInitProxy::get_species_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void BeamInitProxy::set_species(const std::string& value) {
+  beam_init_struct_set_species(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 bool BeamInitProxy::full_6D_coupling_calc() const {
   bool value;
   beam_init_struct_get_full_6D_coupling_calc(fortran_ptr_, &value);
@@ -3802,6 +3899,10 @@ FortranArray1D<char> BeamInitProxy::get_file_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void BeamInitProxy::set_file_name(const std::string& value) {
+  beam_init_struct_set_file_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 double LatParamProxy::n_part() const {
   double value;
@@ -4006,6 +4107,10 @@ FortranArray1D<char> PreTrackerProxy::get_input_file_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void PreTrackerProxy::set_input_file(const std::string& value) {
+  pre_tracker_struct_set_input_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 double AnormalModeProxy::emittance() const {
   double value;
@@ -4557,6 +4662,11 @@ FortranArray1D<char> SpaceChargeCommonProxy::get_diagnostic_output_file_chars()
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void SpaceChargeCommonProxy::set_diagnostic_output_file(
+    const std::string& value) {
+  space_charge_common_struct_set_diagnostic_output_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 double BmadCommonProxy::max_aperture_limit() const {
   double value;
@@ -5178,6 +5288,10 @@ FortranArray1D<char> EleProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void EleProxy::set_name(const std::string& value) {
+  ele_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string EleProxy::type() const {
   auto char_array = get_type_chars();
   return std::string(char_array.data(), char_array.size());
@@ -5189,6 +5303,10 @@ FortranArray1D<char> EleProxy::get_type_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void EleProxy::set_type(const std::string& value) {
+  ele_struct_set_type(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string EleProxy::alias() const {
   auto char_array = get_alias_chars();
@@ -5202,6 +5320,10 @@ FortranArray1D<char> EleProxy::get_alias_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void EleProxy::set_alias(const std::string& value) {
+  ele_struct_set_alias(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string EleProxy::component_name() const {
   auto char_array = get_component_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -5213,6 +5335,10 @@ FortranArray1D<char> EleProxy::get_component_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void EleProxy::set_component_name(const std::string& value) {
+  ele_struct_set_component_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string EleProxy::descrip() const {
   char* data_ptr;
@@ -5243,6 +5369,10 @@ FortranArray1D<char> EleProxy::get_descrip_chars() const {
       &is_allocated);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+void EleProxy::set_descrip(const std::string& value) {
+  ele_struct_set_descrip(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 TwissProxy EleProxy::a() const {
   void* ptr;
@@ -5949,6 +6079,10 @@ FortranArray1D<char> BranchProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void BranchProxy::set_name(const std::string& value) {
+  branch_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 int BranchProxy::ix_branch() const {
   int value;
   branch_struct_get_ix_branch(fortran_ptr_, &value);
@@ -6097,6 +6231,10 @@ FortranArray1D<char> LatProxy::get_use_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void LatProxy::set_use_name(const std::string& value) {
+  lat_struct_set_use_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string LatProxy::lattice() const {
   auto char_array = get_lattice_chars();
   return std::string(char_array.data(), char_array.size());
@@ -6108,6 +6246,10 @@ FortranArray1D<char> LatProxy::get_lattice_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void LatProxy::set_lattice(const std::string& value) {
+  lat_struct_set_lattice(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string LatProxy::machine() const {
   auto char_array = get_machine_chars();
@@ -6121,6 +6263,10 @@ FortranArray1D<char> LatProxy::get_machine_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void LatProxy::set_machine(const std::string& value) {
+  lat_struct_set_machine(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string LatProxy::input_file_name() const {
   auto char_array = get_input_file_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -6133,6 +6279,10 @@ FortranArray1D<char> LatProxy::get_input_file_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void LatProxy::set_input_file_name(const std::string& value) {
+  lat_struct_set_input_file_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string LatProxy::title() const {
   auto char_array = get_title_chars();
   return std::string(char_array.data(), char_array.size());
@@ -6144,6 +6294,10 @@ FortranArray1D<char> LatProxy::get_title_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void LatProxy::set_title(const std::string& value) {
+  lat_struct_set_title(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<ExpressionAtomProxy> LatProxy::constant() const {
   void* data_ptr;
@@ -6815,6 +6969,10 @@ FortranArray1D<char> ApertureParamProxy::get_start_ele_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void ApertureParamProxy::set_start_ele(const std::string& value) {
+  aperture_param_struct_set_start_ele(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 FortranTypeArray1D<AperturePointProxy> ApertureScanProxy::point() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -6866,6 +7024,10 @@ FortranArray1D<char> ResonanceHProxy::get_id_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void ResonanceHProxy::set_id(const std::string& value) {
+  resonance_h_struct_set_id(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::complex<double> ResonanceHProxy::c_val() const {
   std::complex<double> c_value;
@@ -7842,6 +8004,10 @@ FortranArray1D<char> TaoBeamBranchProxy::get_track_start_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoBeamBranchProxy::set_track_start(const std::string& value) {
+  tao_beam_branch_struct_set_track_start(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoBeamBranchProxy::track_end() const {
   auto char_array = get_track_end_chars();
   return std::string(char_array.data(), char_array.size());
@@ -7853,6 +8019,10 @@ FortranArray1D<char> TaoBeamBranchProxy::get_track_end_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoBeamBranchProxy::set_track_end(const std::string& value) {
+  tao_beam_branch_struct_set_track_end(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 int TaoBeamBranchProxy::ix_branch() const {
   int value;
@@ -7890,6 +8060,10 @@ FortranArray1D<char> TaoD1DataProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoD1DataProxy::set_name(const std::string& value) {
+  tao_d1_data_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 const void* TaoD1DataProxy::d2() const {
   void* ptr;
   tao_d1_data_struct_get_d2(fortran_ptr_, &ptr);
@@ -7925,6 +8099,10 @@ FortranArray1D<char> TaoLatticeProxy::get_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoLatticeProxy::set_name(const std::string& value) {
+  tao_lattice_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 LatProxy TaoLatticeProxy::lat() const {
   void* ptr;
@@ -7994,6 +8172,10 @@ FortranArray1D<char> TaoBeamUniProxy::get_saved_at_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoBeamUniProxy::set_saved_at(const std::string& value) {
+  tao_beam_uni_struct_set_saved_at(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoBeamUniProxy::dump_file() const {
   auto char_array = get_dump_file_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8006,6 +8188,10 @@ FortranArray1D<char> TaoBeamUniProxy::get_dump_file_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoBeamUniProxy::set_dump_file(const std::string& value) {
+  tao_beam_uni_struct_set_dump_file(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoBeamUniProxy::dump_at() const {
   auto char_array = get_dump_at_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8017,6 +8203,10 @@ FortranArray1D<char> TaoBeamUniProxy::get_dump_at_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoBeamUniProxy::set_dump_at(const std::string& value) {
+  tao_beam_uni_struct_set_dump_at(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 bool TaoBeamUniProxy::track_beam_in_universe() const {
   bool value;
@@ -8132,6 +8322,10 @@ FortranArray1D<char> TaoD2DataProxy::get_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoD2DataProxy::set_name(const std::string& value) {
+  tao_d2_data_struct_set_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoD2DataProxy::data_file_name() const {
   auto char_array = get_data_file_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8143,6 +8337,10 @@ FortranArray1D<char> TaoD2DataProxy::get_data_file_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoD2DataProxy::set_data_file_name(const std::string& value) {
+  tao_d2_data_struct_set_data_file_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string TaoD2DataProxy::ref_file_name() const {
   auto char_array = get_ref_file_name_chars();
@@ -8156,6 +8354,10 @@ FortranArray1D<char> TaoD2DataProxy::get_ref_file_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoD2DataProxy::set_ref_file_name(const std::string& value) {
+  tao_d2_data_struct_set_ref_file_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoD2DataProxy::data_date() const {
   auto char_array = get_data_date_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8168,6 +8370,10 @@ FortranArray1D<char> TaoD2DataProxy::get_data_date_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoD2DataProxy::set_data_date(const std::string& value) {
+  tao_d2_data_struct_set_data_date(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoD2DataProxy::ref_date() const {
   auto char_array = get_ref_date_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8179,6 +8385,10 @@ FortranArray1D<char> TaoD2DataProxy::get_ref_date_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoD2DataProxy::set_ref_date(const std::string& value) {
+  tao_d2_data_struct_set_ref_date(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 FortranTypeArray1D<TaoD1DataProxy> TaoD2DataProxy::d1() const {
   void* data_ptr;
@@ -8320,6 +8530,10 @@ FortranArray1D<char> TaoDataProxy::get_ele_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoDataProxy::set_ele_name(const std::string& value) {
+  tao_data_struct_set_ele_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoDataProxy::ele_start_name() const {
   auto char_array = get_ele_start_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8331,6 +8545,10 @@ FortranArray1D<char> TaoDataProxy::get_ele_start_name_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoDataProxy::set_ele_start_name(const std::string& value) {
+  tao_data_struct_set_ele_start_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string TaoDataProxy::ele_ref_name() const {
   auto char_array = get_ele_ref_name_chars();
@@ -8344,6 +8562,10 @@ FortranArray1D<char> TaoDataProxy::get_ele_ref_name_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoDataProxy::set_ele_ref_name(const std::string& value) {
+  tao_data_struct_set_ele_ref_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoDataProxy::merit_type() const {
   auto char_array = get_merit_type_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8355,6 +8577,10 @@ FortranArray1D<char> TaoDataProxy::get_merit_type_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoDataProxy::set_merit_type(const std::string& value) {
+  tao_data_struct_set_merit_type(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string TaoDataProxy::id() const {
   auto char_array = get_id_chars();
@@ -8368,6 +8594,10 @@ FortranArray1D<char> TaoDataProxy::get_id_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoDataProxy::set_id(const std::string& value) {
+  tao_data_struct_set_id(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoDataProxy::data_source() const {
   auto char_array = get_data_source_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8380,6 +8610,10 @@ FortranArray1D<char> TaoDataProxy::get_data_source_chars() const {
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+void TaoDataProxy::set_data_source(const std::string& value) {
+  tao_data_struct_set_data_source(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
 std::string TaoDataProxy::why_invalid() const {
   auto char_array = get_why_invalid_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8391,6 +8625,10 @@ FortranArray1D<char> TaoDataProxy::get_why_invalid_chars() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+void TaoDataProxy::set_why_invalid(const std::string& value) {
+  tao_data_struct_set_why_invalid(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 int TaoDataProxy::ix_uni() const {
   int value;

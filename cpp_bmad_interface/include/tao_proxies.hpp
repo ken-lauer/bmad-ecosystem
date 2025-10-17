@@ -145,6 +145,11 @@ void photon_reflect_surface_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void photon_reflect_surface_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void photon_reflect_surface_struct_get_description_info(
     const void* struct_obj,
     char** data_ptr,
@@ -152,12 +157,22 @@ void photon_reflect_surface_struct_get_description_info(
     int* lower_bound,
     int* upper_bound);
 
+void photon_reflect_surface_struct_set_description(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void photon_reflect_surface_struct_get_reflectivity_file_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void photon_reflect_surface_struct_set_reflectivity_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void photon_reflect_surface_struct_get_table_info(
     const void* struct_obj,
@@ -308,6 +323,10 @@ void expression_atom_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void expression_atom_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void expression_atom_struct_get_type(const void* struct_obj, int* value_out);
 void expression_atom_struct_set_type(void* struct_obj, int value_in);
 void expression_atom_struct_get_value(
@@ -377,6 +396,10 @@ void wake_sr_struct_get_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void wake_sr_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void wake_sr_struct_get_z_long(const void* struct_obj, void** ptr_out);
 void wake_sr_struct_set_z_long(void* struct_obj, const void* src_ptr);
 
@@ -447,6 +470,11 @@ void wake_lr_struct_get_file_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void wake_lr_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void wake_lr_struct_get_mode_info(
     const void* struct_obj,
@@ -563,6 +591,10 @@ void cartesian_map_term_struct_get_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void cartesian_map_term_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void cartesian_map_term_struct_get_n_link(
     const void* struct_obj,
     int* value_out);
@@ -623,6 +655,10 @@ void cylindrical_map_term_struct_get_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void cylindrical_map_term_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void cylindrical_map_term_struct_get_n_link(
     const void* struct_obj,
     int* value_out);
@@ -717,6 +753,10 @@ void grid_field_pt_struct_get_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void grid_field_pt_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void grid_field_pt_struct_get_n_link(const void* struct_obj, int* value_out);
 void grid_field_pt_struct_set_n_link(void* struct_obj, int value_in);
 void grid_field_struct_get_geometry(const void* struct_obj, int* value_out);
@@ -961,6 +1001,11 @@ void gen_grad_map_struct_get_file_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void gen_grad_map_struct_set_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void gen_grad_map_struct_get_gg_info(
     const void* struct_obj,
@@ -1394,12 +1439,22 @@ void wall3d_section_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void wall3d_section_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void wall3d_section_struct_get_material_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void wall3d_section_struct_set_material(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void wall3d_section_struct_get_v_info(
     const void* struct_obj,
@@ -1493,6 +1548,7 @@ void wall3d_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void wall3d_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
 void wall3d_struct_get_type(const void* struct_obj, int* value_out);
 void wall3d_struct_set_type(void* struct_obj, int value_in);
 void wall3d_struct_get_ix_wall3d(const void* struct_obj, int* value_out);
@@ -1509,6 +1565,11 @@ void wall3d_struct_get_clear_material_info(
     int* lower_bound,
     int* upper_bound);
 
+void wall3d_struct_set_clear_material(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void wall3d_struct_get_opaque_material_info(
     const void* struct_obj,
     char** data_ptr,
@@ -1516,6 +1577,10 @@ void wall3d_struct_get_opaque_material_info(
     int* lower_bound,
     int* upper_bound);
 
+void wall3d_struct_set_opaque_material(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void wall3d_struct_get_superimpose(const void* struct_obj, bool* value_out);
 void wall3d_struct_set_superimpose(void* struct_obj, bool value_in);
 void wall3d_struct_get_ele_anchor_pt(const void* struct_obj, int* value_out);
@@ -1570,6 +1635,11 @@ void control_struct_get_slave_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void control_struct_set_slave_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void control_struct_get_attribute_info(
     const void* struct_obj,
     char** data_ptr,
@@ -1577,6 +1647,10 @@ void control_struct_get_attribute_info(
     int* lower_bound,
     int* upper_bound);
 
+void control_struct_set_attribute(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void control_struct_get_ix_attrib(const void* struct_obj, int* value_out);
 void control_struct_set_ix_attrib(void* struct_obj, int value_in);
 
@@ -1587,6 +1661,10 @@ void control_var1_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void control_var1_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void control_var1_struct_get_value(const void* struct_obj, double* value_out);
 void control_var1_struct_set_value(void* struct_obj, double value_in);
 void control_var1_struct_get_old_value(
@@ -1618,6 +1696,11 @@ void control_ramp1_struct_get_attribute_info(
     int* lower_bound,
     int* upper_bound);
 
+void control_ramp1_struct_set_attribute(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void control_ramp1_struct_get_slave_name_info(
     const void* struct_obj,
     char** data_ptr,
@@ -1625,6 +1708,10 @@ void control_ramp1_struct_get_slave_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void control_ramp1_struct_set_slave_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void control_ramp1_struct_get_is_controller(
     const void* struct_obj,
     bool* value_out);
@@ -1717,6 +1804,11 @@ void beam_init_struct_get_position_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void beam_init_struct_set_position_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void beam_init_struct_get_spin_info(
     const void* struct_obj,
     double** data_ptr,
@@ -1781,6 +1873,11 @@ void beam_init_struct_get_random_engine_info(
     int* lower_bound,
     int* upper_bound);
 
+void beam_init_struct_set_random_engine(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void beam_init_struct_get_random_gauss_converter_info(
     const void* struct_obj,
     char** data_ptr,
@@ -1788,6 +1885,10 @@ void beam_init_struct_get_random_gauss_converter_info(
     int* lower_bound,
     int* upper_bound);
 
+void beam_init_struct_set_random_gauss_converter(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void beam_init_struct_get_random_sigma_cutoff(
     const void* struct_obj,
     double* value_out);
@@ -1840,6 +1941,10 @@ void beam_init_struct_get_species_info(
     int* lower_bound,
     int* upper_bound);
 
+void beam_init_struct_set_species(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void beam_init_struct_get_full_6D_coupling_calc(
     const void* struct_obj,
     bool* value_out);
@@ -1862,6 +1967,10 @@ void beam_init_struct_get_file_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void beam_init_struct_set_file_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void lat_param_struct_get_n_part(const void* struct_obj, double* value_out);
 void lat_param_struct_set_n_part(void* struct_obj, double value_in);
 void lat_param_struct_get_total_length(
@@ -1938,6 +2047,10 @@ void pre_tracker_struct_get_input_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void pre_tracker_struct_set_input_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void anormal_mode_struct_get_emittance(
     const void* struct_obj,
     double* value_out);
@@ -2221,6 +2334,10 @@ void space_charge_common_struct_get_diagnostic_output_file_info(
     int* lower_bound,
     int* upper_bound);
 
+void space_charge_common_struct_set_diagnostic_output_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void bmad_common_struct_get_max_aperture_limit(
     const void* struct_obj,
     double* value_out);
@@ -2536,12 +2653,16 @@ void ele_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void ele_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
+
 void ele_struct_get_type_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void ele_struct_set_type(void* struct_obj, const char* str_ptr, int str_len);
 
 void ele_struct_get_alias_info(
     const void* struct_obj,
@@ -2550,12 +2671,19 @@ void ele_struct_get_alias_info(
     int* lower_bound,
     int* upper_bound);
 
+void ele_struct_set_alias(void* struct_obj, const char* str_ptr, int str_len);
+
 void ele_struct_get_component_name_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void ele_struct_set_component_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void ele_struct_get_descrip_info(
     const void* struct_obj,
@@ -2565,6 +2693,7 @@ void ele_struct_get_descrip_info(
     int* upper_bound,
     bool* is_allocated);
 
+void ele_struct_set_descrip(void* struct_obj, const char* str_ptr, int str_len);
 void ele_struct_get_a(const void* struct_obj, void** ptr_out);
 void ele_struct_set_a(void* struct_obj, const void* src_ptr);
 void ele_struct_get_b(const void* struct_obj, void** ptr_out);
@@ -2836,6 +2965,7 @@ void branch_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void branch_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
 void branch_struct_get_ix_branch(const void* struct_obj, int* value_out);
 void branch_struct_set_ix_branch(void* struct_obj, int value_in);
 void branch_struct_get_ix_from_branch(const void* struct_obj, int* value_out);
@@ -2889,12 +3019,19 @@ void lat_struct_get_use_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void lat_struct_set_use_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void lat_struct_get_lattice_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void lat_struct_set_lattice(void* struct_obj, const char* str_ptr, int str_len);
 
 void lat_struct_get_machine_info(
     const void* struct_obj,
@@ -2903,6 +3040,8 @@ void lat_struct_get_machine_info(
     int* lower_bound,
     int* upper_bound);
 
+void lat_struct_set_machine(void* struct_obj, const char* str_ptr, int str_len);
+
 void lat_struct_get_input_file_name_info(
     const void* struct_obj,
     char** data_ptr,
@@ -2910,12 +3049,19 @@ void lat_struct_get_input_file_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void lat_struct_set_input_file_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void lat_struct_get_title_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void lat_struct_set_title(void* struct_obj, const char* str_ptr, int str_len);
 
 void lat_struct_get_constant_info(
     const void* struct_obj,
@@ -3183,6 +3329,11 @@ void aperture_param_struct_get_start_ele_info(
     int* lower_bound,
     int* upper_bound);
 
+void aperture_param_struct_set_start_ele(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void aperture_scan_struct_get_point_info(
     const void* struct_obj,
     void** data_ptr,
@@ -3213,6 +3364,10 @@ void resonance_h_struct_get_id_info(
     int* lower_bound,
     int* upper_bound);
 
+void resonance_h_struct_set_id(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void resonance_h_struct_get_c_val(
     const void* struct_obj,
     std::complex<double>* value_out);
@@ -3845,6 +4000,11 @@ void tao_beam_branch_struct_get_track_start_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_beam_branch_struct_set_track_start(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_beam_branch_struct_get_track_end_info(
     const void* struct_obj,
     char** data_ptr,
@@ -3852,6 +4012,10 @@ void tao_beam_branch_struct_get_track_end_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_beam_branch_struct_set_track_end(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void tao_beam_branch_struct_get_ix_branch(
     const void* struct_obj,
     int* value_out);
@@ -3872,6 +4036,10 @@ void tao_d1_data_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_d1_data_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void tao_d1_data_struct_get_d2(const void* struct_obj, void** ptr_out);
 void tao_d1_data_struct_set_d2(void* struct_obj, const void* src_ptr);
 
@@ -3891,6 +4059,10 @@ void tao_lattice_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_lattice_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void tao_lattice_struct_get_lat(const void* struct_obj, void** ptr_out);
 void tao_lattice_struct_set_lat(void* struct_obj, const void* src_ptr);
 void tao_lattice_struct_get_high_E_lat(const void* struct_obj, void** ptr_out);
@@ -3926,12 +4098,22 @@ void tao_beam_uni_struct_get_saved_at_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_beam_uni_struct_set_saved_at(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_beam_uni_struct_get_dump_file_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_beam_uni_struct_set_dump_file(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_beam_uni_struct_get_dump_at_info(
     const void* struct_obj,
@@ -3940,6 +4122,10 @@ void tao_beam_uni_struct_get_dump_at_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_beam_uni_struct_set_dump_at(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void tao_beam_uni_struct_get_track_beam_in_universe(
     const void* struct_obj,
     bool* value_out);
@@ -4008,12 +4194,22 @@ void tao_d2_data_struct_get_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_d2_data_struct_set_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_d2_data_struct_get_data_file_name_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_d2_data_struct_set_data_file_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_d2_data_struct_get_ref_file_name_info(
     const void* struct_obj,
@@ -4022,6 +4218,11 @@ void tao_d2_data_struct_get_ref_file_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_d2_data_struct_set_ref_file_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_d2_data_struct_get_data_date_info(
     const void* struct_obj,
     char** data_ptr,
@@ -4029,12 +4230,22 @@ void tao_d2_data_struct_get_data_date_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_d2_data_struct_set_data_date(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_d2_data_struct_get_ref_date_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_d2_data_struct_set_ref_date(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_d2_data_struct_get_d1_info(
     const void* struct_obj,
@@ -4085,12 +4296,22 @@ void tao_data_struct_get_ele_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_data_struct_set_ele_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_data_struct_get_ele_start_name_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_data_struct_set_ele_start_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_data_struct_get_ele_ref_name_info(
     const void* struct_obj,
@@ -4099,12 +4320,22 @@ void tao_data_struct_get_ele_ref_name_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_data_struct_set_ele_ref_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
 void tao_data_struct_get_merit_type_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_data_struct_set_merit_type(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_data_struct_get_id_info(
     const void* struct_obj,
@@ -4113,12 +4344,19 @@ void tao_data_struct_get_id_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_data_struct_set_id(void* struct_obj, const char* str_ptr, int str_len);
+
 void tao_data_struct_get_data_source_info(
     const void* struct_obj,
     char** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_data_struct_set_data_source(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 
 void tao_data_struct_get_why_invalid_info(
     const void* struct_obj,
@@ -4127,6 +4365,10 @@ void tao_data_struct_get_why_invalid_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_data_struct_set_why_invalid(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
 void tao_data_struct_get_ix_uni(const void* struct_obj, int* value_out);
 void tao_data_struct_set_ix_uni(void* struct_obj, int value_in);
 void tao_data_struct_get_ix_bunch(const void* struct_obj, int* value_out);
@@ -4825,10 +5067,13 @@ class PhotonReflectSurfaceProxy
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   std::string description() const; // 0D_NOT_character
   FortranArray1D<char> get_description_chars() const; // 0D_NOT_character
+  void set_description(const std::string& value);
   std::string reflectivity_file() const; // 0D_NOT_character
   FortranArray1D<char> get_reflectivity_file_chars() const; // 0D_NOT_character
+  void set_reflectivity_file(const std::string& value);
   FortranTypeArray1D<PhotonReflectTableProxy> table() const; // 1D_ALLOC_type
   double surface_roughness_rms() const; // 0D_NOT_real
   void set_surface_roughness_rms(double value);
@@ -5013,6 +5258,7 @@ class ExpressionAtomProxy : public FortranProxy<ExpressionAtomProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   int type() const; // 0D_NOT_integer
   void set_type(int value);
   double value() const; // 0D_NOT_real
@@ -5137,6 +5383,7 @@ class WakeSrProxy : public FortranProxy<WakeSrProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   WakeSrZLongProxy z_long() const; // 0D_NOT_type
   void set_z_long(const WakeSrZLongProxy& src);
   FortranTypeArray1D<WakeSrModeProxy> long_wake() const; // 1D_ALLOC_type
@@ -5239,6 +5486,7 @@ class WakeLrProxy : public FortranProxy<WakeLrProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   FortranTypeArray1D<WakeLrModeProxy> mode() const; // 1D_ALLOC_type
   double t_ref() const; // 0D_NOT_real
   void set_t_ref(double value);
@@ -5522,6 +5770,7 @@ class CartesianMapTermProxy : public FortranProxy<CartesianMapTermProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
   FortranTypeArray1D<CartesianMapTerm1Proxy> term() const; // 1D_ALLOC_type
@@ -5629,6 +5878,7 @@ class CylindricalMapTermProxy : public FortranProxy<CylindricalMapTermProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
   FortranTypeArray1D<CylindricalMapTerm1Proxy> term() const; // 1D_ALLOC_type
@@ -5802,6 +6052,7 @@ class GridFieldPtProxy : public FortranProxy<GridFieldPtProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
 };
@@ -6258,6 +6509,7 @@ class GenGradMapProxy : public FortranProxy<GenGradMapProxy> {
 
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  void set_file(const std::string& value);
   FortranTypeArray1D<GenGrad1Proxy> gg() const; // 1D_ALLOC_type
   int ele_anchor_pt() const; // 0D_NOT_integer
   void set_ele_anchor_pt(int value);
@@ -6853,8 +7105,10 @@ class Wall3dSectionProxy : public FortranProxy<Wall3dSectionProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   std::string material() const; // 0D_NOT_character
   FortranArray1D<char> get_material_chars() const; // 0D_NOT_character
+  void set_material(const std::string& value);
   FortranTypeArray1D<Wall3dVertexProxy> v() const; // 1D_ALLOC_type
   const void* surface() const; // 0D_PTR_type
   void set_surface(const PhotonReflectSurfaceProxy& src);
@@ -6916,6 +7170,7 @@ class Wall3dProxy : public FortranProxy<Wall3dProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   int type() const; // 0D_NOT_integer
   void set_type(int value);
   int ix_wall3d() const; // 0D_NOT_integer
@@ -6926,8 +7181,10 @@ class Wall3dProxy : public FortranProxy<Wall3dProxy> {
   void set_thickness(double value);
   std::string clear_material() const; // 0D_NOT_character
   FortranArray1D<char> get_clear_material_chars() const; // 0D_NOT_character
+  void set_clear_material(const std::string& value);
   std::string opaque_material() const; // 0D_NOT_character
   FortranArray1D<char> get_opaque_material_chars() const; // 0D_NOT_character
+  void set_opaque_material(const std::string& value);
   bool superimpose() const; // 0D_NOT_logical
   void set_superimpose(bool value);
   int ele_anchor_pt() const; // 0D_NOT_integer
@@ -7007,8 +7264,10 @@ class ControlProxy : public FortranProxy<ControlProxy> {
   void set_lord(const LatEleLocProxy& src);
   std::string slave_name() const; // 0D_NOT_character
   FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
+  void set_slave_name(const std::string& value);
   std::string attribute() const; // 0D_NOT_character
   FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
+  void set_attribute(const std::string& value);
   int ix_attrib() const; // 0D_NOT_integer
   void set_ix_attrib(int value);
 };
@@ -7042,6 +7301,7 @@ class ControlVar1Proxy : public FortranProxy<ControlVar1Proxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   double value() const; // 0D_NOT_real
   void set_value(double value);
   double old_value() const; // 0D_NOT_real
@@ -7079,8 +7339,10 @@ class ControlRamp1Proxy : public FortranProxy<ControlRamp1Proxy> {
   FortranTypeArray1D<ExpressionAtomProxy> stack() const; // 1D_ALLOC_type
   std::string attribute() const; // 0D_NOT_character
   FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
+  void set_attribute(const std::string& value);
   std::string slave_name() const; // 0D_NOT_character
   FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
+  void set_slave_name(const std::string& value);
   bool is_controller() const; // 0D_NOT_logical
   void set_is_controller(bool value);
 };
@@ -7257,6 +7519,7 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
 
   std::string position_file() const; // 0D_NOT_character
   FortranArray1D<char> get_position_file_chars() const; // 0D_NOT_character
+  void set_position_file(const std::string& value);
   FortranArray1D<double> spin() const; // 1D_NOT_real
   FortranTypeArray1D<EllipseBeamInitProxy> ellipse() const; // 1D_NOT_type
   KvBeamInitProxy KV() const; // 0D_NOT_type
@@ -7276,9 +7539,11 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   void set_renorm_sigma(bool value);
   std::string random_engine() const; // 0D_NOT_character
   FortranArray1D<char> get_random_engine_chars() const; // 0D_NOT_character
+  void set_random_engine(const std::string& value);
   std::string random_gauss_converter() const; // 0D_NOT_character
   FortranArray1D<char> get_random_gauss_converter_chars()
       const; // 0D_NOT_character
+  void set_random_gauss_converter(const std::string& value);
   double random_sigma_cutoff() const; // 0D_NOT_real
   void set_random_sigma_cutoff(double value);
   double a_norm_emit() const; // 0D_NOT_real
@@ -7308,6 +7573,7 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   void set_ix_turn(int value);
   std::string species() const; // 0D_NOT_character
   FortranArray1D<char> get_species_chars() const; // 0D_NOT_character
+  void set_species(const std::string& value);
   bool full_6D_coupling_calc() const; // 0D_NOT_logical
   void set_full_6D_coupling_calc(bool value);
   bool use_particle_start() const; // 0D_NOT_logical
@@ -7318,6 +7584,7 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   void set_use_z_as_t(bool value);
   std::string file_name() const; // 0D_NOT_character
   FortranArray1D<char> get_file_name_chars() const; // 0D_NOT_character
+  void set_file_name(const std::string& value);
 };
 
 extern "C" {
@@ -7455,6 +7722,7 @@ class PreTrackerProxy : public FortranProxy<PreTrackerProxy> {
   void set_ix_ele_end(int value);
   std::string input_file() const; // 0D_NOT_character
   FortranArray1D<char> get_input_file_chars() const; // 0D_NOT_character
+  void set_input_file(const std::string& value);
 };
 
 extern "C" {
@@ -7813,6 +8081,7 @@ class SpaceChargeCommonProxy : public FortranProxy<SpaceChargeCommonProxy> {
   std::string diagnostic_output_file() const; // 0D_NOT_character
   FortranArray1D<char> get_diagnostic_output_file_chars()
       const; // 0D_NOT_character
+  void set_diagnostic_output_file(const std::string& value);
 };
 
 extern "C" {
@@ -8160,14 +8429,19 @@ class EleProxy : public FortranProxy<EleProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   std::string type() const; // 0D_NOT_character
   FortranArray1D<char> get_type_chars() const; // 0D_NOT_character
+  void set_type(const std::string& value);
   std::string alias() const; // 0D_NOT_character
   FortranArray1D<char> get_alias_chars() const; // 0D_NOT_character
+  void set_alias(const std::string& value);
   std::string component_name() const; // 0D_NOT_character
   FortranArray1D<char> get_component_name_chars() const; // 0D_NOT_character
+  void set_component_name(const std::string& value);
   std::string descrip() const; // 0D_PTR_character
   FortranArray1D<char> get_descrip_chars() const; // 0D_PTR_character
+  void set_descrip(const std::string& value);
   TwissProxy a() const; // 0D_NOT_type
   void set_a(const TwissProxy& src);
   TwissProxy b() const; // 0D_NOT_type
@@ -8403,6 +8677,7 @@ class BranchProxy : public FortranProxy<BranchProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   int ix_branch() const; // 0D_NOT_integer
   void set_ix_branch(int value);
   int ix_from_branch() const; // 0D_NOT_integer
@@ -8462,14 +8737,19 @@ class LatProxy : public FortranProxy<LatProxy> {
 
   std::string use_name() const; // 0D_NOT_character
   FortranArray1D<char> get_use_name_chars() const; // 0D_NOT_character
+  void set_use_name(const std::string& value);
   std::string lattice() const; // 0D_NOT_character
   FortranArray1D<char> get_lattice_chars() const; // 0D_NOT_character
+  void set_lattice(const std::string& value);
   std::string machine() const; // 0D_NOT_character
   FortranArray1D<char> get_machine_chars() const; // 0D_NOT_character
+  void set_machine(const std::string& value);
   std::string input_file_name() const; // 0D_NOT_character
   FortranArray1D<char> get_input_file_name_chars() const; // 0D_NOT_character
+  void set_input_file_name(const std::string& value);
   std::string title() const; // 0D_NOT_character
   FortranArray1D<char> get_title_chars() const; // 0D_NOT_character
+  void set_title(const std::string& value);
   FortranTypeArray1D<ExpressionAtomProxy> constant() const; // 1D_ALLOC_type
   const void* a() const; // 0D_PTR_type
   void set_a(const ModeInfoProxy& src);
@@ -8754,6 +9034,7 @@ class ApertureParamProxy : public FortranProxy<ApertureParamProxy> {
   void set_abs_accuracy(double value);
   std::string start_ele() const; // 0D_NOT_character
   FortranArray1D<char> get_start_ele_chars() const; // 0D_NOT_character
+  void set_start_ele(const std::string& value);
 };
 
 extern "C" {
@@ -8849,6 +9130,7 @@ class ResonanceHProxy : public FortranProxy<ResonanceHProxy> {
 
   std::string id() const; // 0D_NOT_character
   FortranArray1D<char> get_id_chars() const; // 0D_NOT_character
+  void set_id(const std::string& value);
   std::complex<double> c_val() const; // 0D_NOT_complex
   void set_c_val(std::complex<double> value);
 };
@@ -9464,8 +9746,10 @@ class TaoBeamBranchProxy : public FortranProxy<TaoBeamBranchProxy> {
   void set_init_starting_distribution(bool value);
   std::string track_start() const; // 0D_NOT_character
   FortranArray1D<char> get_track_start_chars() const; // 0D_NOT_character
+  void set_track_start(const std::string& value);
   std::string track_end() const; // 0D_NOT_character
   FortranArray1D<char> get_track_end_chars() const; // 0D_NOT_character
+  void set_track_end(const std::string& value);
   int ix_branch() const; // 0D_NOT_integer
   void set_ix_branch(int value);
   int ix_track_start() const; // 0D_NOT_integer
@@ -9503,6 +9787,7 @@ class TaoD1DataProxy : public FortranProxy<TaoD1DataProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   const void* d2() const; // 0D_PTR_type
   void set_d2(const TaoD2DataProxy& src);
   FortranTypeArray1D<TaoDataProxy> d() const; // 1D_PTR_type
@@ -9537,6 +9822,7 @@ class TaoLatticeProxy : public FortranProxy<TaoLatticeProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   LatProxy lat() const; // 0D_NOT_type
   void set_lat(const LatProxy& src);
   LatProxy high_E_lat() const; // 0D_NOT_type
@@ -9579,10 +9865,13 @@ class TaoBeamUniProxy : public FortranProxy<TaoBeamUniProxy> {
 
   std::string saved_at() const; // 0D_NOT_character
   FortranArray1D<char> get_saved_at_chars() const; // 0D_NOT_character
+  void set_saved_at(const std::string& value);
   std::string dump_file() const; // 0D_NOT_character
   FortranArray1D<char> get_dump_file_chars() const; // 0D_NOT_character
+  void set_dump_file(const std::string& value);
   std::string dump_at() const; // 0D_NOT_character
   FortranArray1D<char> get_dump_at_chars() const; // 0D_NOT_character
+  void set_dump_at(const std::string& value);
   bool track_beam_in_universe() const; // 0D_NOT_logical
   void set_track_beam_in_universe(bool value);
   bool always_reinit() const; // 0D_NOT_logical
@@ -9689,14 +9978,19 @@ class TaoD2DataProxy : public FortranProxy<TaoD2DataProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  void set_name(const std::string& value);
   std::string data_file_name() const; // 0D_NOT_character
   FortranArray1D<char> get_data_file_name_chars() const; // 0D_NOT_character
+  void set_data_file_name(const std::string& value);
   std::string ref_file_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ref_file_name_chars() const; // 0D_NOT_character
+  void set_ref_file_name(const std::string& value);
   std::string data_date() const; // 0D_NOT_character
   FortranArray1D<char> get_data_date_chars() const; // 0D_NOT_character
+  void set_data_date(const std::string& value);
   std::string ref_date() const; // 0D_NOT_character
   FortranArray1D<char> get_ref_date_chars() const; // 0D_NOT_character
+  void set_ref_date(const std::string& value);
   FortranTypeArray1D<TaoD1DataProxy> d1() const; // 1D_ALLOC_type
   int ix_universe() const; // 0D_NOT_integer
   void set_ix_universe(int value);
@@ -9786,18 +10080,25 @@ class TaoDataProxy : public FortranProxy<TaoDataProxy> {
 
   std::string ele_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ele_name_chars() const; // 0D_NOT_character
+  void set_ele_name(const std::string& value);
   std::string ele_start_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ele_start_name_chars() const; // 0D_NOT_character
+  void set_ele_start_name(const std::string& value);
   std::string ele_ref_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ele_ref_name_chars() const; // 0D_NOT_character
+  void set_ele_ref_name(const std::string& value);
   std::string merit_type() const; // 0D_NOT_character
   FortranArray1D<char> get_merit_type_chars() const; // 0D_NOT_character
+  void set_merit_type(const std::string& value);
   std::string id() const; // 0D_NOT_character
   FortranArray1D<char> get_id_chars() const; // 0D_NOT_character
+  void set_id(const std::string& value);
   std::string data_source() const; // 0D_NOT_character
   FortranArray1D<char> get_data_source_chars() const; // 0D_NOT_character
+  void set_data_source(const std::string& value);
   std::string why_invalid() const; // 0D_NOT_character
   FortranArray1D<char> get_why_invalid_chars() const; // 0D_NOT_character
+  void set_why_invalid(const std::string& value);
   int ix_uni() const; // 0D_NOT_integer
   void set_ix_uni(int value);
   int ix_bunch() const; // 0D_NOT_integer

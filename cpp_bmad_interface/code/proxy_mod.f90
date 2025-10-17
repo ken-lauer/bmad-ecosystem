@@ -867,6 +867,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine photon_reflect_surface_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='photon_reflect_surface_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! photon_reflect_surface_struct%description: 0D_NOT_character
 
   subroutine photon_reflect_surface_struct_get_description_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='photon_reflect_surface_struct_get_description_info')
@@ -881,6 +901,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine photon_reflect_surface_struct_set_description(struct_obj_ptr, str_ptr, str_len) bind(c, name='photon_reflect_surface_struct_set_description')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%description)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%description(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%description(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! photon_reflect_surface_struct%reflectivity_file: 0D_NOT_character
 
   subroutine photon_reflect_surface_struct_get_reflectivity_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='photon_reflect_surface_struct_get_reflectivity_file_info')
@@ -893,6 +933,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%reflectivity_file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine photon_reflect_surface_struct_set_reflectivity_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='photon_reflect_surface_struct_set_reflectivity_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%reflectivity_file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%reflectivity_file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%reflectivity_file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! photon_reflect_surface_struct%table: 1D_ALLOC_type
@@ -1729,6 +1789,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine expression_atom_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='expression_atom_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(expression_atom_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! expression_atom_struct%type: 0D_NOT_integer
 
   subroutine expression_atom_struct_get_type(struct_obj_ptr, value_out) bind(c, name='expression_atom_struct_get_type')
@@ -2196,6 +2276,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine wake_sr_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='wake_sr_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wake_sr_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! wake_sr_struct%z_long: 0D_NOT_type
@@ -2716,6 +2816,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine wake_lr_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='wake_lr_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wake_lr_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! wake_lr_struct%mode: 1D_ALLOC_type
@@ -3543,6 +3663,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine cartesian_map_term_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='cartesian_map_term_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(cartesian_map_term_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! cartesian_map_term_struct%n_link: 0D_NOT_integer
 
   subroutine cartesian_map_term_struct_get_n_link(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term_struct_get_n_link')
@@ -3861,6 +4001,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine cylindrical_map_term_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='cylindrical_map_term_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(cylindrical_map_term_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! cylindrical_map_term_struct%n_link: 0D_NOT_integer
@@ -4347,6 +4507,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine grid_field_pt_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='grid_field_pt_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(grid_field_pt_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! grid_field_pt_struct%n_link: 0D_NOT_integer
@@ -6098,6 +6278,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine gen_grad_map_struct_set_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='gen_grad_map_struct_set_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(gen_grad_map_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! gen_grad_map_struct%gg: 1D_ALLOC_type
@@ -8290,6 +8490,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine wall3d_section_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='wall3d_section_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wall3d_section_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! wall3d_section_struct%material: 0D_NOT_character
 
   subroutine wall3d_section_struct_get_material_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wall3d_section_struct_get_material_info')
@@ -8302,6 +8522,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%material), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine wall3d_section_struct_set_material(struct_obj_ptr, str_ptr, str_len) bind(c, name='wall3d_section_struct_set_material')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wall3d_section_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%material)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%material(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%material(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! wall3d_section_struct%v: 1D_ALLOC_type
@@ -8686,6 +8926,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine wall3d_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='wall3d_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wall3d_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! wall3d_struct%type: 0D_NOT_integer
 
   subroutine wall3d_struct_get_type(struct_obj_ptr, value_out) bind(c, name='wall3d_struct_get_type')
@@ -8776,6 +9036,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine wall3d_struct_set_clear_material(struct_obj_ptr, str_ptr, str_len) bind(c, name='wall3d_struct_set_clear_material')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wall3d_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%clear_material)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%clear_material(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%clear_material(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! wall3d_struct%opaque_material: 0D_NOT_character
 
   subroutine wall3d_struct_get_opaque_material_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wall3d_struct_get_opaque_material_info')
@@ -8788,6 +9068,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%opaque_material), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine wall3d_struct_set_opaque_material(struct_obj_ptr, str_ptr, str_len) bind(c, name='wall3d_struct_set_opaque_material')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(wall3d_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%opaque_material)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%opaque_material(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%opaque_material(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! wall3d_struct%superimpose: 0D_NOT_logical
@@ -9114,6 +9414,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine control_struct_set_slave_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='control_struct_set_slave_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(control_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%slave_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%slave_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%slave_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! control_struct%attribute: 0D_NOT_character
 
   subroutine control_struct_get_attribute_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='control_struct_get_attribute_info')
@@ -9126,6 +9446,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%attribute), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine control_struct_set_attribute(struct_obj_ptr, str_ptr, str_len) bind(c, name='control_struct_set_attribute')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(control_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%attribute)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%attribute(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%attribute(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! control_struct%ix_attrib: 0D_NOT_integer
@@ -9194,6 +9534,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine control_var1_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='control_var1_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(control_var1_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! control_var1_struct%value: 0D_NOT_real
@@ -9334,6 +9694,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine control_ramp1_struct_set_attribute(struct_obj_ptr, str_ptr, str_len) bind(c, name='control_ramp1_struct_set_attribute')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(control_ramp1_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%attribute)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%attribute(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%attribute(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! control_ramp1_struct%slave_name: 0D_NOT_character
 
   subroutine control_ramp1_struct_get_slave_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='control_ramp1_struct_get_slave_name_info')
@@ -9346,6 +9726,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%slave_name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine control_ramp1_struct_set_slave_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='control_ramp1_struct_set_slave_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(control_ramp1_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%slave_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%slave_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%slave_name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! control_ramp1_struct%is_controller: 0D_NOT_logical
@@ -9884,6 +10284,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine beam_init_struct_set_position_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='beam_init_struct_set_position_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(beam_init_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%position_file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%position_file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%position_file(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! skipped beam_init_struct%distribution_type: Unsupported type: 1D_NOT_character
   ! beam_init_struct%spin: 1D_NOT_real
 
@@ -10089,6 +10509,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine beam_init_struct_set_random_engine(struct_obj_ptr, str_ptr, str_len) bind(c, name='beam_init_struct_set_random_engine')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(beam_init_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%random_engine)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%random_engine(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%random_engine(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! beam_init_struct%random_gauss_converter: 0D_NOT_character
 
   subroutine beam_init_struct_get_random_gauss_converter_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='beam_init_struct_get_random_gauss_converter_info')
@@ -10101,6 +10541,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%random_gauss_converter), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine beam_init_struct_set_random_gauss_converter(struct_obj_ptr, str_ptr, str_len) bind(c, name='beam_init_struct_set_random_gauss_converter')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(beam_init_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%random_gauss_converter)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%random_gauss_converter(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%random_gauss_converter(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! beam_init_struct%random_sigma_cutoff: 0D_NOT_real
@@ -10378,6 +10838,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine beam_init_struct_set_species(struct_obj_ptr, str_ptr, str_len) bind(c, name='beam_init_struct_set_species')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(beam_init_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%species)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%species(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%species(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! beam_init_struct%full_6D_coupling_calc: 0D_NOT_logical
 
   subroutine beam_init_struct_get_full_6D_coupling_calc(struct_obj_ptr, value_out) bind(c, name='beam_init_struct_get_full_6D_coupling_calc')
@@ -10466,6 +10946,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%file_name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine beam_init_struct_set_file_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='beam_init_struct_set_file_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(beam_init_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%file_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%file_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%file_name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   !! lat_param_struct
@@ -11047,6 +11547,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%input_file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine pre_tracker_struct_set_input_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='pre_tracker_struct_set_input_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(pre_tracker_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%input_file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%input_file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%input_file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   !! anormal_mode_struct
@@ -12580,6 +13100,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%diagnostic_output_file), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine space_charge_common_struct_set_diagnostic_output_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='space_charge_common_struct_set_diagnostic_output_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(space_charge_common_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%diagnostic_output_file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%diagnostic_output_file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%diagnostic_output_file(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   !! bmad_common_struct
@@ -14247,6 +14787,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine ele_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='ele_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(ele_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! ele_struct%type: 0D_NOT_character
 
   subroutine ele_struct_get_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ele_struct_get_type_info')
@@ -14259,6 +14819,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%type), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine ele_struct_set_type(struct_obj_ptr, str_ptr, str_len) bind(c, name='ele_struct_set_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(ele_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%type)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%type(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%type(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! ele_struct%alias: 0D_NOT_character
@@ -14275,6 +14855,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine ele_struct_set_alias(struct_obj_ptr, str_ptr, str_len) bind(c, name='ele_struct_set_alias')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(ele_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%alias)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%alias(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%alias(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! ele_struct%component_name: 0D_NOT_character
 
   subroutine ele_struct_get_component_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ele_struct_get_component_name_info')
@@ -14287,6 +14887,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%component_name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine ele_struct_set_component_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='ele_struct_set_component_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(ele_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%component_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%component_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%component_name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! ele_struct%descrip: 0D_PTR_character
@@ -14310,6 +14930,29 @@ contains
       upper_bound = -1_c_int
       size_out = 0_c_int
       is_allocated = .false.
+    endif
+  end subroutine
+
+
+  subroutine ele_struct_set_descrip(struct_obj_ptr, str_ptr, str_len) bind(c, name='ele_struct_set_descrip')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(ele_struct), pointer :: struct_obj
+    character(len=str_len), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (.not. associated(struct_obj%descrip)) then
+      allocate(struct_obj%descrip)
+    endif
+    field_len = len(struct_obj%descrip)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%descrip(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%descrip(copy_len+1:field_len) = ' '
     endif
   end subroutine
 
@@ -16061,6 +16704,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine branch_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='branch_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(branch_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! branch_struct%ix_branch: 0D_NOT_integer
 
   subroutine branch_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='branch_struct_get_ix_branch')
@@ -16429,6 +17092,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine lat_struct_set_use_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='lat_struct_set_use_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(lat_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%use_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%use_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%use_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! lat_struct%lattice: 0D_NOT_character
 
   subroutine lat_struct_get_lattice_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='lat_struct_get_lattice_info')
@@ -16441,6 +17124,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%lattice), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine lat_struct_set_lattice(struct_obj_ptr, str_ptr, str_len) bind(c, name='lat_struct_set_lattice')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(lat_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%lattice)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%lattice(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%lattice(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! lat_struct%machine: 0D_NOT_character
@@ -16457,6 +17160,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine lat_struct_set_machine(struct_obj_ptr, str_ptr, str_len) bind(c, name='lat_struct_set_machine')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(lat_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%machine)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%machine(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%machine(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! lat_struct%input_file_name: 0D_NOT_character
 
   subroutine lat_struct_get_input_file_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='lat_struct_get_input_file_name_info')
@@ -16471,6 +17194,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine lat_struct_set_input_file_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='lat_struct_set_input_file_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(lat_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%input_file_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%input_file_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%input_file_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! lat_struct%title: 0D_NOT_character
 
   subroutine lat_struct_get_title_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='lat_struct_get_title_info')
@@ -16483,6 +17226,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%title), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine lat_struct_set_title(struct_obj_ptr, str_ptr, str_len) bind(c, name='lat_struct_set_title')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(lat_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%title)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%title(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%title(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! skipped lat_struct%print_str: Unsupported type: 1D_ALLOC_character
@@ -18209,6 +18972,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine aperture_param_struct_set_start_ele(struct_obj_ptr, str_ptr, str_len) bind(c, name='aperture_param_struct_set_start_ele')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(aperture_param_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%start_ele)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%start_ele(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%start_ele(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   !! aperture_scan_struct
 
   function allocate_fortran_aperture_scan_struct() result(ptr) bind(c)
@@ -18409,6 +19192,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%id), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine resonance_h_struct_set_id(struct_obj_ptr, str_ptr, str_len) bind(c, name='resonance_h_struct_set_id')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(resonance_h_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%id)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%id(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%id(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! resonance_h_struct%c_val: 0D_NOT_complex
@@ -20994,6 +21797,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_beam_branch_struct_set_track_start(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_beam_branch_struct_set_track_start')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%track_start)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%track_start(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%track_start(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_beam_branch_struct%track_end: 0D_NOT_character
 
   subroutine tao_beam_branch_struct_get_track_end_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_beam_branch_struct_get_track_end_info')
@@ -21006,6 +21829,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%track_end), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_beam_branch_struct_set_track_end(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_beam_branch_struct_set_track_end')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_beam_branch_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%track_end)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%track_end(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%track_end(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_beam_branch_struct%ix_branch: 0D_NOT_integer
@@ -21114,6 +21957,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_d1_data_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d1_data_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d1_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_d1_data_struct%d2: 0D_PTR_type
 
   subroutine tao_d1_data_struct_get_d2(struct_obj_ptr, ptr_out) bind(c, name='tao_d1_data_struct_get_d2')
@@ -21215,6 +22078,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_lattice_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_lattice_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_lattice_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_lattice_struct%lat: 0D_NOT_type
@@ -21398,6 +22281,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_beam_uni_struct_set_saved_at(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_beam_uni_struct_set_saved_at')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_beam_uni_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%saved_at)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%saved_at(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%saved_at(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_beam_uni_struct%dump_file: 0D_NOT_character
 
   subroutine tao_beam_uni_struct_get_dump_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_beam_uni_struct_get_dump_file_info')
@@ -21412,6 +22315,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_beam_uni_struct_set_dump_file(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_beam_uni_struct_set_dump_file')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_beam_uni_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%dump_file)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%dump_file(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%dump_file(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_beam_uni_struct%dump_at: 0D_NOT_character
 
   subroutine tao_beam_uni_struct_get_dump_at_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_beam_uni_struct_get_dump_at_info')
@@ -21424,6 +22347,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%dump_at), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_beam_uni_struct_set_dump_at(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_beam_uni_struct_set_dump_at')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_beam_uni_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%dump_at)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%dump_at(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%dump_at(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_beam_uni_struct%track_beam_in_universe: 0D_NOT_logical
@@ -21760,6 +22703,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d2_data_struct_set_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_d2_data_struct%data_file_name: 0D_NOT_character
 
   subroutine tao_d2_data_struct_get_data_file_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_d2_data_struct_get_data_file_name_info')
@@ -21772,6 +22735,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%data_file_name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_d2_data_struct_set_data_file_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d2_data_struct_set_data_file_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%data_file_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%data_file_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%data_file_name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_d2_data_struct%ref_file_name: 0D_NOT_character
@@ -21788,6 +22771,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_ref_file_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d2_data_struct_set_ref_file_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%ref_file_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%ref_file_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%ref_file_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_d2_data_struct%data_date: 0D_NOT_character
 
   subroutine tao_d2_data_struct_get_data_date_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_d2_data_struct_get_data_date_info')
@@ -21802,6 +22805,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_d2_data_struct_set_data_date(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d2_data_struct_set_data_date')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%data_date)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%data_date(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%data_date(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_d2_data_struct%ref_date: 0D_NOT_character
 
   subroutine tao_d2_data_struct_get_ref_date_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_d2_data_struct_get_ref_date_info')
@@ -21814,6 +22837,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%ref_date), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_d2_data_struct_set_ref_date(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_d2_data_struct_set_ref_date')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%ref_date)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%ref_date(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%ref_date(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! skipped tao_d2_data_struct%descrip: Unsupported type: 1D_NOT_character
@@ -22203,6 +23246,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_data_struct_set_ele_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_ele_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%ele_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%ele_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%ele_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_data_struct%ele_start_name: 0D_NOT_character
 
   subroutine tao_data_struct_get_ele_start_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_ele_start_name_info')
@@ -22217,6 +23280,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_data_struct_set_ele_start_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_ele_start_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%ele_start_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%ele_start_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%ele_start_name(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_data_struct%ele_ref_name: 0D_NOT_character
 
   subroutine tao_data_struct_get_ele_ref_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_ele_ref_name_info')
@@ -22229,6 +23312,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%ele_ref_name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_data_struct_set_ele_ref_name(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_ele_ref_name')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%ele_ref_name)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%ele_ref_name(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%ele_ref_name(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! skipped tao_data_struct%data_type: Unsupported type: 0D_ALLOC_character
@@ -22246,6 +23349,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_data_struct_set_merit_type(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_merit_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%merit_type)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%merit_type(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%merit_type(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_data_struct%id: 0D_NOT_character
 
   subroutine tao_data_struct_get_id_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_id_info')
@@ -22258,6 +23381,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%id), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_data_struct_set_id(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_id')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%id)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%id(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%id(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_data_struct%data_source: 0D_NOT_character
@@ -22274,6 +23417,26 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+
+  subroutine tao_data_struct_set_data_source(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_data_source')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%data_source)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%data_source(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%data_source(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+
   ! tao_data_struct%why_invalid: 0D_NOT_character
 
   subroutine tao_data_struct_get_why_invalid_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_why_invalid_info')
@@ -22286,6 +23449,26 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%why_invalid), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+
+  subroutine tao_data_struct_set_why_invalid(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_why_invalid')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%why_invalid)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%why_invalid(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%why_invalid(copy_len+1:field_len) = ' '
+    endif
   end subroutine
 
   ! tao_data_struct%ix_uni: 0D_NOT_integer

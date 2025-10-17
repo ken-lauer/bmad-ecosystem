@@ -476,6 +476,71 @@ templates[FullType("complex", 0, "PTR")] = TemplateEntry(
     ],
 )
 
+# Character scalar (NOT) - fixed length
+FORTRAN_CHARACTER_SETTER = """
+  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(STRUCTNAME), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    field_len = len(struct_obj%FATTRNAME)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%FATTRNAME(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%FATTRNAME(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+"""
+
+CPP_CHARACTER_SET_DECL = (
+    "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const char* str_ptr, int str_len);"
+)
+CPP_CHARACTER_SET_ACCESSOR = """
+    void set_CATTRNAME(const std::string& value) {
+        STRUCTNAME_set_FATTRNAME(fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+    }
+"""
+
+# Character pointer scalar (PTR) - pointer with fixed length
+FORTRAN_CHARACTER_PTR_SETTER = """
+  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(STRUCTNAME), pointer :: struct_obj
+    character(len=str_len), pointer :: str_in
+    integer :: copy_len, field_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (.not. associated(struct_obj%FATTRNAME)) then
+      allocate(struct_obj%FATTRNAME)
+    endif
+    field_len = len(struct_obj%FATTRNAME)
+    copy_len = min(str_len, field_len)
+    call c_f_pointer(str_ptr, str_in)
+    if (copy_len > 0) then
+      struct_obj%FATTRNAME(1:copy_len) = str_in(1:copy_len)
+    endif
+    if (copy_len < field_len) then
+      struct_obj%FATTRNAME(copy_len+1:field_len) = ' '
+    endif
+  end subroutine
+"""
+
+CPP_CHARACTER_PTR_SET_DECL = (
+    "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const char* str_ptr, int str_len);"
+)
+CPP_CHARACTER_PTR_SET_ACCESSOR = """
+    void set_CATTRNAME(const std::string& value) {
+        STRUCTNAME_set_FATTRNAME(fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+    }
+"""
+
 # Character scalar (NOT)
 templates[FullType("character", 0, "NOT")] = TemplateEntry(
     fortran_getter="""
@@ -491,7 +556,7 @@ templates[FullType("character", 0, "NOT")] = TemplateEntry(
     size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
-    fortran_setter=None,  # Character setting needs length handling - skip for now
+    fortran_setter=FORTRAN_CHARACTER_SETTER,
     cpp_get_decl="""
     void STRUCTNAME_get_FATTRNAME_info(
         const void* struct_obj,
@@ -517,8 +582,8 @@ templates[FullType("character", 0, "NOT")] = TemplateEntry(
     }
 """,
     ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
+    cpp_set_decl=CPP_CHARACTER_SET_DECL,
+    cpp_set_accessors=[CPP_CHARACTER_SET_ACCESSOR],
 )
 
 # Character pointer scalar (PTR)
@@ -546,7 +611,7 @@ templates[FullType("character", 0, "PTR")] = TemplateEntry(
     endif
   end subroutine
 """,
-    fortran_setter=None,  # Character pointer setting complex - skip for now
+    fortran_setter=FORTRAN_CHARACTER_PTR_SETTER,
     cpp_get_decl="""
     void STRUCTNAME_get_FATTRNAME_info(
         const void* struct_obj,
@@ -580,8 +645,8 @@ templates[FullType("character", 0, "PTR")] = TemplateEntry(
     }
 """,
     ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
+    cpp_set_decl=CPP_CHARACTER_PTR_SET_DECL,
+    cpp_set_accessors=[CPP_CHARACTER_PTR_SET_ACCESSOR],
 )
 
 # 1D arrays (non-alloc) of real, complex, integer
