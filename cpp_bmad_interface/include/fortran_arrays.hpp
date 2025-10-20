@@ -8,7 +8,6 @@
 
 namespace tao {
 
-// Template wrapper for 1D arrays
 template <typename T>
 class FortranArray1D {
  private:
@@ -40,7 +39,6 @@ class FortranArray1D {
   }
 
  public:
-  // Constructor
   FortranArray1D(T* data, int size, int lower, int upper, bool valid)
       : data_(data),
         size_(size),
@@ -48,7 +46,6 @@ class FortranArray1D {
         upper_bound_(upper),
         valid_(valid) {}
 
-  // Default constructor for invalid arrays
   FortranArray1D()
       : data_(nullptr),
         size_(0),
@@ -56,7 +53,6 @@ class FortranArray1D {
         upper_bound_(-1),
         valid_(false) {}
 
-  // Fortran-style indexing (using bounds)
   T& operator()(int i) {
     check_fortran_bounds(i);
     return data_[i - lower_bound_];
@@ -67,7 +63,6 @@ class FortranArray1D {
     return data_[i - lower_bound_];
   }
 
-  // C-style indexing (0-based)
   T& operator[](int i) {
     check_c_bounds(i);
     return data_[i];
@@ -78,7 +73,6 @@ class FortranArray1D {
     return data_[i];
   }
 
-  // Safe access methods
   T& at(int i) {
     return operator[](i);
   }
@@ -93,7 +87,6 @@ class FortranArray1D {
     return operator()(i);
   }
 
-  // Array properties
   bool is_valid() const {
     return valid_;
   }
@@ -110,7 +103,6 @@ class FortranArray1D {
     return upper_bound_;
   }
 
-  // Raw data access
   T* data() {
     return valid_ ? data_ : nullptr;
   }
@@ -118,7 +110,6 @@ class FortranArray1D {
     return valid_ ? data_ : nullptr;
   }
 
-  // Iterator support for C++ range-based loops
   T* begin() {
     return valid_ ? data_ : nullptr;
   }
@@ -131,20 +122,18 @@ class FortranArray1D {
   const T* end() const {
     return valid_ ? data_ + size_ : nullptr;
   }
-  // Convert to std::vector (copies data)
+
   std::vector<T> to_vector() const {
     if (!valid_)
       return std::vector<T>();
     return std::vector<T>(data_, data_ + size_);
   }
 
-  // Empty check
   bool empty() const {
     return !valid_ || size_ == 0;
   }
 };
 
-// Template wrapper for 2D arrays
 template <typename T>
 class FortranArray2D {
  private:
@@ -154,7 +143,6 @@ class FortranArray2D {
   int stride1_, stride2_;
   bool valid_;
 
-  // Helper to compute linear index
   int linear_index(int i, int j) const {
     return (i - dim1_lower_) * stride1_ + (j - dim2_lower_) * stride2_;
   }
@@ -192,7 +180,6 @@ class FortranArray2D {
   }
 
  public:
-  // Constructor
   FortranArray2D(
       T* data,
       int dim1_size,
@@ -258,7 +245,6 @@ class FortranArray2D {
     return operator()(i, j);
   }
 
-  // Array properties
   bool is_valid() const {
     return valid_;
   }
@@ -304,7 +290,6 @@ class FortranArray2D {
     return {stride1_, stride2_};
   }
 
-  // Raw data access
   T* data() {
     return valid_ ? data_ : nullptr;
   }
@@ -463,7 +448,6 @@ class FortranTypeArray1D {
     return ProxyType(get_element_ptr(i));
   }
 
-  // Safe access methods
   ProxyType at(int i) {
     return operator[](i);
   }
@@ -478,7 +462,6 @@ class FortranTypeArray1D {
     return operator()(i);
   }
 
-  // Array properties
   bool is_valid() const {
     return valid_;
   }
@@ -501,7 +484,6 @@ class FortranTypeArray1D {
     return element_size_;
   }
 
-  // Raw data access
   void* data() {
     return valid_ ? data_ : nullptr;
   }
@@ -509,7 +491,6 @@ class FortranTypeArray1D {
     return valid_ ? data_ : nullptr;
   }
 
-  // Get pointer to specific element
   void* element_ptr(int i) {
     if (!valid_)
       throw std::runtime_error("Array not allocated");
@@ -532,7 +513,6 @@ class FortranTypeArray1D {
     return get_element_ptr(i);
   }
 
-  // Iterator support
   class iterator {
    private:
     const FortranTypeArray1D* array_;
@@ -625,7 +605,6 @@ class FortranTypeArray1D {
     return const_iterator(this, size_);
   }
 
-  // Convert to std::vector of Proxy objects
   std::vector<ProxyType> to_vector() const {
     if (!valid_)
       return std::vector<ProxyType>();
@@ -638,7 +617,6 @@ class FortranTypeArray1D {
     return result;
   }
 
-  // Empty check
   bool empty() const {
     return !valid_ || size_ == 0;
   }
