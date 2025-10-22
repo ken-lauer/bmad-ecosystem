@@ -363,10 +363,8 @@ CPP_TYPE_POINTER_SET_ACCESSOR = """
 """
 
 
-# ---------------------------------------------------------------------------
-# Helpers that perform simple substitutions
-# ---------------------------------------------------------------------------
 def subst(s: str, **kw) -> str:
+    """Substitute all upper-case keyword argument names with their respective values."""
     out = s
     for k, v in kw.items():
         out = out.replace(k.upper(), v)
@@ -899,15 +897,12 @@ def generate_accessor_code(struct_name: str, attr_name: str, full_type: FullType
 
     cattr_name = c_side_name_translation.get(f"{struct_name}%{attr_name}", attr_name)
 
+    to_replace = {"structname": struct_name, "fattrname": attr_name, "cattrname": cattr_name}
+    if attr_kind:
+        to_replace["attrtype"] = attr_kind
+
     def replace_all(s: str) -> str:
-        result = (
-            s.replace("STRUCTNAME", struct_name)
-            .replace("FATTRNAME", attr_name)
-            .replace("CATTRNAME", cattr_name)
-        )
-        if attr_kind:
-            result = result.replace("ATTRTYPE", attr_kind)
-        return result
+        return subst(s, **to_replace)
 
     return {
         "fortran_getter": replace_all(tpl.fortran_getter),
