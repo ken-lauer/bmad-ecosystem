@@ -10955,9 +10955,18 @@ class TaoElementIndexProxy {
  private:
   int ix_uni_, ix_lat_, ix_branch_, ix_ele_;
 
-  // void* get_fortran_ptr_() const {
-  //   return fortran_ptr_;
-  // }
+  void* get_fortran_ptr_() const {
+    void* ele_ptr =
+        tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
+    if (!ele_ptr) {
+      throw NullPointerException(
+          "TaoElementIndexProxy dereference for ix_uni=" +
+          std::to_string(ix_uni_) + " ix_lat=" + std::to_string(ix_lat_) +
+          " ix_branch=" + std::to_string(ix_branch_) +
+          " ix_ele=" + std::to_string(ix_ele_) + "");
+    }
+    return ele_ptr;
+  }
 
  public:
   TaoElementIndexProxy(
@@ -10971,26 +10980,28 @@ class TaoElementIndexProxy {
         ix_ele_(ix_ele) {}
 
   EleProxy operator*() const {
-    void* ele_ptr =
-        tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
-    if (!ele_ptr) {
-      throw NullPointerException(
-          "TaoElementIndexProxy dereference for ix_uni=" +
-          std::to_string(ix_uni_) + " ix_lat=" + std::to_string(ix_lat_) +
-          " ix_branch=" + std::to_string(ix_branch_) +
-          " ix_ele=" + std::to_string(ix_ele_) + "");
-    }
-    return EleProxy(ele_ptr);
+    return EleProxy(get_fortran_ptr_());
   }
 
   std::unique_ptr<EleProxy> operator->() const {
-    return std::make_unique<EleProxy>(**this);
+    return std::make_unique<EleProxy>(get_fortran_ptr_());
   }
 };
 
 class TaoBranchIndexProxy {
  private:
   int ix_uni_, ix_lat_, ix_branch_;
+
+  void* get_fortran_ptr_() const {
+    void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
+    if (!branch_ptr) {
+      throw NullPointerException(
+          "TaoBranchIndexProxy dereference for [" + std::to_string(ix_uni_) +
+          "," + std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) +
+          "]");
+    }
+    return branch_ptr;
+  }
 
  public:
   TaoBranchIndexProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
@@ -10999,18 +11010,11 @@ class TaoBranchIndexProxy {
         ix_branch_(ix_branch) {}
 
   BranchProxy operator*() const {
-    void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
-    if (!branch_ptr) {
-      throw NullPointerException(
-          "TaoBranchIndexProxy dereference for [" + std::to_string(ix_uni_) +
-          "," + std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) +
-          "]");
-    }
-    return BranchProxy(branch_ptr);
+    return BranchProxy(get_fortran_ptr_());
   }
 
   std::unique_ptr<BranchProxy> operator->() const {
-    return std::make_unique<BranchProxy>(**this);
+    return std::make_unique<BranchProxy>(get_fortran_ptr_());
   }
 
   TaoElementIndexProxy get_element(int ix_ele) const {
@@ -11043,13 +11047,7 @@ class TaoLatticeIndexProxy {
   }
 
   TaoLatticeProxy operator*() const {
-    void* lat_ptr = tao_c_get_tao_lattice_ptr(ix_uni_, ix_lat_);
-    if (!lat_ptr) {
-      throw NullPointerException(
-          "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +
-          std::to_string(ix_lat_) + "]");
-    }
-    return TaoLatticeProxy(lat_ptr);
+    return TaoLatticeProxy(get_fortran_ptr_());
   }
   std::unique_ptr<TaoLatticeProxy> operator->() const {
     return std::make_unique<TaoLatticeProxy>(**this);
@@ -11075,7 +11073,7 @@ class TaoUniverseIndexProxy {
 
   TaoUniverseProxy operator*() const;
   std::unique_ptr<TaoUniverseProxy> operator->() const {
-    return std::make_unique<TaoUniverseProxy>(**this);
+    return std::make_unique<TaoUniverseProxy>(get_fortran_ptr_());
   }
 
   TaoLatticeIndexProxy get_lattice(LatticeType lattice_type) const {

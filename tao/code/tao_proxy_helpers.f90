@@ -28,7 +28,7 @@ contains
   end function
 
   function c_get_universe_ptr(ix_uni) result(ptr) bind(c, name="tao_c_get_universe_ptr")
-    integer, intent(in) :: ix_uni
+    integer(c_int), intent(in), value :: ix_uni
     type(tao_universe_struct), pointer :: uni_ptr
     type(c_ptr) :: ptr
    
