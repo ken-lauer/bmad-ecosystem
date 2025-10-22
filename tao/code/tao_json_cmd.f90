@@ -150,7 +150,7 @@ subroutine end_stuff(li, nl)
 
       str_len = len(str)
       call reallocate_c_string_scratch(str_len + 1)
-      tao_c_interface_com%c_string(1:str_len) = [ character(len=1, kind=c_char) :: str(1:str_len) ]
+      tao_c_interface_com%c_string(1:str_len) = transfer(str(1:str_len), tao_c_interface_com%c_string(1:str_len))
       tao_c_interface_com%c_string(str_len + 1) = c_null_char
 
     elseif (opened) then

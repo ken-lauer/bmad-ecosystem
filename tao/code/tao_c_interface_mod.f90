@@ -305,15 +305,23 @@ end function tao_c_get_integer_array
 !   array_ptr -- type(c_ptr): C pointer to the long string.
 !-
 
+function tao_c_get_string_buffer_length() bind(c) result (length)
+  integer(c_int) :: length
+  if (allocated(tao_c_interface_com%c_string)) then
+    length = size(tao_c_interface_com%c_string)
+  else
+    length = 0
+  end if
+end function
+
 function tao_c_get_string_buffer() bind(c) result (array_ptr)
-type(c_ptr) :: array_ptr
-integer :: i
-
-!
-
-array_ptr = c_loc(tao_c_interface_com%c_string(1))
-
-end function tao_c_get_string_buffer
+  type(c_ptr) :: array_ptr
+  if (allocated(tao_c_interface_com%c_string)) then
+    array_ptr = c_loc(tao_c_interface_com%c_string(1))
+  else
+    array_ptr = c_null_ptr
+  end if
+end function
 
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
