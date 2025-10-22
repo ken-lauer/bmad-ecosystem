@@ -1906,9 +1906,78 @@ contains
     endif
   end subroutine
 
-  ! skipped wake_sr_z_long_struct%fw: Unsupported type: 1D_ALLOC_complex
-  ! skipped wake_sr_z_long_struct%fbunch: Unsupported type: 1D_ALLOC_complex
-  ! skipped wake_sr_z_long_struct%w_out: Unsupported type: 1D_ALLOC_complex
+  ! wake_sr_z_long_struct%fw: 1D_ALLOC_complex
+
+  subroutine wake_sr_z_long_struct_get_fw_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='wake_sr_z_long_struct_get_fw_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%fw)) then
+      data_ptr = c_loc(struct_obj%fw(lbound(struct_obj%fw, 1)))
+      lower_bound = int(lbound(struct_obj%fw, 1), c_int)
+      upper_bound = int(ubound(struct_obj%fw, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! wake_sr_z_long_struct%fbunch: 1D_ALLOC_complex
+
+  subroutine wake_sr_z_long_struct_get_fbunch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='wake_sr_z_long_struct_get_fbunch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%fbunch)) then
+      data_ptr = c_loc(struct_obj%fbunch(lbound(struct_obj%fbunch, 1)))
+      lower_bound = int(lbound(struct_obj%fbunch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%fbunch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! wake_sr_z_long_struct%w_out: 1D_ALLOC_complex
+
+  subroutine wake_sr_z_long_struct_get_w_out_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='wake_sr_z_long_struct_get_w_out_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(wake_sr_z_long_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%w_out)) then
+      data_ptr = c_loc(struct_obj%w_out(lbound(struct_obj%w_out, 1)))
+      lower_bound = int(lbound(struct_obj%w_out, 1), c_int)
+      upper_bound = int(ubound(struct_obj%w_out, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! wake_sr_z_long_struct%dz: 0D_NOT_real
 
   subroutine wake_sr_z_long_struct_get_dz(struct_obj_ptr, value_out) bind(c, name='wake_sr_z_long_struct_get_dz')
@@ -4332,7 +4401,30 @@ contains
   end subroutine
 
         
-  ! skipped bicubic_cmplx_coef_struct%coef: Unsupported type: 2D_NOT_complex
+  ! bicubic_cmplx_coef_struct%coef: 2D_NOT_complex
+
+  subroutine bicubic_cmplx_coef_struct_get_coef_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='bicubic_cmplx_coef_struct_get_coef_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(bicubic_cmplx_coef_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef,1), lbound(struct_obj%coef,2)))
+    dim1_lower = int(lbound(struct_obj%coef, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%coef, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%coef, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%coef, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! bicubic_cmplx_coef_struct%i_box: 1D_NOT_integer
 
   subroutine bicubic_cmplx_coef_struct_get_i_box_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='bicubic_cmplx_coef_struct_get_i_box_info')
@@ -4382,7 +4474,36 @@ contains
   end subroutine
 
         
-  ! skipped tricubic_cmplx_coef_struct%coef: Unsupported type: 3D_NOT_complex
+  ! tricubic_cmplx_coef_struct%coef: 3D_NOT_complex
+
+  subroutine tricubic_cmplx_coef_struct_get_coef_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      dim3_size, dim3_lower, dim3_upper, &
+      stride1, stride2, stride3) bind(c, name='tricubic_cmplx_coef_struct_get_coef_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
+    integer(c_int), intent(out) :: stride1, stride2, stride3
+    type(tricubic_cmplx_coef_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef,1), lbound(struct_obj%coef,2), lbound(struct_obj%coef,3)))
+    dim1_lower = int(lbound(struct_obj%coef, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%coef, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%coef, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%coef, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    dim3_lower = int(lbound(struct_obj%coef, 3), c_int)
+    dim3_upper = int(ubound(struct_obj%coef, 3), c_int)
+    dim3_size = dim3_upper - dim3_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+    stride3 = dim1_size * dim2_size
+  end subroutine
+
   ! tricubic_cmplx_coef_struct%i_box: 1D_NOT_integer
 
   subroutine tricubic_cmplx_coef_struct_get_i_box_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tricubic_cmplx_coef_struct_get_i_box_info')
@@ -4548,7 +4669,50 @@ contains
     struct_obj%n_link = value_in
   end subroutine
 
-  ! skipped grid_field_pt_struct%pt: Unsupported type: 3D_ALLOC_type
+  ! grid_field_pt_struct%pt: 3D_ALLOC_type
+
+  subroutine grid_field_pt_struct_get_pt_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      dim3_size, dim3_lower, dim3_upper, &
+      stride1, stride2, stride3, is_allocated, element_size) bind(c, name='grid_field_pt_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
+    integer(c_int), intent(out) :: stride1, stride2, stride3
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(grid_field_pt_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2), lbound(struct_obj%pt,3)))
+      dim1_lower = int(lbound(struct_obj%pt, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%pt, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%pt, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%pt, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      dim3_lower = int(lbound(struct_obj%pt, 3), c_int)
+      dim3_upper = int(ubound(struct_obj%pt, 3), c_int)
+      dim3_size = dim3_upper - dim3_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      stride3 = dim1_size * dim2_size
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2), lbound(struct_obj%pt,3))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      dim3_size = 0_c_int; dim3_lower = 0_c_int; dim3_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int; stride3 = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! grid_field_struct
 
   function allocate_fortran_grid_field_struct() result(ptr) bind(c)
@@ -4810,8 +4974,70 @@ contains
     endif
   end subroutine
 
-  ! skipped grid_field_struct%bi_coef: Unsupported type: 3D_NOT_type
-  ! skipped grid_field_struct%tri_coef: Unsupported type: 3D_NOT_type
+  ! grid_field_struct%bi_coef: 3D_NOT_type
+
+  subroutine grid_field_struct_get_bi_coef_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      dim3_size, dim3_lower, dim3_upper, &
+      stride1, stride2, stride3, element_size) bind(c, name='grid_field_struct_get_bi_coef_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
+    integer(c_int), intent(out) :: stride1, stride2, stride3
+    integer(c_size_t), intent(out) :: element_size
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%bi_coef(lbound(struct_obj%bi_coef,1), lbound(struct_obj%bi_coef,2), lbound(struct_obj%bi_coef,3)))
+    dim1_lower = int(lbound(struct_obj%bi_coef, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%bi_coef, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%bi_coef, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%bi_coef, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    dim3_lower = int(lbound(struct_obj%bi_coef, 3), c_int)
+    dim3_upper = int(ubound(struct_obj%bi_coef, 3), c_int)
+    dim3_size = dim3_upper - dim3_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+    stride3 = dim1_size * dim2_size
+    element_size = int(storage_size(struct_obj%bi_coef(lbound(struct_obj%bi_coef,1), lbound(struct_obj%bi_coef,2), lbound(struct_obj%bi_coef,3))) / 8, c_size_t)
+  end subroutine
+
+  ! grid_field_struct%tri_coef: 3D_NOT_type
+
+  subroutine grid_field_struct_get_tri_coef_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      dim3_size, dim3_lower, dim3_upper, &
+      stride1, stride2, stride3, element_size) bind(c, name='grid_field_struct_get_tri_coef_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
+    integer(c_int), intent(out) :: stride1, stride2, stride3
+    integer(c_size_t), intent(out) :: element_size
+    type(grid_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%tri_coef(lbound(struct_obj%tri_coef,1), lbound(struct_obj%tri_coef,2), lbound(struct_obj%tri_coef,3)))
+    dim1_lower = int(lbound(struct_obj%tri_coef, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%tri_coef, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%tri_coef, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%tri_coef, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    dim3_lower = int(lbound(struct_obj%tri_coef, 3), c_int)
+    dim3_upper = int(ubound(struct_obj%tri_coef, 3), c_int)
+    dim3_size = dim3_upper - dim3_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+    stride3 = dim1_size * dim2_size
+    element_size = int(storage_size(struct_obj%tri_coef(lbound(struct_obj%tri_coef,1), lbound(struct_obj%tri_coef,2), lbound(struct_obj%tri_coef,3))) / 8, c_size_t)
+  end subroutine
+
   !! floor_position_struct
 
   function allocate_fortran_floor_position_struct() result(ptr) bind(c)
@@ -4861,7 +5087,30 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped floor_position_struct%w: Unsupported type: 2D_NOT_real
+  ! floor_position_struct%w: 2D_NOT_real
+
+  subroutine floor_position_struct_get_w_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='floor_position_struct_get_w_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(floor_position_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%w(lbound(struct_obj%w,1), lbound(struct_obj%w,2)))
+    dim1_lower = int(lbound(struct_obj%w, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%w, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%w, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%w, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! floor_position_struct%theta: 0D_NOT_real
 
   subroutine floor_position_struct_get_theta(struct_obj_ptr, value_out) bind(c, name='floor_position_struct_get_theta')
@@ -5631,7 +5880,30 @@ contains
   end subroutine
 
         
-  ! skipped mode3_struct%v: Unsupported type: 2D_NOT_real
+  ! mode3_struct%v: 2D_NOT_real
+
+  subroutine mode3_struct_get_v_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='mode3_struct_get_v_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(mode3_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v,1), lbound(struct_obj%v,2)))
+    dim1_lower = int(lbound(struct_obj%v, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%v, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%v, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%v, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! mode3_struct%a: 0D_NOT_type
 
   subroutine mode3_struct_get_a(struct_obj_ptr, ptr_out) bind(c, name='mode3_struct_get_a')
@@ -5992,7 +6264,30 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped rad_map_struct%damp_dmat: Unsupported type: 2D_NOT_real
+  ! rad_map_struct%damp_dmat: 2D_NOT_real
+
+  subroutine rad_map_struct_get_damp_dmat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='rad_map_struct_get_damp_dmat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(rad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%damp_dmat(lbound(struct_obj%damp_dmat,1), lbound(struct_obj%damp_dmat,2)))
+    dim1_lower = int(lbound(struct_obj%damp_dmat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%damp_dmat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%damp_dmat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%damp_dmat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! rad_map_struct%xfer_damp_vec: 1D_NOT_real
 
   subroutine rad_map_struct_get_xfer_damp_vec_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='rad_map_struct_get_xfer_damp_vec_info')
@@ -6007,8 +6302,54 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped rad_map_struct%xfer_damp_mat: Unsupported type: 2D_NOT_real
-  ! skipped rad_map_struct%stoc_mat: Unsupported type: 2D_NOT_real
+  ! rad_map_struct%xfer_damp_mat: 2D_NOT_real
+
+  subroutine rad_map_struct_get_xfer_damp_mat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='rad_map_struct_get_xfer_damp_mat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(rad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%xfer_damp_mat(lbound(struct_obj%xfer_damp_mat,1), lbound(struct_obj%xfer_damp_mat,2)))
+    dim1_lower = int(lbound(struct_obj%xfer_damp_mat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%xfer_damp_mat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%xfer_damp_mat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%xfer_damp_mat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! rad_map_struct%stoc_mat: 2D_NOT_real
+
+  subroutine rad_map_struct_get_stoc_mat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='rad_map_struct_get_stoc_mat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(rad_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%stoc_mat(lbound(struct_obj%stoc_mat,1), lbound(struct_obj%stoc_mat,2)))
+    dim1_lower = int(lbound(struct_obj%stoc_mat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%stoc_mat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%stoc_mat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%stoc_mat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! rad_map_ele_struct
 
   function allocate_fortran_rad_map_ele_struct() result(ptr) bind(c)
@@ -6705,7 +7046,43 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped surface_segmented_struct%pt: Unsupported type: 2D_ALLOC_type
+  ! surface_segmented_struct%pt: 2D_ALLOC_type
+
+  subroutine surface_segmented_struct_get_pt_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2, is_allocated, element_size) bind(c, name='surface_segmented_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(surface_segmented_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+      dim1_lower = int(lbound(struct_obj%pt, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%pt, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%pt, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%pt, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! surface_h_misalign_pt_struct
 
   function allocate_fortran_surface_h_misalign_pt_struct() result(ptr) bind(c)
@@ -6937,7 +7314,43 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped surface_h_misalign_struct%pt: Unsupported type: 2D_ALLOC_type
+  ! surface_h_misalign_struct%pt: 2D_ALLOC_type
+
+  subroutine surface_h_misalign_struct_get_pt_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2, is_allocated, element_size) bind(c, name='surface_h_misalign_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(surface_h_misalign_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+      dim1_lower = int(lbound(struct_obj%pt, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%pt, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%pt, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%pt, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! surface_displacement_pt_struct
 
   function allocate_fortran_surface_displacement_pt_struct() result(ptr) bind(c)
@@ -7169,7 +7582,43 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped surface_displacement_struct%pt: Unsupported type: 2D_ALLOC_type
+  ! surface_displacement_struct%pt: 2D_ALLOC_type
+
+  subroutine surface_displacement_struct_get_pt_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2, is_allocated, element_size) bind(c, name='surface_displacement_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(surface_displacement_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+      dim1_lower = int(lbound(struct_obj%pt, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%pt, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%pt, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%pt, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! target_point_struct
 
   function allocate_fortran_target_point_struct() result(ptr) bind(c)
@@ -7254,7 +7703,30 @@ contains
   end subroutine
 
         
-  ! skipped surface_curvature_struct%xy: Unsupported type: 2D_NOT_real
+  ! surface_curvature_struct%xy: 2D_NOT_real
+
+  subroutine surface_curvature_struct_get_xy_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='surface_curvature_struct_get_xy_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(surface_curvature_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%xy(lbound(struct_obj%xy,1), lbound(struct_obj%xy,2)))
+    dim1_lower = int(lbound(struct_obj%xy, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%xy, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%xy, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%xy, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! surface_curvature_struct%spherical: 0D_NOT_real
 
   subroutine surface_curvature_struct_get_spherical(struct_obj_ptr, value_out) bind(c, name='surface_curvature_struct_get_spherical')
@@ -7940,7 +8412,43 @@ contains
     struct_obj%n_hit_pixel = value_in
   end subroutine
 
-  ! skipped pixel_detec_struct%pt: Unsupported type: 2D_ALLOC_type
+  ! pixel_detec_struct%pt: 2D_ALLOC_type
+
+  subroutine pixel_detec_struct_get_pt_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2, is_allocated, element_size) bind(c, name='pixel_detec_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(pixel_detec_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+      dim1_lower = int(lbound(struct_obj%pt, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%pt, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%pt, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%pt, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! photon_element_struct
 
   function allocate_fortran_photon_element_struct() result(ptr) bind(c)
@@ -10304,7 +10812,21 @@ contains
     endif
   end subroutine
 
-  ! skipped beam_init_struct%distribution_type: Unsupported type: 1D_NOT_character
+  ! beam_init_struct%distribution_type: 1D_NOT_character
+
+  subroutine beam_init_struct_get_distribution_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, str_len) bind(c, name='beam_init_struct_get_distribution_type_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound, str_len
+    type(beam_init_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%distribution_type(lbound(struct_obj%distribution_type, 1)))
+    lower_bound = int(lbound(struct_obj%distribution_type, 1), c_int)
+    upper_bound = int(ubound(struct_obj%distribution_type, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    str_len = int(len(struct_obj%distribution_type), c_int)
+  end subroutine
+
   ! beam_init_struct%spin: 1D_NOT_real
 
   subroutine beam_init_struct_get_spin_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='beam_init_struct_get_spin_info')
@@ -11060,8 +11582,54 @@ contains
     struct_obj%unstable_factor = value_in
   end subroutine
 
-  ! skipped lat_param_struct%t1_with_RF: Unsupported type: 2D_NOT_real
-  ! skipped lat_param_struct%t1_no_RF: Unsupported type: 2D_NOT_real
+  ! lat_param_struct%t1_with_RF: 2D_NOT_real
+
+  subroutine lat_param_struct_get_t1_with_RF_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='lat_param_struct_get_t1_with_RF_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%t1_with_RF(lbound(struct_obj%t1_with_RF,1), lbound(struct_obj%t1_with_RF,2)))
+    dim1_lower = int(lbound(struct_obj%t1_with_RF, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%t1_with_RF, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%t1_with_RF, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%t1_with_RF, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! lat_param_struct%t1_no_RF: 2D_NOT_real
+
+  subroutine lat_param_struct_get_t1_no_RF_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='lat_param_struct_get_t1_no_RF_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(lat_param_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%t1_no_RF(lbound(struct_obj%t1_no_RF,1), lbound(struct_obj%t1_no_RF,2)))
+    dim1_lower = int(lbound(struct_obj%t1_no_RF, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%t1_no_RF, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%t1_no_RF, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%t1_no_RF, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! lat_param_struct%spin_tune: 0D_NOT_real
 
   subroutine lat_param_struct_get_spin_tune(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_spin_tune')
@@ -12248,8 +12816,54 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped em_field_struct%dE: Unsupported type: 2D_NOT_real
-  ! skipped em_field_struct%dB: Unsupported type: 2D_NOT_real
+  ! em_field_struct%dE: 2D_NOT_real
+
+  subroutine em_field_struct_get_dE_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='em_field_struct_get_dE_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(em_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%dE(lbound(struct_obj%dE,1), lbound(struct_obj%dE,2)))
+    dim1_lower = int(lbound(struct_obj%dE, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%dE, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%dE, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%dE, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! em_field_struct%dB: 2D_NOT_real
+
+  subroutine em_field_struct_get_dB_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='em_field_struct_get_dB_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(em_field_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%dB(lbound(struct_obj%dB,1), lbound(struct_obj%dB,2)))
+    dim1_lower = int(lbound(struct_obj%dB, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%dB, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%dB, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%dB, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! em_field_struct%phi: 0D_NOT_real
 
   subroutine em_field_struct_get_phi(struct_obj_ptr, value_out) bind(c, name='em_field_struct_get_phi')
@@ -12620,7 +13234,30 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped track_point_struct%mat6: Unsupported type: 2D_NOT_real
+  ! track_point_struct%mat6: 2D_NOT_real
+
+  subroutine track_point_struct_get_mat6_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='track_point_struct_get_mat6_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(track_point_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6,1), lbound(struct_obj%mat6,2)))
+    dim1_lower = int(lbound(struct_obj%mat6, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%mat6, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%mat6, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%mat6, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! track_struct
 
   function allocate_fortran_track_struct() result(ptr) bind(c)
@@ -15666,7 +16303,30 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped ele_struct%spin_q: Unsupported type: 2D_NOT_real
+  ! ele_struct%spin_q: 2D_NOT_real
+
+  subroutine ele_struct_get_spin_q_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='ele_struct_get_spin_q_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q,1), lbound(struct_obj%spin_q,2)))
+    dim1_lower = int(lbound(struct_obj%spin_q, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%spin_q, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%spin_q, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%spin_q, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! ele_struct%vec0: 1D_NOT_real
 
   subroutine ele_struct_get_vec0_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ele_struct_get_vec0_info')
@@ -15681,8 +16341,54 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped ele_struct%mat6: Unsupported type: 2D_NOT_real
-  ! skipped ele_struct%c_mat: Unsupported type: 2D_NOT_real
+  ! ele_struct%mat6: 2D_NOT_real
+
+  subroutine ele_struct_get_mat6_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='ele_struct_get_mat6_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6,1), lbound(struct_obj%mat6,2)))
+    dim1_lower = int(lbound(struct_obj%mat6, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%mat6, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%mat6, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%mat6, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! ele_struct%c_mat: 2D_NOT_real
+
+  subroutine ele_struct_get_c_mat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='ele_struct_get_c_mat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%c_mat(lbound(struct_obj%c_mat,1), lbound(struct_obj%c_mat,2)))
+    dim1_lower = int(lbound(struct_obj%c_mat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%c_mat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%c_mat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%c_mat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! ele_struct%gamma_c: 0D_NOT_real
 
   subroutine ele_struct_get_gamma_c(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_gamma_c')
@@ -15759,12 +16465,167 @@ contains
     struct_obj%ref_time = value_in
   end subroutine
 
-  ! skipped ele_struct%a_pole: Unsupported type: 1D_PTR_real
-  ! skipped ele_struct%b_pole: Unsupported type: 1D_PTR_real
-  ! skipped ele_struct%a_pole_elec: Unsupported type: 1D_PTR_real
-  ! skipped ele_struct%b_pole_elec: Unsupported type: 1D_PTR_real
-  ! skipped ele_struct%custom: Unsupported type: 1D_PTR_real
-  ! skipped ele_struct%r: Unsupported type: 3D_PTR_real
+  ! ele_struct%a_pole: 1D_PTR_real
+
+  subroutine ele_struct_get_a_pole_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='ele_struct_get_a_pole_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%a_pole)) then
+      data_ptr = c_loc(struct_obj%a_pole(lbound(struct_obj%a_pole, 1)))
+      lower_bound = int(lbound(struct_obj%a_pole, 1), c_int)
+      upper_bound = int(ubound(struct_obj%a_pole, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%b_pole: 1D_PTR_real
+
+  subroutine ele_struct_get_b_pole_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='ele_struct_get_b_pole_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%b_pole)) then
+      data_ptr = c_loc(struct_obj%b_pole(lbound(struct_obj%b_pole, 1)))
+      lower_bound = int(lbound(struct_obj%b_pole, 1), c_int)
+      upper_bound = int(ubound(struct_obj%b_pole, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%a_pole_elec: 1D_PTR_real
+
+  subroutine ele_struct_get_a_pole_elec_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='ele_struct_get_a_pole_elec_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%a_pole_elec)) then
+      data_ptr = c_loc(struct_obj%a_pole_elec(lbound(struct_obj%a_pole_elec, 1)))
+      lower_bound = int(lbound(struct_obj%a_pole_elec, 1), c_int)
+      upper_bound = int(ubound(struct_obj%a_pole_elec, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%b_pole_elec: 1D_PTR_real
+
+  subroutine ele_struct_get_b_pole_elec_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='ele_struct_get_b_pole_elec_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%b_pole_elec)) then
+      data_ptr = c_loc(struct_obj%b_pole_elec(lbound(struct_obj%b_pole_elec, 1)))
+      lower_bound = int(lbound(struct_obj%b_pole_elec, 1), c_int)
+      upper_bound = int(ubound(struct_obj%b_pole_elec, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%custom: 1D_PTR_real
+
+  subroutine ele_struct_get_custom_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='ele_struct_get_custom_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%custom)) then
+      data_ptr = c_loc(struct_obj%custom(lbound(struct_obj%custom, 1)))
+      lower_bound = int(lbound(struct_obj%custom, 1), c_int)
+      upper_bound = int(ubound(struct_obj%custom, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%r: 3D_PTR_real
+
+  subroutine ele_struct_get_r_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      dim3_size, dim3_lower, dim3_upper, &
+      stride1, stride2, stride3, is_allocated) bind(c, name='ele_struct_get_r_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
+    integer(c_int), intent(out) :: stride1, stride2, stride3
+    logical(c_bool), intent(out) :: is_allocated
+    type(ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%r)) then
+      data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r,1), lbound(struct_obj%r,2), lbound(struct_obj%r,3)))
+      dim1_lower = int(lbound(struct_obj%r, 1), c_int)
+      dim1_upper = int(ubound(struct_obj%r, 1), c_int)
+      dim1_size = dim1_upper - dim1_lower + 1
+      dim2_lower = int(lbound(struct_obj%r, 2), c_int)
+      dim2_upper = int(ubound(struct_obj%r, 2), c_int)
+      dim2_size = dim2_upper - dim2_lower + 1
+      dim3_lower = int(lbound(struct_obj%r, 3), c_int)
+      dim3_upper = int(ubound(struct_obj%r, 3), c_int)
+      dim3_size = dim3_upper - dim3_lower + 1
+      stride1 = 1_c_int
+      stride2 = dim1_size
+      stride3 = dim1_size * dim2_size
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
+      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
+      dim3_size = 0_c_int; dim3_lower = 0_c_int; dim3_upper = -1_c_int
+      stride1 = 0_c_int; stride2 = 0_c_int; stride3 = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! ele_struct%key: 0D_NOT_integer
 
   subroutine ele_struct_get_key(struct_obj_ptr, value_out) bind(c, name='ele_struct_get_key')
@@ -17248,7 +18109,32 @@ contains
     endif
   end subroutine
 
-  ! skipped lat_struct%print_str: Unsupported type: 1D_ALLOC_character
+  ! lat_struct%print_str: 1D_ALLOC_character
+
+  subroutine lat_struct_get_print_str_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, str_len, is_allocated) bind(c, name='lat_struct_get_print_str_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound, str_len
+    logical(c_bool), intent(out) :: is_allocated
+    type(lat_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%print_str)) then
+      data_ptr = c_loc(struct_obj%print_str(lbound(struct_obj%print_str, 1)))
+      lower_bound = int(lbound(struct_obj%print_str, 1), c_int)
+      upper_bound = int(ubound(struct_obj%print_str, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      str_len = int(len(struct_obj%print_str), c_int)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      str_len = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! lat_struct%constant: 1D_ALLOC_type
 
   subroutine lat_struct_get_constant_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_constant_info')
@@ -18303,7 +19189,30 @@ contains
     struct_obj%c = src_obj
   end subroutine
 
-  ! skipped bunch_params_struct%sigma: Unsupported type: 2D_NOT_real
+  ! bunch_params_struct%sigma: 2D_NOT_real
+
+  subroutine bunch_params_struct_get_sigma_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='bunch_params_struct_get_sigma_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(bunch_params_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%sigma(lbound(struct_obj%sigma,1), lbound(struct_obj%sigma,2)))
+    dim1_lower = int(lbound(struct_obj%sigma, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%sigma, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%sigma, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%sigma, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! bunch_params_struct%rel_max: 1D_NOT_real
 
   subroutine bunch_params_struct_get_rel_max_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='bunch_params_struct_get_rel_max_info')
@@ -19143,8 +20052,54 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped tao_spin_dn_dpz_struct%partial: Unsupported type: 2D_NOT_real
-  ! skipped tao_spin_dn_dpz_struct%partial2: Unsupported type: 2D_NOT_real
+  ! tao_spin_dn_dpz_struct%partial: 2D_NOT_real
+
+  subroutine tao_spin_dn_dpz_struct_get_partial_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_spin_dn_dpz_struct_get_partial_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_spin_dn_dpz_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%partial(lbound(struct_obj%partial,1), lbound(struct_obj%partial,2)))
+    dim1_lower = int(lbound(struct_obj%partial, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%partial, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%partial, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%partial, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! tao_spin_dn_dpz_struct%partial2: 2D_NOT_real
+
+  subroutine tao_spin_dn_dpz_struct_get_partial2_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_spin_dn_dpz_struct_get_partial2_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_spin_dn_dpz_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%partial2(lbound(struct_obj%partial2,1), lbound(struct_obj%partial2,2)))
+    dim1_lower = int(lbound(struct_obj%partial2, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%partial2, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%partial2, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%partial2, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! resonance_h_struct
 
   function allocate_fortran_resonance_h_struct() result(ptr) bind(c)
@@ -19268,7 +20223,30 @@ contains
   end subroutine
 
         
-  ! skipped spin_orbit_map1_struct%orb_mat: Unsupported type: 2D_NOT_real
+  ! spin_orbit_map1_struct%orb_mat: 2D_NOT_real
+
+  subroutine spin_orbit_map1_struct_get_orb_mat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='spin_orbit_map1_struct_get_orb_mat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(spin_orbit_map1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%orb_mat(lbound(struct_obj%orb_mat,1), lbound(struct_obj%orb_mat,2)))
+    dim1_lower = int(lbound(struct_obj%orb_mat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%orb_mat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%orb_mat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%orb_mat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! spin_orbit_map1_struct%vec0: 1D_NOT_real
 
   subroutine spin_orbit_map1_struct_get_vec0_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='spin_orbit_map1_struct_get_vec0_info')
@@ -19283,7 +20261,30 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped spin_orbit_map1_struct%spin_q: Unsupported type: 2D_NOT_real
+  ! spin_orbit_map1_struct%spin_q: 2D_NOT_real
+
+  subroutine spin_orbit_map1_struct_get_spin_q_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='spin_orbit_map1_struct_get_spin_q_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(spin_orbit_map1_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q,1), lbound(struct_obj%spin_q,2)))
+    dim1_lower = int(lbound(struct_obj%spin_q, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%spin_q, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%spin_q, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%spin_q, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! spin_axis_struct
 
   function allocate_fortran_spin_axis_struct() result(ptr) bind(c)
@@ -20345,7 +21346,30 @@ contains
   end subroutine
 
         
-  ! skipped tao_lat_sigma_struct%mat: Unsupported type: 2D_NOT_real
+  ! tao_lat_sigma_struct%mat: 2D_NOT_real
+
+  subroutine tao_lat_sigma_struct_get_mat_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_lat_sigma_struct_get_mat_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_lat_sigma_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%mat(lbound(struct_obj%mat,1), lbound(struct_obj%mat,2)))
+    dim1_lower = int(lbound(struct_obj%mat, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%mat, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%mat, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%mat, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! tao_spin_ele_struct
 
   function allocate_fortran_tao_spin_ele_struct() result(ptr) bind(c)
@@ -20416,8 +21440,54 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped tao_spin_ele_struct%orb_eigen_vec: Unsupported type: 2D_NOT_real
-  ! skipped tao_spin_ele_struct%spin_eigen_vec: Unsupported type: 2D_NOT_real
+  ! tao_spin_ele_struct%orb_eigen_vec: 2D_NOT_real
+
+  subroutine tao_spin_ele_struct_get_orb_eigen_vec_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_spin_ele_struct_get_orb_eigen_vec_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_spin_ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%orb_eigen_vec(lbound(struct_obj%orb_eigen_vec,1), lbound(struct_obj%orb_eigen_vec,2)))
+    dim1_lower = int(lbound(struct_obj%orb_eigen_vec, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%orb_eigen_vec, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%orb_eigen_vec, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%orb_eigen_vec, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
+  ! tao_spin_ele_struct%spin_eigen_vec: 2D_NOT_real
+
+  subroutine tao_spin_ele_struct_get_spin_eigen_vec_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_spin_ele_struct_get_spin_eigen_vec_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_spin_ele_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%spin_eigen_vec(lbound(struct_obj%spin_eigen_vec,1), lbound(struct_obj%spin_eigen_vec,2)))
+    dim1_lower = int(lbound(struct_obj%spin_eigen_vec, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%spin_eigen_vec, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%spin_eigen_vec, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%spin_eigen_vec, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   ! tao_spin_ele_struct%valid: 0D_NOT_logical
 
   subroutine tao_spin_ele_struct_get_valid(struct_obj_ptr, value_out) bind(c, name='tao_spin_ele_struct_get_valid')
@@ -22859,7 +23929,21 @@ contains
     endif
   end subroutine
 
-  ! skipped tao_d2_data_struct%descrip: Unsupported type: 1D_NOT_character
+  ! tao_d2_data_struct%descrip: 1D_NOT_character
+
+  subroutine tao_d2_data_struct_get_descrip_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, str_len) bind(c, name='tao_d2_data_struct_get_descrip_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound, str_len
+    type(tao_d2_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%descrip(lbound(struct_obj%descrip, 1)))
+    lower_bound = int(lbound(struct_obj%descrip, 1), c_int)
+    upper_bound = int(ubound(struct_obj%descrip, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    str_len = int(len(struct_obj%descrip), c_int)
+  end subroutine
+
   ! tao_d2_data_struct%d1: 1D_ALLOC_type
 
   subroutine tao_d2_data_struct_get_d1_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_d2_data_struct_get_d1_info')
@@ -23196,7 +24280,30 @@ contains
     struct_obj%ix_branch = value_in
   end subroutine
 
-  ! skipped tao_spin_map_struct%mat8: Unsupported type: 2D_NOT_real
+  ! tao_spin_map_struct%mat8: 2D_NOT_real
+
+  subroutine tao_spin_map_struct_get_mat8_info(struct_obj_ptr, data_ptr, &
+      dim1_size, dim1_lower, dim1_upper, &
+      dim2_size, dim2_lower, dim2_upper, &
+      stride1, stride2) bind(c, name='tao_spin_map_struct_get_mat8_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
+    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
+    integer(c_int), intent(out) :: stride1, stride2
+    type(tao_spin_map_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%mat8(lbound(struct_obj%mat8,1), lbound(struct_obj%mat8,2)))
+    dim1_lower = int(lbound(struct_obj%mat8, 1), c_int)
+    dim1_upper = int(ubound(struct_obj%mat8, 1), c_int)
+    dim1_size = dim1_upper - dim1_lower + 1
+    dim2_lower = int(lbound(struct_obj%mat8, 2), c_int)
+    dim2_upper = int(ubound(struct_obj%mat8, 2), c_int)
+    dim2_size = dim2_upper - dim2_lower + 1
+    stride1 = 1_c_int
+    stride2 = dim1_size
+  end subroutine
+
   !! tao_data_struct
 
   function allocate_fortran_tao_data_struct() result(ptr) bind(c)
@@ -23334,7 +24441,49 @@ contains
     endif
   end subroutine
 
-  ! skipped tao_data_struct%data_type: Unsupported type: 0D_ALLOC_character
+  ! tao_data_struct%data_type: 0D_ALLOC_character
+
+  subroutine tao_data_struct_get_data_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='tao_data_struct_get_data_type_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    type(tao_data_struct), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%data_type)) then
+      data_ptr = c_loc(struct_obj%data_type)
+      lower_bound = 1_c_int
+      upper_bound = int(len_trim(struct_obj%data_type), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
+    endif
+  end subroutine
+
+
+  subroutine tao_data_struct_set_data_type(struct_obj_ptr, str_ptr, str_len) bind(c, name='tao_data_struct_set_data_type')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(tao_data_struct), pointer :: struct_obj
+    character(len=:), pointer :: str_in
+    integer :: copy_len
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%data_type)) then
+      deallocate(struct_obj%data_type)
+    endif
+    if (str_len > 0) then
+      allocate(character(len=str_len) :: struct_obj%data_type)
+      call c_f_pointer(str_ptr, str_in)
+      struct_obj%data_type = str_in(1:str_len)
+    endif
+  end subroutine
+
   ! tao_data_struct%merit_type: 0D_NOT_character
 
   subroutine tao_data_struct_get_merit_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_merit_type_info')

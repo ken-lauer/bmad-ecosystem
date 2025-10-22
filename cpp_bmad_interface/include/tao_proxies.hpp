@@ -342,6 +342,30 @@ void wake_sr_z_long_struct_get_w_info(
     int* upper_bound,
     bool* is_allocated);
 
+void wake_sr_z_long_struct_get_fw_info(
+    const void* struct_obj,
+    std::complex<double>** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void wake_sr_z_long_struct_get_fbunch_info(
+    const void* struct_obj,
+    std::complex<double>** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void wake_sr_z_long_struct_get_w_out_info(
+    const void* struct_obj,
+    std::complex<double>** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
 void wake_sr_z_long_struct_get_dz(const void* struct_obj, double* value_out);
 void wake_sr_z_long_struct_set_dz(void* struct_obj, double value_in);
 void wake_sr_z_long_struct_get_z0(const void* struct_obj, double* value_out);
@@ -718,12 +742,40 @@ void cylindrical_map_struct_get_r0_info(
 void cylindrical_map_struct_get_ptr(const void* struct_obj, void** ptr_out);
 void cylindrical_map_struct_set_ptr(void* struct_obj, const void* src_ptr);
 
+void bicubic_cmplx_coef_struct_get_coef_info(
+    const void* struct_obj,
+    std::complex<double>** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void bicubic_cmplx_coef_struct_get_i_box_info(
     const void* struct_obj,
     int** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tricubic_cmplx_coef_struct_get_coef_info(
+    const void* struct_obj,
+    std::complex<double>** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* dim3_size,
+    int* dim3_lower,
+    int* dim3_upper,
+    int* stride1,
+    int* stride2,
+    int* stride3);
 
 void tricubic_cmplx_coef_struct_get_i_box_info(
     const void* struct_obj,
@@ -759,6 +811,25 @@ void grid_field_pt_struct_set_file(
     int str_len);
 void grid_field_pt_struct_get_n_link(const void* struct_obj, int* value_out);
 void grid_field_pt_struct_set_n_link(void* struct_obj, int value_in);
+
+void grid_field_pt_struct_get_pt_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* dim3_size,
+    int* dim3_lower,
+    int* dim3_upper,
+    int* stride1,
+    int* stride2,
+    int* stride3,
+    bool* is_allocated,
+    size_t* element_size);
+
 void grid_field_struct_get_geometry(const void* struct_obj, int* value_out);
 void grid_field_struct_set_geometry(void* struct_obj, int value_in);
 void grid_field_struct_get_harmonic(const void* struct_obj, int* value_out);
@@ -807,12 +878,58 @@ void grid_field_struct_set_curved_ref_frame(void* struct_obj, bool value_in);
 void grid_field_struct_get_ptr(const void* struct_obj, void** ptr_out);
 void grid_field_struct_set_ptr(void* struct_obj, const void* src_ptr);
 
+void grid_field_struct_get_bi_coef_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* dim3_size,
+    int* dim3_lower,
+    int* dim3_upper,
+    int* stride1,
+    int* stride2,
+    int* stride3,
+    size_t* element_size);
+
+void grid_field_struct_get_tri_coef_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* dim3_size,
+    int* dim3_lower,
+    int* dim3_upper,
+    int* stride1,
+    int* stride2,
+    int* stride3,
+    size_t* element_size);
+
 void floor_position_struct_get_r_info(
     const void* struct_obj,
     double** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void floor_position_struct_get_w_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void floor_position_struct_get_theta(const void* struct_obj, double* value_out);
 void floor_position_struct_set_theta(void* struct_obj, double value_in);
@@ -910,6 +1027,19 @@ void twiss_struct_get_deta_dpz(const void* struct_obj, double* value_out);
 void twiss_struct_set_deta_dpz(void* struct_obj, double value_in);
 void twiss_struct_get_detap_dpz(const void* struct_obj, double* value_out);
 void twiss_struct_set_detap_dpz(void* struct_obj, double value_in);
+
+void mode3_struct_get_v_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void mode3_struct_get_a(const void* struct_obj, void** ptr_out);
 void mode3_struct_set_a(void* struct_obj, const void* src_ptr);
 void mode3_struct_get_b(const void* struct_obj, void** ptr_out);
@@ -962,12 +1092,48 @@ void rad_map_struct_get_ref_orb_info(
     int* lower_bound,
     int* upper_bound);
 
+void rad_map_struct_get_damp_dmat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void rad_map_struct_get_xfer_damp_vec_info(
     const void* struct_obj,
     double** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void rad_map_struct_get_xfer_damp_mat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void rad_map_struct_get_stoc_mat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void rad_map_ele_struct_get_rm0(const void* struct_obj, void** ptr_out);
 void rad_map_ele_struct_set_rm0(void* struct_obj, const void* src_ptr);
@@ -1087,6 +1253,20 @@ void surface_segmented_struct_get_r0_info(
     int* lower_bound,
     int* upper_bound);
 
+void surface_segmented_struct_get_pt_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2,
+    bool* is_allocated,
+    size_t* element_size);
+
 void surface_h_misalign_pt_struct_get_x0(
     const void* struct_obj,
     double* value_out);
@@ -1133,6 +1313,20 @@ void surface_h_misalign_struct_get_r0_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void surface_h_misalign_struct_get_pt_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2,
+    bool* is_allocated,
+    size_t* element_size);
 
 void surface_displacement_pt_struct_get_x0(
     const void* struct_obj,
@@ -1183,12 +1377,38 @@ void surface_displacement_struct_get_r0_info(
     int* lower_bound,
     int* upper_bound);
 
+void surface_displacement_struct_get_pt_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2,
+    bool* is_allocated,
+    size_t* element_size);
+
 void target_point_struct_get_r_info(
     const void* struct_obj,
     double** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void surface_curvature_struct_get_xy_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void surface_curvature_struct_get_spherical(
     const void* struct_obj,
@@ -1347,6 +1567,21 @@ void pixel_detec_struct_get_n_hit_pixel(
     const void* struct_obj,
     long long* value_out);
 void pixel_detec_struct_set_n_hit_pixel(void* struct_obj, long long value_in);
+
+void pixel_detec_struct_get_pt_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2,
+    bool* is_allocated,
+    size_t* element_size);
+
 void photon_element_struct_get_curvature(
     const void* struct_obj,
     void** ptr_out);
@@ -1809,6 +2044,14 @@ void beam_init_struct_set_position_file(
     const char* str_ptr,
     int str_len);
 
+void beam_init_struct_get_distribution_type_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    int* str_len);
+
 void beam_init_struct_get_spin_info(
     const void* struct_obj,
     double** data_ptr,
@@ -1981,6 +2224,31 @@ void lat_param_struct_get_unstable_factor(
     const void* struct_obj,
     double* value_out);
 void lat_param_struct_set_unstable_factor(void* struct_obj, double value_in);
+
+void lat_param_struct_get_t1_with_RF_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void lat_param_struct_get_t1_no_RF_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void lat_param_struct_get_spin_tune(const void* struct_obj, double* value_out);
 void lat_param_struct_set_spin_tune(void* struct_obj, double value_in);
 void lat_param_struct_get_particle(const void* struct_obj, int* value_out);
@@ -2170,6 +2438,30 @@ void em_field_struct_get_B_info(
     int* lower_bound,
     int* upper_bound);
 
+void em_field_struct_get_dE_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void em_field_struct_get_dB_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void em_field_struct_get_phi(const void* struct_obj, double* value_out);
 void em_field_struct_set_phi(void* struct_obj, double value_in);
 void em_field_struct_get_phi_B(const void* struct_obj, double* value_out);
@@ -2213,6 +2505,18 @@ void track_point_struct_get_vec0_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void track_point_struct_get_mat6_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void track_struct_get_pt_info(
     const void* struct_obj,
@@ -2825,12 +3129,48 @@ void ele_struct_get_old_value_info(
     int* lower_bound,
     int* upper_bound);
 
+void ele_struct_get_spin_q_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void ele_struct_get_vec0_info(
     const void* struct_obj,
     double** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void ele_struct_get_mat6_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void ele_struct_get_c_mat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void ele_struct_get_gamma_c(const void* struct_obj, double* value_out);
 void ele_struct_set_gamma_c(void* struct_obj, double value_in);
@@ -2840,6 +3180,64 @@ void ele_struct_get_s(const void* struct_obj, double* value_out);
 void ele_struct_set_s(void* struct_obj, double value_in);
 void ele_struct_get_ref_time(const void* struct_obj, double* value_out);
 void ele_struct_set_ref_time(void* struct_obj, double value_in);
+
+void ele_struct_get_a_pole_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void ele_struct_get_b_pole_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void ele_struct_get_a_pole_elec_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void ele_struct_get_b_pole_elec_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void ele_struct_get_custom_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void ele_struct_get_r_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* dim3_size,
+    int* dim3_lower,
+    int* dim3_upper,
+    int* stride1,
+    int* stride2,
+    int* stride3,
+    bool* is_allocated);
+
 void ele_struct_get_key(const void* struct_obj, int* value_out);
 void ele_struct_set_key(void* struct_obj, int value_in);
 void ele_struct_get_sub_key(const void* struct_obj, int* value_out);
@@ -3063,6 +3461,15 @@ void lat_struct_get_title_info(
 
 void lat_struct_set_title(void* struct_obj, const char* str_ptr, int str_len);
 
+void lat_struct_get_print_str_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    int* str_len,
+    bool* is_allocated);
+
 void lat_struct_get_constant_info(
     const void* struct_obj,
     void** data_ptr,
@@ -3215,6 +3622,18 @@ void bunch_params_struct_set_b(void* struct_obj, const void* src_ptr);
 void bunch_params_struct_get_c(const void* struct_obj, void** ptr_out);
 void bunch_params_struct_set_c(void* struct_obj, const void* src_ptr);
 
+void bunch_params_struct_get_sigma_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void bunch_params_struct_get_rel_max_info(
     const void* struct_obj,
     double** data_ptr,
@@ -3357,6 +3776,30 @@ void tao_spin_dn_dpz_struct_get_vec_info(
     int* lower_bound,
     int* upper_bound);
 
+void tao_spin_dn_dpz_struct_get_partial_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void tao_spin_dn_dpz_struct_get_partial2_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void resonance_h_struct_get_id_info(
     const void* struct_obj,
     char** data_ptr,
@@ -3375,12 +3818,36 @@ void resonance_h_struct_set_c_val(
     void* struct_obj,
     std::complex<double> value_in);
 
+void spin_orbit_map1_struct_get_orb_mat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void spin_orbit_map1_struct_get_vec0_info(
     const void* struct_obj,
     double** data_ptr,
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void spin_orbit_map1_struct_get_spin_q_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void spin_axis_struct_get_l_info(
     const void* struct_obj,
@@ -3640,6 +4107,18 @@ void lat_ele_order_array_struct_get_ele_info(
     bool* is_allocated,
     size_t* element_size);
 
+void tao_lat_sigma_struct_get_mat_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void tao_spin_ele_struct_get_dn_dpz(const void* struct_obj, void** ptr_out);
 void tao_spin_ele_struct_set_dn_dpz(void* struct_obj, const void* src_ptr);
 
@@ -3649,6 +4128,30 @@ void tao_spin_ele_struct_get_orb_eigen_val_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_spin_ele_struct_get_orb_eigen_vec_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
+void tao_spin_ele_struct_get_spin_eigen_vec_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
 
 void tao_spin_ele_struct_get_valid(const void* struct_obj, bool* value_out);
 void tao_spin_ele_struct_set_valid(void* struct_obj, bool value_in);
@@ -4247,6 +4750,14 @@ void tao_d2_data_struct_set_ref_date(
     const char* str_ptr,
     int str_len);
 
+void tao_d2_data_struct_get_descrip_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    int* str_len);
+
 void tao_d2_data_struct_get_d1_info(
     const void* struct_obj,
     void** data_ptr,
@@ -4289,6 +4800,18 @@ void tao_spin_map_struct_set_ix_uni(void* struct_obj, int value_in);
 void tao_spin_map_struct_get_ix_branch(const void* struct_obj, int* value_out);
 void tao_spin_map_struct_set_ix_branch(void* struct_obj, int value_in);
 
+void tao_spin_map_struct_get_mat8_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2);
+
 void tao_data_struct_get_ele_name_info(
     const void* struct_obj,
     char** data_ptr,
@@ -4321,6 +4844,19 @@ void tao_data_struct_get_ele_ref_name_info(
     int* upper_bound);
 
 void tao_data_struct_set_ele_ref_name(
+    void* struct_obj,
+    const char* str_ptr,
+    int str_len);
+
+void tao_data_struct_get_data_type_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void tao_data_struct_set_data_type(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
@@ -5293,6 +5829,9 @@ class WakeSrZLongProxy : public FortranProxy<WakeSrZLongProxy> {
   using FortranProxy::operator=;
 
   FortranArray1D<double> w() const; // 1D_ALLOC_real
+  FortranArray1D<std::complex<double>> fw() const; // 1D_ALLOC_complex
+  FortranArray1D<std::complex<double>> fbunch() const; // 1D_ALLOC_complex
+  FortranArray1D<std::complex<double>> w_out() const; // 1D_ALLOC_complex
   double dz() const; // 0D_NOT_real
   void set_dz(double value);
   double z0() const; // 0D_NOT_real
@@ -5959,6 +6498,7 @@ class BicubicCmplxCoefProxy : public FortranProxy<BicubicCmplxCoefProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  FortranArray2D<std::complex<double>> coef() const; // 2D_NOT_complex
   FortranArray1D<int> i_box() const; // 1D_NOT_integer
 };
 
@@ -5989,6 +6529,7 @@ class TricubicCmplxCoefProxy : public FortranProxy<TricubicCmplxCoefProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  FortranArray3D<std::complex<double>> coef() const; // 3D_NOT_complex
   FortranArray1D<int> i_box() const; // 1D_NOT_integer
 };
 
@@ -6055,6 +6596,7 @@ class GridFieldPtProxy : public FortranProxy<GridFieldPtProxy> {
   void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
+  FortranTypeArray3D<GridFieldPt1Proxy> pt() const; // 3D_ALLOC_type
 };
 
 extern "C" {
@@ -6106,6 +6648,8 @@ class GridFieldProxy : public FortranProxy<GridFieldProxy> {
   void set_curved_ref_frame(bool value);
   const void* ptr() const; // 0D_PTR_type
   void set_ptr(const GridFieldPtProxy& src);
+  FortranTypeArray3D<BicubicCmplxCoefProxy> bi_coef() const; // 3D_NOT_type
+  FortranTypeArray3D<TricubicCmplxCoefProxy> tri_coef() const; // 3D_NOT_type
 };
 
 extern "C" {
@@ -6136,6 +6680,7 @@ class FloorPositionProxy : public FortranProxy<FloorPositionProxy> {
   using FortranProxy::operator=;
 
   FortranArray1D<double> r() const; // 1D_NOT_real
+  FortranArray2D<double> w() const; // 2D_NOT_real
   double theta() const; // 0D_NOT_real
   void set_theta(double value);
   double phi() const; // 0D_NOT_real
@@ -6319,6 +6864,7 @@ class Mode3Proxy : public FortranProxy<Mode3Proxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  FortranArray2D<double> v() const; // 2D_NOT_real
   TwissProxy a() const; // 0D_NOT_type
   void set_a(const TwissProxy& src);
   TwissProxy b() const; // 0D_NOT_type
@@ -6406,7 +6952,10 @@ class RadMapProxy : public FortranProxy<RadMapProxy> {
   using FortranProxy::operator=;
 
   FortranArray1D<double> ref_orb() const; // 1D_NOT_real
+  FortranArray2D<double> damp_dmat() const; // 2D_NOT_real
   FortranArray1D<double> xfer_damp_vec() const; // 1D_NOT_real
+  FortranArray2D<double> xfer_damp_mat() const; // 2D_NOT_real
+  FortranArray2D<double> stoc_mat() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -6600,6 +7149,7 @@ class SurfaceSegmentedProxy : public FortranProxy<SurfaceSegmentedProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
+  FortranTypeArray2D<SurfaceSegmentedPtProxy> pt() const; // 2D_ALLOC_type
 };
 
 extern "C" {
@@ -6674,6 +7224,7 @@ class SurfaceHMisalignProxy : public FortranProxy<SurfaceHMisalignProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
+  FortranTypeArray2D<SurfaceHMisalignPtProxy> pt() const; // 2D_ALLOC_type
 };
 
 extern "C" {
@@ -6749,6 +7300,7 @@ class SurfaceDisplacementProxy : public FortranProxy<SurfaceDisplacementProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
+  FortranTypeArray2D<SurfaceDisplacementPtProxy> pt() const; // 2D_ALLOC_type
 };
 
 extern "C" {
@@ -6808,6 +7360,7 @@ class SurfaceCurvatureProxy : public FortranProxy<SurfaceCurvatureProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  FortranArray2D<double> xy() const; // 2D_NOT_real
   double spherical() const; // 0D_NOT_real
   void set_spherical(double value);
   FortranArray1D<double> elliptical() const; // 1D_NOT_real
@@ -6976,6 +7529,7 @@ class PixelDetecProxy : public FortranProxy<PixelDetecProxy> {
   void set_n_hit_detec(long long value);
   long long n_hit_pixel() const; // 0D_NOT_integer8
   void set_n_hit_pixel(long long value);
+  FortranTypeArray2D<PixelPtProxy> pt() const; // 2D_ALLOC_type
 };
 
 extern "C" {
@@ -7520,6 +8074,7 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   std::string position_file() const; // 0D_NOT_character
   FortranArray1D<char> get_position_file_chars() const; // 0D_NOT_character
   void set_position_file(const std::string& value);
+  FortranCharArray1D distribution_type() const; // 1D_NOT_character
   FortranArray1D<double> spin() const; // 1D_NOT_real
   FortranTypeArray1D<EllipseBeamInitProxy> ellipse() const; // 1D_NOT_type
   KvBeamInitProxy KV() const; // 0D_NOT_type
@@ -7620,6 +8175,8 @@ class LatParamProxy : public FortranProxy<LatParamProxy> {
   void set_total_length(double value);
   double unstable_factor() const; // 0D_NOT_real
   void set_unstable_factor(double value);
+  FortranArray2D<double> t1_with_RF() const; // 2D_NOT_real
+  FortranArray2D<double> t1_no_RF() const; // 2D_NOT_real
   double spin_tune() const; // 0D_NOT_real
   void set_spin_tune(double value);
   int particle() const; // 0D_NOT_integer
@@ -7893,6 +8450,8 @@ class EmFieldProxy : public FortranProxy<EmFieldProxy> {
 
   FortranArray1D<double> E() const; // 1D_NOT_real
   FortranArray1D<double> B() const; // 1D_NOT_real
+  FortranArray2D<double> dE() const; // 2D_NOT_real
+  FortranArray2D<double> dB() const; // 2D_NOT_real
   double phi() const; // 0D_NOT_real
   void set_phi(double value);
   double phi_B() const; // 0D_NOT_real
@@ -7981,6 +8540,7 @@ class TrackPointProxy : public FortranProxy<TrackPointProxy> {
   StrongBeamProxy strong_beam() const; // 0D_NOT_type
   void set_strong_beam(const StrongBeamProxy& src);
   FortranArray1D<double> vec0() const; // 1D_NOT_real
+  FortranArray2D<double> mat6() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -8495,7 +9055,10 @@ class EleProxy : public FortranProxy<EleProxy> {
   void set_time_ref_orb_out(const CoordProxy& src);
   FortranArray1D<double> value() const; // 1D_NOT_real
   FortranArray1D<double> old_value() const; // 1D_NOT_real
+  FortranArray2D<double> spin_q() const; // 2D_NOT_real
   FortranArray1D<double> vec0() const; // 1D_NOT_real
+  FortranArray2D<double> mat6() const; // 2D_NOT_real
+  FortranArray2D<double> c_mat() const; // 2D_NOT_real
   double gamma_c() const; // 0D_NOT_real
   void set_gamma_c(double value);
   double s_start() const; // 0D_NOT_real
@@ -8504,6 +9067,12 @@ class EleProxy : public FortranProxy<EleProxy> {
   void set_s(double value);
   double ref_time() const; // 0D_NOT_real
   void set_ref_time(double value);
+  FortranArray1D<double> a_pole() const; // 1D_PTR_real
+  FortranArray1D<double> b_pole() const; // 1D_PTR_real
+  FortranArray1D<double> a_pole_elec() const; // 1D_PTR_real
+  FortranArray1D<double> b_pole_elec() const; // 1D_PTR_real
+  FortranArray1D<double> custom() const; // 1D_PTR_real
+  FortranArray3D<double> r() const; // 3D_PTR_real
   int key() const; // 0D_NOT_integer
   void set_key(int value);
   int sub_key() const; // 0D_NOT_integer
@@ -8750,6 +9319,7 @@ class LatProxy : public FortranProxy<LatProxy> {
   std::string title() const; // 0D_NOT_character
   FortranArray1D<char> get_title_chars() const; // 0D_NOT_character
   void set_title(const std::string& value);
+  FortranCharArray1D print_str() const; // 1D_ALLOC_character
   FortranTypeArray1D<ExpressionAtomProxy> constant() const; // 1D_ALLOC_type
   const void* a() const; // 0D_PTR_type
   void set_a(const ModeInfoProxy& src);
@@ -8890,6 +9460,7 @@ class BunchParamsProxy : public FortranProxy<BunchParamsProxy> {
   void set_b(const TwissProxy& src);
   TwissProxy c() const; // 0D_NOT_type
   void set_c(const TwissProxy& src);
+  FortranArray2D<double> sigma() const; // 2D_NOT_real
   FortranArray1D<double> rel_max() const; // 1D_NOT_real
   FortranArray1D<double> rel_min() const; // 1D_NOT_real
   double s() const; // 0D_NOT_real
@@ -9099,6 +9670,8 @@ class TaoSpinDnDpzProxy : public FortranProxy<TaoSpinDnDpzProxy> {
   using FortranProxy::operator=;
 
   FortranArray1D<double> vec() const; // 1D_NOT_real
+  FortranArray2D<double> partial() const; // 2D_NOT_real
+  FortranArray2D<double> partial2() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -9162,7 +9735,9 @@ class SpinOrbitMap1Proxy : public FortranProxy<SpinOrbitMap1Proxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  FortranArray2D<double> orb_mat() const; // 2D_NOT_real
   FortranArray1D<double> vec0() const; // 1D_NOT_real
+  FortranArray2D<double> spin_q() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -9463,6 +10038,8 @@ class TaoLatSigmaProxy : public FortranProxy<TaoLatSigmaProxy> {
  public:
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
+
+  FortranArray2D<double> mat() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -9495,6 +10072,8 @@ class TaoSpinEleProxy : public FortranProxy<TaoSpinEleProxy> {
   TaoSpinDnDpzProxy dn_dpz() const; // 0D_NOT_type
   void set_dn_dpz(const TaoSpinDnDpzProxy& src);
   FortranArray1D<double> orb_eigen_val() const; // 1D_NOT_real
+  FortranArray2D<double> orb_eigen_vec() const; // 2D_NOT_real
+  FortranArray2D<double> spin_eigen_vec() const; // 2D_NOT_real
   bool valid() const; // 0D_NOT_logical
   void set_valid(bool value);
 };
@@ -9991,6 +10570,7 @@ class TaoD2DataProxy : public FortranProxy<TaoD2DataProxy> {
   std::string ref_date() const; // 0D_NOT_character
   FortranArray1D<char> get_ref_date_chars() const; // 0D_NOT_character
   void set_ref_date(const std::string& value);
+  FortranCharArray1D descrip() const; // 1D_NOT_character
   FortranTypeArray1D<TaoD1DataProxy> d1() const; // 1D_ALLOC_type
   int ix_universe() const; // 0D_NOT_integer
   void set_ix_universe(int value);
@@ -10049,6 +10629,7 @@ class TaoSpinMapProxy : public FortranProxy<TaoSpinMapProxy> {
   void set_ix_uni(int value);
   int ix_branch() const; // 0D_NOT_integer
   void set_ix_branch(int value);
+  FortranArray2D<double> mat8() const; // 2D_NOT_real
 };
 
 extern "C" {
@@ -10087,6 +10668,9 @@ class TaoDataProxy : public FortranProxy<TaoDataProxy> {
   std::string ele_ref_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ele_ref_name_chars() const; // 0D_NOT_character
   void set_ele_ref_name(const std::string& value);
+  std::string data_type() const; // 0D_ALLOC_character
+  FortranArray1D<char> get_data_type_chars() const; // 0D_ALLOC_character
+  void set_data_type(const std::string& value);
   std::string merit_type() const; // 0D_NOT_character
   FortranArray1D<char> get_merit_type_chars() const; // 0D_NOT_character
   void set_merit_type(const std::string& value);

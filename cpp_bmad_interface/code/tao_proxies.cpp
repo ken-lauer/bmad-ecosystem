@@ -698,6 +698,60 @@ FortranArray1D<double> WakeSrZLongProxy::w() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated);
 }
+FortranArray1D<std::complex<double>> WakeSrZLongProxy::fw() const {
+  std::complex<double>* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  wake_sr_z_long_struct_get_fw_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<std::complex<double>>(
+      reinterpret_cast<std::complex<double>*>(data_ptr),
+      size_out,
+      lower_bound,
+      upper_bound,
+      is_allocated);
+}
+FortranArray1D<std::complex<double>> WakeSrZLongProxy::fbunch() const {
+  std::complex<double>* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  wake_sr_z_long_struct_get_fbunch_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<std::complex<double>>(
+      reinterpret_cast<std::complex<double>*>(data_ptr),
+      size_out,
+      lower_bound,
+      upper_bound,
+      is_allocated);
+}
+FortranArray1D<std::complex<double>> WakeSrZLongProxy::w_out() const {
+  std::complex<double>* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  wake_sr_z_long_struct_get_w_out_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<std::complex<double>>(
+      reinterpret_cast<std::complex<double>*>(data_ptr),
+      size_out,
+      lower_bound,
+      upper_bound,
+      is_allocated);
+}
 double WakeSrZLongProxy::dz() const {
   double value;
   wake_sr_z_long_struct_get_dz(fortran_ptr_, &value);
@@ -1507,6 +1561,34 @@ const void* CylindricalMapProxy::ptr() const {
 void CylindricalMapProxy::set_ptr(const CylindricalMapTermProxy& src) {
   cylindrical_map_struct_set_ptr(fortran_ptr_, src.get_fortran_ptr());
 }
+FortranArray2D<std::complex<double>> BicubicCmplxCoefProxy::coef() const {
+  std::complex<double>* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bicubic_cmplx_coef_struct_get_coef_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<std::complex<double>>(
+      reinterpret_cast<std::complex<double>*>(data_ptr),
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 FortranArray1D<int> BicubicCmplxCoefProxy::i_box() const {
   int* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -1514,6 +1596,43 @@ FortranArray1D<int> BicubicCmplxCoefProxy::i_box() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<int>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray3D<std::complex<double>> TricubicCmplxCoefProxy::coef() const {
+  std::complex<double>* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int dim3_size, dim3_lower, dim3_upper;
+  int stride1, stride2, stride3;
+  tricubic_cmplx_coef_struct_get_coef_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &dim3_size,
+      &dim3_lower,
+      &dim3_upper,
+      &stride1,
+      &stride2,
+      &stride3);
+  return FortranArray3D<std::complex<double>>(
+      reinterpret_cast<std::complex<double>*>(data_ptr),
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      dim3_size,
+      dim3_lower,
+      dim3_upper,
+      stride1,
+      stride2,
+      stride3,
+      true);
 }
 FortranArray1D<int> TricubicCmplxCoefProxy::i_box() const {
   int* data_ptr;
@@ -1570,6 +1689,48 @@ int GridFieldPtProxy::n_link() const {
 }
 void GridFieldPtProxy::set_n_link(int value) {
   grid_field_pt_struct_set_n_link(fortran_ptr_, value);
+}
+FortranTypeArray3D<GridFieldPt1Proxy> GridFieldPtProxy::pt() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int dim3_size, dim3_lower, dim3_upper;
+  int stride1, stride2, stride3;
+  bool is_allocated;
+  size_t element_size;
+  grid_field_pt_struct_get_pt_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &dim3_size,
+      &dim3_lower,
+      &dim3_upper,
+      &stride1,
+      &stride2,
+      &stride3,
+      &is_allocated,
+      &element_size);
+  return FortranTypeArray3D<GridFieldPt1Proxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      dim3_size,
+      dim3_lower,
+      dim3_upper,
+      stride1,
+      stride2,
+      stride3,
+      is_allocated,
+      element_size);
 }
 int GridFieldProxy::geometry() const {
   int value;
@@ -1667,6 +1828,86 @@ const void* GridFieldProxy::ptr() const {
 void GridFieldProxy::set_ptr(const GridFieldPtProxy& src) {
   grid_field_struct_set_ptr(fortran_ptr_, src.get_fortran_ptr());
 }
+FortranTypeArray3D<BicubicCmplxCoefProxy> GridFieldProxy::bi_coef() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int dim3_size, dim3_lower, dim3_upper;
+  int stride1, stride2, stride3;
+  size_t element_size;
+  grid_field_struct_get_bi_coef_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &dim3_size,
+      &dim3_lower,
+      &dim3_upper,
+      &stride1,
+      &stride2,
+      &stride3,
+      &element_size);
+  return FortranTypeArray3D<BicubicCmplxCoefProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      dim3_size,
+      dim3_lower,
+      dim3_upper,
+      stride1,
+      stride2,
+      stride3,
+      true,
+      element_size);
+}
+FortranTypeArray3D<TricubicCmplxCoefProxy> GridFieldProxy::tri_coef() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int dim3_size, dim3_lower, dim3_upper;
+  int stride1, stride2, stride3;
+  size_t element_size;
+  grid_field_struct_get_tri_coef_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &dim3_size,
+      &dim3_lower,
+      &dim3_upper,
+      &stride1,
+      &stride2,
+      &stride3,
+      &element_size);
+  return FortranTypeArray3D<TricubicCmplxCoefProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      dim3_size,
+      dim3_lower,
+      dim3_upper,
+      stride1,
+      stride2,
+      stride3,
+      true,
+      element_size);
+}
 FortranArray1D<double> FloorPositionProxy::r() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -1674,6 +1915,34 @@ FortranArray1D<double> FloorPositionProxy::r() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> FloorPositionProxy::w() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  floor_position_struct_get_w_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 double FloorPositionProxy::theta() const {
   double value;
@@ -1940,6 +2209,34 @@ double TwissProxy::detap_dpz() const {
 void TwissProxy::set_detap_dpz(double value) {
   twiss_struct_set_detap_dpz(fortran_ptr_, value);
 }
+FortranArray2D<double> Mode3Proxy::v() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  mode3_struct_get_v_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 TwissProxy Mode3Proxy::a() const {
   void* ptr;
   mode3_struct_get_a(fortran_ptr_, &ptr);
@@ -2060,6 +2357,34 @@ FortranArray1D<double> RadMapProxy::ref_orb() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranArray2D<double> RadMapProxy::damp_dmat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  rad_map_struct_get_damp_dmat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 FortranArray1D<double> RadMapProxy::xfer_damp_vec() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -2067,6 +2392,62 @@ FortranArray1D<double> RadMapProxy::xfer_damp_vec() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> RadMapProxy::xfer_damp_mat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  rad_map_struct_get_xfer_damp_mat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> RadMapProxy::stoc_mat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  rad_map_struct_get_stoc_mat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 RadMapProxy RadMapEleProxy::rm0() const {
   void* ptr;
@@ -2314,6 +2695,39 @@ FortranArray1D<double> SurfaceSegmentedProxy::r0() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranTypeArray2D<SurfaceSegmentedPtProxy> SurfaceSegmentedProxy::pt() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bool is_allocated;
+  size_t element_size;
+  surface_segmented_struct_get_pt_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2,
+      &is_allocated,
+      &element_size);
+  return FortranTypeArray2D<SurfaceSegmentedPtProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      is_allocated,
+      element_size);
+}
 double SurfaceHMisalignPtProxy::x0() const {
   double value;
   surface_h_misalign_pt_struct_get_x0(fortran_ptr_, &value);
@@ -2385,6 +2799,39 @@ FortranArray1D<double> SurfaceHMisalignProxy::r0() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranTypeArray2D<SurfaceHMisalignPtProxy> SurfaceHMisalignProxy::pt() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bool is_allocated;
+  size_t element_size;
+  surface_h_misalign_struct_get_pt_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2,
+      &is_allocated,
+      &element_size);
+  return FortranTypeArray2D<SurfaceHMisalignPtProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      is_allocated,
+      element_size);
 }
 double SurfaceDisplacementPtProxy::x0() const {
   double value;
@@ -2458,6 +2905,40 @@ FortranArray1D<double> SurfaceDisplacementProxy::r0() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranTypeArray2D<SurfaceDisplacementPtProxy> SurfaceDisplacementProxy::pt()
+    const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bool is_allocated;
+  size_t element_size;
+  surface_displacement_struct_get_pt_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2,
+      &is_allocated,
+      &element_size);
+  return FortranTypeArray2D<SurfaceDisplacementPtProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      is_allocated,
+      element_size);
+}
 FortranArray1D<double> TargetPointProxy::r() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -2465,6 +2946,34 @@ FortranArray1D<double> TargetPointProxy::r() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> SurfaceCurvatureProxy::xy() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  surface_curvature_struct_get_xy_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 double SurfaceCurvatureProxy::spherical() const {
   double value;
@@ -2719,6 +3228,39 @@ long long PixelDetecProxy::n_hit_pixel() const {
 }
 void PixelDetecProxy::set_n_hit_pixel(long long value) {
   pixel_detec_struct_set_n_hit_pixel(fortran_ptr_, value);
+}
+FortranTypeArray2D<PixelPtProxy> PixelDetecProxy::pt() const {
+  void* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bool is_allocated;
+  size_t element_size;
+  pixel_detec_struct_get_pt_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2,
+      &is_allocated,
+      &element_size);
+  return FortranTypeArray2D<PixelPtProxy>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      is_allocated,
+      element_size);
 }
 SurfaceCurvatureProxy PhotonElementProxy::curvature() const {
   void* ptr;
@@ -3596,6 +4138,14 @@ void BeamInitProxy::set_position_file(const std::string& value) {
   beam_init_struct_set_position_file(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
+FortranCharArray1D BeamInitProxy::distribution_type() const {
+  char* data_ptr;
+  int size_out, lower_bound, upper_bound, str_len;
+  beam_init_struct_get_distribution_type_info(
+      fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &str_len);
+  return FortranCharArray1D(
+      data_ptr, size_out, lower_bound, upper_bound, str_len, true);
+}
 FortranArray1D<double> BeamInitProxy::spin() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -3927,6 +4477,62 @@ double LatParamProxy::unstable_factor() const {
 }
 void LatParamProxy::set_unstable_factor(double value) {
   lat_param_struct_set_unstable_factor(fortran_ptr_, value);
+}
+FortranArray2D<double> LatParamProxy::t1_with_RF() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  lat_param_struct_get_t1_with_RF_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> LatParamProxy::t1_no_RF() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  lat_param_struct_get_t1_no_RF_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 double LatParamProxy::spin_tune() const {
   double value;
@@ -4344,6 +4950,62 @@ FortranArray1D<double> EmFieldProxy::B() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranArray2D<double> EmFieldProxy::dE() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  em_field_struct_get_dE_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> EmFieldProxy::dB() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  em_field_struct_get_dB_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 double EmFieldProxy::phi() const {
   double value;
   em_field_struct_get_phi(fortran_ptr_, &value);
@@ -4471,6 +5133,34 @@ FortranArray1D<double> TrackPointProxy::vec0() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> TrackPointProxy::mat6() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  track_point_struct_get_mat6_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 FortranTypeArray1D<TrackPointProxy> TrackProxy::pt() const {
   void* data_ptr;
@@ -5675,6 +6365,34 @@ FortranArray1D<double> EleProxy::old_value() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranArray2D<double> EleProxy::spin_q() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  ele_struct_get_spin_q_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 FortranArray1D<double> EleProxy::vec0() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -5682,6 +6400,62 @@ FortranArray1D<double> EleProxy::vec0() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> EleProxy::mat6() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  ele_struct_get_mat6_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> EleProxy::c_mat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  ele_struct_get_c_mat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 double EleProxy::gamma_c() const {
   double value;
@@ -5714,6 +6488,115 @@ double EleProxy::ref_time() const {
 }
 void EleProxy::set_ref_time(double value) {
   ele_struct_set_ref_time(fortran_ptr_, value);
+}
+FortranArray1D<double> EleProxy::a_pole() const {
+  double* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  ele_struct_get_a_pole_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<double>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+FortranArray1D<double> EleProxy::b_pole() const {
+  double* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  ele_struct_get_b_pole_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<double>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+FortranArray1D<double> EleProxy::a_pole_elec() const {
+  double* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  ele_struct_get_a_pole_elec_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<double>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+FortranArray1D<double> EleProxy::b_pole_elec() const {
+  double* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  ele_struct_get_b_pole_elec_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<double>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+FortranArray1D<double> EleProxy::custom() const {
+  double* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  ele_struct_get_custom_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<double>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+FortranArray3D<double> EleProxy::r() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int dim3_size, dim3_lower, dim3_upper;
+  int stride1, stride2, stride3;
+  bool is_allocated;
+  ele_struct_get_r_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &dim3_size,
+      &dim3_lower,
+      &dim3_upper,
+      &stride1,
+      &stride2,
+      &stride3,
+      &is_allocated);
+  return FortranArray3D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      dim3_size,
+      dim3_lower,
+      dim3_upper,
+      stride1,
+      stride2,
+      stride3,
+      is_allocated);
 }
 int EleProxy::key() const {
   int value;
@@ -6299,6 +7182,21 @@ void LatProxy::set_title(const std::string& value) {
   lat_struct_set_title(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
+FortranCharArray1D LatProxy::print_str() const {
+  char* data_ptr;
+  int size_out, lower_bound, upper_bound, str_len;
+  bool is_allocated;
+  lat_struct_get_print_str_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &str_len,
+      &is_allocated);
+  return FortranCharArray1D(
+      data_ptr, size_out, lower_bound, upper_bound, str_len, is_allocated);
+}
 FortranTypeArray1D<ExpressionAtomProxy> LatProxy::constant() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -6717,6 +7615,34 @@ TwissProxy BunchParamsProxy::c() const {
 void BunchParamsProxy::set_c(const TwissProxy& src) {
   bunch_params_struct_set_c(fortran_ptr_, src.get_fortran_ptr());
 }
+FortranArray2D<double> BunchParamsProxy::sigma() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  bunch_params_struct_get_sigma_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 FortranArray1D<double> BunchParamsProxy::rel_max() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -7013,6 +7939,62 @@ FortranArray1D<double> TaoSpinDnDpzProxy::vec() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
+FortranArray2D<double> TaoSpinDnDpzProxy::partial() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_spin_dn_dpz_struct_get_partial_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> TaoSpinDnDpzProxy::partial2() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_spin_dn_dpz_struct_get_partial2_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 std::string ResonanceHProxy::id() const {
   auto char_array = get_id_chars();
   return std::string(char_array.data(), char_array.size());
@@ -7037,6 +8019,34 @@ std::complex<double> ResonanceHProxy::c_val() const {
 void ResonanceHProxy::set_c_val(std::complex<double> value) {
   resonance_h_struct_set_c_val(fortran_ptr_, value);
 }
+FortranArray2D<double> SpinOrbitMap1Proxy::orb_mat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  spin_orbit_map1_struct_get_orb_mat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 FortranArray1D<double> SpinOrbitMap1Proxy::vec0() const {
   double* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -7044,6 +8054,34 @@ FortranArray1D<double> SpinOrbitMap1Proxy::vec0() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> SpinOrbitMap1Proxy::spin_q() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  spin_orbit_map1_struct_get_spin_q_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 FortranArray1D<double> SpinAxisProxy::l() const {
   double* data_ptr;
@@ -7433,6 +8471,34 @@ FortranTypeArray1D<LatEleOrder1Proxy> LatEleOrderArrayProxy::ele() const {
   return FortranTypeArray1D<LatEleOrder1Proxy>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
+FortranArray2D<double> TaoLatSigmaProxy::mat() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_lat_sigma_struct_get_mat_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 TaoSpinDnDpzProxy TaoSpinEleProxy::dn_dpz() const {
   void* ptr;
   tao_spin_ele_struct_get_dn_dpz(fortran_ptr_, &ptr);
@@ -7448,6 +8514,62 @@ FortranArray1D<double> TaoSpinEleProxy::orb_eigen_val() const {
       fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+FortranArray2D<double> TaoSpinEleProxy::orb_eigen_vec() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_spin_ele_struct_get_orb_eigen_vec_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
+FortranArray2D<double> TaoSpinEleProxy::spin_eigen_vec() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_spin_ele_struct_get_spin_eigen_vec_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
 }
 bool TaoSpinEleProxy::valid() const {
   bool value;
@@ -8390,6 +9512,14 @@ void TaoD2DataProxy::set_ref_date(const std::string& value) {
   tao_d2_data_struct_set_ref_date(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
+FortranCharArray1D TaoD2DataProxy::descrip() const {
+  char* data_ptr;
+  int size_out, lower_bound, upper_bound, str_len;
+  tao_d2_data_struct_get_descrip_info(
+      fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &str_len);
+  return FortranCharArray1D(
+      data_ptr, size_out, lower_bound, upper_bound, str_len, true);
+}
 FortranTypeArray1D<TaoD1DataProxy> TaoD2DataProxy::d1() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -8518,6 +9648,34 @@ int TaoSpinMapProxy::ix_branch() const {
 void TaoSpinMapProxy::set_ix_branch(int value) {
   tao_spin_map_struct_set_ix_branch(fortran_ptr_, value);
 }
+FortranArray2D<double> TaoSpinMapProxy::mat8() const {
+  double* data_ptr;
+  int dim1_size, dim1_lower, dim1_upper;
+  int dim2_size, dim2_lower, dim2_upper;
+  int stride1, stride2;
+  tao_spin_map_struct_get_mat8_info(
+      fortran_ptr_,
+      &data_ptr,
+      &dim1_size,
+      &dim1_lower,
+      &dim1_upper,
+      &dim2_size,
+      &dim2_lower,
+      &dim2_upper,
+      &stride1,
+      &stride2);
+  return FortranArray2D<double>(
+      data_ptr,
+      dim1_size,
+      dim1_lower,
+      dim1_upper,
+      dim2_size,
+      dim2_lower,
+      dim2_upper,
+      stride1,
+      stride2,
+      true);
+}
 std::string TaoDataProxy::ele_name() const {
   auto char_array = get_ele_name_chars();
   return std::string(char_array.data(), char_array.size());
@@ -8564,6 +9722,40 @@ FortranArray1D<char> TaoDataProxy::get_ele_ref_name_chars() const {
 }
 void TaoDataProxy::set_ele_ref_name(const std::string& value) {
   tao_data_struct_set_ele_ref_name(
+      fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
+}
+std::string TaoDataProxy::data_type() const {
+  char* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  tao_data_struct_get_data_type_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  if (!is_allocated || size_out == 0) {
+    return std::string();
+  }
+  return std::string(data_ptr, size_out);
+}
+FortranArray1D<char> TaoDataProxy::get_data_type_chars() const {
+  char* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  tao_data_struct_get_data_type_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated);
+  return FortranArray1D<char>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+}
+void TaoDataProxy::set_data_type(const std::string& value) {
+  tao_data_struct_set_data_type(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
 std::string TaoDataProxy::merit_type() const {
