@@ -866,27 +866,10 @@ class FortranTypeArray1D {
   int lower_bound_;
   int upper_bound_;
   bool valid_;
-  bool
-      is_pointer_array_; // true for pointer arrays, false for contiguous struct arrays
   size_t
       element_size_; // size of each element (only used for contiguous arrays)
 
  public:
-  // Constructor for pointer arrays (like cartesian_map)
-  FortranTypeArray1D(
-      void** pointer_array,
-      int size,
-      int lower,
-      int upper,
-      bool valid)
-      : data_(pointer_array),
-        size_(size),
-        lower_bound_(lower),
-        upper_bound_(upper),
-        valid_(valid),
-        is_pointer_array_(true),
-        element_size_(0) {}
-
   // Constructor for contiguous struct arrays (like m_u_layout, taylor)
   FortranTypeArray1D(
       void* struct_array,
@@ -900,7 +883,6 @@ class FortranTypeArray1D {
         lower_bound_(lower),
         upper_bound_(upper),
         valid_(valid),
-        is_pointer_array_(false),
         element_size_(element_size) {}
 
   // Default constructor for invalid arrays
@@ -910,19 +892,13 @@ class FortranTypeArray1D {
         lower_bound_(0),
         upper_bound_(-1),
         valid_(false),
-        is_pointer_array_(false),
         element_size_(0) {}
 
  private:
   // Helper to get pointer to element i (0-based indexing into data_)
   void* get_element_ptr(int i) const {
-    if (is_pointer_array_) {
-      // For pointer arrays: data_ is void**, return the i-th pointer
-      return static_cast<void**>(data_)[i];
-    } else {
-      // For contiguous arrays: data_ is void*, compute offset
-      return static_cast<char*>(data_) + (i * element_size_);
-    }
+    // For contiguous arrays: data_ is void*, compute offset
+    return static_cast<char*>(data_) + (i * element_size_);
   }
 
   void check_validity() const {
@@ -1002,9 +978,6 @@ class FortranTypeArray1D {
   }
   int upper_bound() const {
     return upper_bound_;
-  }
-  bool is_pointer_array() const {
-    return is_pointer_array_;
   }
   size_t element_size() const {
     return element_size_;
@@ -1157,7 +1130,6 @@ class FortranTypeArrayND {
   std::array<int, N> upper_bounds_; // Fortran upper bounds
   std::array<size_t, N> strides_; // Strides (multipliers for linear index)
   bool valid_;
-  bool is_pointer_array_; // true: data_ is void**; false: contiguous block
   size_t element_size_; // Only for contiguous block mode
 
   // Compute linear index for Fortran indexing (with bounds)
@@ -1219,31 +1191,10 @@ class FortranTypeArrayND {
 
   // Get raw element pointer given linear index (already bounds-adjusted)
   void* element_ptr_from_linear(size_t lin) const {
-    if (is_pointer_array_) {
-      return static_cast<void**>(data_)[lin];
-    } else {
-      return static_cast<char*>(data_) + lin * element_size_;
-    }
+    return static_cast<char*>(data_) + lin * element_size_;
   }
 
  public:
-  // Pointer-array constructor
-  FortranTypeArrayND(
-      void** pointer_array,
-      const std::array<int, N>& sizes,
-      const std::array<int, N>& lower_bounds,
-      const std::array<int, N>& upper_bounds,
-      const std::array<size_t, N>& strides,
-      bool valid)
-      : data_(pointer_array),
-        sizes_(sizes),
-        lower_bounds_(lower_bounds),
-        upper_bounds_(upper_bounds),
-        strides_(strides),
-        valid_(valid),
-        is_pointer_array_(true),
-        element_size_(0) {}
-
   // Contiguous struct-array constructor
   FortranTypeArrayND(
       void* struct_array,
@@ -1259,15 +1210,10 @@ class FortranTypeArrayND {
         upper_bounds_(upper_bounds),
         strides_(strides),
         valid_(valid),
-        is_pointer_array_(false),
         element_size_(element_size) {}
 
   // Default invalid
-  FortranTypeArrayND()
-      : data_(nullptr),
-        valid_(false),
-        is_pointer_array_(false),
-        element_size_(0) {
+  FortranTypeArrayND() : data_(nullptr), valid_(false), element_size_(0) {
     sizes_.fill(0);
     lower_bounds_.fill(0);
     upper_bounds_.fill(-1);
@@ -1331,9 +1277,6 @@ class FortranTypeArrayND {
 
   bool is_valid() const {
     return valid_;
-  }
-  bool is_pointer_array() const {
-    return is_pointer_array_;
   }
   size_t element_size() const {
     return element_size_;
