@@ -22,12 +22,11 @@ implicit none
 
 type (tao_universe_struct), pointer :: u
 type(json_core) :: json
-type(json_value), pointer :: json_root, json_obj, json_arr, json_val
+type(json_value), pointer :: json_root
 
 type (tao_lattice_struct), pointer :: tao_lat
 type (ele_struct), pointer :: ele
-integer :: iu_write, ix, ix_line, i
-integer, target :: nl
+integer :: iu_write, ix, ix_line
 logical :: err, opened, array_out
 
 character(*) input_str
@@ -39,8 +38,6 @@ character(200) tail_str
 character(40) command
 character(40) which
 character(len(input_str)) line
-character(n_char_show), allocatable, target :: li(:)
-character(n_char_show), pointer :: li_ptr(:)
 
 !
 
@@ -94,12 +91,6 @@ if (ix < 0) then
   return
 endif
 
-
-nl = 0
-call re_allocate_lines (li, 200)
-
-li_ptr => li   ! To get around ifort bug
-
 select case (command)
 
   case ('plot_page')
@@ -130,18 +121,16 @@ case default
 
 end select
 
-call end_stuff(li, nl)
+call end_stuff()
 
 !----------------------------------------------------------------------
 ! return through scratch
 
 contains
 
-subroutine end_stuff(li, nl)
+subroutine end_stuff()
 
-  integer, target :: nl
   integer :: str_len
-  character(n_char_show), allocatable, target :: li(:)
   character(kind=CK,len=:), allocatable :: str
 
   if (associated(json_root)) then
@@ -162,8 +151,6 @@ subroutine end_stuff(li, nl)
     endif
     call json%destroy(json_root)
     nullify(json_root)
-  else
-    call out_io (s_blank$, r_name, li(1:nl))
   endif
 
 end subroutine
@@ -314,42 +301,16 @@ end function point_to_ele
 !----------------------------------------------------------------------
 ! contains
 
-subroutine re_allocate_lines (li, n_lines)
-
-character(n_char_show), allocatable :: li(:)
-integer n_lines
-
-!
-
-if (.not. allocated(li)) allocate (li(n_lines))
-if (size(li) < n_lines) call re_allocate (li, n_lines)
-
-end subroutine re_allocate_lines
-
-!----------------------------------------------------------------------
-! contains
-
-function incr(n) result (n1)
-
-integer n, n1
-
-n1 = n + 1
-if (n1 > size(li)) call re_allocate_lines (li, int(1.5 * n1))
-
-end function
-!----------------------------------------------------------------------
-! contains
-
 subroutine invalid (why_invalid, err)
 
 character(*) why_invalid
 logical, optional :: err
 
-nl=incr(nl); li(nl) = 'INVALID'
 call out_io (s_error$, r_name, '"json ' // trim(input_str) // '": ' // why_invalid)
-call end_stuff(li, nl)
+call end_stuff()
 if (present(err)) err = .true.
 
 end subroutine invalid
 
 end subroutine tao_json_cmd
+
