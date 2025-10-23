@@ -1474,10 +1474,15 @@ CPP_TYPE_ARRAY_2D_ALLOC_ACCESSOR = """
             &dim1_size, &dim1_lower, &dim1_upper,
             &dim2_size, &dim2_lower, &dim2_upper,
             &stride1, &stride2, &is_allocated, &element_size);
+        
+        std::array<int, 2> sizes = {dim1_size, dim2_size};
+        std::array<int, 2> lower_bounds = {dim1_lower, dim2_lower};
+        std::array<int, 2> upper_bounds = {dim1_upper, dim2_upper};
+        std::array<size_t, 2> strides = {static_cast<size_t>(stride1), static_cast<size_t>(stride2)};
+        
         return FortranTypeArray2D<${return_proxy_name}>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            stride1, stride2, is_allocated, element_size);
+            sizes, lower_bounds, upper_bounds, strides,
+            is_allocated, element_size);
     }
 """
 
@@ -1548,11 +1553,17 @@ CPP_TYPE_ARRAY_3D_ACCESSOR = """
             &dim2_size, &dim2_lower, &dim2_upper,
             &dim3_size, &dim3_lower, &dim3_upper,
             &stride1, &stride2, &stride3, &element_size);
+        
+        std::array<int, 3> sizes = {dim1_size, dim2_size, dim3_size};
+        std::array<int, 3> lower_bounds = {dim1_lower, dim2_lower, dim3_lower};
+        std::array<int, 3> upper_bounds = {dim1_upper, dim2_upper, dim3_upper};
+        std::array<size_t, 3> strides = {static_cast<size_t>(stride1), 
+                                          static_cast<size_t>(stride2), 
+                                          static_cast<size_t>(stride3)};
+        
         return FortranTypeArray3D<${return_proxy_name}>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            dim3_size, dim3_lower, dim3_upper,
-            stride1, stride2, stride3, true, element_size);
+            sizes, lower_bounds, upper_bounds, strides,
+            true, element_size);
     }
 """
 
@@ -1637,11 +1648,17 @@ CPP_TYPE_ARRAY_3D_ALLOC_ACCESSOR = """
             &dim2_size, &dim2_lower, &dim2_upper,
             &dim3_size, &dim3_lower, &dim3_upper,
             &stride1, &stride2, &stride3, &is_allocated, &element_size);
+        
+        std::array<int, 3> sizes = {dim1_size, dim2_size, dim3_size};
+        std::array<int, 3> lower_bounds = {dim1_lower, dim2_lower, dim3_lower};
+        std::array<int, 3> upper_bounds = {dim1_upper, dim2_upper, dim3_upper};
+        std::array<size_t, 3> strides = {static_cast<size_t>(stride1), 
+                                          static_cast<size_t>(stride2), 
+                                          static_cast<size_t>(stride3)};
+        
         return FortranTypeArray3D<${return_proxy_name}>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            dim3_size, dim3_lower, dim3_upper,
-            stride1, stride2, stride3, is_allocated, element_size);
+            sizes, lower_bounds, upper_bounds, strides,
+            is_allocated, element_size);
     }
 """
 

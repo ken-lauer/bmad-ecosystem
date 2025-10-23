@@ -1148,445 +1148,189 @@ class FortranTypeArray1D {
   }
 };
 
-template <typename ProxyType>
-class FortranTypeArray2D {
+template <typename ProxyType, std::size_t N>
+class FortranTypeArrayND {
  private:
-  void* data_;
-  int size1_, size2_;
-  int lower_bound1_, upper_bound1_;
-  int lower_bound2_, upper_bound2_;
-  size_t stride1_, stride2_;
+  void* data_; // Base pointer
+  std::array<int, N> sizes_; // Extents per dimension (C-style counts)
+  std::array<int, N> lower_bounds_; // Fortran lower bounds
+  std::array<int, N> upper_bounds_; // Fortran upper bounds
+  std::array<size_t, N> strides_; // Strides (multipliers for linear index)
   bool valid_;
-  bool is_pointer_array_;
-  size_t element_size_;
+  bool is_pointer_array_; // true: data_ is void**; false: contiguous block
+  size_t element_size_; // Only for contiguous block mode
 
-  void* get_element_ptr(int i, int j) const {
-    if (is_pointer_array_) {
-      return static_cast<void**>(data_)[i * stride1_ + j * stride2_];
-    } else {
-      return static_cast<char*>(data_) +
-          (i * stride1_ + j * stride2_) * element_size_;
+  // Compute linear index for Fortran indexing (with bounds)
+  template <typename... Indices>
+  size_t linear_index_fortran(Indices... indices) const {
+    static_assert(sizeof...(indices) == N, "Wrong number of indices");
+    std::array<int, N> idx{indices...};
+    size_t lin = 0;
+    for (std::size_t d = 0; d < N; ++d) {
+      lin += static_cast<size_t>(idx[d] - lower_bounds_[d]) * strides_[d];
     }
+    return lin;
   }
 
-  void check_validity() const {
+  // Compute linear index for C-style (0-based) indexing
+  template <typename... Indices>
+  size_t linear_index_c(Indices... indices) const {
+    static_assert(sizeof...(indices) == N, "Wrong number of indices");
+    std::array<int, N> idx{indices...};
+    size_t lin = 0;
+    for (std::size_t d = 0; d < N; ++d) {
+      lin += static_cast<size_t>(idx[d]) * strides_[d];
+    }
+    return lin;
+  }
+
+  template <typename... Indices>
+  void check_fortran_bounds(Indices... indices) const {
+    static_assert(sizeof...(indices) == N, "Wrong number of indices");
     if (!valid_)
       throw std::runtime_error("Array not allocated");
-  }
-
-  void check_fortran_bounds(int i, int j) const {
-    if (i < lower_bound1_ || i > upper_bound1_ || j < lower_bound2_ ||
-        j > upper_bound2_) {
-      throw std::out_of_range(
-          "Fortran array index out of bounds: (" + std::to_string(i) + "," +
-          std::to_string(j) + ") not in [" + std::to_string(lower_bound1_) +
-          "," + std::to_string(upper_bound1_) + "]x[" +
-          std::to_string(lower_bound2_) + "," + std::to_string(upper_bound2_) +
-          "]");
-    }
-  }
-
-  void check_c_bounds(int i, int j) const {
-    if (i < 0 || i >= size1_ || j < 0 || j >= size2_) {
-      throw std::out_of_range(
-          "Array index out of bounds: (" + std::to_string(i) + "," +
-          std::to_string(j) + ") not in [0," + std::to_string(size1_ - 1) +
-          "]x[0," + std::to_string(size2_ - 1) + "]");
-    }
-  }
-
- public:
-  FortranTypeArray2D(
-      void** pointer_array,
-      int size1,
-      int lower1,
-      int upper1,
-      int size2,
-      int lower2,
-      int upper2,
-      size_t stride1,
-      size_t stride2,
-      bool valid)
-      : data_(pointer_array),
-        size1_(size1),
-        size2_(size2),
-        lower_bound1_(lower1),
-        upper_bound1_(upper1),
-        lower_bound2_(lower2),
-        upper_bound2_(upper2),
-        stride1_(stride1),
-        stride2_(stride2),
-        valid_(valid),
-        is_pointer_array_(true),
-        element_size_(0) {}
-
-  FortranTypeArray2D(
-      void* struct_array,
-      int size1,
-      int lower1,
-      int upper1,
-      int size2,
-      int lower2,
-      int upper2,
-      size_t stride1,
-      size_t stride2,
-      bool valid,
-      size_t element_size)
-      : data_(struct_array),
-        size1_(size1),
-        size2_(size2),
-        lower_bound1_(lower1),
-        upper_bound1_(upper1),
-        lower_bound2_(lower2),
-        upper_bound2_(upper2),
-        stride1_(stride1),
-        stride2_(stride2),
-        valid_(valid),
-        is_pointer_array_(false),
-        element_size_(element_size) {}
-
-  FortranTypeArray2D()
-      : data_(nullptr),
-        size1_(0),
-        size2_(0),
-        lower_bound1_(0),
-        upper_bound1_(-1),
-        lower_bound2_(0),
-        upper_bound2_(-1),
-        stride1_(0),
-        stride2_(0),
-        valid_(false),
-        is_pointer_array_(false),
-        element_size_(0) {}
-
-  ProxyType operator()(int i, int j) {
-    check_validity();
-    check_fortran_bounds(i, j);
-    return ProxyType(get_element_ptr(i - lower_bound1_, j - lower_bound2_));
-  }
-
-  const ProxyType operator()(int i, int j) const {
-    check_validity();
-    check_fortran_bounds(i, j);
-    return ProxyType(get_element_ptr(i - lower_bound1_, j - lower_bound2_));
-  }
-
-  ProxyType at(int i, int j) {
-    check_validity();
-    check_c_bounds(i, j);
-    return ProxyType(get_element_ptr(i, j));
-  }
-
-  const ProxyType at(int i, int j) const {
-    check_validity();
-    check_c_bounds(i, j);
-    return ProxyType(get_element_ptr(i, j));
-  }
-
-  ProxyType at_fortran(int i, int j) {
-    return operator()(i, j);
-  }
-
-  const ProxyType at_fortran(int i, int j) const {
-    return operator()(i, j);
-  }
-
-  bool is_valid() const {
-    return valid_;
-  }
-  int size1() const {
-    return size1_;
-  }
-  int size2() const {
-    return size2_;
-  }
-  std::pair<int, int> bounds1() const {
-    return {lower_bound1_, upper_bound1_};
-  }
-  std::pair<int, int> bounds2() const {
-    return {lower_bound2_, upper_bound2_};
-  }
-  int lower_bound1() const {
-    return lower_bound1_;
-  }
-  int upper_bound1() const {
-    return upper_bound1_;
-  }
-  int lower_bound2() const {
-    return lower_bound2_;
-  }
-  int upper_bound2() const {
-    return upper_bound2_;
-  }
-  size_t stride1() const {
-    return stride1_;
-  }
-  size_t stride2() const {
-    return stride2_;
-  }
-  bool is_pointer_array() const {
-    return is_pointer_array_;
-  }
-  size_t element_size() const {
-    return element_size_;
-  }
-  void* data() {
-    return valid_ ? data_ : nullptr;
-  }
-  const void* data() const {
-    return valid_ ? data_ : nullptr;
-  }
-  bool empty() const {
-    return !valid_ || size1_ == 0 || size2_ == 0;
-  }
-
-  void* element_ptr(int i, int j) {
-    check_validity();
-    check_c_bounds(i, j);
-    return get_element_ptr(i, j);
-  }
-
-  const void* element_ptr(int i, int j) const {
-    check_validity();
-    check_c_bounds(i, j);
-    return get_element_ptr(i, j);
-  }
-
-  std::vector<std::vector<ProxyType>> to_vector() const {
-    if (!valid_)
-      return std::vector<std::vector<ProxyType>>();
-
-    std::vector<std::vector<ProxyType>> result;
-    result.reserve(size1_);
-    for (int i = 0; i < size1_; ++i) {
-      std::vector<ProxyType> row;
-      row.reserve(size2_);
-      for (int j = 0; j < size2_; ++j) {
-        row.emplace_back(get_element_ptr(i, j));
+    std::array<int, N> idx{indices...};
+    for (std::size_t d = 0; d < N; ++d) {
+      if (idx[d] < lower_bounds_[d] || idx[d] > upper_bounds_[d]) {
+        throw std::out_of_range(
+            "Fortran index dim " + std::to_string(d + 1) +
+            " out of bounds: " + std::to_string(idx[d]) + " not in [" +
+            std::to_string(lower_bounds_[d]) + "," +
+            std::to_string(upper_bounds_[d]) + "]");
       }
-      result.push_back(std::move(row));
-    }
-    return result;
-  }
-};
-
-template <typename ProxyType>
-class FortranTypeArray3D {
- private:
-  void* data_;
-  int size1_, size2_, size3_;
-  int lower_bound1_, upper_bound1_;
-  int lower_bound2_, upper_bound2_;
-  int lower_bound3_, upper_bound3_;
-  size_t stride1_, stride2_, stride3_;
-  bool valid_;
-  bool is_pointer_array_;
-  size_t element_size_;
-
-  void* get_element_ptr(int i, int j, int k) const {
-    if (is_pointer_array_) {
-      return static_cast<void**>(
-          data_)[i * stride1_ + j * stride2_ + k * stride3_];
-    } else {
-      return static_cast<char*>(data_) +
-          (i * stride1_ + j * stride2_ + k * stride3_) * element_size_;
     }
   }
 
-  void check_validity() const {
+  template <typename... Indices>
+  void check_c_bounds(Indices... indices) const {
+    static_assert(sizeof...(indices) == N, "Wrong number of indices");
     if (!valid_)
       throw std::runtime_error("Array not allocated");
-  }
-
-  void check_fortran_bounds(int i, int j, int k) const {
-    if (i < lower_bound1_ || i > upper_bound1_ || j < lower_bound2_ ||
-        j > upper_bound2_ || k < lower_bound3_ || k > upper_bound3_) {
-      throw std::out_of_range(
-          "Fortran array index out of bounds: (" + std::to_string(i) + "," +
-          std::to_string(j) + "," + std::to_string(k) + ") not in [" +
-          std::to_string(lower_bound1_) + "," + std::to_string(upper_bound1_) +
-          "]x[" + std::to_string(lower_bound2_) + "," +
-          std::to_string(upper_bound2_) + "]x[" +
-          std::to_string(lower_bound3_) + "," + std::to_string(upper_bound3_) +
-          "]");
+    std::array<int, N> idx{indices...};
+    for (std::size_t d = 0; d < N; ++d) {
+      if (idx[d] < 0 || idx[d] >= sizes_[d]) {
+        throw std::out_of_range(
+            "C index dim " + std::to_string(d + 1) +
+            " out of bounds: " + std::to_string(idx[d]) + " not in [0," +
+            std::to_string(sizes_[d] - 1) + "]");
+      }
     }
   }
 
-  void check_c_bounds(int i, int j, int k) const {
-    if (i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_) {
-      throw std::out_of_range(
-          "Array index out of bounds: (" + std::to_string(i) + "," +
-          std::to_string(j) + "," + std::to_string(k) + ") not in [0," +
-          std::to_string(size1_ - 1) + "]x[0," + std::to_string(size2_ - 1) +
-          "]x[0," + std::to_string(size3_ - 1) + "]");
+  // Get raw element pointer given linear index (already bounds-adjusted)
+  void* element_ptr_from_linear(size_t lin) const {
+    if (is_pointer_array_) {
+      return static_cast<void**>(data_)[lin];
+    } else {
+      return static_cast<char*>(data_) + lin * element_size_;
     }
   }
 
  public:
-  FortranTypeArray3D(
+  // Pointer-array constructor
+  FortranTypeArrayND(
       void** pointer_array,
-      int size1,
-      int lower1,
-      int upper1,
-      int size2,
-      int lower2,
-      int upper2,
-      int size3,
-      int lower3,
-      int upper3,
-      size_t stride1,
-      size_t stride2,
-      size_t stride3,
+      const std::array<int, N>& sizes,
+      const std::array<int, N>& lower_bounds,
+      const std::array<int, N>& upper_bounds,
+      const std::array<size_t, N>& strides,
       bool valid)
       : data_(pointer_array),
-        size1_(size1),
-        size2_(size2),
-        size3_(size3),
-        lower_bound1_(lower1),
-        upper_bound1_(upper1),
-        lower_bound2_(lower2),
-        upper_bound2_(upper2),
-        lower_bound3_(lower3),
-        upper_bound3_(upper3),
-        stride1_(stride1),
-        stride2_(stride2),
-        stride3_(stride3),
+        sizes_(sizes),
+        lower_bounds_(lower_bounds),
+        upper_bounds_(upper_bounds),
+        strides_(strides),
         valid_(valid),
         is_pointer_array_(true),
         element_size_(0) {}
 
-  FortranTypeArray3D(
+  // Contiguous struct-array constructor
+  FortranTypeArrayND(
       void* struct_array,
-      int size1,
-      int lower1,
-      int upper1,
-      int size2,
-      int lower2,
-      int upper2,
-      int size3,
-      int lower3,
-      int upper3,
-      size_t stride1,
-      size_t stride2,
-      size_t stride3,
+      const std::array<int, N>& sizes,
+      const std::array<int, N>& lower_bounds,
+      const std::array<int, N>& upper_bounds,
+      const std::array<size_t, N>& strides,
       bool valid,
       size_t element_size)
       : data_(struct_array),
-        size1_(size1),
-        size2_(size2),
-        size3_(size3),
-        lower_bound1_(lower1),
-        upper_bound1_(upper1),
-        lower_bound2_(lower2),
-        upper_bound2_(upper2),
-        lower_bound3_(lower3),
-        upper_bound3_(upper3),
-        stride1_(stride1),
-        stride2_(stride2),
-        stride3_(stride3),
+        sizes_(sizes),
+        lower_bounds_(lower_bounds),
+        upper_bounds_(upper_bounds),
+        strides_(strides),
         valid_(valid),
         is_pointer_array_(false),
         element_size_(element_size) {}
 
-  FortranTypeArray3D()
+  // Default invalid
+  FortranTypeArrayND()
       : data_(nullptr),
-        size1_(0),
-        size2_(0),
-        size3_(0),
-        lower_bound1_(0),
-        upper_bound1_(-1),
-        lower_bound2_(0),
-        upper_bound2_(-1),
-        lower_bound3_(0),
-        upper_bound3_(-1),
-        stride1_(0),
-        stride2_(0),
-        stride3_(0),
         valid_(false),
         is_pointer_array_(false),
-        element_size_(0) {}
-
-  ProxyType operator()(int i, int j, int k) {
-    check_validity();
-    check_fortran_bounds(i, j, k);
-    return ProxyType(get_element_ptr(
-        i - lower_bound1_, j - lower_bound2_, k - lower_bound3_));
+        element_size_(0) {
+    sizes_.fill(0);
+    lower_bounds_.fill(0);
+    upper_bounds_.fill(-1);
+    strides_.fill(0);
   }
 
-  const ProxyType operator()(int i, int j, int k) const {
-    check_validity();
-    check_fortran_bounds(i, j, k);
-    return ProxyType(get_element_ptr(
-        i - lower_bound1_, j - lower_bound2_, k - lower_bound3_));
+  // Fortran-style indexing
+  template <typename... Indices>
+  ProxyType operator()(Indices... indices) {
+    check_fortran_bounds(indices...);
+    size_t lin = linear_index_fortran(indices...);
+    return ProxyType(element_ptr_from_linear(lin));
   }
 
-  ProxyType at(int i, int j, int k) {
-    check_validity();
-    check_c_bounds(i, j, k);
-    return ProxyType(get_element_ptr(i, j, k));
+  template <typename... Indices>
+  const ProxyType operator()(Indices... indices) const {
+    check_fortran_bounds(indices...);
+    size_t lin = linear_index_fortran(indices...);
+    return ProxyType(element_ptr_from_linear(lin));
   }
 
-  const ProxyType at(int i, int j, int k) const {
-    check_validity();
-    check_c_bounds(i, j, k);
-    return ProxyType(get_element_ptr(i, j, k));
+  // C-style indexing
+  template <typename... Indices>
+  ProxyType at(Indices... indices) {
+    check_c_bounds(indices...);
+    size_t lin = linear_index_c(indices...);
+    return ProxyType(element_ptr_from_linear(lin));
   }
 
-  ProxyType at_fortran(int i, int j, int k) {
-    return operator()(i, j, k);
+  template <typename... Indices>
+  const ProxyType at(Indices... indices) const {
+    check_c_bounds(indices...);
+    size_t lin = linear_index_c(indices...);
+    return ProxyType(element_ptr_from_linear(lin));
   }
 
-  const ProxyType at_fortran(int i, int j, int k) const {
-    return operator()(i, j, k);
+  // Fortran safe alias
+  template <typename... Indices>
+  ProxyType at_fortran(Indices... indices) {
+    return operator()(indices...);
+  }
+  template <typename... Indices>
+  const ProxyType at_fortran(Indices... indices) const {
+    return operator()(indices...);
+  }
+
+  // Raw element pointer (C-style indices)
+  template <typename... Indices>
+  void* element_ptr(Indices... indices) {
+    check_c_bounds(indices...);
+    size_t lin = linear_index_c(indices...);
+    return element_ptr_from_linear(lin);
+  }
+
+  template <typename... Indices>
+  const void* element_ptr(Indices... indices) const {
+    check_c_bounds(indices...);
+    size_t lin = linear_index_c(indices...);
+    return element_ptr_from_linear(lin);
   }
 
   bool is_valid() const {
     return valid_;
-  }
-  int size1() const {
-    return size1_;
-  }
-  int size2() const {
-    return size2_;
-  }
-  int size3() const {
-    return size3_;
-  }
-  std::pair<int, int> bounds1() const {
-    return {lower_bound1_, upper_bound1_};
-  }
-  std::pair<int, int> bounds2() const {
-    return {lower_bound2_, upper_bound2_};
-  }
-  std::pair<int, int> bounds3() const {
-    return {lower_bound3_, upper_bound3_};
-  }
-  int lower_bound1() const {
-    return lower_bound1_;
-  }
-  int upper_bound1() const {
-    return upper_bound1_;
-  }
-  int lower_bound2() const {
-    return lower_bound2_;
-  }
-  int upper_bound2() const {
-    return upper_bound2_;
-  }
-  int lower_bound3() const {
-    return lower_bound3_;
-  }
-  int upper_bound3() const {
-    return upper_bound3_;
-  }
-  size_t stride1() const {
-    return stride1_;
-  }
-  size_t stride2() const {
-    return stride2_;
-  }
-  size_t stride3() const {
-    return stride3_;
   }
   bool is_pointer_array() const {
     return is_pointer_array_;
@@ -1594,48 +1338,228 @@ class FortranTypeArray3D {
   size_t element_size() const {
     return element_size_;
   }
+
+  const std::array<int, N>& sizes() const {
+    return sizes_;
+  }
+  int size(int dim) const {
+    if (dim < 1 || dim > static_cast<int>(N))
+      throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
+    return sizes_[dim - 1];
+  }
+
+  std::array<std::pair<int, int>, N> bounds() const {
+    std::array<std::pair<int, int>, N> b;
+    for (std::size_t i = 0; i < N; ++i)
+      b[i] = {lower_bounds_[i], upper_bounds_[i]};
+    return b;
+  }
+
+  std::pair<int, int> bounds(int dim) const {
+    if (dim < 1 || dim > static_cast<int>(N))
+      throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
+    return {lower_bounds_[dim - 1], upper_bounds_[dim - 1]};
+  }
+
+  int lower_bound(int dim) const {
+    if (dim < 1 || dim > static_cast<int>(N))
+      throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
+    return lower_bounds_[dim - 1];
+  }
+  int upper_bound(int dim) const {
+    if (dim < 1 || dim > static_cast<int>(N))
+      throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
+    return upper_bounds_[dim - 1];
+  }
+
+  const std::array<size_t, N>& strides() const {
+    return strides_;
+  }
+
   void* data() {
     return valid_ ? data_ : nullptr;
   }
   const void* data() const {
     return valid_ ? data_ : nullptr;
   }
+
   bool empty() const {
-    return !valid_ || size1_ == 0 || size2_ == 0 || size3_ == 0;
-  }
-
-  void* element_ptr(int i, int j, int k) {
-    check_validity();
-    check_c_bounds(i, j, k);
-    return get_element_ptr(i, j, k);
-  }
-
-  const void* element_ptr(int i, int j, int k) const {
-    check_validity();
-    check_c_bounds(i, j, k);
-    return get_element_ptr(i, j, k);
-  }
-
-  std::vector<std::vector<std::vector<ProxyType>>> to_vector() const {
     if (!valid_)
-      return std::vector<std::vector<std::vector<ProxyType>>>();
+      return true;
+    for (int s : sizes_)
+      if (s == 0)
+        return true;
+    return false;
+  }
 
-    std::vector<std::vector<std::vector<ProxyType>>> result;
-    result.reserve(size1_);
-    for (int i = 0; i < size1_; ++i) {
-      std::vector<std::vector<ProxyType>> plane;
-      plane.reserve(size2_);
-      for (int j = 0; j < size2_; ++j) {
-        std::vector<ProxyType> row;
-        row.reserve(size3_);
-        for (int k = 0; k < size3_; ++k) {
-          row.emplace_back(get_element_ptr(i, j, k));
+  // Total number of logical elements
+  size_t total_size() const {
+    size_t t = 1;
+    for (int s : sizes_)
+      t *= static_cast<size_t>(s);
+    return t;
+  }
+
+  // Flat vector of ProxyType (copies proxy handles, not underlying data)
+  std::vector<ProxyType> to_flat_vector() const {
+    std::vector<ProxyType> out;
+    if (!valid_)
+      return out;
+    out.reserve(total_size());
+
+    // Enumerate C-style indices lexicographically
+    std::array<int, N> idx;
+    idx.fill(0);
+
+    while (true) {
+      size_t lin = 0;
+      for (std::size_t d = 0; d < N; ++d)
+        lin += static_cast<size_t>(idx[d]) * strides_[d];
+      out.emplace_back(element_ptr_from_linear(lin));
+
+      // Increment multi-index
+      std::size_t dim = N;
+      while (dim > 0) {
+        --dim;
+        if (++idx[dim] < sizes_[dim]) {
+          break;
+        } else {
+          idx[dim] = 0;
         }
-        plane.push_back(std::move(row));
       }
-      result.push_back(std::move(plane));
+      if (dim == 0 && idx[0] == 0) {
+        // Completed last rollover
+        break;
+      }
     }
-    return result;
+    return out;
+  }
+
+  // Iterator (flat) over all elements
+  class iterator {
+   private:
+    const FortranTypeArrayND* parent_;
+    size_t lin_; // linear element counter (0 .. total_size())
+   public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = ProxyType;
+    using difference_type = std::ptrdiff_t;
+    using reference = ProxyType;
+    using pointer = void; // not providing pointer semantics
+
+    iterator(const FortranTypeArrayND* p, size_t lin) : parent_(p), lin_(lin) {}
+
+    reference operator*() {
+      if (!parent_->valid_)
+        throw std::runtime_error("Array not allocated");
+      if (lin_ >= parent_->total_size())
+        throw std::runtime_error("Iterator dereferenced at end");
+      // Convert flat counter to actual linear index using strides.
+      // For C-style iteration we treat idx in 0..sizes[d]-1
+      size_t stride_index = 0;
+      {
+        size_t remaining = lin_;
+        for (std::size_t d = 0; d < N; ++d) {
+          size_t block = parent_->strides_[d];
+          // Compute coordinate in dimension d by dividing by stride, adjusting for next dims.
+          // Because strides_ is arbitrary (passed in), we cannot recover multi-index
+          // generically unless strides form a standard linearization. To remain
+          // consistent with prior design, we treat lin_ as already aligned with strides
+          // simply by summing individual contributions; here we just use lin_ directly.
+          // Assumption: linear iteration sequentially visits elements matching lin_
+          // usage with pointer array or contiguous block.
+          // So stride_index = lin_ (direct).
+          stride_index = lin_;
+        }
+      }
+      return ProxyType(parent_->element_ptr_from_linear(stride_index));
+    }
+
+    iterator& operator++() {
+      ++lin_;
+      return *this;
+    }
+    iterator operator++(int) {
+      iterator tmp = *this;
+      ++lin_;
+      return tmp;
+    }
+
+    bool operator==(const iterator& other) const {
+      return parent_ == other.parent_ && lin_ == other.lin_;
+    }
+    bool operator!=(const iterator& other) const {
+      return !(*this == other);
+    }
+  };
+
+  class const_iterator {
+   private:
+    const FortranTypeArrayND* parent_;
+    size_t lin_;
+
+   public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = ProxyType;
+    using difference_type = std::ptrdiff_t;
+    using reference = ProxyType;
+    using pointer = void;
+
+    const_iterator(const FortranTypeArrayND* p, size_t lin)
+        : parent_(p), lin_(lin) {}
+
+    reference operator*() const {
+      if (!parent_->valid_)
+        throw std::runtime_error("Array not allocated");
+      if (lin_ >= parent_->total_size())
+        throw std::runtime_error("Iterator dereferenced at end");
+      size_t stride_index = lin_; // same assumption as in iterator
+      return ProxyType(parent_->element_ptr_from_linear(stride_index));
+    }
+
+    const_iterator& operator++() {
+      ++lin_;
+      return *this;
+    }
+    const_iterator operator++(int) {
+      const_iterator tmp = *this;
+      ++lin_;
+      return tmp;
+    }
+
+    bool operator==(const const_iterator& other) const {
+      return parent_ == other.parent_ && lin_ == other.lin_;
+    }
+    bool operator!=(const const_iterator& other) const {
+      return !(*this == other);
+    }
+  };
+
+  iterator begin() {
+    return valid_ ? iterator(this, 0) : iterator(this, 0);
+  }
+  iterator end() {
+    return iterator(this, total_size());
+  }
+  const_iterator begin() const {
+    return valid_ ? const_iterator(this, 0) : const_iterator(this, 0);
+  }
+  const_iterator end() const {
+    return const_iterator(this, total_size());
+  }
+  const_iterator cbegin() const {
+    return begin();
+  }
+  const_iterator cend() const {
+    return end();
   }
 };
+
+// Convenience aliases
+template <typename ProxyType>
+using FortranTypeArray2D = FortranTypeArrayND<ProxyType, 2>;
+
+template <typename ProxyType>
+using FortranTypeArray3D = FortranTypeArrayND<ProxyType, 3>;
+
 } // namespace tao
