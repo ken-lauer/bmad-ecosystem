@@ -6,25 +6,42 @@ contains
 
   !! spline_struct
 
-  function allocate_fortran_spline_struct() result(ptr) bind(c)
+    function allocate_fortran_spline_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(spline_struct), pointer :: fptr
+    type(spline_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_spline_struct(ptr) bind(c)
+    subroutine deallocate_fortran_spline_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(spline_struct), pointer :: fptr
+    type(spline_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_spline_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -112,25 +129,42 @@ contains
 
   !! spin_polar_struct
 
-  function allocate_fortran_spin_polar_struct() result(ptr) bind(c)
+    function allocate_fortran_spin_polar_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(spin_polar_struct), pointer :: fptr
+    type(spin_polar_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_spin_polar_struct(ptr) bind(c)
+    subroutine deallocate_fortran_spin_polar_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(spin_polar_struct), pointer :: fptr
+    type(spin_polar_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_spin_polar_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -223,25 +257,42 @@ contains
 
   !! ac_kicker_time_struct
 
-  function allocate_fortran_ac_kicker_time_struct() result(ptr) bind(c)
+    function allocate_fortran_ac_kicker_time_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ac_kicker_time_struct), pointer :: fptr
+    type(ac_kicker_time_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ac_kicker_time_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ac_kicker_time_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ac_kicker_time_struct), pointer :: fptr
+    type(ac_kicker_time_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ac_kicker_time_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -317,25 +368,42 @@ contains
 
   !! ac_kicker_freq_struct
 
-  function allocate_fortran_ac_kicker_freq_struct() result(ptr) bind(c)
+    function allocate_fortran_ac_kicker_freq_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ac_kicker_freq_struct), pointer :: fptr
+    type(ac_kicker_freq_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ac_kicker_freq_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ac_kicker_freq_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ac_kicker_freq_struct), pointer :: fptr
+    type(ac_kicker_freq_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ac_kicker_freq_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -428,25 +496,42 @@ contains
 
   !! ac_kicker_struct
 
-  function allocate_fortran_ac_kicker_struct() result(ptr) bind(c)
+    function allocate_fortran_ac_kicker_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ac_kicker_struct), pointer :: fptr
+    type(ac_kicker_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ac_kicker_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ac_kicker_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ac_kicker_struct), pointer :: fptr
+    type(ac_kicker_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ac_kicker_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -517,25 +602,42 @@ contains
 
   !! interval1_coef_struct
 
-  function allocate_fortran_interval1_coef_struct() result(ptr) bind(c)
+    function allocate_fortran_interval1_coef_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(interval1_coef_struct), pointer :: fptr
+    type(interval1_coef_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_interval1_coef_struct(ptr) bind(c)
+    subroutine deallocate_fortran_interval1_coef_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(interval1_coef_struct), pointer :: fptr
+    type(interval1_coef_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_interval1_coef_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -609,25 +711,42 @@ contains
 
   !! photon_reflect_table_struct
 
-  function allocate_fortran_photon_reflect_table_struct() result(ptr) bind(c)
+    function allocate_fortran_photon_reflect_table_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(photon_reflect_table_struct), pointer :: fptr
+    type(photon_reflect_table_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_photon_reflect_table_struct(ptr) bind(c)
+    subroutine deallocate_fortran_photon_reflect_table_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(photon_reflect_table_struct), pointer :: fptr
+    type(photon_reflect_table_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_photon_reflect_table_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -820,25 +939,42 @@ contains
 
   !! photon_reflect_surface_struct
 
-  function allocate_fortran_photon_reflect_surface_struct() result(ptr) bind(c)
+    function allocate_fortran_photon_reflect_surface_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(photon_reflect_surface_struct), pointer :: fptr
+    type(photon_reflect_surface_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_photon_reflect_surface_struct(ptr) bind(c)
+    subroutine deallocate_fortran_photon_reflect_surface_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(photon_reflect_surface_struct), pointer :: fptr
+    type(photon_reflect_surface_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_photon_reflect_surface_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1041,25 +1177,42 @@ contains
 
   !! coord_struct
 
-  function allocate_fortran_coord_struct() result(ptr) bind(c)
+    function allocate_fortran_coord_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(coord_struct), pointer :: fptr
+    type(coord_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_coord_struct(ptr) bind(c)
+    subroutine deallocate_fortran_coord_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(coord_struct), pointer :: fptr
+    type(coord_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_coord_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1455,25 +1608,42 @@ contains
 
   !! coord_array_struct
 
-  function allocate_fortran_coord_array_struct() result(ptr) bind(c)
+    function allocate_fortran_coord_array_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(coord_array_struct), pointer :: fptr
+    type(coord_array_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_coord_array_struct(ptr) bind(c)
+    subroutine deallocate_fortran_coord_array_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(coord_array_struct), pointer :: fptr
+    type(coord_array_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_coord_array_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1517,25 +1687,42 @@ contains
 
   !! bpm_phase_coupling_struct
 
-  function allocate_fortran_bpm_phase_coupling_struct() result(ptr) bind(c)
+    function allocate_fortran_bpm_phase_coupling_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bpm_phase_coupling_struct), pointer :: fptr
+    type(bpm_phase_coupling_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bpm_phase_coupling_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bpm_phase_coupling_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bpm_phase_coupling_struct), pointer :: fptr
+    type(bpm_phase_coupling_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bpm_phase_coupling_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1742,25 +1929,42 @@ contains
 
   !! expression_atom_struct
 
-  function allocate_fortran_expression_atom_struct() result(ptr) bind(c)
+    function allocate_fortran_expression_atom_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(expression_atom_struct), pointer :: fptr
+    type(expression_atom_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_expression_atom_struct(ptr) bind(c)
+    subroutine deallocate_fortran_expression_atom_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(expression_atom_struct), pointer :: fptr
+    type(expression_atom_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_expression_atom_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1849,25 +2053,42 @@ contains
 
   !! wake_sr_z_long_struct
 
-  function allocate_fortran_wake_sr_z_long_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_sr_z_long_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_sr_z_long_struct), pointer :: fptr
+    type(wake_sr_z_long_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_sr_z_long_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_sr_z_long_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_sr_z_long_struct), pointer :: fptr
+    type(wake_sr_z_long_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_sr_z_long_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -2075,25 +2296,42 @@ contains
 
   !! wake_sr_mode_struct
 
-  function allocate_fortran_wake_sr_mode_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_sr_mode_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_sr_mode_struct), pointer :: fptr
+    type(wake_sr_mode_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_sr_mode_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_sr_mode_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_sr_mode_struct), pointer :: fptr
+    type(wake_sr_mode_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_sr_mode_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -2300,25 +2538,42 @@ contains
 
   !! wake_sr_struct
 
-  function allocate_fortran_wake_sr_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_sr_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_sr_struct), pointer :: fptr
+    type(wake_sr_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_sr_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_sr_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_sr_struct), pointer :: fptr
+    type(wake_sr_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_sr_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -2558,25 +2813,42 @@ contains
 
   !! wake_lr_mode_struct
 
-  function allocate_fortran_wake_lr_mode_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_lr_mode_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_lr_mode_struct), pointer :: fptr
+    type(wake_lr_mode_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_lr_mode_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_lr_mode_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_lr_mode_struct), pointer :: fptr
+    type(wake_lr_mode_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_lr_mode_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -2840,25 +3112,42 @@ contains
 
   !! wake_lr_struct
 
-  function allocate_fortran_wake_lr_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_lr_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_lr_struct), pointer :: fptr
+    type(wake_lr_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_lr_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_lr_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_lr_struct), pointer :: fptr
+    type(wake_lr_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_lr_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3031,25 +3320,42 @@ contains
 
   !! lat_ele_loc_struct
 
-  function allocate_fortran_lat_ele_loc_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_ele_loc_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_ele_loc_struct), pointer :: fptr
+    type(lat_ele_loc_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_ele_loc_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_ele_loc_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_ele_loc_struct), pointer :: fptr
+    type(lat_ele_loc_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_ele_loc_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3104,25 +3410,42 @@ contains
 
   !! wake_struct
 
-  function allocate_fortran_wake_struct() result(ptr) bind(c)
+    function allocate_fortran_wake_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wake_struct), pointer :: fptr
+    type(wake_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wake_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wake_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wake_struct), pointer :: fptr
+    type(wake_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wake_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3181,25 +3504,42 @@ contains
 
   !! taylor_term_struct
 
-  function allocate_fortran_taylor_term_struct() result(ptr) bind(c)
+    function allocate_fortran_taylor_term_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(taylor_term_struct), pointer :: fptr
+    type(taylor_term_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_taylor_term_struct(ptr) bind(c)
+    subroutine deallocate_fortran_taylor_term_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(taylor_term_struct), pointer :: fptr
+    type(taylor_term_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_taylor_term_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3249,25 +3589,42 @@ contains
 
   !! taylor_struct
 
-  function allocate_fortran_taylor_struct() result(ptr) bind(c)
+    function allocate_fortran_taylor_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(taylor_struct), pointer :: fptr
+    type(taylor_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_taylor_struct(ptr) bind(c)
+    subroutine deallocate_fortran_taylor_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(taylor_struct), pointer :: fptr
+    type(taylor_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_taylor_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3330,25 +3687,42 @@ contains
 
   !! em_taylor_term_struct
 
-  function allocate_fortran_em_taylor_term_struct() result(ptr) bind(c)
+    function allocate_fortran_em_taylor_term_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(em_taylor_term_struct), pointer :: fptr
+    type(em_taylor_term_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_em_taylor_term_struct(ptr) bind(c)
+    subroutine deallocate_fortran_em_taylor_term_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(em_taylor_term_struct), pointer :: fptr
+    type(em_taylor_term_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_em_taylor_term_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3398,25 +3772,42 @@ contains
 
   !! em_taylor_struct
 
-  function allocate_fortran_em_taylor_struct() result(ptr) bind(c)
+    function allocate_fortran_em_taylor_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(em_taylor_struct), pointer :: fptr
+    type(em_taylor_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_em_taylor_struct(ptr) bind(c)
+    subroutine deallocate_fortran_em_taylor_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(em_taylor_struct), pointer :: fptr
+    type(em_taylor_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_em_taylor_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3479,25 +3870,42 @@ contains
 
   !! cartesian_map_term1_struct
 
-  function allocate_fortran_cartesian_map_term1_struct() result(ptr) bind(c)
+    function allocate_fortran_cartesian_map_term1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cartesian_map_term1_struct), pointer :: fptr
+    type(cartesian_map_term1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cartesian_map_term1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cartesian_map_term1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cartesian_map_term1_struct), pointer :: fptr
+    type(cartesian_map_term1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cartesian_map_term1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3685,25 +4093,42 @@ contains
 
   !! cartesian_map_term_struct
 
-  function allocate_fortran_cartesian_map_term_struct() result(ptr) bind(c)
+    function allocate_fortran_cartesian_map_term_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cartesian_map_term_struct), pointer :: fptr
+    type(cartesian_map_term_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cartesian_map_term_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cartesian_map_term_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cartesian_map_term_struct), pointer :: fptr
+    type(cartesian_map_term_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cartesian_map_term_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3800,25 +4225,42 @@ contains
 
   !! cartesian_map_struct
 
-  function allocate_fortran_cartesian_map_struct() result(ptr) bind(c)
+    function allocate_fortran_cartesian_map_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cartesian_map_struct), pointer :: fptr
+    type(cartesian_map_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cartesian_map_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cartesian_map_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cartesian_map_struct), pointer :: fptr
+    type(cartesian_map_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cartesian_map_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -3952,25 +4394,42 @@ contains
 
   !! cylindrical_map_term1_struct
 
-  function allocate_fortran_cylindrical_map_term1_struct() result(ptr) bind(c)
+    function allocate_fortran_cylindrical_map_term1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cylindrical_map_term1_struct), pointer :: fptr
+    type(cylindrical_map_term1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cylindrical_map_term1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cylindrical_map_term1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cylindrical_map_term1_struct), pointer :: fptr
+    type(cylindrical_map_term1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cylindrical_map_term1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4025,25 +4484,42 @@ contains
 
   !! cylindrical_map_term_struct
 
-  function allocate_fortran_cylindrical_map_term_struct() result(ptr) bind(c)
+    function allocate_fortran_cylindrical_map_term_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cylindrical_map_term_struct), pointer :: fptr
+    type(cylindrical_map_term_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cylindrical_map_term_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cylindrical_map_term_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cylindrical_map_term_struct), pointer :: fptr
+    type(cylindrical_map_term_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cylindrical_map_term_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4140,25 +4616,42 @@ contains
 
   !! cylindrical_map_struct
 
-  function allocate_fortran_cylindrical_map_struct() result(ptr) bind(c)
+    function allocate_fortran_cylindrical_map_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(cylindrical_map_struct), pointer :: fptr
+    type(cylindrical_map_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_cylindrical_map_struct(ptr) bind(c)
+    subroutine deallocate_fortran_cylindrical_map_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(cylindrical_map_struct), pointer :: fptr
+    type(cylindrical_map_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_cylindrical_map_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4368,25 +4861,42 @@ contains
 
   !! bicubic_cmplx_coef_struct
 
-  function allocate_fortran_bicubic_cmplx_coef_struct() result(ptr) bind(c)
+    function allocate_fortran_bicubic_cmplx_coef_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bicubic_cmplx_coef_struct), pointer :: fptr
+    type(bicubic_cmplx_coef_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bicubic_cmplx_coef_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bicubic_cmplx_coef_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bicubic_cmplx_coef_struct), pointer :: fptr
+    type(bicubic_cmplx_coef_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bicubic_cmplx_coef_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4441,25 +4951,42 @@ contains
 
   !! tricubic_cmplx_coef_struct
 
-  function allocate_fortran_tricubic_cmplx_coef_struct() result(ptr) bind(c)
+    function allocate_fortran_tricubic_cmplx_coef_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tricubic_cmplx_coef_struct), pointer :: fptr
+    type(tricubic_cmplx_coef_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tricubic_cmplx_coef_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tricubic_cmplx_coef_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tricubic_cmplx_coef_struct), pointer :: fptr
+    type(tricubic_cmplx_coef_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tricubic_cmplx_coef_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4520,25 +5047,42 @@ contains
 
   !! grid_field_pt1_struct
 
-  function allocate_fortran_grid_field_pt1_struct() result(ptr) bind(c)
+    function allocate_fortran_grid_field_pt1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(grid_field_pt1_struct), pointer :: fptr
+    type(grid_field_pt1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_grid_field_pt1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_grid_field_pt1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(grid_field_pt1_struct), pointer :: fptr
+    type(grid_field_pt1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_grid_field_pt1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4583,25 +5127,42 @@ contains
 
   !! grid_field_pt_struct
 
-  function allocate_fortran_grid_field_pt_struct() result(ptr) bind(c)
+    function allocate_fortran_grid_field_pt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(grid_field_pt_struct), pointer :: fptr
+    type(grid_field_pt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_grid_field_pt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_grid_field_pt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(grid_field_pt_struct), pointer :: fptr
+    type(grid_field_pt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_grid_field_pt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -4715,25 +5276,42 @@ contains
 
   !! grid_field_struct
 
-  function allocate_fortran_grid_field_struct() result(ptr) bind(c)
+    function allocate_fortran_grid_field_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(grid_field_struct), pointer :: fptr
+    type(grid_field_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_grid_field_struct(ptr) bind(c)
+    subroutine deallocate_fortran_grid_field_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(grid_field_struct), pointer :: fptr
+    type(grid_field_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_grid_field_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -5040,25 +5618,42 @@ contains
 
   !! floor_position_struct
 
-  function allocate_fortran_floor_position_struct() result(ptr) bind(c)
+    function allocate_fortran_floor_position_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(floor_position_struct), pointer :: fptr
+    type(floor_position_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_floor_position_struct(ptr) bind(c)
+    subroutine deallocate_fortran_floor_position_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(floor_position_struct), pointer :: fptr
+    type(floor_position_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_floor_position_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -5170,25 +5765,42 @@ contains
 
   !! high_energy_space_charge_struct
 
-  function allocate_fortran_high_energy_space_charge_struct() result(ptr) bind(c)
+    function allocate_fortran_high_energy_space_charge_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(high_energy_space_charge_struct), pointer :: fptr
+    type(high_energy_space_charge_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_high_energy_space_charge_struct(ptr) bind(c)
+    subroutine deallocate_fortran_high_energy_space_charge_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(high_energy_space_charge_struct), pointer :: fptr
+    type(high_energy_space_charge_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_high_energy_space_charge_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -5359,25 +5971,42 @@ contains
 
   !! xy_disp_struct
 
-  function allocate_fortran_xy_disp_struct() result(ptr) bind(c)
+    function allocate_fortran_xy_disp_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(xy_disp_struct), pointer :: fptr
+    type(xy_disp_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_xy_disp_struct(ptr) bind(c)
+    subroutine deallocate_fortran_xy_disp_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(xy_disp_struct), pointer :: fptr
+    type(xy_disp_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_xy_disp_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -5508,25 +6137,42 @@ contains
 
   !! twiss_struct
 
-  function allocate_fortran_twiss_struct() result(ptr) bind(c)
+    function allocate_fortran_twiss_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(twiss_struct), pointer :: fptr
+    type(twiss_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_twiss_struct(ptr) bind(c)
+    subroutine deallocate_fortran_twiss_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(twiss_struct), pointer :: fptr
+    type(twiss_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_twiss_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -5847,25 +6493,42 @@ contains
 
   !! mode3_struct
 
-  function allocate_fortran_mode3_struct() result(ptr) bind(c)
+    function allocate_fortran_mode3_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(mode3_struct), pointer :: fptr
+    type(mode3_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_mode3_struct(ptr) bind(c)
+    subroutine deallocate_fortran_mode3_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(mode3_struct), pointer :: fptr
+    type(mode3_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_mode3_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6011,25 +6674,42 @@ contains
 
   !! bookkeeping_state_struct
 
-  function allocate_fortran_bookkeeping_state_struct() result(ptr) bind(c)
+    function allocate_fortran_bookkeeping_state_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bookkeeping_state_struct), pointer :: fptr
+    type(bookkeeping_state_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bookkeeping_state_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bookkeeping_state_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bookkeeping_state_struct), pointer :: fptr
+    type(bookkeeping_state_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bookkeeping_state_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6217,25 +6897,42 @@ contains
 
   !! rad_map_struct
 
-  function allocate_fortran_rad_map_struct() result(ptr) bind(c)
+    function allocate_fortran_rad_map_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rad_map_struct), pointer :: fptr
+    type(rad_map_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rad_map_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rad_map_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rad_map_struct), pointer :: fptr
+    type(rad_map_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rad_map_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6352,25 +7049,42 @@ contains
 
   !! rad_map_ele_struct
 
-  function allocate_fortran_rad_map_ele_struct() result(ptr) bind(c)
+    function allocate_fortran_rad_map_ele_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rad_map_ele_struct), pointer :: fptr
+    type(rad_map_ele_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rad_map_ele_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rad_map_ele_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rad_map_ele_struct), pointer :: fptr
+    type(rad_map_ele_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rad_map_ele_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6448,25 +7162,42 @@ contains
 
   !! gen_grad1_struct
 
-  function allocate_fortran_gen_grad1_struct() result(ptr) bind(c)
+    function allocate_fortran_gen_grad1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(gen_grad1_struct), pointer :: fptr
+    type(gen_grad1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_gen_grad1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_gen_grad1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(gen_grad1_struct), pointer :: fptr
+    type(gen_grad1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_gen_grad1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6574,25 +7305,42 @@ contains
 
   !! gen_grad_map_struct
 
-  function allocate_fortran_gen_grad_map_struct() result(ptr) bind(c)
+    function allocate_fortran_gen_grad_map_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(gen_grad_map_struct), pointer :: fptr
+    type(gen_grad_map_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_gen_grad_map_struct(ptr) bind(c)
+    subroutine deallocate_fortran_gen_grad_map_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(gen_grad_map_struct), pointer :: fptr
+    type(gen_grad_map_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_gen_grad_map_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6836,25 +7584,42 @@ contains
 
   !! surface_segmented_pt_struct
 
-  function allocate_fortran_surface_segmented_pt_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_segmented_pt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_segmented_pt_struct), pointer :: fptr
+    type(surface_segmented_pt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_segmented_pt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_segmented_pt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_segmented_pt_struct), pointer :: fptr
+    type(surface_segmented_pt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_segmented_pt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -6966,25 +7731,42 @@ contains
 
   !! surface_segmented_struct
 
-  function allocate_fortran_surface_segmented_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_segmented_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_segmented_struct), pointer :: fptr
+    type(surface_segmented_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_segmented_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_segmented_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_segmented_struct), pointer :: fptr
+    type(surface_segmented_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_segmented_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7085,25 +7867,42 @@ contains
 
   !! surface_h_misalign_pt_struct
 
-  function allocate_fortran_surface_h_misalign_pt_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_h_misalign_pt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_h_misalign_pt_struct), pointer :: fptr
+    type(surface_h_misalign_pt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_h_misalign_pt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_h_misalign_pt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_h_misalign_pt_struct), pointer :: fptr
+    type(surface_h_misalign_pt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_h_misalign_pt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7234,25 +8033,42 @@ contains
 
   !! surface_h_misalign_struct
 
-  function allocate_fortran_surface_h_misalign_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_h_misalign_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_h_misalign_struct), pointer :: fptr
+    type(surface_h_misalign_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_h_misalign_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_h_misalign_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_h_misalign_struct), pointer :: fptr
+    type(surface_h_misalign_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_h_misalign_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7353,25 +8169,42 @@ contains
 
   !! surface_displacement_pt_struct
 
-  function allocate_fortran_surface_displacement_pt_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_displacement_pt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_displacement_pt_struct), pointer :: fptr
+    type(surface_displacement_pt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_displacement_pt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_displacement_pt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_displacement_pt_struct), pointer :: fptr
+    type(surface_displacement_pt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_displacement_pt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7502,25 +8335,42 @@ contains
 
   !! surface_displacement_struct
 
-  function allocate_fortran_surface_displacement_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_displacement_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_displacement_struct), pointer :: fptr
+    type(surface_displacement_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_displacement_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_displacement_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_displacement_struct), pointer :: fptr
+    type(surface_displacement_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_displacement_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7621,25 +8471,42 @@ contains
 
   !! target_point_struct
 
-  function allocate_fortran_target_point_struct() result(ptr) bind(c)
+    function allocate_fortran_target_point_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(target_point_struct), pointer :: fptr
+    type(target_point_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_target_point_struct(ptr) bind(c)
+    subroutine deallocate_fortran_target_point_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(target_point_struct), pointer :: fptr
+    type(target_point_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_target_point_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7670,25 +8537,42 @@ contains
 
   !! surface_curvature_struct
 
-  function allocate_fortran_surface_curvature_struct() result(ptr) bind(c)
+    function allocate_fortran_surface_curvature_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(surface_curvature_struct), pointer :: fptr
+    type(surface_curvature_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_surface_curvature_struct(ptr) bind(c)
+    subroutine deallocate_fortran_surface_curvature_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(surface_curvature_struct), pointer :: fptr
+    type(surface_curvature_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_surface_curvature_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7781,25 +8665,42 @@ contains
 
   !! photon_target_struct
 
-  function allocate_fortran_photon_target_struct() result(ptr) bind(c)
+    function allocate_fortran_photon_target_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(photon_target_struct), pointer :: fptr
+    type(photon_target_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_photon_target_struct(ptr) bind(c)
+    subroutine deallocate_fortran_photon_target_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(photon_target_struct), pointer :: fptr
+    type(photon_target_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_photon_target_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -7912,25 +8813,42 @@ contains
 
   !! photon_material_struct
 
-  function allocate_fortran_photon_material_struct() result(ptr) bind(c)
+    function allocate_fortran_photon_material_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(photon_material_struct), pointer :: fptr
+    type(photon_material_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_photon_material_struct(ptr) bind(c)
+    subroutine deallocate_fortran_photon_material_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(photon_material_struct), pointer :: fptr
+    type(photon_material_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_photon_material_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -8089,25 +9007,42 @@ contains
 
   !! pixel_pt_struct
 
-  function allocate_fortran_pixel_pt_struct() result(ptr) bind(c)
+    function allocate_fortran_pixel_pt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(pixel_pt_struct), pointer :: fptr
+    type(pixel_pt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_pixel_pt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_pixel_pt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(pixel_pt_struct), pointer :: fptr
+    type(pixel_pt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_pixel_pt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -8294,25 +9229,42 @@ contains
 
   !! pixel_detec_struct
 
-  function allocate_fortran_pixel_detec_struct() result(ptr) bind(c)
+    function allocate_fortran_pixel_detec_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(pixel_detec_struct), pointer :: fptr
+    type(pixel_detec_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_pixel_detec_struct(ptr) bind(c)
+    subroutine deallocate_fortran_pixel_detec_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(pixel_detec_struct), pointer :: fptr
+    type(pixel_detec_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_pixel_detec_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -8451,25 +9403,42 @@ contains
 
   !! photon_element_struct
 
-  function allocate_fortran_photon_element_struct() result(ptr) bind(c)
+    function allocate_fortran_photon_element_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(photon_element_struct), pointer :: fptr
+    type(photon_element_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_photon_element_struct(ptr) bind(c)
+    subroutine deallocate_fortran_photon_element_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(photon_element_struct), pointer :: fptr
+    type(photon_element_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_photon_element_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -8745,25 +9714,42 @@ contains
 
   !! wall3d_vertex_struct
 
-  function allocate_fortran_wall3d_vertex_struct() result(ptr) bind(c)
+    function allocate_fortran_wall3d_vertex_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wall3d_vertex_struct), pointer :: fptr
+    type(wall3d_vertex_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wall3d_vertex_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wall3d_vertex_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wall3d_vertex_struct), pointer :: fptr
+    type(wall3d_vertex_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wall3d_vertex_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -8951,25 +9937,42 @@ contains
 
   !! wall3d_section_struct
 
-  function allocate_fortran_wall3d_section_struct() result(ptr) bind(c)
+    function allocate_fortran_wall3d_section_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wall3d_section_struct), pointer :: fptr
+    type(wall3d_section_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wall3d_section_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wall3d_section_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wall3d_section_struct), pointer :: fptr
+    type(wall3d_section_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wall3d_section_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -9387,25 +10390,42 @@ contains
 
   !! wall3d_struct
 
-  function allocate_fortran_wall3d_struct() result(ptr) bind(c)
+    function allocate_fortran_wall3d_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(wall3d_struct), pointer :: fptr
+    type(wall3d_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_wall3d_struct(ptr) bind(c)
+    subroutine deallocate_fortran_wall3d_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(wall3d_struct), pointer :: fptr
+    type(wall3d_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_wall3d_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -9665,25 +10685,42 @@ contains
 
   !! ramper_lord_struct
 
-  function allocate_fortran_ramper_lord_struct() result(ptr) bind(c)
+    function allocate_fortran_ramper_lord_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ramper_lord_struct), pointer :: fptr
+    type(ramper_lord_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ramper_lord_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ramper_lord_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ramper_lord_struct), pointer :: fptr
+    type(ramper_lord_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ramper_lord_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -9763,25 +10800,42 @@ contains
 
   !! control_struct
 
-  function allocate_fortran_control_struct() result(ptr) bind(c)
+    function allocate_fortran_control_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(control_struct), pointer :: fptr
+    type(control_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_control_struct(ptr) bind(c)
+    subroutine deallocate_fortran_control_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(control_struct), pointer :: fptr
+    type(control_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_control_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -9997,25 +11051,42 @@ contains
 
   !! control_var1_struct
 
-  function allocate_fortran_control_var1_struct() result(ptr) bind(c)
+    function allocate_fortran_control_var1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(control_var1_struct), pointer :: fptr
+    type(control_var1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_control_var1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_control_var1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(control_var1_struct), pointer :: fptr
+    type(control_var1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_control_var1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10104,25 +11175,42 @@ contains
 
   !! control_ramp1_struct
 
-  function allocate_fortran_control_ramp1_struct() result(ptr) bind(c)
+    function allocate_fortran_control_ramp1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(control_ramp1_struct), pointer :: fptr
+    type(control_ramp1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_control_ramp1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_control_ramp1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(control_ramp1_struct), pointer :: fptr
+    type(control_ramp1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_control_ramp1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10277,25 +11365,42 @@ contains
 
   !! controller_struct
 
-  function allocate_fortran_controller_struct() result(ptr) bind(c)
+    function allocate_fortran_controller_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(controller_struct), pointer :: fptr
+    type(controller_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_controller_struct(ptr) bind(c)
+    subroutine deallocate_fortran_controller_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(controller_struct), pointer :: fptr
+    type(controller_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_controller_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10417,25 +11522,42 @@ contains
 
   !! ellipse_beam_init_struct
 
-  function allocate_fortran_ellipse_beam_init_struct() result(ptr) bind(c)
+    function allocate_fortran_ellipse_beam_init_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ellipse_beam_init_struct), pointer :: fptr
+    type(ellipse_beam_init_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ellipse_beam_init_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ellipse_beam_init_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ellipse_beam_init_struct), pointer :: fptr
+    type(ellipse_beam_init_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ellipse_beam_init_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10509,25 +11631,42 @@ contains
 
   !! kv_beam_init_struct
 
-  function allocate_fortran_kv_beam_init_struct() result(ptr) bind(c)
+    function allocate_fortran_kv_beam_init_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(kv_beam_init_struct), pointer :: fptr
+    type(kv_beam_init_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_kv_beam_init_struct(ptr) bind(c)
+    subroutine deallocate_fortran_kv_beam_init_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(kv_beam_init_struct), pointer :: fptr
+    type(kv_beam_init_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_kv_beam_init_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10596,25 +11735,42 @@ contains
 
   !! grid_beam_init_struct
 
-  function allocate_fortran_grid_beam_init_struct() result(ptr) bind(c)
+    function allocate_fortran_grid_beam_init_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(grid_beam_init_struct), pointer :: fptr
+    type(grid_beam_init_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_grid_beam_init_struct(ptr) bind(c)
+    subroutine deallocate_fortran_grid_beam_init_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(grid_beam_init_struct), pointer :: fptr
+    type(grid_beam_init_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_grid_beam_init_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -10745,25 +11901,42 @@ contains
 
   !! beam_init_struct
 
-  function allocate_fortran_beam_init_struct() result(ptr) bind(c)
+    function allocate_fortran_beam_init_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(beam_init_struct), pointer :: fptr
+    type(beam_init_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_beam_init_struct(ptr) bind(c)
+    subroutine deallocate_fortran_beam_init_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(beam_init_struct), pointer :: fptr
+    type(beam_init_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_beam_init_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -11492,25 +12665,42 @@ contains
 
   !! lat_param_struct
 
-  function allocate_fortran_lat_param_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_param_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_param_struct), pointer :: fptr
+    type(lat_param_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_param_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_param_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_param_struct), pointer :: fptr
+    type(lat_param_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_param_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -11864,25 +13054,42 @@ contains
 
   !! mode_info_struct
 
-  function allocate_fortran_mode_info_struct() result(ptr) bind(c)
+    function allocate_fortran_mode_info_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(mode_info_struct), pointer :: fptr
+    type(mode_info_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_mode_info_struct(ptr) bind(c)
+    subroutine deallocate_fortran_mode_info_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(mode_info_struct), pointer :: fptr
+    type(mode_info_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_mode_info_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12013,25 +13220,42 @@ contains
 
   !! pre_tracker_struct
 
-  function allocate_fortran_pre_tracker_struct() result(ptr) bind(c)
+    function allocate_fortran_pre_tracker_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(pre_tracker_struct), pointer :: fptr
+    type(pre_tracker_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_pre_tracker_struct(ptr) bind(c)
+    subroutine deallocate_fortran_pre_tracker_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(pre_tracker_struct), pointer :: fptr
+    type(pre_tracker_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_pre_tracker_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12139,25 +13363,42 @@ contains
 
   !! anormal_mode_struct
 
-  function allocate_fortran_anormal_mode_struct() result(ptr) bind(c)
+    function allocate_fortran_anormal_mode_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(anormal_mode_struct), pointer :: fptr
+    type(anormal_mode_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_anormal_mode_struct(ptr) bind(c)
+    subroutine deallocate_fortran_anormal_mode_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(anormal_mode_struct), pointer :: fptr
+    type(anormal_mode_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_anormal_mode_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12302,25 +13543,42 @@ contains
 
   !! linac_normal_mode_struct
 
-  function allocate_fortran_linac_normal_mode_struct() result(ptr) bind(c)
+    function allocate_fortran_linac_normal_mode_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(linac_normal_mode_struct), pointer :: fptr
+    type(linac_normal_mode_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_linac_normal_mode_struct(ptr) bind(c)
+    subroutine deallocate_fortran_linac_normal_mode_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(linac_normal_mode_struct), pointer :: fptr
+    type(linac_normal_mode_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_linac_normal_mode_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12470,25 +13728,42 @@ contains
 
   !! normal_modes_struct
 
-  function allocate_fortran_normal_modes_struct() result(ptr) bind(c)
+    function allocate_fortran_normal_modes_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(normal_modes_struct), pointer :: fptr
+    type(normal_modes_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_normal_modes_struct(ptr) bind(c)
+    subroutine deallocate_fortran_normal_modes_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(normal_modes_struct), pointer :: fptr
+    type(normal_modes_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_normal_modes_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12755,25 +14030,42 @@ contains
 
   !! em_field_struct
 
-  function allocate_fortran_em_field_struct() result(ptr) bind(c)
+    function allocate_fortran_em_field_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(em_field_struct), pointer :: fptr
+    type(em_field_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_em_field_struct(ptr) bind(c)
+    subroutine deallocate_fortran_em_field_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(em_field_struct), pointer :: fptr
+    type(em_field_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_em_field_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -12918,25 +14210,42 @@ contains
 
   !! strong_beam_struct
 
-  function allocate_fortran_strong_beam_struct() result(ptr) bind(c)
+    function allocate_fortran_strong_beam_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(strong_beam_struct), pointer :: fptr
+    type(strong_beam_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_strong_beam_struct(ptr) bind(c)
+    subroutine deallocate_fortran_strong_beam_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(strong_beam_struct), pointer :: fptr
+    type(strong_beam_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_strong_beam_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -13086,25 +14395,42 @@ contains
 
   !! track_point_struct
 
-  function allocate_fortran_track_point_struct() result(ptr) bind(c)
+    function allocate_fortran_track_point_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(track_point_struct), pointer :: fptr
+    type(track_point_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_track_point_struct(ptr) bind(c)
+    subroutine deallocate_fortran_track_point_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(track_point_struct), pointer :: fptr
+    type(track_point_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_track_point_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -13260,25 +14586,42 @@ contains
 
   !! track_struct
 
-  function allocate_fortran_track_struct() result(ptr) bind(c)
+    function allocate_fortran_track_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(track_struct), pointer :: fptr
+    type(track_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_track_struct(ptr) bind(c)
+    subroutine deallocate_fortran_track_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(track_struct), pointer :: fptr
+    type(track_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_track_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -13398,25 +14741,42 @@ contains
 
   !! space_charge_common_struct
 
-  function allocate_fortran_space_charge_common_struct() result(ptr) bind(c)
+    function allocate_fortran_space_charge_common_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(space_charge_common_struct), pointer :: fptr
+    type(space_charge_common_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_space_charge_common_struct(ptr) bind(c)
+    subroutine deallocate_fortran_space_charge_common_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(space_charge_common_struct), pointer :: fptr
+    type(space_charge_common_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_space_charge_common_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -13761,25 +15121,42 @@ contains
 
   !! bmad_common_struct
 
-  function allocate_fortran_bmad_common_struct() result(ptr) bind(c)
+    function allocate_fortran_bmad_common_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bmad_common_struct), pointer :: fptr
+    type(bmad_common_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bmad_common_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bmad_common_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bmad_common_struct), pointer :: fptr
+    type(bmad_common_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bmad_common_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -14589,25 +15966,42 @@ contains
 
   !! rad_int1_struct
 
-  function allocate_fortran_rad_int1_struct() result(ptr) bind(c)
+    function allocate_fortran_rad_int1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rad_int1_struct), pointer :: fptr
+    type(rad_int1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rad_int1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rad_int1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rad_int1_struct), pointer :: fptr
+    type(rad_int1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rad_int1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -14966,25 +16360,42 @@ contains
 
   !! rad_int_branch_struct
 
-  function allocate_fortran_rad_int_branch_struct() result(ptr) bind(c)
+    function allocate_fortran_rad_int_branch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rad_int_branch_struct), pointer :: fptr
+    type(rad_int_branch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rad_int_branch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rad_int_branch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rad_int_branch_struct), pointer :: fptr
+    type(rad_int_branch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rad_int_branch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -15028,25 +16439,42 @@ contains
 
   !! rad_int_all_ele_struct
 
-  function allocate_fortran_rad_int_all_ele_struct() result(ptr) bind(c)
+    function allocate_fortran_rad_int_all_ele_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rad_int_all_ele_struct), pointer :: fptr
+    type(rad_int_all_ele_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rad_int_all_ele_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rad_int_all_ele_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rad_int_all_ele_struct), pointer :: fptr
+    type(rad_int_all_ele_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rad_int_all_ele_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -15090,25 +16518,42 @@ contains
 
   !! rf_stair_step_struct
 
-  function allocate_fortran_rf_stair_step_struct() result(ptr) bind(c)
+    function allocate_fortran_rf_stair_step_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rf_stair_step_struct), pointer :: fptr
+    type(rf_stair_step_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rf_stair_step_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rf_stair_step_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rf_stair_step_struct), pointer :: fptr
+    type(rf_stair_step_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rf_stair_step_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -15296,25 +16741,42 @@ contains
 
   !! rf_ele_struct
 
-  function allocate_fortran_rf_ele_struct() result(ptr) bind(c)
+    function allocate_fortran_rf_ele_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(rf_ele_struct), pointer :: fptr
+    type(rf_ele_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_rf_ele_struct(ptr) bind(c)
+    subroutine deallocate_fortran_rf_ele_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(rf_ele_struct), pointer :: fptr
+    type(rf_ele_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_rf_ele_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -15377,25 +16839,42 @@ contains
 
   !! ele_struct
 
-  function allocate_fortran_ele_struct() result(ptr) bind(c)
+    function allocate_fortran_ele_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ele_struct), pointer :: fptr
+    type(ele_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ele_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ele_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ele_struct), pointer :: fptr
+    type(ele_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ele_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -17369,25 +18848,42 @@ contains
 
   !! complex_taylor_term_struct
 
-  function allocate_fortran_complex_taylor_term_struct() result(ptr) bind(c)
+    function allocate_fortran_complex_taylor_term_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(complex_taylor_term_struct), pointer :: fptr
+    type(complex_taylor_term_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_complex_taylor_term_struct(ptr) bind(c)
+    subroutine deallocate_fortran_complex_taylor_term_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(complex_taylor_term_struct), pointer :: fptr
+    type(complex_taylor_term_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_complex_taylor_term_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -17437,25 +18933,42 @@ contains
 
   !! complex_taylor_struct
 
-  function allocate_fortran_complex_taylor_struct() result(ptr) bind(c)
+    function allocate_fortran_complex_taylor_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(complex_taylor_struct), pointer :: fptr
+    type(complex_taylor_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_complex_taylor_struct(ptr) bind(c)
+    subroutine deallocate_fortran_complex_taylor_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(complex_taylor_struct), pointer :: fptr
+    type(complex_taylor_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_complex_taylor_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -17518,25 +19031,42 @@ contains
 
   !! branch_struct
 
-  function allocate_fortran_branch_struct() result(ptr) bind(c)
+    function allocate_fortran_branch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(branch_struct), pointer :: fptr
+    type(branch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_branch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_branch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(branch_struct), pointer :: fptr
+    type(branch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_branch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -17906,25 +19436,42 @@ contains
 
   !! lat_struct
 
-  function allocate_fortran_lat_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_struct), pointer :: fptr
+    type(lat_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_struct), pointer :: fptr
+    type(lat_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -18695,25 +20242,42 @@ contains
 
   !! bunch_struct
 
-  function allocate_fortran_bunch_struct() result(ptr) bind(c)
+    function allocate_fortran_bunch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bunch_struct), pointer :: fptr
+    type(bunch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bunch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bunch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bunch_struct), pointer :: fptr
+    type(bunch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bunch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -19009,25 +20573,42 @@ contains
 
   !! bunch_params_struct
 
-  function allocate_fortran_bunch_params_struct() result(ptr) bind(c)
+    function allocate_fortran_bunch_params_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bunch_params_struct), pointer :: fptr
+    type(bunch_params_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bunch_params_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bunch_params_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bunch_params_struct), pointer :: fptr
+    type(bunch_params_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bunch_params_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -19490,25 +21071,42 @@ contains
 
   !! beam_struct
 
-  function allocate_fortran_beam_struct() result(ptr) bind(c)
+    function allocate_fortran_beam_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(beam_struct), pointer :: fptr
+    type(beam_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_beam_struct(ptr) bind(c)
+    subroutine deallocate_fortran_beam_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(beam_struct), pointer :: fptr
+    type(beam_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_beam_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -19552,25 +21150,42 @@ contains
 
   !! aperture_point_struct
 
-  function allocate_fortran_aperture_point_struct() result(ptr) bind(c)
+    function allocate_fortran_aperture_point_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(aperture_point_struct), pointer :: fptr
+    type(aperture_point_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_aperture_point_struct(ptr) bind(c)
+    subroutine deallocate_fortran_aperture_point_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(aperture_point_struct), pointer :: fptr
+    type(aperture_point_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_aperture_point_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -19682,25 +21297,42 @@ contains
 
   !! aperture_param_struct
 
-  function allocate_fortran_aperture_param_struct() result(ptr) bind(c)
+    function allocate_fortran_aperture_param_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(aperture_param_struct), pointer :: fptr
+    type(aperture_param_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_aperture_param_struct(ptr) bind(c)
+    subroutine deallocate_fortran_aperture_param_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(aperture_param_struct), pointer :: fptr
+    type(aperture_param_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_aperture_param_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -19903,25 +21535,42 @@ contains
 
   !! aperture_scan_struct
 
-  function allocate_fortran_aperture_scan_struct() result(ptr) bind(c)
+    function allocate_fortran_aperture_scan_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(aperture_scan_struct), pointer :: fptr
+    type(aperture_scan_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_aperture_scan_struct(ptr) bind(c)
+    subroutine deallocate_fortran_aperture_scan_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(aperture_scan_struct), pointer :: fptr
+    type(aperture_scan_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_aperture_scan_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20005,25 +21654,42 @@ contains
 
   !! tao_spin_dn_dpz_struct
 
-  function allocate_fortran_tao_spin_dn_dpz_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_spin_dn_dpz_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_spin_dn_dpz_struct), pointer :: fptr
+    type(tao_spin_dn_dpz_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_spin_dn_dpz_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_spin_dn_dpz_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_spin_dn_dpz_struct), pointer :: fptr
+    type(tao_spin_dn_dpz_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_spin_dn_dpz_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20102,25 +21768,42 @@ contains
 
   !! resonance_h_struct
 
-  function allocate_fortran_resonance_h_struct() result(ptr) bind(c)
+    function allocate_fortran_resonance_h_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(resonance_h_struct), pointer :: fptr
+    type(resonance_h_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_resonance_h_struct(ptr) bind(c)
+    subroutine deallocate_fortran_resonance_h_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(resonance_h_struct), pointer :: fptr
+    type(resonance_h_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_resonance_h_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20190,25 +21873,42 @@ contains
 
   !! spin_orbit_map1_struct
 
-  function allocate_fortran_spin_orbit_map1_struct() result(ptr) bind(c)
+    function allocate_fortran_spin_orbit_map1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(spin_orbit_map1_struct), pointer :: fptr
+    type(spin_orbit_map1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_spin_orbit_map1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_spin_orbit_map1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(spin_orbit_map1_struct), pointer :: fptr
+    type(spin_orbit_map1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_spin_orbit_map1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20287,25 +21987,42 @@ contains
 
   !! spin_axis_struct
 
-  function allocate_fortran_spin_axis_struct() result(ptr) bind(c)
+    function allocate_fortran_spin_axis_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(spin_axis_struct), pointer :: fptr
+    type(spin_axis_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_spin_axis_struct(ptr) bind(c)
+    subroutine deallocate_fortran_spin_axis_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(spin_axis_struct), pointer :: fptr
+    type(spin_axis_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_spin_axis_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20364,25 +22081,42 @@ contains
 
   !! ptc_normal_form_struct
 
-  function allocate_fortran_ptc_normal_form_struct() result(ptr) bind(c)
+    function allocate_fortran_ptc_normal_form_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(ptc_normal_form_struct), pointer :: fptr
+    type(ptc_normal_form_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_ptc_normal_form_struct(ptr) bind(c)
+    subroutine deallocate_fortran_ptc_normal_form_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(ptc_normal_form_struct), pointer :: fptr
+    type(ptc_normal_form_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_ptc_normal_form_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20459,25 +22193,42 @@ contains
 
   !! bmad_normal_form_struct
 
-  function allocate_fortran_bmad_normal_form_struct() result(ptr) bind(c)
+    function allocate_fortran_bmad_normal_form_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bmad_normal_form_struct), pointer :: fptr
+    type(bmad_normal_form_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bmad_normal_form_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bmad_normal_form_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bmad_normal_form_struct), pointer :: fptr
+    type(bmad_normal_form_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bmad_normal_form_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20644,25 +22395,42 @@ contains
 
   !! bunch_track_struct
 
-  function allocate_fortran_bunch_track_struct() result(ptr) bind(c)
+    function allocate_fortran_bunch_track_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(bunch_track_struct), pointer :: fptr
+    type(bunch_track_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_bunch_track_struct(ptr) bind(c)
+    subroutine deallocate_fortran_bunch_track_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(bunch_track_struct), pointer :: fptr
+    type(bunch_track_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_bunch_track_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -20744,25 +22512,42 @@ contains
 
   !! summation_rdt_struct
 
-  function allocate_fortran_summation_rdt_struct() result(ptr) bind(c)
+    function allocate_fortran_summation_rdt_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(summation_rdt_struct), pointer :: fptr
+    type(summation_rdt_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_summation_rdt_struct(ptr) bind(c)
+    subroutine deallocate_fortran_summation_rdt_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(summation_rdt_struct), pointer :: fptr
+    type(summation_rdt_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_summation_rdt_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21178,25 +22963,42 @@ contains
 
   !! lat_ele_order1_struct
 
-  function allocate_fortran_lat_ele_order1_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_ele_order1_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_ele_order1_struct), pointer :: fptr
+    type(lat_ele_order1_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_ele_order1_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_ele_order1_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_ele_order1_struct), pointer :: fptr
+    type(lat_ele_order1_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_ele_order1_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21251,25 +23053,42 @@ contains
 
   !! lat_ele_order_array_struct
 
-  function allocate_fortran_lat_ele_order_array_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_ele_order_array_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_ele_order_array_struct), pointer :: fptr
+    type(lat_ele_order_array_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_ele_order_array_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_ele_order_array_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_ele_order_array_struct), pointer :: fptr
+    type(lat_ele_order_array_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_ele_order_array_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21313,25 +23132,42 @@ contains
 
   !! tao_lat_sigma_struct
 
-  function allocate_fortran_tao_lat_sigma_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_lat_sigma_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_lat_sigma_struct), pointer :: fptr
+    type(tao_lat_sigma_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_lat_sigma_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_lat_sigma_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_lat_sigma_struct), pointer :: fptr
+    type(tao_lat_sigma_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_lat_sigma_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21372,25 +23208,42 @@ contains
 
   !! tao_spin_ele_struct
 
-  function allocate_fortran_tao_spin_ele_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_spin_ele_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_spin_ele_struct), pointer :: fptr
+    type(tao_spin_ele_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_spin_ele_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_spin_ele_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_spin_ele_struct), pointer :: fptr
+    type(tao_spin_ele_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_spin_ele_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21509,25 +23362,42 @@ contains
 
   !! tao_plot_cache_struct
 
-  function allocate_fortran_tao_plot_cache_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_plot_cache_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_plot_cache_struct), pointer :: fptr
+    type(tao_plot_cache_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_plot_cache_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_plot_cache_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_plot_cache_struct), pointer :: fptr
+    type(tao_plot_cache_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_plot_cache_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21605,25 +23475,42 @@ contains
 
   !! tao_spin_polarization_struct
 
-  function allocate_fortran_tao_spin_polarization_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_spin_polarization_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_spin_polarization_struct), pointer :: fptr
+    type(tao_spin_polarization_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_spin_polarization_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_spin_polarization_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_spin_polarization_struct), pointer :: fptr
+    type(tao_spin_polarization_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_spin_polarization_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -21934,25 +23821,42 @@ contains
 
   !! tao_lattice_branch_struct
 
-  function allocate_fortran_tao_lattice_branch_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_lattice_branch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_lattice_branch_struct), pointer :: fptr
+    type(tao_lattice_branch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_lattice_branch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_lattice_branch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_lattice_branch_struct), pointer :: fptr
+    type(tao_lattice_branch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_lattice_branch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -22644,25 +24548,42 @@ contains
 
   !! tao_model_element_struct
 
-  function allocate_fortran_tao_model_element_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_model_element_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_model_element_struct), pointer :: fptr
+    type(tao_model_element_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_model_element_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_model_element_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_model_element_struct), pointer :: fptr
+    type(tao_model_element_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_model_element_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -22738,25 +24659,42 @@ contains
 
   !! tao_beam_branch_struct
 
-  function allocate_fortran_tao_beam_branch_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_beam_branch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_beam_branch_struct), pointer :: fptr
+    type(tao_beam_branch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_beam_branch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_beam_branch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_beam_branch_struct), pointer :: fptr
+    type(tao_beam_branch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_beam_branch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -22980,25 +24918,42 @@ contains
 
   !! tao_d1_data_struct
 
-  function allocate_fortran_tao_d1_data_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_d1_data_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_d1_data_struct), pointer :: fptr
+    type(tao_d1_data_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_d1_data_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_d1_data_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_d1_data_struct), pointer :: fptr
+    type(tao_d1_data_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_d1_data_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -23103,25 +25058,42 @@ contains
 
   !! tao_lattice_struct
 
-  function allocate_fortran_tao_lattice_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_lattice_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_lattice_struct), pointer :: fptr
+    type(tao_lattice_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_lattice_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_lattice_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_lattice_struct), pointer :: fptr
+    type(tao_lattice_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_lattice_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -23304,25 +25276,42 @@ contains
 
   !! tao_beam_uni_struct
 
-  function allocate_fortran_tao_beam_uni_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_beam_uni_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_beam_uni_struct), pointer :: fptr
+    type(tao_beam_uni_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_beam_uni_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_beam_uni_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_beam_uni_struct), pointer :: fptr
+    type(tao_beam_uni_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_beam_uni_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -23479,25 +25468,42 @@ contains
 
   !! tao_dynamic_aperture_struct
 
-  function allocate_fortran_tao_dynamic_aperture_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_dynamic_aperture_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_dynamic_aperture_struct), pointer :: fptr
+    type(tao_dynamic_aperture_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_dynamic_aperture_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_dynamic_aperture_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_dynamic_aperture_struct), pointer :: fptr
+    type(tao_dynamic_aperture_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_dynamic_aperture_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -23643,25 +25649,42 @@ contains
 
   !! tao_model_branch_struct
 
-  function allocate_fortran_tao_model_branch_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_model_branch_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_model_branch_struct), pointer :: fptr
+    type(tao_model_branch_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_model_branch_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_model_branch_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_model_branch_struct), pointer :: fptr
+    type(tao_model_branch_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_model_branch_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -23726,25 +25749,42 @@ contains
 
   !! tao_d2_data_struct
 
-  function allocate_fortran_tao_d2_data_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_d2_data_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_d2_data_struct), pointer :: fptr
+    type(tao_d2_data_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_d2_data_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_d2_data_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_d2_data_struct), pointer :: fptr
+    type(tao_d2_data_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_d2_data_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -24068,25 +26108,42 @@ contains
 
   !! tao_spin_map_struct
 
-  function allocate_fortran_tao_spin_map_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_spin_map_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_spin_map_struct), pointer :: fptr
+    type(tao_spin_map_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_spin_map_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_spin_map_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_spin_map_struct), pointer :: fptr
+    type(tao_spin_map_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_spin_map_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -24306,25 +26363,42 @@ contains
 
   !! tao_data_struct
 
-  function allocate_fortran_tao_data_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_data_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_data_struct), pointer :: fptr
+    type(tao_data_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_data_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_data_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_data_struct), pointer :: fptr
+    type(tao_data_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_data_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -25354,25 +27428,42 @@ contains
 
   !! tao_ping_scale_struct
 
-  function allocate_fortran_tao_ping_scale_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_ping_scale_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_ping_scale_struct), pointer :: fptr
+    type(tao_ping_scale_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_ping_scale_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_ping_scale_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_ping_scale_struct), pointer :: fptr
+    type(tao_ping_scale_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_ping_scale_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -25465,25 +27556,42 @@ contains
 
   !! tao_universe_calc_struct
 
-  function allocate_fortran_tao_universe_calc_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_universe_calc_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_universe_calc_struct), pointer :: fptr
+    type(tao_universe_calc_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_universe_calc_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_universe_calc_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_universe_calc_struct), pointer :: fptr
+    type(tao_universe_calc_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_universe_calc_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -25747,25 +27855,42 @@ contains
 
   !! lat_ele_order_struct
 
-  function allocate_fortran_lat_ele_order_struct() result(ptr) bind(c)
+    function allocate_fortran_lat_ele_order_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(lat_ele_order_struct), pointer :: fptr
+    type(lat_ele_order_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_lat_ele_order_struct(ptr) bind(c)
+    subroutine deallocate_fortran_lat_ele_order_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(lat_ele_order_struct), pointer :: fptr
+    type(lat_ele_order_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_lat_ele_order_struct(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -25809,25 +27934,42 @@ contains
 
   !! tao_universe_struct
 
-  function allocate_fortran_tao_universe_struct() result(ptr) bind(c)
+    function allocate_fortran_tao_universe_struct(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type(tao_universe_struct), pointer :: fptr
+    type(tao_universe_struct), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_tao_universe_struct(ptr) bind(c)
+    subroutine deallocate_fortran_tao_universe_struct(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type(tao_universe_struct), pointer :: fptr
+    type(tao_universe_struct), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_tao_universe_struct(src_ptr, dst_ptr) bind(c)
     implicit none

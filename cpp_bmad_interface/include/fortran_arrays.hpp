@@ -857,20 +857,22 @@ class FortranCharArray1D {
   }
 };
 
-template <typename ProxyType>
+template <
+    typename ProxyType,
+    void* (*AllocFunc)(int, size_t*) = nullptr,
+    void (*DeallocFunc)(void*, int) = nullptr>
 class FortranTypeArray1D {
  private:
-  void*
-      data_; // Base pointer (could point to array of pointers OR array of structs)
+  void* data_;
   int size_;
   int lower_bound_;
   int upper_bound_;
   bool valid_;
-  size_t
-      element_size_; // size of each element (only used for contiguous arrays)
+  size_t element_size_;
+  bool owned_; // New: tracks if we own the memory
 
  public:
-  // Constructor for contiguous struct arrays (like m_u_layout, taylor)
+  // Constructor for non-owned arrays (existing usage)
   FortranTypeArray1D(
       void* struct_array,
       int size,
@@ -883,7 +885,8 @@ class FortranTypeArray1D {
         lower_bound_(lower),
         upper_bound_(upper),
         valid_(valid),
-        element_size_(element_size) {}
+        element_size_(element_size),
+        owned_(false) {}
 
   // Default constructor for invalid arrays
   FortranTypeArray1D()
@@ -892,7 +895,138 @@ class FortranTypeArray1D {
         lower_bound_(0),
         upper_bound_(-1),
         valid_(false),
-        element_size_(0) {}
+        element_size_(0),
+        owned_(false) {}
+
+  // Static factory method for allocating owned arrays
+  static FortranTypeArray1D allocate(int size, int lower_bound = 1) {
+    static_assert(
+        AllocFunc != nullptr && DeallocFunc != nullptr,
+        "AllocFunc and DeallocFunc must be provided to allocate owned arrays");
+
+    if (size < 0) {
+      throw std::invalid_argument("Array size must be non-negative");
+    }
+
+    size_t element_size = 0;
+    void* data = AllocFunc(size, &element_size);
+
+    if (!data) {
+      throw std::runtime_error("Failed to allocate Fortran array");
+    }
+
+    FortranTypeArray1D array;
+    array.data_ = data;
+    array.size_ = size;
+    array.lower_bound_ = lower_bound;
+    array.upper_bound_ = lower_bound + size - 1;
+    array.valid_ = true;
+    array.element_size_ = element_size;
+    array.owned_ = true;
+
+    return array;
+  }
+
+  // Destructor
+  ~FortranTypeArray1D() {
+    if (owned_ && data_ != nullptr && DeallocFunc != nullptr) {
+      DeallocFunc(data_, size_);
+      data_ = nullptr;
+      owned_ = false;
+    }
+  }
+
+  // Delete copy constructor and copy assignment for owned arrays
+  FortranTypeArray1D(const FortranTypeArray1D& other) {
+    if (other.owned_) {
+      throw std::runtime_error(
+          "Cannot copy an owned FortranTypeArray1D. Use move semantics or "
+          "create a non-owning view.");
+    }
+    // Copy non-owned arrays
+    data_ = other.data_;
+    size_ = other.size_;
+    lower_bound_ = other.lower_bound_;
+    upper_bound_ = other.upper_bound_;
+    valid_ = other.valid_;
+    element_size_ = other.element_size_;
+    owned_ = false;
+  }
+
+  FortranTypeArray1D& operator=(const FortranTypeArray1D& other) {
+    if (this != &other) {
+      if (other.owned_) {
+        throw std::runtime_error(
+            "Cannot copy an owned FortranTypeArray1D. Use move semantics.");
+      }
+      // Clean up if we own memory
+      if (owned_ && data_ != nullptr && DeallocFunc != nullptr) {
+        DeallocFunc(data_, size_);
+      }
+      // Copy non-owned arrays
+      data_ = other.data_;
+      size_ = other.size_;
+      lower_bound_ = other.lower_bound_;
+      upper_bound_ = other.upper_bound_;
+      valid_ = other.valid_;
+      element_size_ = other.element_size_;
+      owned_ = false;
+    }
+    return *this;
+  }
+
+  // Move constructor
+  FortranTypeArray1D(FortranTypeArray1D&& other) noexcept
+      : data_(other.data_),
+        size_(other.size_),
+        lower_bound_(other.lower_bound_),
+        upper_bound_(other.upper_bound_),
+        valid_(other.valid_),
+        element_size_(other.element_size_),
+        owned_(other.owned_) {
+    // Invalidate the source
+    other.data_ = nullptr;
+    other.size_ = 0;
+    other.valid_ = false;
+    other.owned_ = false;
+  }
+
+  // Move assignment
+  FortranTypeArray1D& operator=(FortranTypeArray1D&& other) noexcept {
+    if (this != &other) {
+      // Clean up our own resources
+      if (owned_ && data_ != nullptr && DeallocFunc != nullptr) {
+        DeallocFunc(data_, size_);
+      }
+
+      // Take ownership of other's resources
+      data_ = other.data_;
+      size_ = other.size_;
+      lower_bound_ = other.lower_bound_;
+      upper_bound_ = other.upper_bound_;
+      valid_ = other.valid_;
+      element_size_ = other.element_size_;
+      owned_ = other.owned_;
+
+      // Invalidate the source
+      other.data_ = nullptr;
+      other.size_ = 0;
+      other.valid_ = false;
+      other.owned_ = false;
+    }
+    return *this;
+  }
+
+  // Create a non-owning view of this array
+  FortranTypeArray1D as_view() const {
+    return FortranTypeArray1D(
+        data_, size_, lower_bound_, upper_bound_, valid_, element_size_);
+  }
+
+  // Check if this array owns its memory
+  bool is_owned() const {
+    return owned_;
+  }
 
  private:
   // Helper to get pointer to element i (0-based indexing into data_)
@@ -924,6 +1058,10 @@ class FortranTypeArray1D {
   }
 
  public:
+  void* get_fortran_ptr() const {
+    return data_;
+  }
+
   // Fortran-style indexing (using bounds) - returns Proxy object
   ProxyType operator()(int i) {
     check_validity();
@@ -1012,6 +1150,7 @@ class FortranTypeArray1D {
     return get_element_ptr(i);
   }
 
+  // Iterator classes remain the same...
   class iterator {
    private:
     const FortranTypeArray1D* array_;
@@ -1023,7 +1162,6 @@ class FortranTypeArray1D {
 
     ProxyType operator*() {
       if (index_ >= array_->size_) {
-        // This should never happen in correct usage, but pybind11 might try it
         throw std::runtime_error("Iterator dereferenced at end position");
       }
       if (!array_->valid_) {

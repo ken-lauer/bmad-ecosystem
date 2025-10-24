@@ -1315,12 +1315,12 @@ templates[FullType("type", 1, "NOT")] = TemplateEntry(
 """,
     cpp_get_accessors=[
         """
-    FortranTypeArray1D<${return_proxy_name}> CATTRNAME() const {
+    ${return_proxy_name}Array1D CATTRNAME() const {
         void* data_ptr;
         int size_out, lower_bound, upper_bound;
         size_t element_size;
         STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &element_size);
-        return FortranTypeArray1D<${return_proxy_name}>(data_ptr, size_out, lower_bound, upper_bound, true, element_size);
+        return ${return_proxy_name}Array1D(data_ptr, size_out, lower_bound, upper_bound, true, element_size);
     }
 """
     ],
@@ -1384,13 +1384,13 @@ FORTRAN_TYPE_ARRAY_1D_ALLOC_INFO = """
 """
 
 CPP_TYPE_ARRAY_1D_ALLOC_ACCESSOR = """
-    FortranTypeArray1D<${return_proxy_name}> CATTRNAME() const {
+    ${return_proxy_name}Array1D CATTRNAME() const {
         void* data_ptr;
         int size_out, lower_bound, upper_bound;
         bool is_allocated;
         size_t element_size;
         STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size);
-        return FortranTypeArray1D<${return_proxy_name}>(data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
+        return ${return_proxy_name}Array1D(data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
     }
 """
 
@@ -1738,25 +1738,42 @@ contains
         print(f"  !! {struct.f_name}", file=fout)
         print(
             f"""
-  function allocate_fortran_{struct.f_name}() result(ptr) bind(c)
+    function allocate_fortran_{struct.f_name}(n, element_size) result(ptr) bind(c)
     implicit none
+    integer(c_int), value :: n
+    integer(c_size_t), intent(out) :: element_size
     type(c_ptr) :: ptr
     type({struct.f_name}), pointer :: fptr
+    type({struct.f_name}), pointer :: fptr_array(:)
 
-    allocate(fptr)
-    ptr = c_loc(fptr)
-  end function
+    if (n <= 0) then
+        allocate(fptr)
+        ptr = c_loc(fptr)
+        element_size = int(storage_size(fptr) / 8, c_size_t)
+    else
+        allocate(fptr_array(n))
+        ptr = c_loc(fptr_array)
+        element_size = int(storage_size(fptr_array(1)) / 8, c_size_t)
+    end if
+    end function
 
-  subroutine deallocate_fortran_{struct.f_name}(ptr) bind(c)
+    subroutine deallocate_fortran_{struct.f_name}(ptr, n) bind(c)
     implicit none
     type(c_ptr), value :: ptr
+    integer(c_int), value :: n
     type({struct.f_name}), pointer :: fptr
+    type({struct.f_name}), pointer :: fptr_array(:)
 
     if (c_associated(ptr)) then
-      call c_f_pointer(ptr, fptr)
-      deallocate(fptr)
+        if (n <= 0) then
+        call c_f_pointer(ptr, fptr)
+        deallocate(fptr)
+        else
+        call c_f_pointer(ptr, fptr_array, [n])
+        deallocate(fptr_array)
+        end if
     end if
-  end subroutine
+    end subroutine
 
   subroutine copy_fortran_{struct.f_name}(src_ptr, dst_ptr) bind(c)
     implicit none
@@ -1798,19 +1815,14 @@ def get_proxy_header_and_code(
     class_template = Template(
         """
 
-extern "C" {
-  void* allocate_fortran_${struct_name}();
-  void deallocate_fortran_${struct_name}(void* ptr) noexcept;
-  void copy_fortran_${struct_name}(const void* src, void* dst);
-}
-
 template <>
 struct FortranTraits<${class_name}> {
   static void* allocate() {
-    return allocate_fortran_${struct_name}();
+    size_t sz;
+    return allocate_fortran_${struct_name}(0, &sz);
   }
   static void deallocate(void* ptr) noexcept {
-    deallocate_fortran_${struct_name}(ptr);
+    deallocate_fortran_${struct_name}(ptr, 0);
   }
   static void copy(const void* src, void* dst) {
     copy_fortran_${struct_name}(src, dst);
@@ -1827,6 +1839,7 @@ class ${class_name} : public FortranProxy<${class_name}> {
 
   ${class_body}
 };
+
 """
     )
 
@@ -1875,12 +1888,31 @@ class ${class_name} : public FortranProxy<${class_name}> {
 
     class_forward_declarations = []
     proxy_classes = []
-    for name, class_body in classes.items():
-        class_forward_declarations.append(f"class {struct_to_proxy_class_name(name)};")
+
+    class_forward_declarations.append('extern "C" {')
+    for struct_name in classes:
+        class_forward_declarations.append(f"""
+  void* allocate_fortran_{struct_name}(int n, size_t *element_size);
+  void deallocate_fortran_{struct_name}(void* ptr, int n) noexcept;
+  void copy_fortran_{struct_name}(const void* src, void* dst);
+  """)
+
+    class_forward_declarations.append("}")
+
+    for struct_name, class_body in classes.items():
+        class_name = struct_to_proxy_class_name(struct_name)
+        class_forward_declarations.append(f"class {class_name};")
+        class_forward_declarations.append(f"""
+using {class_name}Array1D = FortranTypeArray1D<
+    {class_name},
+    allocate_fortran_{struct_name},
+    deallocate_fortran_{struct_name}
+>;
+        """)
         proxy_classes.append(
             class_template.substitute(
-                struct_name=name,
-                class_name=struct_to_proxy_class_name(name),
+                struct_name=struct_name,
+                class_name=struct_to_proxy_class_name(struct_name),
                 class_body="\n".join(class_body),
             )
         )

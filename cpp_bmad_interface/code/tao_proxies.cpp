@@ -129,7 +129,7 @@ int AcKickerFreqProxy::rf_clock_harmonic() const {
 void AcKickerFreqProxy::set_rf_clock_harmonic(int value) {
   ac_kicker_freq_struct_set_rf_clock_harmonic(fortran_ptr_, value);
 }
-FortranTypeArray1D<AcKickerTimeProxy> AcKickerProxy::amp_vs_time() const {
+AcKickerTimeProxyArray1D AcKickerProxy::amp_vs_time() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -142,10 +142,10 @@ FortranTypeArray1D<AcKickerTimeProxy> AcKickerProxy::amp_vs_time() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<AcKickerTimeProxy>(
+  return AcKickerTimeProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<AcKickerFreqProxy> AcKickerProxy::frequency() const {
+AcKickerFreqProxyArray1D AcKickerProxy::frequency() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -158,7 +158,7 @@ FortranTypeArray1D<AcKickerFreqProxy> AcKickerProxy::frequency() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<AcKickerFreqProxy>(
+  return AcKickerFreqProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double Interval1CoefProxy::c0() const {
@@ -213,7 +213,7 @@ FortranArray1D<double> PhotonReflectTableProxy::energy() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated);
 }
-FortranTypeArray1D<Interval1CoefProxy> PhotonReflectTableProxy::int1() const {
+Interval1CoefProxyArray1D PhotonReflectTableProxy::int1() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -226,7 +226,7 @@ FortranTypeArray1D<Interval1CoefProxy> PhotonReflectTableProxy::int1() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<Interval1CoefProxy>(
+  return Interval1CoefProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray2D<double> PhotonReflectTableProxy::p_reflect() const {
@@ -345,8 +345,7 @@ void PhotonReflectSurfaceProxy::set_reflectivity_file(
   photon_reflect_surface_struct_set_reflectivity_file(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-FortranTypeArray1D<PhotonReflectTableProxy> PhotonReflectSurfaceProxy::table()
-    const {
+PhotonReflectTableProxyArray1D PhotonReflectSurfaceProxy::table() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -359,7 +358,7 @@ FortranTypeArray1D<PhotonReflectTableProxy> PhotonReflectSurfaceProxy::table()
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<PhotonReflectTableProxy>(
+  return PhotonReflectTableProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double PhotonReflectSurfaceProxy::surface_roughness_rms() const {
@@ -556,7 +555,7 @@ int CoordProxy::location() const {
 void CoordProxy::set_location(int value) {
   coord_struct_set_location(fortran_ptr_, value);
 }
-FortranTypeArray1D<CoordProxy> CoordArrayProxy::orbit() const {
+CoordProxyArray1D CoordArrayProxy::orbit() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -569,7 +568,7 @@ FortranTypeArray1D<CoordProxy> CoordArrayProxy::orbit() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CoordProxy>(
+  return CoordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double BpmPhaseCouplingProxy::K_22a() const {
@@ -896,7 +895,7 @@ WakeSrZLongProxy WakeSrProxy::z_long() const {
 void WakeSrProxy::set_z_long(const WakeSrZLongProxy& src) {
   wake_sr_struct_set_z_long(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_wake() const {
+WakeSrModeProxyArray1D WakeSrProxy::long_wake() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -909,10 +908,10 @@ FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_wake() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<WakeSrModeProxy>(
+  return WakeSrModeProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::trans_wake() const {
+WakeSrModeProxyArray1D WakeSrProxy::trans_wake() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -925,7 +924,7 @@ FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::trans_wake() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<WakeSrModeProxy>(
+  return WakeSrModeProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double WakeSrProxy::z_ref_long() const {
@@ -1096,7 +1095,7 @@ void WakeLrProxy::set_file(const std::string& value) {
   wake_lr_struct_set_file(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-FortranTypeArray1D<WakeLrModeProxy> WakeLrProxy::mode() const {
+WakeLrModeProxyArray1D WakeLrProxy::mode() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -1109,7 +1108,7 @@ FortranTypeArray1D<WakeLrModeProxy> WakeLrProxy::mode() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<WakeLrModeProxy>(
+  return WakeLrModeProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double WakeLrProxy::t_ref() const {
@@ -1208,7 +1207,7 @@ double TaylorProxy::ref() const {
 void TaylorProxy::set_ref(double value) {
   taylor_struct_set_ref(fortran_ptr_, value);
 }
-FortranTypeArray1D<TaylorTermProxy> TaylorProxy::term() const {
+TaylorTermProxyArray1D TaylorProxy::term() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -1221,7 +1220,7 @@ FortranTypeArray1D<TaylorTermProxy> TaylorProxy::term() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaylorTermProxy>(
+  return TaylorTermProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double EmTaylorTermProxy::coef() const {
@@ -1248,7 +1247,7 @@ double EmTaylorProxy::ref() const {
 void EmTaylorProxy::set_ref(double value) {
   em_taylor_struct_set_ref(fortran_ptr_, value);
 }
-FortranTypeArray1D<EmTaylorTermProxy> EmTaylorProxy::term() const {
+EmTaylorTermProxyArray1D EmTaylorProxy::term() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -1261,7 +1260,7 @@ FortranTypeArray1D<EmTaylorTermProxy> EmTaylorProxy::term() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<EmTaylorTermProxy>(
+  return EmTaylorTermProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double CartesianMapTerm1Proxy::coef() const {
@@ -1360,7 +1359,7 @@ int CartesianMapTermProxy::n_link() const {
 void CartesianMapTermProxy::set_n_link(int value) {
   cartesian_map_term_struct_set_n_link(fortran_ptr_, value);
 }
-FortranTypeArray1D<CartesianMapTerm1Proxy> CartesianMapTermProxy::term() const {
+CartesianMapTerm1ProxyArray1D CartesianMapTermProxy::term() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -1373,7 +1372,7 @@ FortranTypeArray1D<CartesianMapTerm1Proxy> CartesianMapTermProxy::term() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CartesianMapTerm1Proxy>(
+  return CartesianMapTerm1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double CartesianMapProxy::field_scale() const {
@@ -1464,8 +1463,7 @@ int CylindricalMapTermProxy::n_link() const {
 void CylindricalMapTermProxy::set_n_link(int value) {
   cylindrical_map_term_struct_set_n_link(fortran_ptr_, value);
 }
-FortranTypeArray1D<CylindricalMapTerm1Proxy> CylindricalMapTermProxy::term()
-    const {
+CylindricalMapTerm1ProxyArray1D CylindricalMapTermProxy::term() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -1478,7 +1476,7 @@ FortranTypeArray1D<CylindricalMapTerm1Proxy> CylindricalMapTermProxy::term()
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CylindricalMapTerm1Proxy>(
+  return CylindricalMapTerm1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 int CylindricalMapProxy::m() const {
@@ -2534,7 +2532,7 @@ void GenGradMapProxy::set_file(const std::string& value) {
   gen_grad_map_struct_set_file(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-FortranTypeArray1D<GenGrad1Proxy> GenGradMapProxy::gg() const {
+GenGrad1ProxyArray1D GenGradMapProxy::gg() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -2547,7 +2545,7 @@ FortranTypeArray1D<GenGrad1Proxy> GenGradMapProxy::gg() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<GenGrad1Proxy>(
+  return GenGrad1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 int GenGradMapProxy::ele_anchor_pt() const {
@@ -3023,7 +3021,7 @@ LatEleLocProxy PhotonTargetProxy::ele_loc() const {
 void PhotonTargetProxy::set_ele_loc(const LatEleLocProxy& src) {
   photon_target_struct_set_ele_loc(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TargetPointProxy> PhotonTargetProxy::corner() const {
+TargetPointProxyArray1D PhotonTargetProxy::corner() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -3034,7 +3032,7 @@ FortranTypeArray1D<TargetPointProxy> PhotonTargetProxy::corner() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TargetPointProxy>(
+  return TargetPointProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
 TargetPointProxy PhotonTargetProxy::center() const {
@@ -3349,7 +3347,7 @@ void PhotonElementProxy::set_reflectivity_table_pi(
   photon_element_struct_set_reflectivity_table_pi(
       fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<SplineProxy> PhotonElementProxy::init_energy_prob() const {
+SplineProxyArray1D PhotonElementProxy::init_energy_prob() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3362,7 +3360,7 @@ FortranTypeArray1D<SplineProxy> PhotonElementProxy::init_energy_prob() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<SplineProxy>(
+  return SplineProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray1D<double> PhotonElementProxy::integrated_init_energy_prob() const {
@@ -3483,7 +3481,7 @@ void Wall3dSectionProxy::set_material(const std::string& value) {
   wall3d_section_struct_set_material(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-FortranTypeArray1D<Wall3dVertexProxy> Wall3dSectionProxy::v() const {
+Wall3dVertexProxyArray1D Wall3dSectionProxy::v() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3496,7 +3494,7 @@ FortranTypeArray1D<Wall3dVertexProxy> Wall3dSectionProxy::v() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<Wall3dVertexProxy>(
+  return Wall3dVertexProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 const void* Wall3dSectionProxy::surface() const {
@@ -3731,7 +3729,7 @@ int Wall3dProxy::ele_anchor_pt() const {
 void Wall3dProxy::set_ele_anchor_pt(int value) {
   wall3d_struct_set_ele_anchor_pt(fortran_ptr_, value);
 }
-FortranTypeArray1D<Wall3dSectionProxy> Wall3dProxy::section() const {
+Wall3dSectionProxyArray1D Wall3dProxy::section() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3744,7 +3742,7 @@ FortranTypeArray1D<Wall3dSectionProxy> Wall3dProxy::section() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<Wall3dSectionProxy>(
+  return Wall3dSectionProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 int RamperLordProxy::ix_ele() const {
@@ -3793,7 +3791,7 @@ FortranArray1D<double> ControlProxy::y_knot() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated);
 }
-FortranTypeArray1D<ExpressionAtomProxy> ControlProxy::stack() const {
+ExpressionAtomProxyArray1D ControlProxy::stack() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3806,7 +3804,7 @@ FortranTypeArray1D<ExpressionAtomProxy> ControlProxy::stack() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ExpressionAtomProxy>(
+  return ExpressionAtomProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 LatEleLocProxy ControlProxy::slave() const {
@@ -3911,7 +3909,7 @@ FortranArray1D<double> ControlRamp1Proxy::y_knot() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated);
 }
-FortranTypeArray1D<ExpressionAtomProxy> ControlRamp1Proxy::stack() const {
+ExpressionAtomProxyArray1D ControlRamp1Proxy::stack() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3924,7 +3922,7 @@ FortranTypeArray1D<ExpressionAtomProxy> ControlRamp1Proxy::stack() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ExpressionAtomProxy>(
+  return ExpressionAtomProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string ControlRamp1Proxy::attribute() const {
@@ -3967,7 +3965,7 @@ bool ControlRamp1Proxy::is_controller() const {
 void ControlRamp1Proxy::set_is_controller(bool value) {
   control_ramp1_struct_set_is_controller(fortran_ptr_, value);
 }
-FortranTypeArray1D<ControlVar1Proxy> ControllerProxy::var() const {
+ControlVar1ProxyArray1D ControllerProxy::var() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3980,10 +3978,10 @@ FortranTypeArray1D<ControlVar1Proxy> ControllerProxy::var() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ControlVar1Proxy>(
+  return ControlVar1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<ControlRamp1Proxy> ControllerProxy::ramp() const {
+ControlRamp1ProxyArray1D ControllerProxy::ramp() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -3996,10 +3994,10 @@ FortranTypeArray1D<ControlRamp1Proxy> ControllerProxy::ramp() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ControlRamp1Proxy>(
+  return ControlRamp1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<RamperLordProxy> ControllerProxy::ramper_lord() const {
+RamperLordProxyArray1D ControllerProxy::ramper_lord() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -4012,7 +4010,7 @@ FortranTypeArray1D<RamperLordProxy> ControllerProxy::ramper_lord() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<RamperLordProxy>(
+  return RamperLordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray1D<double> ControllerProxy::x_knot() const {
@@ -4157,7 +4155,7 @@ FortranArray1D<double> BeamInitProxy::spin() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
-FortranTypeArray1D<EllipseBeamInitProxy> BeamInitProxy::ellipse() const {
+EllipseBeamInitProxyArray1D BeamInitProxy::ellipse() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -4168,7 +4166,7 @@ FortranTypeArray1D<EllipseBeamInitProxy> BeamInitProxy::ellipse() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<EllipseBeamInitProxy>(
+  return EllipseBeamInitProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
 KvBeamInitProxy BeamInitProxy::KV() const {
@@ -4179,7 +4177,7 @@ KvBeamInitProxy BeamInitProxy::KV() const {
 void BeamInitProxy::set_KV(const KvBeamInitProxy& src) {
   beam_init_struct_set_KV(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<GridBeamInitProxy> BeamInitProxy::grid() const {
+GridBeamInitProxyArray1D BeamInitProxy::grid() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -4190,7 +4188,7 @@ FortranTypeArray1D<GridBeamInitProxy> BeamInitProxy::grid() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<GridBeamInitProxy>(
+  return GridBeamInitProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
 FortranArray1D<double> BeamInitProxy::center_jitter() const {
@@ -5165,7 +5163,7 @@ FortranArray2D<double> TrackPointProxy::mat6() const {
       stride2,
       true);
 }
-FortranTypeArray1D<TrackPointProxy> TrackProxy::pt() const {
+TrackPointProxyArray1D TrackProxy::pt() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -5178,7 +5176,7 @@ FortranTypeArray1D<TrackPointProxy> TrackProxy::pt() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TrackPointProxy>(
+  return TrackPointProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double TrackProxy::ds_save() const {
@@ -5841,7 +5839,7 @@ double RadInt1Proxy::n_steps() const {
 void RadInt1Proxy::set_n_steps(double value) {
   rad_int1_struct_set_n_steps(fortran_ptr_, value);
 }
-FortranTypeArray1D<RadInt1Proxy> RadIntBranchProxy::ele() const {
+RadInt1ProxyArray1D RadIntBranchProxy::ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -5854,10 +5852,10 @@ FortranTypeArray1D<RadInt1Proxy> RadIntBranchProxy::ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<RadInt1Proxy>(
+  return RadInt1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<RadIntBranchProxy> RadIntAllEleProxy::branch() const {
+RadIntBranchProxyArray1D RadIntAllEleProxy::branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -5870,7 +5868,7 @@ FortranTypeArray1D<RadIntBranchProxy> RadIntAllEleProxy::branch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<RadIntBranchProxy>(
+  return RadIntBranchProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double RfStairStepProxy::E_tot0() const {
@@ -5945,7 +5943,7 @@ int RfStairStepProxy::ix_step() const {
 void RfStairStepProxy::set_ix_step(int value) {
   rf_stair_step_struct_set_ix_step(fortran_ptr_, value);
 }
-FortranTypeArray1D<RfStairStepProxy> RfEleProxy::steps() const {
+RfStairStepProxyArray1D RfEleProxy::steps() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -5958,7 +5956,7 @@ FortranTypeArray1D<RfStairStepProxy> RfEleProxy::steps() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<RfStairStepProxy>(
+  return RfStairStepProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double RfEleProxy::ds_step() const {
@@ -6196,7 +6194,7 @@ const void* EleProxy::rad_map() const {
 void EleProxy::set_rad_map(const RadMapEleProxy& src) {
   ele_struct_set_rad_map(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaylorProxy> EleProxy::taylor() const {
+TaylorProxyArray1D EleProxy::taylor() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -6207,7 +6205,7 @@ FortranTypeArray1D<TaylorProxy> EleProxy::taylor() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
 FortranArray1D<double> EleProxy::spin_taylor_ref_orb_in() const {
@@ -6218,7 +6216,7 @@ FortranArray1D<double> EleProxy::spin_taylor_ref_orb_in() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
-FortranTypeArray1D<TaylorProxy> EleProxy::spin_taylor() const {
+TaylorProxyArray1D EleProxy::spin_taylor() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -6229,7 +6227,7 @@ FortranTypeArray1D<TaylorProxy> EleProxy::spin_taylor() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
 const void* EleProxy::wake() const {
@@ -6240,7 +6238,7 @@ const void* EleProxy::wake() const {
 void EleProxy::set_wake(const WakeProxy& src) {
   ele_struct_set_wake(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<Wall3dProxy> EleProxy::wall3d() const {
+Wall3dProxyArray1D EleProxy::wall3d() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6253,10 +6251,10 @@ FortranTypeArray1D<Wall3dProxy> EleProxy::wall3d() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<Wall3dProxy>(
+  return Wall3dProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<CartesianMapProxy> EleProxy::cartesian_map() const {
+CartesianMapProxyArray1D EleProxy::cartesian_map() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6269,10 +6267,10 @@ FortranTypeArray1D<CartesianMapProxy> EleProxy::cartesian_map() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CartesianMapProxy>(
+  return CartesianMapProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<CylindricalMapProxy> EleProxy::cylindrical_map() const {
+CylindricalMapProxyArray1D EleProxy::cylindrical_map() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6285,10 +6283,10 @@ FortranTypeArray1D<CylindricalMapProxy> EleProxy::cylindrical_map() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CylindricalMapProxy>(
+  return CylindricalMapProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<GenGradMapProxy> EleProxy::gen_grad_map() const {
+GenGradMapProxyArray1D EleProxy::gen_grad_map() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6301,10 +6299,10 @@ FortranTypeArray1D<GenGradMapProxy> EleProxy::gen_grad_map() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<GenGradMapProxy>(
+  return GenGradMapProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<GridFieldProxy> EleProxy::grid_field() const {
+GridFieldProxyArray1D EleProxy::grid_field() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6317,7 +6315,7 @@ FortranTypeArray1D<GridFieldProxy> EleProxy::grid_field() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<GridFieldProxy>(
+  return GridFieldProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 CoordProxy EleProxy::map_ref_orb_in() const {
@@ -6937,7 +6935,7 @@ std::complex<double> ComplexTaylorProxy::ref() const {
 void ComplexTaylorProxy::set_ref(std::complex<double> value) {
   complex_taylor_struct_set_ref(fortran_ptr_, value);
 }
-FortranTypeArray1D<ComplexTaylorTermProxy> ComplexTaylorProxy::term() const {
+ComplexTaylorTermProxyArray1D ComplexTaylorProxy::term() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -6950,7 +6948,7 @@ FortranTypeArray1D<ComplexTaylorTermProxy> ComplexTaylorProxy::term() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ComplexTaylorTermProxy>(
+  return ComplexTaylorTermProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string BranchProxy::name() const {
@@ -7057,7 +7055,7 @@ ModeInfoProxy BranchProxy::z() const {
 void BranchProxy::set_z(const ModeInfoProxy& src) {
   branch_struct_set_z(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<EleProxy> BranchProxy::ele() const {
+EleProxyArray1D BranchProxy::ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7070,7 +7068,7 @@ FortranTypeArray1D<EleProxy> BranchProxy::ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<EleProxy>(
+  return EleProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 LatParamProxy BranchProxy::param() const {
@@ -7089,7 +7087,7 @@ CoordProxy BranchProxy::particle_start() const {
 void BranchProxy::set_particle_start(const CoordProxy& src) {
   branch_struct_set_particle_start(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<Wall3dProxy> BranchProxy::wall3d() const {
+Wall3dProxyArray1D BranchProxy::wall3d() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7102,7 +7100,7 @@ FortranTypeArray1D<Wall3dProxy> BranchProxy::wall3d() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<Wall3dProxy>(
+  return Wall3dProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string LatProxy::use_name() const {
@@ -7200,7 +7198,7 @@ FortranCharArray1D LatProxy::print_str() const {
   return FortranCharArray1D(
       data_ptr, size_out, lower_bound, upper_bound, str_len, is_allocated);
 }
-FortranTypeArray1D<ExpressionAtomProxy> LatProxy::constant() const {
+ExpressionAtomProxyArray1D LatProxy::constant() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7213,7 +7211,7 @@ FortranTypeArray1D<ExpressionAtomProxy> LatProxy::constant() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ExpressionAtomProxy>(
+  return ExpressionAtomProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 const void* LatProxy::a() const {
@@ -7264,7 +7262,7 @@ EleProxy LatProxy::ele_init() const {
 void LatProxy::set_ele_init(const EleProxy& src) {
   lat_struct_set_ele_init(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<EleProxy> LatProxy::ele() const {
+EleProxyArray1D LatProxy::ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7277,10 +7275,10 @@ FortranTypeArray1D<EleProxy> LatProxy::ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<EleProxy>(
+  return EleProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<BranchProxy> LatProxy::branch() const {
+BranchProxyArray1D LatProxy::branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7293,10 +7291,10 @@ FortranTypeArray1D<BranchProxy> LatProxy::branch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<BranchProxy>(
+  return BranchProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<ControlProxy> LatProxy::control() const {
+ControlProxyArray1D LatProxy::control() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7309,7 +7307,7 @@ FortranTypeArray1D<ControlProxy> LatProxy::control() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ControlProxy>(
+  return ControlProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 const void* LatProxy::particle_start() const {
@@ -7436,7 +7434,7 @@ int LatProxy::ramper_slave_bookkeeping() const {
 void LatProxy::set_ramper_slave_bookkeeping(int value) {
   lat_struct_set_ramper_slave_bookkeeping(fortran_ptr_, value);
 }
-FortranTypeArray1D<CoordProxy> BunchProxy::particle() const {
+CoordProxyArray1D BunchProxy::particle() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7449,7 +7447,7 @@ FortranTypeArray1D<CoordProxy> BunchProxy::particle() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CoordProxy>(
+  return CoordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray1D<int> BunchProxy::ix_z() const {
@@ -7766,7 +7764,7 @@ bool BunchParamsProxy::twiss_valid() const {
 void BunchParamsProxy::set_twiss_valid(bool value) {
   bunch_params_struct_set_twiss_valid(fortran_ptr_, value);
 }
-FortranTypeArray1D<BunchProxy> BeamProxy::bunch() const {
+BunchProxyArray1D BeamProxy::bunch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7779,7 +7777,7 @@ FortranTypeArray1D<BunchProxy> BeamProxy::bunch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<BunchProxy>(
+  return BunchProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double AperturePointProxy::x() const {
@@ -7902,7 +7900,7 @@ void ApertureParamProxy::set_start_ele(const std::string& value) {
   aperture_param_struct_set_start_ele(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-FortranTypeArray1D<AperturePointProxy> ApertureScanProxy::point() const {
+AperturePointProxyArray1D ApertureScanProxy::point() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -7915,7 +7913,7 @@ FortranTypeArray1D<AperturePointProxy> ApertureScanProxy::point() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<AperturePointProxy>(
+  return AperturePointProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 CoordProxy ApertureScanProxy::ref_orb() const {
@@ -8142,7 +8140,7 @@ const void* BmadNormalFormProxy::ele_origin() const {
 void BmadNormalFormProxy::set_ele_origin(const EleProxy& src) {
   bmad_normal_form_struct_set_ele_origin(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::M() const {
+TaylorProxyArray1D BmadNormalFormProxy::M() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8153,10 +8151,10 @@ FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::M() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::A() const {
+TaylorProxyArray1D BmadNormalFormProxy::A() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8167,10 +8165,10 @@ FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::A() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::A_inv() const {
+TaylorProxyArray1D BmadNormalFormProxy::A_inv() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8181,10 +8179,10 @@ FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::A_inv() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::dhdj() const {
+TaylorProxyArray1D BmadNormalFormProxy::dhdj() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8195,10 +8193,10 @@ FortranTypeArray1D<TaylorProxy> BmadNormalFormProxy::dhdj() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<TaylorProxy>(
+  return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<ComplexTaylorProxy> BmadNormalFormProxy::F() const {
+ComplexTaylorProxyArray1D BmadNormalFormProxy::F() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8209,10 +8207,10 @@ FortranTypeArray1D<ComplexTaylorProxy> BmadNormalFormProxy::F() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<ComplexTaylorProxy>(
+  return ComplexTaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<ComplexTaylorProxy> BmadNormalFormProxy::L() const {
+ComplexTaylorProxyArray1D BmadNormalFormProxy::L() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   size_t element_size;
@@ -8223,10 +8221,10 @@ FortranTypeArray1D<ComplexTaylorProxy> BmadNormalFormProxy::L() const {
       &lower_bound,
       &upper_bound,
       &element_size);
-  return FortranTypeArray1D<ComplexTaylorProxy>(
+  return ComplexTaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-FortranTypeArray1D<ResonanceHProxy> BmadNormalFormProxy::h() const {
+ResonanceHProxyArray1D BmadNormalFormProxy::h() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8239,10 +8237,10 @@ FortranTypeArray1D<ResonanceHProxy> BmadNormalFormProxy::h() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ResonanceHProxy>(
+  return ResonanceHProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<BunchParamsProxy> BunchTrackProxy::pt() const {
+BunchParamsProxyArray1D BunchTrackProxy::pt() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8255,7 +8253,7 @@ FortranTypeArray1D<BunchParamsProxy> BunchTrackProxy::pt() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<BunchParamsProxy>(
+  return BunchParamsProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double BunchTrackProxy::ds_save() const {
@@ -8458,7 +8456,7 @@ int LatEleOrder1Proxy::ix_order() const {
 void LatEleOrder1Proxy::set_ix_order(int value) {
   lat_ele_order1_struct_set_ix_order(fortran_ptr_, value);
 }
-FortranTypeArray1D<LatEleOrder1Proxy> LatEleOrderArrayProxy::ele() const {
+LatEleOrder1ProxyArray1D LatEleOrderArrayProxy::ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8471,7 +8469,7 @@ FortranTypeArray1D<LatEleOrder1Proxy> LatEleOrderArrayProxy::ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<LatEleOrder1Proxy>(
+  return LatEleOrder1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray2D<double> TaoLatSigmaProxy::mat() const {
@@ -8726,7 +8724,7 @@ SpinOrbitMap1Proxy TaoSpinPolarizationProxy::q_1turn() const {
 void TaoSpinPolarizationProxy::set_q_1turn(const SpinOrbitMap1Proxy& src) {
   tao_spin_polarization_struct_set_q_1turn(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<SpinOrbitMap1Proxy> TaoSpinPolarizationProxy::q_ele() const {
+SpinOrbitMap1ProxyArray1D TaoSpinPolarizationProxy::q_ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8739,7 +8737,7 @@ FortranTypeArray1D<SpinOrbitMap1Proxy> TaoSpinPolarizationProxy::q_ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<SpinOrbitMap1Proxy>(
+  return SpinOrbitMap1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 const void* TaoLatticeBranchProxy::tao_lat() const {
@@ -8750,7 +8748,7 @@ const void* TaoLatticeBranchProxy::tao_lat() const {
 void TaoLatticeBranchProxy::set_tao_lat(const TaoLatticeProxy& src) {
   tao_lattice_branch_struct_set_tao_lat(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaoLatSigmaProxy> TaoLatticeBranchProxy::lat_sigma() const {
+TaoLatSigmaProxyArray1D TaoLatticeBranchProxy::lat_sigma() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8763,10 +8761,10 @@ FortranTypeArray1D<TaoLatSigmaProxy> TaoLatticeBranchProxy::lat_sigma() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoLatSigmaProxy>(
+  return TaoLatSigmaProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<TaoSpinEleProxy> TaoLatticeBranchProxy::spin_ele() const {
+TaoSpinEleProxyArray1D TaoLatticeBranchProxy::spin_ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8779,11 +8777,10 @@ FortranTypeArray1D<TaoSpinEleProxy> TaoLatticeBranchProxy::spin_ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoSpinEleProxy>(
+  return TaoSpinEleProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<BunchParamsProxy> TaoLatticeBranchProxy::bunch_params()
-    const {
+BunchParamsProxyArray1D TaoLatticeBranchProxy::bunch_params() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8796,11 +8793,10 @@ FortranTypeArray1D<BunchParamsProxy> TaoLatticeBranchProxy::bunch_params()
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<BunchParamsProxy>(
+  return BunchParamsProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<BunchTrackProxy> TaoLatticeBranchProxy::bunch_params_comb()
-    const {
+BunchTrackProxyArray1D TaoLatticeBranchProxy::bunch_params_comb() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8813,10 +8809,10 @@ FortranTypeArray1D<BunchTrackProxy> TaoLatticeBranchProxy::bunch_params_comb()
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<BunchTrackProxy>(
+  return BunchTrackProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::orbit() const {
+CoordProxyArray1D TaoLatticeBranchProxy::orbit() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8829,11 +8825,10 @@ FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::orbit() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CoordProxy>(
+  return CoordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<TaoPlotCacheProxy> TaoLatticeBranchProxy::plot_cache()
-    const {
+TaoPlotCacheProxyArray1D TaoLatticeBranchProxy::plot_cache() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8846,7 +8841,7 @@ FortranTypeArray1D<TaoPlotCacheProxy> TaoLatticeBranchProxy::plot_cache()
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoPlotCacheProxy>(
+  return TaoPlotCacheProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 TaoSpinPolarizationProxy TaoLatticeBranchProxy::spin() const {
@@ -8908,7 +8903,7 @@ void TaoLatticeBranchProxy::set_bmad_normal_form(
   tao_lattice_branch_struct_set_bmad_normal_form(
       fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::high_E_orb() const {
+CoordProxyArray1D TaoLatticeBranchProxy::high_E_orb() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8921,10 +8916,10 @@ FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::high_E_orb() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CoordProxy>(
+  return CoordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::low_E_orb() const {
+CoordProxyArray1D TaoLatticeBranchProxy::low_E_orb() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -8937,7 +8932,7 @@ FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::low_E_orb() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<CoordProxy>(
+  return CoordProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 double TaoLatticeBranchProxy::cache_x_min() const {
@@ -9197,7 +9192,7 @@ const void* TaoD1DataProxy::d2() const {
 void TaoD1DataProxy::set_d2(const TaoD2DataProxy& src) {
   tao_d1_data_struct_set_d2(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaoDataProxy> TaoD1DataProxy::d() const {
+TaoDataProxyArray1D TaoD1DataProxy::d() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -9210,7 +9205,7 @@ FortranTypeArray1D<TaoDataProxy> TaoD1DataProxy::d() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoDataProxy>(
+  return TaoDataProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string TaoLatticeProxy::name() const {
@@ -9269,7 +9264,7 @@ RadIntAllEleProxy TaoLatticeProxy::rad_int_by_ele_6d() const {
 void TaoLatticeProxy::set_rad_int_by_ele_6d(const RadIntAllEleProxy& src) {
   tao_lattice_struct_set_rad_int_by_ele_6d(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaoLatticeBranchProxy> TaoLatticeProxy::tao_branch() const {
+TaoLatticeBranchProxyArray1D TaoLatticeProxy::tao_branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -9282,7 +9277,7 @@ FortranTypeArray1D<TaoLatticeBranchProxy> TaoLatticeProxy::tao_branch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoLatticeBranchProxy>(
+  return TaoLatticeBranchProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string TaoBeamUniProxy::saved_at() const {
@@ -9357,7 +9352,7 @@ ApertureParamProxy TaoDynamicApertureProxy::param() const {
 void TaoDynamicApertureProxy::set_param(const ApertureParamProxy& src) {
   tao_dynamic_aperture_struct_set_param(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<ApertureScanProxy> TaoDynamicApertureProxy::scan() const {
+ApertureScanProxyArray1D TaoDynamicApertureProxy::scan() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -9370,7 +9365,7 @@ FortranTypeArray1D<ApertureScanProxy> TaoDynamicApertureProxy::scan() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<ApertureScanProxy>(
+  return ApertureScanProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 FortranArray1D<double> TaoDynamicApertureProxy::pz() const {
@@ -9411,7 +9406,7 @@ double TaoDynamicApertureProxy::b_emit() const {
 void TaoDynamicApertureProxy::set_b_emit(double value) {
   tao_dynamic_aperture_struct_set_b_emit(fortran_ptr_, value);
 }
-FortranTypeArray1D<TaoModelElementProxy> TaoModelBranchProxy::ele() const {
+TaoModelElementProxyArray1D TaoModelBranchProxy::ele() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -9424,7 +9419,7 @@ FortranTypeArray1D<TaoModelElementProxy> TaoModelBranchProxy::ele() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoModelElementProxy>(
+  return TaoModelElementProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 TaoBeamBranchProxy TaoModelBranchProxy::beam() const {
@@ -9523,7 +9518,7 @@ FortranCharArray1D TaoD2DataProxy::descrip() const {
   return FortranCharArray1D(
       data_ptr, size_out, lower_bound, upper_bound, str_len, true);
 }
-FortranTypeArray1D<TaoD1DataProxy> TaoD2DataProxy::d1() const {
+TaoD1DataProxyArray1D TaoD2DataProxy::d1() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -9536,7 +9531,7 @@ FortranTypeArray1D<TaoD1DataProxy> TaoD2DataProxy::d1() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoD1DataProxy>(
+  return TaoD1DataProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 int TaoD2DataProxy::ix_universe() const {
@@ -10265,7 +10260,7 @@ bool TaoUniverseCalcProxy::spin_matrices() const {
 void TaoUniverseCalcProxy::set_spin_matrices(bool value) {
   tao_universe_calc_struct_set_spin_matrices(fortran_ptr_, value);
 }
-FortranTypeArray1D<LatEleOrderArrayProxy> LatEleOrderProxy::branch() const {
+LatEleOrderArrayProxyArray1D LatEleOrderProxy::branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -10278,7 +10273,7 @@ FortranTypeArray1D<LatEleOrderArrayProxy> LatEleOrderProxy::branch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<LatEleOrderArrayProxy>(
+  return LatEleOrderArrayProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 const void* TaoUniverseProxy::model() const {
@@ -10322,7 +10317,7 @@ void TaoUniverseProxy::set_dynamic_aperture(
     const TaoDynamicApertureProxy& src) {
   tao_universe_struct_set_dynamic_aperture(fortran_ptr_, src.get_fortran_ptr());
 }
-FortranTypeArray1D<TaoModelBranchProxy> TaoUniverseProxy::model_branch() const {
+TaoModelBranchProxyArray1D TaoUniverseProxy::model_branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -10335,10 +10330,10 @@ FortranTypeArray1D<TaoModelBranchProxy> TaoUniverseProxy::model_branch() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoModelBranchProxy>(
+  return TaoModelBranchProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<TaoD2DataProxy> TaoUniverseProxy::d2_data() const {
+TaoD2DataProxyArray1D TaoUniverseProxy::d2_data() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -10351,10 +10346,10 @@ FortranTypeArray1D<TaoD2DataProxy> TaoUniverseProxy::d2_data() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoD2DataProxy>(
+  return TaoD2DataProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<TaoDataProxy> TaoUniverseProxy::data() const {
+TaoDataProxyArray1D TaoUniverseProxy::data() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -10367,7 +10362,7 @@ FortranTypeArray1D<TaoDataProxy> TaoUniverseProxy::data() const {
       &upper_bound,
       &is_allocated,
       &element_size);
-  return FortranTypeArray1D<TaoDataProxy>(
+  return TaoDataProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 TaoPingScaleProxy TaoUniverseProxy::ping_scale() const {

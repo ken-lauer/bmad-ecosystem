@@ -31,8 +31,6 @@ namespace tao {
 // Lattice type enumeration
 enum class LatticeType : int { MODEL = 1, DESIGN = 2, BASE = 3 };
 
-// Exception classes
-
 // Forward declarations
 class TaoUniverseIndexProxy;
 class TaoLatticeIndexProxy;
