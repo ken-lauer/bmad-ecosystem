@@ -1274,10 +1274,11 @@ templates[FullType("type", 0, "PTR")] = TemplateEntry(
     cpp_get_decl=CPP_TYPE_SCALAR_DECL,
     cpp_get_accessors=[
         """
-    const void* CATTRNAME() const {
+    std::optional<${return_proxy_name}> CATTRNAME() const {
         void* ptr;
         STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
-        return ptr;
+        if (!ptr) return std::nullopt;
+        return ${return_proxy_name}(ptr);
     }
 """
     ],

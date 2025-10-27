@@ -1415,10 +1415,12 @@ int CartesianMapProxy::field_type() const {
 void CartesianMapProxy::set_field_type(int value) {
   cartesian_map_struct_set_field_type(fortran_ptr_, value);
 }
-const void* CartesianMapProxy::ptr() const {
+std::optional<CartesianMapTermProxy> CartesianMapProxy::ptr() const {
   void* ptr;
   cartesian_map_struct_get_ptr(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return CartesianMapTermProxy(ptr);
 }
 void CartesianMapProxy::set_ptr(const CartesianMapTermProxy& src) {
   cartesian_map_struct_set_ptr(fortran_ptr_, src.get_fortran_ptr());
@@ -1551,10 +1553,12 @@ FortranArray1D<double> CylindricalMapProxy::r0() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
-const void* CylindricalMapProxy::ptr() const {
+std::optional<CylindricalMapTermProxy> CylindricalMapProxy::ptr() const {
   void* ptr;
   cylindrical_map_struct_get_ptr(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return CylindricalMapTermProxy(ptr);
 }
 void CylindricalMapProxy::set_ptr(const CylindricalMapTermProxy& src) {
   cylindrical_map_struct_set_ptr(fortran_ptr_, src.get_fortran_ptr());
@@ -1819,10 +1823,12 @@ bool GridFieldProxy::curved_ref_frame() const {
 void GridFieldProxy::set_curved_ref_frame(bool value) {
   grid_field_struct_set_curved_ref_frame(fortran_ptr_, value);
 }
-const void* GridFieldProxy::ptr() const {
+std::optional<GridFieldPtProxy> GridFieldProxy::ptr() const {
   void* ptr;
   grid_field_struct_get_ptr(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return GridFieldPtProxy(ptr);
 }
 void GridFieldProxy::set_ptr(const GridFieldPtProxy& src) {
   grid_field_struct_set_ptr(fortran_ptr_, src.get_fortran_ptr());
@@ -3497,10 +3503,12 @@ Wall3dVertexProxyArray1D Wall3dSectionProxy::v() const {
   return Wall3dVertexProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-const void* Wall3dSectionProxy::surface() const {
+std::optional<PhotonReflectSurfaceProxy> Wall3dSectionProxy::surface() const {
   void* ptr;
   wall3d_section_struct_get_surface(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return PhotonReflectSurfaceProxy(ptr);
 }
 void Wall3dSectionProxy::set_surface(const PhotonReflectSurfaceProxy& src) {
   wall3d_section_struct_set_surface(fortran_ptr_, src.get_fortran_ptr());
@@ -6105,10 +6113,12 @@ XyDispProxy EleProxy::y() const {
 void EleProxy::set_y(const XyDispProxy& src) {
   ele_struct_set_y(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::ac_kick() const {
+std::optional<AcKickerProxy> EleProxy::ac_kick() const {
   void* ptr;
   ele_struct_get_ac_kick(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return AcKickerProxy(ptr);
 }
 void EleProxy::set_ac_kick(const AcKickerProxy& src) {
   ele_struct_set_ac_kick(fortran_ptr_, src.get_fortran_ptr());
@@ -6121,34 +6131,42 @@ BookkeepingStateProxy EleProxy::bookkeeping_state() const {
 void EleProxy::set_bookkeeping_state(const BookkeepingStateProxy& src) {
   ele_struct_set_bookkeeping_state(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::branch() const {
+std::optional<BranchProxy> EleProxy::branch() const {
   void* ptr;
   ele_struct_get_branch(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return BranchProxy(ptr);
 }
 void EleProxy::set_branch(const BranchProxy& src) {
   ele_struct_set_branch(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::control() const {
+std::optional<ControllerProxy> EleProxy::control() const {
   void* ptr;
   ele_struct_get_control(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return ControllerProxy(ptr);
 }
 void EleProxy::set_control(const ControllerProxy& src) {
   ele_struct_set_control(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::rf() const {
+std::optional<RfEleProxy> EleProxy::rf() const {
   void* ptr;
   ele_struct_get_rf(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return RfEleProxy(ptr);
 }
 void EleProxy::set_rf(const RfEleProxy& src) {
   ele_struct_set_rf(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::lord() const {
+std::optional<EleProxy> EleProxy::lord() const {
   void* ptr;
   ele_struct_get_lord(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return EleProxy(ptr);
 }
 void EleProxy::set_lord(const EleProxy& src) {
   ele_struct_set_lord(fortran_ptr_, src.get_fortran_ptr());
@@ -6161,35 +6179,44 @@ FloorPositionProxy EleProxy::floor() const {
 void EleProxy::set_floor(const FloorPositionProxy& src) {
   ele_struct_set_floor(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::high_energy_space_charge() const {
+std::optional<HighEnergySpaceChargeProxy> EleProxy::high_energy_space_charge()
+    const {
   void* ptr;
   ele_struct_get_high_energy_space_charge(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return HighEnergySpaceChargeProxy(ptr);
 }
 void EleProxy::set_high_energy_space_charge(
     const HighEnergySpaceChargeProxy& src) {
   ele_struct_set_high_energy_space_charge(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::mode3() const {
+std::optional<Mode3Proxy> EleProxy::mode3() const {
   void* ptr;
   ele_struct_get_mode3(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return Mode3Proxy(ptr);
 }
 void EleProxy::set_mode3(const Mode3Proxy& src) {
   ele_struct_set_mode3(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::photon() const {
+std::optional<PhotonElementProxy> EleProxy::photon() const {
   void* ptr;
   ele_struct_get_photon(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return PhotonElementProxy(ptr);
 }
 void EleProxy::set_photon(const PhotonElementProxy& src) {
   ele_struct_set_photon(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* EleProxy::rad_map() const {
+std::optional<RadMapEleProxy> EleProxy::rad_map() const {
   void* ptr;
   ele_struct_get_rad_map(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return RadMapEleProxy(ptr);
 }
 void EleProxy::set_rad_map(const RadMapEleProxy& src) {
   ele_struct_set_rad_map(fortran_ptr_, src.get_fortran_ptr());
@@ -6230,10 +6257,12 @@ TaylorProxyArray1D EleProxy::spin_taylor() const {
   return TaylorProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, true, element_size);
 }
-const void* EleProxy::wake() const {
+std::optional<WakeProxy> EleProxy::wake() const {
   void* ptr;
   ele_struct_get_wake(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return WakeProxy(ptr);
 }
 void EleProxy::set_wake(const WakeProxy& src) {
   ele_struct_set_wake(fortran_ptr_, src.get_fortran_ptr());
@@ -7023,10 +7052,12 @@ int BranchProxy::n_ele_max() const {
 void BranchProxy::set_n_ele_max(int value) {
   branch_struct_set_n_ele_max(fortran_ptr_, value);
 }
-const void* BranchProxy::lat() const {
+std::optional<LatProxy> BranchProxy::lat() const {
   void* ptr;
   branch_struct_get_lat(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return LatProxy(ptr);
 }
 void BranchProxy::set_lat(const LatProxy& src) {
   branch_struct_set_lat(fortran_ptr_, src.get_fortran_ptr());
@@ -7214,34 +7245,42 @@ ExpressionAtomProxyArray1D LatProxy::constant() const {
   return ExpressionAtomProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-const void* LatProxy::a() const {
+std::optional<ModeInfoProxy> LatProxy::a() const {
   void* ptr;
   lat_struct_get_a(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return ModeInfoProxy(ptr);
 }
 void LatProxy::set_a(const ModeInfoProxy& src) {
   lat_struct_set_a(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* LatProxy::b() const {
+std::optional<ModeInfoProxy> LatProxy::b() const {
   void* ptr;
   lat_struct_get_b(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return ModeInfoProxy(ptr);
 }
 void LatProxy::set_b(const ModeInfoProxy& src) {
   lat_struct_set_b(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* LatProxy::z() const {
+std::optional<ModeInfoProxy> LatProxy::z() const {
   void* ptr;
   lat_struct_get_z(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return ModeInfoProxy(ptr);
 }
 void LatProxy::set_z(const ModeInfoProxy& src) {
   lat_struct_set_z(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* LatProxy::param() const {
+std::optional<LatParamProxy> LatProxy::param() const {
   void* ptr;
   lat_struct_get_param(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return LatParamProxy(ptr);
 }
 void LatProxy::set_param(const LatParamProxy& src) {
   lat_struct_set_param(fortran_ptr_, src.get_fortran_ptr());
@@ -7310,10 +7349,12 @@ ControlProxyArray1D LatProxy::control() const {
   return ControlProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-const void* LatProxy::particle_start() const {
+std::optional<CoordProxy> LatProxy::particle_start() const {
   void* ptr;
   lat_struct_get_particle_start(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return CoordProxy(ptr);
 }
 void LatProxy::set_particle_start(const CoordProxy& src) {
   lat_struct_set_particle_start(fortran_ptr_, src.get_fortran_ptr());
@@ -8108,10 +8149,12 @@ FortranArray1D<double> SpinAxisProxy::m() const {
   return FortranArray1D<double>(
       data_ptr, size_out, lower_bound, upper_bound, true);
 }
-const void* PtcNormalFormProxy::ele_origin() const {
+std::optional<EleProxy> PtcNormalFormProxy::ele_origin() const {
   void* ptr;
   ptc_normal_form_struct_get_ele_origin(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return EleProxy(ptr);
 }
 void PtcNormalFormProxy::set_ele_origin(const EleProxy& src) {
   ptc_normal_form_struct_set_ele_origin(fortran_ptr_, src.get_fortran_ptr());
@@ -8132,10 +8175,12 @@ bool PtcNormalFormProxy::valid_map() const {
 void PtcNormalFormProxy::set_valid_map(bool value) {
   ptc_normal_form_struct_set_valid_map(fortran_ptr_, value);
 }
-const void* BmadNormalFormProxy::ele_origin() const {
+std::optional<EleProxy> BmadNormalFormProxy::ele_origin() const {
   void* ptr;
   bmad_normal_form_struct_get_ele_origin(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return EleProxy(ptr);
 }
 void BmadNormalFormProxy::set_ele_origin(const EleProxy& src) {
   bmad_normal_form_struct_set_ele_origin(fortran_ptr_, src.get_fortran_ptr());
@@ -8740,10 +8785,12 @@ SpinOrbitMap1ProxyArray1D TaoSpinPolarizationProxy::q_ele() const {
   return SpinOrbitMap1ProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-const void* TaoLatticeBranchProxy::tao_lat() const {
+std::optional<TaoLatticeProxy> TaoLatticeBranchProxy::tao_lat() const {
   void* ptr;
   tao_lattice_branch_struct_get_tao_lat(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoLatticeProxy(ptr);
 }
 void TaoLatticeBranchProxy::set_tao_lat(const TaoLatticeProxy& src) {
   tao_lattice_branch_struct_set_tao_lat(fortran_ptr_, src.get_fortran_ptr());
@@ -9184,10 +9231,12 @@ void TaoD1DataProxy::set_name(const std::string& value) {
   tao_d1_data_struct_set_name(
       fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
 }
-const void* TaoD1DataProxy::d2() const {
+std::optional<TaoD2DataProxy> TaoD1DataProxy::d2() const {
   void* ptr;
   tao_d1_data_struct_get_d2(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoD2DataProxy(ptr);
 }
 void TaoD1DataProxy::set_d2(const TaoD2DataProxy& src) {
   tao_d1_data_struct_set_d2(fortran_ptr_, src.get_fortran_ptr());
@@ -10116,10 +10165,12 @@ TaoSpinMapProxy TaoDataProxy::spin_map() const {
 void TaoDataProxy::set_spin_map(const TaoSpinMapProxy& src) {
   tao_data_struct_set_spin_map(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* TaoDataProxy::d1() const {
+std::optional<TaoD1DataProxy> TaoDataProxy::d1() const {
   void* ptr;
   tao_data_struct_get_d1(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoD1DataProxy(ptr);
 }
 void TaoDataProxy::set_d1(const TaoD1DataProxy& src) {
   tao_data_struct_set_d1(fortran_ptr_, src.get_fortran_ptr());
@@ -10276,26 +10327,32 @@ LatEleOrderArrayProxyArray1D LatEleOrderProxy::branch() const {
   return LatEleOrderArrayProxyArray1D(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-const void* TaoUniverseProxy::model() const {
+std::optional<TaoLatticeProxy> TaoUniverseProxy::model() const {
   void* ptr;
   tao_universe_struct_get_model(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoLatticeProxy(ptr);
 }
 void TaoUniverseProxy::set_model(const TaoLatticeProxy& src) {
   tao_universe_struct_set_model(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* TaoUniverseProxy::design() const {
+std::optional<TaoLatticeProxy> TaoUniverseProxy::design() const {
   void* ptr;
   tao_universe_struct_get_design(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoLatticeProxy(ptr);
 }
 void TaoUniverseProxy::set_design(const TaoLatticeProxy& src) {
   tao_universe_struct_set_design(fortran_ptr_, src.get_fortran_ptr());
 }
-const void* TaoUniverseProxy::base() const {
+std::optional<TaoLatticeProxy> TaoUniverseProxy::base() const {
   void* ptr;
   tao_universe_struct_get_base(fortran_ptr_, &ptr);
-  return ptr;
+  if (!ptr)
+    return std::nullopt;
+  return TaoLatticeProxy(ptr);
 }
 void TaoUniverseProxy::set_base(const TaoLatticeProxy& src) {
   tao_universe_struct_set_base(fortran_ptr_, src.get_fortran_ptr());

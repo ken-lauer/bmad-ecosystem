@@ -7498,7 +7498,7 @@ class CartesianMapProxy : public FortranProxy<CartesianMapProxy> {
   void set_ele_anchor_pt(int value);
   int field_type() const; // 0D_NOT_integer
   void set_field_type(int value);
-  const void* ptr() const; // 0D_PTR_type
+  std::optional<CartesianMapTermProxy> ptr() const; // 0D_PTR_type
   void set_ptr(const CartesianMapTermProxy& src);
 };
 
@@ -7599,7 +7599,7 @@ class CylindricalMapProxy : public FortranProxy<CylindricalMapProxy> {
   double dz() const; // 0D_NOT_real
   void set_dz(double value);
   FortranArray1D<double> r0() const; // 1D_NOT_real
-  const void* ptr() const; // 0D_PTR_type
+  std::optional<CylindricalMapTermProxy> ptr() const; // 0D_PTR_type
   void set_ptr(const CylindricalMapTermProxy& src);
 };
 
@@ -7753,7 +7753,7 @@ class GridFieldProxy : public FortranProxy<GridFieldProxy> {
   FortranArray1D<double> r0() const; // 1D_NOT_real
   bool curved_ref_frame() const; // 0D_NOT_logical
   void set_curved_ref_frame(bool value);
-  const void* ptr() const; // 0D_PTR_type
+  std::optional<GridFieldPtProxy> ptr() const; // 0D_PTR_type
   void set_ptr(const GridFieldPtProxy& src);
   FortranTypeArray3D<BicubicCmplxCoefProxy> bi_coef() const; // 3D_NOT_type
   FortranTypeArray3D<TricubicCmplxCoefProxy> tri_coef() const; // 3D_NOT_type
@@ -8646,7 +8646,7 @@ class Wall3dSectionProxy : public FortranProxy<Wall3dSectionProxy> {
   FortranArray1D<char> get_material_chars() const; // 0D_NOT_character
   void set_material(const std::string& value);
   Wall3dVertexProxyArray1D v() const; // 1D_ALLOC_type
-  const void* surface() const; // 0D_PTR_type
+  std::optional<PhotonReflectSurfaceProxy> surface() const; // 0D_PTR_type
   void set_surface(const PhotonReflectSurfaceProxy& src);
   int type() const; // 0D_NOT_integer
   void set_type(int value);
@@ -9854,32 +9854,33 @@ class EleProxy : public FortranProxy<EleProxy> {
   void set_x(const XyDispProxy& src);
   XyDispProxy y() const; // 0D_NOT_type
   void set_y(const XyDispProxy& src);
-  const void* ac_kick() const; // 0D_PTR_type
+  std::optional<AcKickerProxy> ac_kick() const; // 0D_PTR_type
   void set_ac_kick(const AcKickerProxy& src);
   BookkeepingStateProxy bookkeeping_state() const; // 0D_NOT_type
   void set_bookkeeping_state(const BookkeepingStateProxy& src);
-  const void* branch() const; // 0D_PTR_type
+  std::optional<BranchProxy> branch() const; // 0D_PTR_type
   void set_branch(const BranchProxy& src);
-  const void* control() const; // 0D_PTR_type
+  std::optional<ControllerProxy> control() const; // 0D_PTR_type
   void set_control(const ControllerProxy& src);
-  const void* rf() const; // 0D_PTR_type
+  std::optional<RfEleProxy> rf() const; // 0D_PTR_type
   void set_rf(const RfEleProxy& src);
-  const void* lord() const; // 0D_PTR_type
+  std::optional<EleProxy> lord() const; // 0D_PTR_type
   void set_lord(const EleProxy& src);
   FloorPositionProxy floor() const; // 0D_NOT_type
   void set_floor(const FloorPositionProxy& src);
-  const void* high_energy_space_charge() const; // 0D_PTR_type
+  std::optional<HighEnergySpaceChargeProxy> high_energy_space_charge()
+      const; // 0D_PTR_type
   void set_high_energy_space_charge(const HighEnergySpaceChargeProxy& src);
-  const void* mode3() const; // 0D_PTR_type
+  std::optional<Mode3Proxy> mode3() const; // 0D_PTR_type
   void set_mode3(const Mode3Proxy& src);
-  const void* photon() const; // 0D_PTR_type
+  std::optional<PhotonElementProxy> photon() const; // 0D_PTR_type
   void set_photon(const PhotonElementProxy& src);
-  const void* rad_map() const; // 0D_PTR_type
+  std::optional<RadMapEleProxy> rad_map() const; // 0D_PTR_type
   void set_rad_map(const RadMapEleProxy& src);
   TaylorProxyArray1D taylor() const; // 1D_NOT_type
   FortranArray1D<double> spin_taylor_ref_orb_in() const; // 1D_NOT_real
   TaylorProxyArray1D spin_taylor() const; // 1D_NOT_type
-  const void* wake() const; // 0D_PTR_type
+  std::optional<WakeProxy> wake() const; // 0D_PTR_type
   void set_wake(const WakeProxy& src);
   Wall3dProxyArray1D wall3d() const; // 1D_PTR_type
   CartesianMapProxyArray1D cartesian_map() const; // 1D_PTR_type
@@ -10087,7 +10088,7 @@ class BranchProxy : public FortranProxy<BranchProxy> {
   void set_n_ele_track(int value);
   int n_ele_max() const; // 0D_NOT_integer
   void set_n_ele_max(int value);
-  const void* lat() const; // 0D_PTR_type
+  std::optional<LatProxy> lat() const; // 0D_PTR_type
   void set_lat(const LatProxy& src);
   ModeInfoProxy a() const; // 0D_NOT_type
   void set_a(const ModeInfoProxy& src);
@@ -10142,13 +10143,13 @@ class LatProxy : public FortranProxy<LatProxy> {
   void set_title(const std::string& value);
   FortranCharArray1D print_str() const; // 1D_ALLOC_character
   ExpressionAtomProxyArray1D constant() const; // 1D_ALLOC_type
-  const void* a() const; // 0D_PTR_type
+  std::optional<ModeInfoProxy> a() const; // 0D_PTR_type
   void set_a(const ModeInfoProxy& src);
-  const void* b() const; // 0D_PTR_type
+  std::optional<ModeInfoProxy> b() const; // 0D_PTR_type
   void set_b(const ModeInfoProxy& src);
-  const void* z() const; // 0D_PTR_type
+  std::optional<ModeInfoProxy> z() const; // 0D_PTR_type
   void set_z(const ModeInfoProxy& src);
-  const void* param() const; // 0D_PTR_type
+  std::optional<LatParamProxy> param() const; // 0D_PTR_type
   void set_param(const LatParamProxy& src);
   BookkeepingStateProxy lord_state() const; // 0D_NOT_type
   void set_lord_state(const BookkeepingStateProxy& src);
@@ -10157,7 +10158,7 @@ class LatProxy : public FortranProxy<LatProxy> {
   EleProxyArray1D ele() const; // 1D_PTR_type
   BranchProxyArray1D branch() const; // 1D_ALLOC_type
   ControlProxyArray1D control() const; // 1D_ALLOC_type
-  const void* particle_start() const; // 0D_PTR_type
+  std::optional<CoordProxy> particle_start() const; // 0D_PTR_type
   void set_particle_start(const CoordProxy& src);
   BeamInitProxy beam_init() const; // 0D_NOT_type
   void set_beam_init(const BeamInitProxy& src);
@@ -10565,7 +10566,7 @@ class PtcNormalFormProxy : public FortranProxy<PtcNormalFormProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
-  const void* ele_origin() const; // 0D_PTR_type
+  std::optional<EleProxy> ele_origin() const; // 0D_PTR_type
   void set_ele_origin(const EleProxy& src);
   FortranArray1D<double> orb0() const; // 1D_NOT_real
   bool valid_map() const; // 0D_NOT_logical
@@ -10594,7 +10595,7 @@ class BmadNormalFormProxy : public FortranProxy<BmadNormalFormProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
-  const void* ele_origin() const; // 0D_PTR_type
+  std::optional<EleProxy> ele_origin() const; // 0D_PTR_type
   void set_ele_origin(const EleProxy& src);
   TaylorProxyArray1D M() const; // 1D_NOT_type
   TaylorProxyArray1D A() const; // 1D_NOT_type
@@ -10912,7 +10913,7 @@ class TaoLatticeBranchProxy : public FortranProxy<TaoLatticeBranchProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
-  const void* tao_lat() const; // 0D_PTR_type
+  std::optional<TaoLatticeProxy> tao_lat() const; // 0D_PTR_type
   void set_tao_lat(const TaoLatticeProxy& src);
   TaoLatSigmaProxyArray1D lat_sigma() const; // 1D_ALLOC_type
   TaoSpinEleProxyArray1D spin_ele() const; // 1D_ALLOC_type
@@ -11067,7 +11068,7 @@ class TaoD1DataProxy : public FortranProxy<TaoD1DataProxy> {
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
-  const void* d2() const; // 0D_PTR_type
+  std::optional<TaoD2DataProxy> d2() const; // 0D_PTR_type
   void set_d2(const TaoD2DataProxy& src);
   TaoDataProxyArray1D d() const; // 1D_PTR_type
 };
@@ -11422,7 +11423,7 @@ class TaoDataProxy : public FortranProxy<TaoDataProxy> {
   void set_useit_opt(bool value);
   TaoSpinMapProxy spin_map() const; // 0D_NOT_type
   void set_spin_map(const TaoSpinMapProxy& src);
-  const void* d1() const; // 0D_PTR_type
+  std::optional<TaoD1DataProxy> d1() const; // 0D_PTR_type
   void set_d1(const TaoD1DataProxy& src);
 };
 
@@ -11555,11 +11556,11 @@ class TaoUniverseProxy : public FortranProxy<TaoUniverseProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
-  const void* model() const; // 0D_PTR_type
+  std::optional<TaoLatticeProxy> model() const; // 0D_PTR_type
   void set_model(const TaoLatticeProxy& src);
-  const void* design() const; // 0D_PTR_type
+  std::optional<TaoLatticeProxy> design() const; // 0D_PTR_type
   void set_design(const TaoLatticeProxy& src);
-  const void* base() const; // 0D_PTR_type
+  std::optional<TaoLatticeProxy> base() const; // 0D_PTR_type
   void set_base(const TaoLatticeProxy& src);
   TaoBeamUniProxy beam() const; // 0D_NOT_type
   void set_beam(const TaoBeamUniProxy& src);
