@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "to_string.hpp"
+
 namespace tao {
 template <typename T>
 class FortranArray1D;
@@ -30,12 +32,9 @@ class FortranCharArray1D;
 
 } // namespace tao
 
-namespace std {
-template <typename T>
-string to_string(const complex<T>&);
-} // namespace std
-
 namespace tao {
+
+using std::to_string;
 
 template <typename T>
 class FortranArray1D {
@@ -163,12 +162,15 @@ class FortranArray1D {
   }
 
   std::string to_string() const {
+    using ::std::to_string;
+    using ::tao::to_string;
+
     std::ostringstream oss;
     oss << "[";
     for (size_t i = 0; i < size(); ++i) {
       if (i > 0)
         oss << ", ";
-      oss << std::to_string((*this)[i]);
+      oss << to_string((*this)[i]);
     }
     oss << "]";
     return oss.str();
@@ -1684,40 +1686,26 @@ using FortranTypeArray2D = FortranTypeArrayND<ProxyType, 2>;
 template <typename ProxyType>
 using FortranTypeArray3D = FortranTypeArrayND<ProxyType, 3>;
 
-} // namespace tao
-//
-namespace std {
-string to_string(const tao::FortranCharArray1D& arr);
+std::string to_string(const tao::FortranCharArray1D& arr);
 
 template <typename T>
-string to_string(const tao::FortranArray1D<T>& arr) {
+std::string to_string(const tao::FortranArray1D<T>& arr) {
   return arr.to_string();
 }
 template <typename T>
-string to_string(const tao::FortranArray2D<T>& arr) {
+std::string to_string(const tao::FortranArray2D<T>& arr) {
   return std::string("todo");
 }
 template <typename T>
-string to_string(const tao::FortranArray3D<T>& arr) {
+std::string to_string(const tao::FortranArray3D<T>& arr) {
   return std::string("todo");
 }
 template <typename T>
-string to_string(const tao::FortranTypeArray1D<T>& arr) {
+std::string to_string(const tao::FortranTypeArray1D<T>& arr) {
   return std::string("TypeArray1D");
 }
 
-template <typename T>
-string to_string(const complex<T>& c) {
-  ostringstream oss;
-  oss << c.real();
-  if (c.imag() >= 0) {
-    oss << "+";
-  }
-  oss << c.imag() << "i";
-  return oss.str();
-}
+template std::string to_string(
+    const tao::FortranArray1D<std::complex<double>>&);
 
-template string to_string(const std::complex<double>&);
-template string to_string(const tao::FortranArray1D<complex<double>>&);
-
-} // namespace std
+} // namespace tao
