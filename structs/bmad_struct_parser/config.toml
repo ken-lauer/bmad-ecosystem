@@ -6,6 +6,7 @@ json_filename = "json/forest_structs.json"
 function_prefix = "forest_"
 include_dirs = ["${ACC_ROOT_DIR}/forest/include"]
 skip_includes = ["mpif.h"]
+precision_module = "precision_constants"
 
 [sources.json_config]
 # This 'json_config' applies to the current source (i.e., 'forest' here)
@@ -42,6 +43,7 @@ function_prefix = "bmad_"
 skip_structs = []
 skip_includes = ["fftw3.f03"]
 skip_source = ["Ci_tpsa.f90"]
+precision_module = "precision_def"
 
 [sources.json_config]
 skip_files = []
@@ -77,6 +79,7 @@ skip_structs = [
   # TODO: openmpi vs not
   "solution_struct",
 ]
+precision_module = "precision_def"
 
 [sources.json_config]
 skip_files = []
@@ -92,6 +95,7 @@ fortran_filename = "${ACC_ROOT_DIR}/tao/code/tao_json.f90"
 json_filename = "json/tao_structs.json"
 function_prefix = "tao_"
 skip_includes = ["mpif.h"]
+precision_module = "precision_def"
 
 [sources.json_config]
 skip_files = []

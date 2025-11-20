@@ -30,6 +30,7 @@ class SourceConfig:
     fortran_filename: pathlib.Path
     json_filename: str
     function_prefix: str
+    precision_module: str
     skip_includes: tuple[str, ...] = dataclasses.field(default_factory=tuple)
     json_config: JsonConfig = dataclasses.field(default_factory=JsonConfig)
     skip_structs: tuple[str, ...] = dataclasses.field(default_factory=tuple)
@@ -76,6 +77,7 @@ class SourceConfig:
             json_config = JsonConfig.from_data(data.pop("json_config", {}))
             include_dirs = cls._validate_include_dirs(data.get("include_dirs", []))
             skip_structs = tuple(data.get("skip_structs", []))
+            precision_module = str(data.get("precision_module", "precision_def"))
         except KeyError as ex:
             raise ValueError(f"Missing required key: {ex} in source config data: {data}") from ex
 
@@ -88,6 +90,7 @@ class SourceConfig:
             source_dir=source_dir,
             fortran_filename=fortran_filename,
             skip_structs=skip_structs,
+            precision_module=precision_module,
         )
 
 

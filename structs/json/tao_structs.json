@@ -531,6 +531,17 @@
           "kind": "c_double"
         }
       },
+      "c_string": {
+        "definition": "character(c_char), allocatable :: c_string(:)",
+        "name": "c_string",
+        "default": null,
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "dimension": ":",
+          "kind": "c_char"
+        }
+      },
       "c_integer": {
         "definition": "integer(c_int), allocatable :: c_integer(:)",
         "name": "c_integer",
@@ -553,7 +564,7 @@
         }
       },
       "n_real": {
-        "definition": "integer(c_int) :: n_real = 0, n_int = 0",
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
         "name": "n_real",
         "default": "0",
         "type_info": {
@@ -562,8 +573,17 @@
         }
       },
       "n_int": {
-        "definition": "integer(c_int) :: n_real = 0, n_int = 0",
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
         "name": "n_int",
+        "default": "0",
+        "type_info": {
+          "type": "integer",
+          "kind": "c_int"
+        }
+      },
+      "n_char": {
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
+        "name": "n_char",
         "default": "0",
         "type_info": {
           "type": "integer",

@@ -3,6 +3,7 @@ source_dir = "${ACC_ROOT_DIR}/cpp_bmad_interface/code"
 fortran_filename = "${ACC_ROOT_DIR}/cpp_bmad_interface/code/test_structs_json.f90"
 yaml_filename = "yaml/test_structs.yaml"
 function_prefix = "test_"
+precision_mod = "precision_def"
 
 [sources.json_config]
 skip_files = []

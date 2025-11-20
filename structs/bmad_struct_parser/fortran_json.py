@@ -73,24 +73,23 @@ class FortranSource:
     module: str
     imports: list[str] = dataclasses.field(default_factory=list)
     header: str = default_header
-    footer: str = """
-    """
-
+    footer: str = ""
+    precision_module: str = "precision_def"
     subroutines: dict[str, str] = dataclasses.field(default_factory=lambda: dict(default_subroutines))
 
     def __str__(self):
-        subroutines = "\n".join(sub for sub in self.subroutines.values())
-        if self.module == "forest_json":
-            subroutines = subroutines.replace(
-                "use precision_def, only: dp",
-                "use precision_constants, only: dp",
-            )
+        subroutine_text = "\n".join(sub for sub in self.subroutines.values())
+        subroutine_text = subroutine_text.replace(
+            "use precision_def, only: dp",
+            f"use {self.precision_module}, only: dp",
+        )
+
         source_lines = "\n".join(
             (
                 f"module {self.module}",
                 self.header,
                 "contains",
-                subroutines,
+                subroutine_text,
                 self.footer,
                 f"end module {self.module}",
             )
@@ -98,108 +97,20 @@ class FortranSource:
         return "\n".join(line for line in source_lines.splitlines() if line.strip())
 
 
-def get_structures_by_name(struct_file: list[Structure]) -> dict[str, Structure]:
-    by_name: dict[str, Structure] = {}
-    for struct in struct_file:
-        by_name[struct.name.lower()] = struct
-    return by_name
-
-
-def to_subroutine_name(struct: Structure | str):
-    if isinstance(struct, Structure):
-        name = struct.name
-    else:
-        name = struct
-
+def to_subroutine_name(struct: Structure | str) -> str:
+    name = struct.name if isinstance(struct, Structure) else struct
     return f"{name}_to_json"
 
 
-@dataclasses.dataclass()
-class ListBuilder:
-    struct_var: str
-    member: StructureMember
-    iter_var: str
-    json_list_var: str
-    parent_json_var: str
-    json_value_var: str
-    key: str
-
-    def create_loop(self) -> str:
-        member = self.member
-        assert member.dimension
-        num_dimensions = member.dimension.count(",") + 1
-
-        iter_vars = ", ".join(f"{self.iter_var}{dim}" for dim in range(1, num_dimensions + 1))
-
-        if member.type.lower() in {"integer", "real", "logical"}:
-            create = {
-                "integer": "create_integer",
-                "real": "create_real",
-                "logical": "create_logical",
-            }[member.type.lower()]
-
-            if self.member.type.lower() == "real" and str(self.member.type_info.kind).lower() == "qp":
-                var = f"real({self.json_value_var}, dp)"
-            else:
-                var = self.json_value_var
-            iteration = f"call json%{create}({var}, {self.struct_var}%{member.name}({iter_vars}), '')"
-        elif member.type.lower() in {"character"}:
-            iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
-        elif member.type.lower() in {"complex"}:
-            conv_subroutine = to_subroutine_name(member.type)
-            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth=depth + 1, max_depth=max_depth)"
-        elif member.type.lower() == "type":
-            assert member.kind is not None
-            conv_subroutine = to_subroutine_name(member.kind)
-            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth=depth + 1, max_depth=max_depth)"
-        else:
-            raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
-
-        def iter_dimension(dim: int, loop: str, key: str = ""):
-            before = (
-                f"call json%create_array({self.json_list_var}{dim}, {key})\n"
-                f"do {self.iter_var}{dim} = lbound({self.struct_var}%{member.name}, {dim}), ubound({self.struct_var}%{member.name}, {dim})"
-            )
-            if dim == 1:
-                inner = f"{loop}\ncall json%add({self.json_list_var}{dim}, {self.json_value_var})"
-            else:
-                inner = loop
-
-            if dim == num_dimensions:
-                after = "\n".join(
-                    (
-                        "enddo",
-                        f"call json%add({self.parent_json_var}, {self.json_list_var}{dim})",
-                        f"nullify({self.json_list_var}{dim})",
-                    )
-                )
-            else:
-                next_dim = dim + 1
-                after = "\n".join(
-                    (
-                        "enddo",
-                        f"call json%add({self.json_list_var}{next_dim}, {self.json_list_var}{dim})",
-                        f"nullify({self.json_list_var}{dim})",
-                    )
-                )
-            return "\n".join(
-                (
-                    before,
-                    textwrap.indent(inner, "  "),
-                    after,
-                )
-            )
-
-        res = iteration
-        for dimension in range(1, num_dimensions + 1):
-            res = iter_dimension(
-                dimension,
-                loop=res,
-                key=repr(self.key) if dimension == num_dimensions else "''",  # repr(f"dim-{dimension}"),
-            )
-
-        assert "do i1" in res
-        return f"!{member.definition!r}\n{res}"
+def _get_variable_accessor(member: StructureMember, var_access: str) -> str:
+    """Wraps the variable string in trim/real conversion if necessary."""
+    dtype = member.type.lower()
+    if dtype == "character":
+        return f"trim({var_access})"
+    if dtype == "real" and str(member.type_info.kind).lower() == "qp":
+        # Quad -> dual precision only
+        return f"real({var_access}, dp)"
+    return var_access
 
 
 @dataclasses.dataclass()
@@ -210,286 +121,272 @@ class Converter:
     seen: set[str] = dataclasses.field(default_factory=set)
     imports: dict[SourceConfig, list[str]] = dataclasses.field(default_factory=dict)
 
-    @property
-    def by_bmad_name(self) -> dict[str, Structure]:
-        return get_structures_by_name(self.structs)
+    # Cache for import lookup
+    _import_map: dict[str, tuple[SourceConfig, Structure]] = dataclasses.field(init=False)
+    _by_name: dict[str, Structure] = dataclasses.field(init=False)
 
-    def _get_json_dump_code_array(
+    def __post_init__(self):
+        self._by_name = {st.name.lower(): st for st in self.structs}
+        self._import_map = {}
+        for source_config, struct_list in self.importable.items():
+            for st in struct_list:
+                self._import_map[st.name.lower()] = (source_config, st)
+
+    def resolve_import(self, type_name: str) -> tuple[Structure | None, dict[str, list[str]]]:
+        type_lower = type_name.lower()
+
+        # 1. Structure is in the file currently being processed
+        if type_lower in self._by_name:
+            return self._by_name[type_lower], {}
+
+        # 2. Structure is imported from another config
+        if type_lower in self._import_map:
+            source_config, struct = self._import_map[type_lower]
+            module_name = source_config.fortran_filename.stem
+            return struct, {module_name: [to_subroutine_name(type_name)]}
+
+        logger.warning(f"Could not resolve structure import: {type_name}")
+        return None, {}
+
+    def _generate_value_add(
         self,
-        struct_var: str,
         member: StructureMember,
+        var_access: str,
         parent_json_var: str,
-        member_json_var: str = "json_obj",  # noqa: ARG002
-    ) -> JsonDumpMember:
-        assert member.dimension
-
-        builder = ListBuilder(
-            struct_var=struct_var,
-            member=member,
-            iter_var="i",
-            json_list_var="json_list",
-            json_value_var="json_val",
-            parent_json_var=parent_json_var,
-            key=member.name.lower(),
-        )
-        code = builder.create_loop()
-        if member.type_info.pointer:
-            code = "\n".join(
-                (
-                    f"if (associated({struct_var}%{member.name})) then",
-                    textwrap.indent(code, "  "),
-                    "endif",
-                )
-            )
-        elif member.type_info.allocatable:
-            code = "\n".join(
-                (
-                    f"if (allocated({struct_var}%{member.name})) then",
-                    textwrap.indent(code, "  "),
-                    "endif",
-                )
-            )
-        return JsonDumpMember(var=struct_var, member=member, code=code)
-
-    def _find_importable_structure(self, name: str) -> tuple[SourceConfig, Structure]:
-        for source_config, structs in self.importable.items():
-            for struct in structs:
-                if name.lower() == struct.name.lower():
-                    return source_config, struct
-
-        raise ValueError(f"Structure not found to import: {name}")
-
-    def resolve_import(self, type: str) -> tuple[Structure, dict[str, list[str]]]:
-        try:
-            struct = self.by_bmad_name[type.lower()]
-        except KeyError:
-            struct_source_config, struct = self._find_importable_structure(type.lower())
-            # The structure is defined in `struct.module`
-            # The struct_to_json routine is defined in our auto-generated code:
-            to_json_module = struct_source_config.fortran_filename.stem
-            return struct, {to_json_module: [to_subroutine_name(type)]}
-        return struct, {}
-
-    def get_json_dump_code(
-        self,
-        struct: Structure,
-        struct_var: str,
-        member: StructureMember,
-        parent_json_var: str,
-        member_json_var: str = "json_obj",
-        source: SourceConfig | None = None,
-    ) -> JsonDumpMember:
+        key: str = "",
+    ) -> tuple[str, dict[str, list[str]]]:
+        """Generates code to add a value to a JSON parent."""
         imports = {}
-        if source is not None:
-            full_member_name = f"{struct.name}%{member.name}"
-            if (
-                full_member_name in source.json_config.skip_members
-                or full_member_name.lower() in source.json_config.skip_members
-            ):
-                return JsonDumpMember(
-                    var=member_json_var,
-                    member=member,
-                    code=f"! config skip_members: {full_member_name} ({member.type}, {member.comment})",
-                )
+        dtype = member.type.lower()
+        var_expr = _get_variable_accessor(member, var_access)
 
-        if member.type.lower() == "type":
+        # Array elements: empty string
+        # Struct members: member name
+        key_arg = f"'{key}'" if key else "''"
+
+        if dtype in {"integer", "logical", "real", "character"}:
+            if dtype == "integer":
+                # Integer may need explicit cast depending on kind
+                var_expr = f"int({var_expr})"
+            line = f"call json%add({parent_json_var}, {key_arg}, {var_expr})"
+
+        elif dtype == "complex":
+            sub_name = "complex_to_json"
+            line = "\n".join(
+                (
+                    f"call {sub_name}({var_expr}, json_val, depth=depth + 1, max_depth=max_depth)",
+                    f"call json%rename(json_val, {key_arg})" if key_arg != "''" else "",
+                    f"call json%add({parent_json_var}, json_val)",
+                )
+            )
+
+        elif dtype == "type":
             assert member.kind is not None
             self.seen.add(member.kind)
+            _, type_imports = self.resolve_import(member.kind)
+            imports.update(type_imports)
 
-        if member.dimension:
-            struct_member = self._get_json_dump_code_array(
-                struct_var=struct_var,
-                member=member,
-                parent_json_var=parent_json_var,
-                member_json_var=member_json_var,
-            )
-            if member.type.lower() == "type":
-                assert member.kind is not None
-                _, struct_member.imports = self.resolve_import(member.kind)
-            return struct_member
-
-        # TODO: what conditions can we add here to avoid recursing through the graph?
-        # baking it into the json dumping code seems not so feasible
-        if (
-            "parent" in member.comment.lower()
-            or member.name.lower()
-            in {
-                "g",
-                "p",
-                "u",
-            }
-            or member.type.lower() in {"tao_super_universe_struct", "tao_universe_struct"}
-        ):
-            return JsonDumpMember(
-                var=member_json_var,
-                member=member,
-                code=f"! parent pointer skip: {member.name} ({member.type}, {member.comment})",
-            )
-
-        if member.type.lower() in {"integer"}:
-            code = (
-                f"call json%add({parent_json_var}, '{member.name.lower()}', int({struct_var}%{member.name}))"
-            )
-        elif member.type.lower() in {"real", "logical"}:
-            var = f"{struct_var}%{member.name}"
-            if member.type.lower() == "real" and str(member.type_info.kind).lower() == "qp":
-                var = f"real({var}, dp)"
-            code = f"call json%add({parent_json_var}, '{member.name.lower()}', {var})"
-        elif member.type.lower() in {"character"}:
-            code = (
-                f"call json%add({parent_json_var}, '{member.name.lower()}', trim({struct_var}%{member.name}))"
-            )
-        elif member.type.lower() in {"complex"}:
-            json_list_var = "json_list"
-            list_var = f"{json_list_var}1"
-            code = "\n".join(
+            sub_name = to_subroutine_name(member.kind)
+            line = "\n".join(
                 (
-                    f"call complex_to_json({struct_var}%{member.name}, {list_var}, depth=depth + 1, max_depth=max_depth)",
-                    f"call json%rename({list_var}, '{member.name.lower()}')",
-                    f"call json%add({parent_json_var}, {list_var})",
-                )
-            )
-        elif member.type.lower() == "type":
-            assert member.kind is not None
-            struct, imports = self.resolve_import(member.kind)
-            conv_subroutine = to_subroutine_name(member.kind)
-            code = "\n".join(
-                (
-                    f"call {conv_subroutine}({struct_var}%{member.name}, json_val, depth=depth + 1, max_depth=max_depth)",
-                    f"call json%rename(json_val, '{member.name}')",
+                    f"call {sub_name}({var_expr}, json_val, depth=depth + 1, max_depth=max_depth)",
+                    f"call json%rename(json_val, {key_arg})" if key_arg != "''" else "",
                     f"call json%add({parent_json_var}, json_val)",
                 )
             )
         else:
-            raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
+            raise NotImplementedError(f"Member type: {dtype}")
 
-        if member.type_info.pointer:
-            code = "\n".join(
-                (
-                    f"if (associated({struct_var}%{member.name})) then",
-                    textwrap.indent(code, "  "),
-                    "endif",
-                )
+        return line, imports
+
+    def _generate_array_dump(
+        self, struct_var: str, member: StructureMember, parent_json_var: str
+    ) -> tuple[str, dict[str, list[str]]]:
+        """
+        Generates nested loops for arrays.
+        """
+        assert member.dimension
+
+        ndims = member.dimension.count(",") + 1
+        imports = {}
+        lines = []
+
+        indices = ", ".join(f"i{dim}" for dim in range(1, ndims + 1))
+        var_access = f"{struct_var}%{member.name}({indices})"
+
+        indent = ""
+        for dim in range(ndims, 0, -1):
+            current_list = f"json_list{dim}"
+            name = member.name.lower() if dim == ndims else ""
+
+            lines.append(f"{indent}call json%create_array({current_list}, '{name}')")
+            lines.append(
+                f"{indent}do i{dim} = lbound({struct_var}%{member.name}, {dim}), ubound({struct_var}%{member.name}, {dim})"
             )
-        elif member.type_info.allocatable:
-            code = "\n".join(
-                (
-                    f"if (allocated({struct_var}%{member.name})) then",
-                    textwrap.indent(code, "  "),
-                    "endif",
-                )
-            )
-        return JsonDumpMember(var=member_json_var, member=member, code=code, imports=imports)
+            indent += "  "
+
+        # Inner Body: add scalar/type to the innermost list
+        innermost_list = f"json_list1"
+
+        # Note that array element keys are empty strings
+        body_code, body_imports = self._generate_value_add(
+            member, var_access, parent_json_var=innermost_list, key=""
+        )
+        imports.update(body_imports)
+        lines.append(textwrap.indent(body_code, indent))
+
+        for dim in range(1, ndims + 1):
+            indent = indent[:-2]
+            current_list = f"json_list{dim}"
+
+            lines.append(f"{indent}enddo")
+
+            if dim == ndims:
+                # Outermost list: This gets added to the top-level (a JSON object).
+                lines.append(f"{indent}call json%add({parent_json_var}, {current_list})")
+            else:
+                parent_list = f"json_list{dim + 1}"
+                lines.append(f"{indent}call json%add({parent_list}, {current_list})")
+                lines.append(f"{indent}nullify({current_list})")
+
+        return "\n".join(lines), imports
 
     def get_struct_dump_code(
         self,
-        struct_var: str,
         struct: Structure,
-        root_variable: str = "json_root",
-        key: str = "",
-        print_: bool = False,
-        destroy: bool = False,
+        struct_var: str,
+        member: StructureMember,
+        parent_json_var: str,
         source: SourceConfig | None = None,
-    ) -> JsonDumpCode:
-        if not key:
-            key = "''"
-        lines = [
-            f"call json%create_object({root_variable}, {key})",
-        ]
+    ) -> JsonDumpMember:
+        full_member_name = f"{struct.name}%{member.name}"
+        if source and (
+            full_member_name.lower() in source.json_config.skip_members
+            or full_member_name in source.json_config.skip_members
+        ):
+            # NOTE: You can exclude certain members by the full member name (either exact match or all lower-case)
+            # This would be in the form: "struct%member"
+            return JsonDumpMember(var="", member=member, code=f"! skipped: {full_member_name}")
 
-        all_imports: dict[str, list[str]] = {}
-        for member in struct.members.values():
-            member_dump = self.get_json_dump_code(
-                struct=struct,
-                struct_var=struct_var,
-                member=member,
-                parent_json_var=root_variable,
-                member_json_var="json_obj",
-                source=source,
-            )
+        wrapper_fmt = "{code}"
+        if member.type_info.pointer:
+            wrapper_fmt = f"if (associated({struct_var}%{member.name})) then\n{{code}}\nendif"
+        elif member.type_info.allocatable:
+            wrapper_fmt = f"if (allocated({struct_var}%{member.name})) then\n{{code}}\nendif"
 
-            for name, imports in member_dump.imports.items():
-                all_imports.setdefault(name, []).extend(imports)
+        indent_fn = lambda s: textwrap.indent(s, "  ")
 
-            # if False:
-            #     lines.append(
-            #         f"print *, '{struct.name}%{member.name}, depth=', depth",
-            #     )
-            lines.extend(member_dump.code.splitlines())
+        if member.dimension:
+            # Array case
+            code, imports = self._generate_array_dump(struct_var, member, parent_json_var)
+            if "{code}" in wrapper_fmt:
+                code = wrapper_fmt.replace("{code}", indent_fn(code))
+            return JsonDumpMember(var=struct_var, member=member, code=code, imports=imports)
 
-        if print_:
-            lines.append(f"call json%print({root_variable})")
+        # Manual skips. TODO: This should be addressed in the config instead.
+        # 1. Never recurse into the parent ("parent" in comment)
+        # 2. 'g', 'p', and 'u' typically refer to structs higher in the
+        #    hierarchy that may include the current one
+        # 3. If anything goes as high as the universe/superuniverse, it's
+        #    definitely looping
+        if (
+            "parent" in member.comment.lower()
+            or member.name.lower() in {"g", "p", "u"}
+            or member.type.lower() in {"tao_super_universe_struct", "tao_universe_struct"}
+        ):
+            return JsonDumpMember(var="", member=member, code=f"! skipped (hardcoded): {member.name}")
 
-        if destroy:
-            lines.append(f"call json%destroy({root_variable})")
-            lines.append(f"nullify({root_variable})")
+        # Scalar case
+        code, imports = self._generate_value_add(
+            member,
+            f"{struct_var}%{member.name}",
+            parent_json_var,
+            key=member.name.lower(),
+        )
 
-        return JsonDumpCode(name="", code="\n".join(lines), imports=all_imports)
+        if "{code}" in wrapper_fmt:
+            code = wrapper_fmt.replace("{code}", indent_fn(code))
+
+        return JsonDumpMember(var="", member=member, code=code, imports=imports)
 
     def get_struct_dump_subroutine(
         self,
         source: SourceConfig,
         struct: Structure,
-        root_variable: str = "json_root",  # noqa: ARG002
+        root_variable: str = "json_root",
     ) -> JsonDumpCode:
         subroutine_name = to_subroutine_name(struct.name)
+        all_imports = {}
+        body_lines = []
 
-        lines = [f"subroutine {subroutine_name} (input, json_root, depth, max_depth)"]
+        body_lines.append(f"call json%create_object({root_variable}, '')")
 
-        dump_code = self.get_struct_dump_code(
-            "input",
-            struct,
-            root_variable="json_root",
-            key="",  # TODO: "name"?
-            source=source,
+        max_dim = 0
+        for member in struct.members.values():
+            if member.dimension:
+                dims = member.dimension.count(",") + 1
+                if dims > max_dim:
+                    max_dim = dims
+
+            dump = self.get_struct_dump_code(
+                struct=struct,
+                struct_var="input",
+                member=member,
+                parent_json_var=root_variable,
+                source=source,
+            )
+
+            for mod, funcs in dump.imports.items():
+                all_imports.setdefault(mod, []).extend(funcs)
+
+            body_lines.append(dump.code)
+
+        imports_str = "\n".join(
+            f"use {fn}, only: {', '.join(sorted(set(fns)))}" for fn, fns in all_imports.items()
         )
 
-        imports = "\n".join(
-            f"use {fn}, only: {', '.join(sorted(set(imports)))}" for fn, imports in dump_code.imports.items()
-        )
+        local_vars = []
+        if max_dim > 0:
+            # i1, i2...
+            vars_index = ", ".join(f"i{n}" for n in range(1, max_dim + 1))
+            local_vars.append(f"integer :: {vars_index}")
+            # json_list1, json_list2...
+            vars_json = ", ".join(f"json_list{n}" for n in range(1, max_dim + 1))
+            local_vars.append(f"type (json_value), pointer :: {vars_json}")
 
-        lines += textwrap.dedent(
-            f"""\
-            use {struct.module}, only: {struct.name}
-            {imports}
+        local_vars_str = "\n".join(local_vars)
 
-            implicit none
+        subroutine_text = f"""\
+subroutine {subroutine_name} (input, json_root, depth, max_depth)
+  use {struct.module}, only: {struct.name}
+  {imports_str}
 
-            type(json_core) :: json
-            type ({struct.name}), pointer, intent(in) :: input
-            type (json_value), pointer :: json_val
-            type (json_value), pointer, intent(inout) :: json_root
-            integer, optional, value :: depth
-            integer, optional, value :: max_depth
+  implicit none
 
-            integer i1, i2, i3, i4, i5, i6
-            type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
+  type(json_core) :: json
+  type ({struct.name}), pointer, intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  integer, optional, value :: max_depth
+  {local_vars_str}
 
-            if (.not. present(depth)) depth = 0
-            if (present(max_depth) .and. depth >= max_depth) then
-              call json%create_null(json_root, '')
-              return
-            endif
+  if (.not. present(depth)) depth = 0
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
+    return
+  endif
 
-            if (.not. associated(input)) then
-              call json%create_null(json_root, '')
-              return
-            endif
-            """.rstrip()
-        ).splitlines()
+  if (.not. associated(input)) then
+    call json%create_null(json_root, '')
+    return
+  endif
+"""
 
-        def should_indent(text: str) -> bool:
-            return not text.startswith(("subroutine", "end subroutine"))
+        indented_body = textwrap.indent("\n".join(body_lines), "  ")
+        full_code = f"{subroutine_text}\n{indented_body}\n\nend subroutine {subroutine_name}\n"
 
-        lines.extend(dump_code.code.splitlines())
-        lines.append("")
-        lines.append(f"end subroutine {subroutine_name}")
-        lines.append("")
-        return JsonDumpCode(
-            name=subroutine_name,
-            code=textwrap.indent("\n".join(lines), prefix="  ", predicate=should_indent),
-            imports=dump_code.imports,
-        )
+        return JsonDumpCode(name=subroutine_name, code=full_code, imports=all_imports)
 
 
 def convert_all(
@@ -498,13 +395,13 @@ def convert_all(
     importable: dict[SourceConfig, list[Structure]],
 ):
     conv = Converter(structs=structs, importable=importable)
-    fortran = FortranSource(module=source.fortran_filename.stem)
+    fortran = FortranSource(module=source.fortran_filename.stem, precision_module=source.precision_module)
 
     def sort_key(item: tuple[str, Structure]):
         name, _struct = item
         return name
 
-    for name, struct in sorted(conv.by_bmad_name.items(), key=sort_key):
+    for name, struct in sorted(conv._by_name.items(), key=sort_key):
         if struct.filename.name in source.json_config.skip_files:
             logger.debug(f"Skipping {name} from file {struct.filename}")
             continue
@@ -536,18 +433,24 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     logger.info("Generating code for Fortran JSON conversion...")
-    conf = ParserConfig.from_file(args.config)
+
+    try:
+        conf = ParserConfig.from_file(args.config)
+    except Exception as ex:
+        logger.error(f"Failed to load config: {ex}")
+        return
 
     working_dir = pathlib.Path(args.working_directory)
     by_source = {
         source: load_structures_by_filename(working_dir / source.json_filename) for source in conf.sources
     }
+
     for source, structs in by_source.items():
         logger.info(f"Working on {source.source_dir}")
         convert_all(
             source,
             structs,
-            importable={source: st for source, st in by_source.items() if st is not structs},
+            importable={s: st for s, st in by_source.items() if st is not structs},
         )
 
 
