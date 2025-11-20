@@ -15,9 +15,10 @@ implicit none
 
 type tao_c_interface_common_struct
   real(c_double), allocatable :: c_real(:)
+  character(c_char), allocatable :: c_string(:)
   integer(c_int), allocatable :: c_integer(:)
   character(c_char) :: c_line(n_char_show+1) 
-  integer(c_int) :: n_real = 0, n_int = 0
+  integer(c_int) :: n_real = 0, n_int = 0, n_char = 0
 end type
 
 type (tao_c_interface_common_struct), target, save :: tao_c_interface_com
@@ -182,6 +183,27 @@ end function tao_c_real_array_size
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !+ 
+! Function tao_c_string_size() bind(c) result (n_size)
+!
+! Function to access tao_c_interface_com%n_char number of characters in the long string.
+!
+! Output:
+!   n_size -- integer(c_int): C access to tao_c_interface_com%n_char.
+!-
+
+function tao_c_string_size() bind(c) result (n_size)
+integer(c_int) ::  n_size
+
+!
+
+n_size = tao_c_interface_com%n_char
+
+end function tao_c_string_size
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+ 
 ! Function tao_c_integer_array_size() bind(c) result (n_size)
 !
 ! Function to access tao_c_interface_com%n_int number of items in the integer array from C.
@@ -270,6 +292,36 @@ integer :: i
 array_ptr = c_loc(tao_c_interface_com%c_integer(1))
 
 end function tao_c_get_integer_array
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+ 
+! Function tao_c_get_string_buffer() bind(c) result (array_ptr)
+!
+! Function to get the buffered long string from C.
+!
+! Output:
+!   array_ptr -- type(c_ptr): C pointer to the long string.
+!-
+
+function tao_c_get_string_buffer_length() bind(c) result (length)
+  integer(c_int) :: length
+  if (allocated(tao_c_interface_com%c_string)) then
+    length = size(tao_c_interface_com%c_string)
+  else
+    length = 0
+  end if
+end function
+
+function tao_c_get_string_buffer() bind(c) result (array_ptr)
+  type(c_ptr) :: array_ptr
+  if (allocated(tao_c_interface_com%c_string)) then
+    array_ptr = c_loc(tao_c_interface_com%c_string(1))
+  else
+    array_ptr = c_null_ptr
+  end if
+end function
 
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------

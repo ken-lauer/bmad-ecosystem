@@ -8,7 +8,7 @@ SET (CREATE_SHARED true)
 SET (PLOT_LINK_LIBS $ENV{PLOT_LINK_LIBS})
 
 SET (SRC_DIRS
-  code 
+  code
   ## hook # Now using function pointers
   version
   )
@@ -20,6 +20,7 @@ SET (EXE_SPECS
 SET (SHARED_DEPS
   bmad
   sim_utils
+  jsonfortran
   ${PLOT_LINK_LIBS}
   $ENV{ACC_BMAD_LINK_LIBS}
   gomp
