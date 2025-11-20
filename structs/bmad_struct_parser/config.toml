@@ -1,0 +1,101 @@
+# Each section is delimited by [[sources]] in this file
+[[sources]]
+source_dir = "${ACC_ROOT_DIR}/forest"
+fortran_filename = "${ACC_ROOT_DIR}/forest/code/forest_json.f90"
+json_filename = "json/forest_structs.json"
+function_prefix = "forest_"
+include_dirs = ["${ACC_ROOT_DIR}/forest/include"]
+skip_includes = ["mpif.h"]
+
+[sources.json_config]
+# This 'json_config' applies to the current source (i.e., 'forest' here)
+skip_files = ["Ci_tpsa.f90"]
+skip_members = [
+  # TODO: Recursive calls: there are likely more here with infinite loop potential
+  "fibre%n",
+  "fibre%next",
+  "fibre%previous",
+  "integration_node%next",
+  "integration_node%previous",
+  "layout%next",
+  "layout%previous",
+  "c_dascratch%next",
+  "c_dascratch%previous",
+  "dascratch%next",
+  "dascratch%next",
+  "dascratch%previous",
+  "element%girders",
+  "element%siamese",
+  "fibre_appearance%next",
+  "girder%next",
+  "girder%previous",
+  "girder_info%next",
+  # TODO: overlap of 'probe' type name...
+  "bunch%xs",
+]
+
+[[sources]]
+source_dir = "${ACC_ROOT_DIR}/bmad"
+fortran_filename = "${ACC_ROOT_DIR}/bmad/code/bmad_json.f90"
+json_filename = "json/bmad_structs.json"
+function_prefix = "bmad_"
+skip_structs = []
+skip_includes = ["fftw3.f03"]
+skip_source = ["Ci_tpsa.f90"]
+
+[sources.json_config]
+skip_files = []
+skip_members = [
+  "branch_struct%ptc",
+  "ele_struct%lord",
+  "ele_struct%branch",
+  "ele_struct%converter",
+  "ele_struct%multipole_cache",
+  "ele_struct%foil",
+  "lat_struct%nametable",
+  "branch_struct%lat",
+  # TODO: make references to branch, etc.
+  # TODO: Found no matching specific binding for the call to the GENERIC ‘create_integer’ at (1)
+  "hdf5_info_struct%data_dim",
+  # TODO: tree_element_zhe renaming (Ci_tpsa.f90 skipped)
+  "ptc_rad_map_struct%sub_map",
+  # TODO: recursive
+  "expression_tree_struct%node",
+]
+
+[[sources]]
+source_dir = "${ACC_ROOT_DIR}/sim_utils"
+fortran_filename = "${ACC_ROOT_DIR}/sim_utils/misc/sim_utils_json.f90"
+json_filename = "json/sim_utils_structs.json"
+function_prefix = "sim_utils_"
+skip_includes = ["fftw3.f03"]
+skip_structs = [
+  # TODO: CESR_PGPLOT, CESR_PLPLOT #define regions
+  "pg_interface_struct",
+  "pl_interface_struct",
+  "viewport_size",
+  # TODO: openmpi vs not
+  "solution_struct",
+]
+
+[sources.json_config]
+skip_files = []
+skip_members = [
+  # TODO: Recursive calls
+  "object_struct%child",
+  "object_struct%parent",
+]
+
+[[sources]]
+source_dir = "${ACC_ROOT_DIR}/tao"
+fortran_filename = "${ACC_ROOT_DIR}/tao/code/tao_json.f90"
+json_filename = "json/tao_structs.json"
+function_prefix = "tao_"
+skip_includes = ["mpif.h"]
+
+[sources.json_config]
+skip_files = []
+skip_members = [
+  # TODO: recursive
+  "tao_eval_node_struct%node",
+]
