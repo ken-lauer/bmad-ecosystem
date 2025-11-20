@@ -15,13 +15,11 @@ void spline_struct_get_y0(const void* struct_obj, double* value_out);
 void spline_struct_set_y0(void* struct_obj, double value_in);
 void spline_struct_get_x1(const void* struct_obj, double* value_out);
 void spline_struct_set_x1(void* struct_obj, double value_in);
-
 void spline_struct_get_coef_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void spin_polar_struct_get_polarization(
     const void* struct_obj,
     double* value_out);
@@ -71,13 +69,11 @@ void interval1_coef_struct_get_c1(const void* struct_obj, double* value_out);
 void interval1_coef_struct_set_c1(void* struct_obj, double value_in);
 void interval1_coef_struct_get_n_exp(const void* struct_obj, double* value_out);
 void interval1_coef_struct_set_n_exp(void* struct_obj, double value_in);
-
 void photon_reflect_table_struct_get_angle_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void photon_reflect_table_struct_get_energy_info(
     const void* s,
     double** d,
@@ -97,26 +93,22 @@ void photon_reflect_table_struct_get_p_reflect_info(
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void photon_reflect_table_struct_get_max_energy(
     const void* struct_obj,
     double* value_out);
 void photon_reflect_table_struct_set_max_energy(
     void* struct_obj,
     double value_in);
-
 void photon_reflect_table_struct_get_p_reflect_scratch_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void photon_reflect_table_struct_get_bragg_angle_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void photon_reflect_surface_struct_get_name_info(
     const void* s,
     char** d,
@@ -170,36 +162,30 @@ void photon_reflect_surface_struct_get_ix_surface(
 void photon_reflect_surface_struct_set_ix_surface(
     void* struct_obj,
     int value_in);
-
 void coord_struct_get_vec_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void coord_struct_get_s(const void* struct_obj, double* value_out);
 void coord_struct_set_s(void* struct_obj, double value_in);
 void coord_struct_get_t(const void* struct_obj, long double* value_out);
 void coord_struct_set_t(void* struct_obj, long double value_in);
-
 void coord_struct_get_spin_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void coord_struct_get_field_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void coord_struct_get_phase_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void coord_struct_get_charge(const void* struct_obj, double* value_out);
 void coord_struct_set_charge(void* struct_obj, double value_in);
 void coord_struct_get_dt_ref(const void* struct_obj, double* value_out);
@@ -293,31 +279,26 @@ void expression_atom_struct_get_value(
     const void* struct_obj,
     double* value_out);
 void expression_atom_struct_set_value(void* struct_obj, double value_in);
-
 void wake_sr_z_long_struct_get_w_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wake_sr_z_long_struct_get_fw_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     bool* is_alloc);
-
 void wake_sr_z_long_struct_get_fbunch_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     bool* is_alloc);
-
 void wake_sr_z_long_struct_get_w_out_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     bool* is_alloc);
-
 void wake_sr_z_long_struct_get_dz(const void* struct_obj, double* value_out);
 void wake_sr_z_long_struct_set_dz(void* struct_obj, double value_in);
 void wake_sr_z_long_struct_get_z0(const void* struct_obj, double* value_out);
@@ -469,13 +450,11 @@ void wake_struct_get_lr(const void* struct_obj, void** ptr_out);
 void wake_struct_set_lr(void* struct_obj, const void* src_ptr);
 void taylor_term_struct_get_coef(const void* struct_obj, double* value_out);
 void taylor_term_struct_set_coef(void* struct_obj, double value_in);
-
 void taylor_term_struct_get_expn_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void taylor_struct_get_ref(const void* struct_obj, double* value_out);
 void taylor_struct_set_ref(void* struct_obj, double value_in);
 
@@ -488,13 +467,11 @@ void taylor_struct_get_term_info(
 
 void em_taylor_term_struct_get_coef(const void* struct_obj, double* value_out);
 void em_taylor_term_struct_set_coef(void* struct_obj, double value_in);
-
 void em_taylor_term_struct_get_expn_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void em_taylor_struct_get_ref(const void* struct_obj, double* value_out);
 void em_taylor_struct_set_ref(void* struct_obj, double value_in);
 
@@ -566,13 +543,11 @@ void cartesian_map_struct_get_field_scale(
     const void* struct_obj,
     double* value_out);
 void cartesian_map_struct_set_field_scale(void* struct_obj, double value_in);
-
 void cartesian_map_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void cartesian_map_struct_get_master_parameter(
     const void* struct_obj,
     int* value_out);
@@ -654,54 +629,45 @@ void cylindrical_map_struct_get_ele_anchor_pt(
 void cylindrical_map_struct_set_ele_anchor_pt(void* struct_obj, int value_in);
 void cylindrical_map_struct_get_dz(const void* struct_obj, double* value_out);
 void cylindrical_map_struct_set_dz(void* struct_obj, double value_in);
-
 void cylindrical_map_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void cylindrical_map_struct_get_ptr(const void* struct_obj, void** ptr_out);
 void cylindrical_map_struct_set_ptr(void* struct_obj, const void* src_ptr);
-
 void bicubic_cmplx_coef_struct_get_coef_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void bicubic_cmplx_coef_struct_get_i_box_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void tricubic_cmplx_coef_struct_get_coef_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tricubic_cmplx_coef_struct_get_i_box_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void grid_field_pt1_struct_get_E_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     bool* is_alloc);
-
 void grid_field_pt1_struct_get_B_info(
     const void* s,
     std::complex<double>** d,
     int* bounds,
     bool* is_alloc);
-
 void grid_field_pt_struct_get_file_info(
     const void* s,
     char** d,
@@ -748,19 +714,16 @@ void grid_field_struct_get_interpolation_order(
     const void* struct_obj,
     int* value_out);
 void grid_field_struct_set_interpolation_order(void* struct_obj, int value_in);
-
 void grid_field_struct_get_dr_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void grid_field_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void grid_field_struct_get_curved_ref_frame(
     const void* struct_obj,
     bool* value_out);
@@ -789,14 +752,12 @@ void floor_position_struct_get_r_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void floor_position_struct_get_w_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void floor_position_struct_get_theta(const void* struct_obj, double* value_out);
 void floor_position_struct_set_theta(void* struct_obj, double value_in);
 void floor_position_struct_get_phi(const void* struct_obj, double* value_out);
@@ -893,14 +854,12 @@ void twiss_struct_get_deta_dpz(const void* struct_obj, double* value_out);
 void twiss_struct_set_deta_dpz(void* struct_obj, double value_in);
 void twiss_struct_get_detap_dpz(const void* struct_obj, double* value_out);
 void twiss_struct_set_detap_dpz(void* struct_obj, double value_in);
-
 void mode3_struct_get_v_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void mode3_struct_get_a(const void* struct_obj, void** ptr_out);
 void mode3_struct_set_a(void* struct_obj, const void* src_ptr);
 void mode3_struct_get_b(const void* struct_obj, void** ptr_out);
@@ -945,40 +904,34 @@ void bookkeeping_state_struct_get_has_misalign(
     const void* struct_obj,
     bool* value_out);
 void bookkeeping_state_struct_set_has_misalign(void* struct_obj, bool value_in);
-
 void rad_map_struct_get_ref_orb_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void rad_map_struct_get_damp_dmat_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void rad_map_struct_get_xfer_damp_vec_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void rad_map_struct_get_xfer_damp_mat_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void rad_map_struct_get_stoc_mat_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void rad_map_ele_struct_get_rm0(const void* struct_obj, void** ptr_out);
 void rad_map_ele_struct_set_rm0(void* struct_obj, const void* src_ptr);
 void rad_map_ele_struct_get_rm1(const void* struct_obj, void** ptr_out);
@@ -991,14 +944,12 @@ void gen_grad1_struct_get_sincos(const void* struct_obj, int* value_out);
 void gen_grad1_struct_set_sincos(void* struct_obj, int value_in);
 void gen_grad1_struct_get_n_deriv_max(const void* struct_obj, int* value_out);
 void gen_grad1_struct_set_n_deriv_max(void* struct_obj, int value_in);
-
 void gen_grad1_struct_get_deriv_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void gen_grad_map_struct_get_file_info(
     const void* s,
     char** d,
@@ -1028,13 +979,11 @@ void gen_grad_map_struct_get_iz1(const void* struct_obj, int* value_out);
 void gen_grad_map_struct_set_iz1(void* struct_obj, int value_in);
 void gen_grad_map_struct_get_dz(const void* struct_obj, double* value_out);
 void gen_grad_map_struct_set_dz(void* struct_obj, double value_in);
-
 void gen_grad_map_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void gen_grad_map_struct_get_field_scale(
     const void* struct_obj,
     double* value_out);
@@ -1071,13 +1020,11 @@ void surface_segmented_struct_get_active(
     const void* struct_obj,
     bool* value_out);
 void surface_segmented_struct_set_active(void* struct_obj, bool value_in);
-
 void surface_segmented_struct_get_dr_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void surface_segmented_struct_get_r0_info(
     const void* s,
     double** d,
@@ -1124,13 +1071,11 @@ void surface_h_misalign_struct_get_active(
     const void* struct_obj,
     bool* value_out);
 void surface_h_misalign_struct_set_active(void* struct_obj, bool value_in);
-
 void surface_h_misalign_struct_get_dr_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void surface_h_misalign_struct_get_r0_info(
     const void* s,
     double** d,
@@ -1179,13 +1124,11 @@ void surface_displacement_struct_get_active(
     const void* struct_obj,
     bool* value_out);
 void surface_displacement_struct_set_active(void* struct_obj, bool value_in);
-
 void surface_displacement_struct_get_dr_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void surface_displacement_struct_get_r0_info(
     const void* s,
     double** d,
@@ -1205,25 +1148,21 @@ void target_point_struct_get_r_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void surface_curvature_struct_get_xy_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void surface_curvature_struct_get_spherical(
     const void* struct_obj,
     double* value_out);
 void surface_curvature_struct_set_spherical(void* struct_obj, double value_in);
-
 void surface_curvature_struct_get_elliptical_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void surface_curvature_struct_get_has_curvature(
     const void* struct_obj,
     bool* value_out);
@@ -1282,19 +1221,16 @@ void photon_material_struct_get_f_hkl(
 void photon_material_struct_set_f_hkl(
     void* struct_obj,
     std::complex<double> value_in);
-
 void photon_material_struct_get_h_norm_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void photon_material_struct_get_l_ref_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_pt_struct_get_n_photon(const void* struct_obj, long long* value_out);
 void pixel_pt_struct_set_n_photon(void* struct_obj, long long value_in);
 void pixel_pt_struct_get_E_x(
@@ -1311,43 +1247,36 @@ void pixel_pt_struct_get_intensity_y(const void* struct_obj, double* value_out);
 void pixel_pt_struct_set_intensity_y(void* struct_obj, double value_in);
 void pixel_pt_struct_get_intensity(const void* struct_obj, double* value_out);
 void pixel_pt_struct_set_intensity(void* struct_obj, double value_in);
-
 void pixel_pt_struct_get_orbit_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_pt_struct_get_orbit_rms_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_pt_struct_get_init_orbit_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_pt_struct_get_init_orbit_rms_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_detec_struct_get_dr_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_detec_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void pixel_detec_struct_get_n_track_tot(
     const void* struct_obj,
     long long* value_out);
@@ -1426,7 +1355,6 @@ void photon_element_struct_get_integrated_init_energy_prob_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_vertex_struct_get_x(const void* struct_obj, double* value_out);
 void wall3d_vertex_struct_set_x(void* struct_obj, double value_in);
 void wall3d_vertex_struct_get_y(const void* struct_obj, double* value_out);
@@ -1503,13 +1431,11 @@ void wall3d_section_struct_get_thickness(
 void wall3d_section_struct_set_thickness(void* struct_obj, double value_in);
 void wall3d_section_struct_get_s(const void* struct_obj, double* value_out);
 void wall3d_section_struct_set_s(void* struct_obj, double value_in);
-
 void wall3d_section_struct_get_r0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_section_struct_get_dx0_ds(
     const void* struct_obj,
     double* value_out);
@@ -1518,34 +1444,28 @@ void wall3d_section_struct_get_dy0_ds(
     const void* struct_obj,
     double* value_out);
 void wall3d_section_struct_set_dy0_ds(void* struct_obj, double value_in);
-
 void wall3d_section_struct_get_x0_coef_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_section_struct_get_y0_coef_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_section_struct_get_dr_ds(const void* struct_obj, double* value_out);
 void wall3d_section_struct_set_dr_ds(void* struct_obj, double value_in);
-
 void wall3d_section_struct_get_p1_coef_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_section_struct_get_p2_coef_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void wall3d_struct_get_name_info(const void* s, char** d, int* bounds, bool* a);
 void wall3d_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
 void wall3d_struct_get_type(const void* struct_obj, int* value_out);
@@ -1596,7 +1516,6 @@ void ramper_lord_struct_get_attrib_ptr(
 void ramper_lord_struct_set_attrib_ptr(void* struct_obj, double value_in);
 void control_struct_get_value(const void* struct_obj, double* value_out);
 void control_struct_set_value(void* struct_obj, double value_in);
-
 void control_struct_get_y_knot_info(
     const void* s,
     double** d,
@@ -1649,7 +1568,6 @@ void control_var1_struct_get_old_value(
     const void* struct_obj,
     double* value_out);
 void control_var1_struct_set_old_value(void* struct_obj, double value_in);
-
 void control_ramp1_struct_get_y_knot_info(
     const void* s,
     double** d,
@@ -1712,7 +1630,6 @@ void controller_struct_get_x_knot_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ellipse_beam_init_struct_get_part_per_ellipse(
     const void* struct_obj,
     int* value_out);
@@ -1729,13 +1646,11 @@ void ellipse_beam_init_struct_get_sigma_cutoff(
 void ellipse_beam_init_struct_set_sigma_cutoff(
     void* struct_obj,
     double value_in);
-
 void kv_beam_init_struct_get_part_per_phi_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void kv_beam_init_struct_get_n_I2(const void* struct_obj, int* value_out);
 void kv_beam_init_struct_set_n_I2(void* struct_obj, int value_in);
 void kv_beam_init_struct_get_A(const void* struct_obj, double* value_out);
@@ -1801,13 +1716,11 @@ void beam_init_struct_get_center_jitter_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void beam_init_struct_get_emit_jitter_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void beam_init_struct_get_sig_z_jitter(
     const void* struct_obj,
     double* value_out);
@@ -1862,13 +1775,11 @@ void beam_init_struct_get_b_emit(const void* struct_obj, double* value_out);
 void beam_init_struct_set_b_emit(void* struct_obj, double value_in);
 void beam_init_struct_get_dPz_dz(const void* struct_obj, double* value_out);
 void beam_init_struct_set_dPz_dz(void* struct_obj, double value_in);
-
 void beam_init_struct_get_center_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void beam_init_struct_get_t_offset(const void* struct_obj, double* value_out);
 void beam_init_struct_set_t_offset(void* struct_obj, double value_in);
 void beam_init_struct_get_dt_bunch(const void* struct_obj, double* value_out);
@@ -1927,21 +1838,18 @@ void lat_param_struct_get_unstable_factor(
     const void* struct_obj,
     double* value_out);
 void lat_param_struct_set_unstable_factor(void* struct_obj, double value_in);
-
 void lat_param_struct_get_t1_with_RF_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void lat_param_struct_get_t1_no_RF_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void lat_param_struct_get_spin_tune(const void* struct_obj, double* value_out);
 void lat_param_struct_set_spin_tune(void* struct_obj, double value_in);
 void lat_param_struct_get_particle(const void* struct_obj, int* value_out);
@@ -2019,13 +1927,11 @@ void anormal_mode_struct_get_emittance_no_vert(
 void anormal_mode_struct_set_emittance_no_vert(
     void* struct_obj,
     double value_in);
-
 void anormal_mode_struct_get_synch_int_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void anormal_mode_struct_get_j_damp(const void* struct_obj, double* value_out);
 void anormal_mode_struct_set_j_damp(void* struct_obj, double value_in);
 void anormal_mode_struct_get_alpha_damp(
@@ -2068,13 +1974,11 @@ void linac_normal_mode_struct_get_b_emittance_end(
 void linac_normal_mode_struct_set_b_emittance_end(
     void* struct_obj,
     double value_in);
-
 void normal_modes_struct_get_synch_int_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void normal_modes_struct_get_sigE_E(const void* struct_obj, double* value_out);
 void normal_modes_struct_set_sigE_E(void* struct_obj, double value_in);
 void normal_modes_struct_get_sig_z(const void* struct_obj, double* value_out);
@@ -2111,44 +2015,37 @@ void normal_modes_struct_get_z(const void* struct_obj, void** ptr_out);
 void normal_modes_struct_set_z(void* struct_obj, const void* src_ptr);
 void normal_modes_struct_get_lin(const void* struct_obj, void** ptr_out);
 void normal_modes_struct_set_lin(void* struct_obj, const void* src_ptr);
-
 void em_field_struct_get_E_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void em_field_struct_get_B_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void em_field_struct_get_dE_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void em_field_struct_get_dB_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void em_field_struct_get_phi(const void* struct_obj, double* value_out);
 void em_field_struct_set_phi(void* struct_obj, double value_in);
 void em_field_struct_get_phi_B(const void* struct_obj, double* value_out);
 void em_field_struct_set_phi_B(void* struct_obj, double value_in);
-
 void em_field_struct_get_A_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void strong_beam_struct_get_ix_slice(const void* struct_obj, int* value_out);
 void strong_beam_struct_set_ix_slice(void* struct_obj, int value_in);
 void strong_beam_struct_get_x_center(const void* struct_obj, double* value_out);
@@ -2173,13 +2070,11 @@ void track_point_struct_get_field(const void* struct_obj, void** ptr_out);
 void track_point_struct_set_field(void* struct_obj, const void* src_ptr);
 void track_point_struct_get_strong_beam(const void* struct_obj, void** ptr_out);
 void track_point_struct_set_strong_beam(void* struct_obj, const void* src_ptr);
-
 void track_point_struct_get_vec0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void track_point_struct_get_mat6_info(
     const void* s,
     double** d,
@@ -2250,19 +2145,16 @@ void space_charge_common_struct_get_particle_sigma_cutoff(
 void space_charge_common_struct_set_particle_sigma_cutoff(
     void* struct_obj,
     double value_in);
-
 void space_charge_common_struct_get_space_charge_mesh_size_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void space_charge_common_struct_get_csr3d_mesh_size_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void space_charge_common_struct_get_n_bin(
     const void* struct_obj,
     int* value_out);
@@ -2310,13 +2202,11 @@ void bmad_common_struct_get_max_aperture_limit(
 void bmad_common_struct_set_max_aperture_limit(
     void* struct_obj,
     double value_in);
-
 void bmad_common_struct_get_d_orb_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void bmad_common_struct_get_default_ds_step(
     const void* struct_obj,
     double* value_out);
@@ -2730,46 +2620,39 @@ void ele_struct_get_time_ref_orb_in(const void* struct_obj, void** ptr_out);
 void ele_struct_set_time_ref_orb_in(void* struct_obj, const void* src_ptr);
 void ele_struct_get_time_ref_orb_out(const void* struct_obj, void** ptr_out);
 void ele_struct_set_time_ref_orb_out(void* struct_obj, const void* src_ptr);
-
 void ele_struct_get_value_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_old_value_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_spin_q_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void ele_struct_get_vec0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_mat6_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void ele_struct_get_c_mat_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void ele_struct_get_gamma_c(const void* struct_obj, double* value_out);
 void ele_struct_set_gamma_c(void* struct_obj, double value_in);
 void ele_struct_get_s_start(const void* struct_obj, double* value_out);
@@ -2778,44 +2661,37 @@ void ele_struct_get_s(const void* struct_obj, double* value_out);
 void ele_struct_set_s(void* struct_obj, double value_in);
 void ele_struct_get_ref_time(const void* struct_obj, double* value_out);
 void ele_struct_set_ref_time(void* struct_obj, double value_in);
-
 void ele_struct_get_a_pole_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_b_pole_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_a_pole_elec_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_b_pole_elec_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_custom_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ele_struct_get_r_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void ele_struct_get_key(const void* struct_obj, int* value_out);
 void ele_struct_set_key(void* struct_obj, int value_in);
 void ele_struct_get_sub_key(const void* struct_obj, int* value_out);
@@ -2910,13 +2786,11 @@ void complex_taylor_term_struct_get_coef(
 void complex_taylor_term_struct_set_coef(
     void* struct_obj,
     std::complex<double> value_in);
-
 void complex_taylor_term_struct_get_expn_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void complex_taylor_struct_get_ref(
     const void* struct_obj,
     std::complex<double>* value_out);
@@ -3054,13 +2928,11 @@ void lat_struct_get_beam_init(const void* struct_obj, void** ptr_out);
 void lat_struct_set_beam_init(void* struct_obj, const void* src_ptr);
 void lat_struct_get_pre_tracker(const void* struct_obj, void** ptr_out);
 void lat_struct_set_pre_tracker(void* struct_obj, const void* src_ptr);
-
 void lat_struct_get_custom_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void lat_struct_get_version(const void* struct_obj, int* value_out);
 void lat_struct_set_version(void* struct_obj, int value_in);
 void lat_struct_get_n_ele_track(const void* struct_obj, int** ptr_out);
@@ -3073,13 +2945,11 @@ void lat_struct_get_n_ic_max(const void* struct_obj, int* value_out);
 void lat_struct_set_n_ic_max(void* struct_obj, int value_in);
 void lat_struct_get_input_taylor_order(const void* struct_obj, int* value_out);
 void lat_struct_set_input_taylor_order(void* struct_obj, int value_in);
-
 void lat_struct_get_ic_info(
     const void* s,
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void lat_struct_get_photon_type(const void* struct_obj, int* value_out);
 void lat_struct_set_photon_type(void* struct_obj, int value_in);
 void lat_struct_get_creation_hash(const void* struct_obj, int* value_out);
@@ -3101,7 +2971,6 @@ void bunch_struct_get_ix_z_info(
     int** d,
     int* bounds,
     bool* is_alloc);
-
 void bunch_struct_get_charge_tot(const void* struct_obj, double* value_out);
 void bunch_struct_set_charge_tot(void* struct_obj, double value_in);
 void bunch_struct_get_charge_live(const void* struct_obj, double* value_out);
@@ -3142,26 +3011,22 @@ void bunch_params_struct_get_b(const void* struct_obj, void** ptr_out);
 void bunch_params_struct_set_b(void* struct_obj, const void* src_ptr);
 void bunch_params_struct_get_c(const void* struct_obj, void** ptr_out);
 void bunch_params_struct_set_c(void* struct_obj, const void* src_ptr);
-
 void bunch_params_struct_get_sigma_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void bunch_params_struct_get_rel_max_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void bunch_params_struct_get_rel_min_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void bunch_params_struct_get_s(const void* struct_obj, double* value_out);
 void bunch_params_struct_set_s(void* struct_obj, double value_in);
 void bunch_params_struct_get_t(const void* struct_obj, double* value_out);
@@ -3275,27 +3140,23 @@ void aperture_scan_struct_get_pz_start(
     const void* struct_obj,
     double* value_out);
 void aperture_scan_struct_set_pz_start(void* struct_obj, double value_in);
-
 void tao_spin_dn_dpz_struct_get_vec_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_dn_dpz_struct_get_partial_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_spin_dn_dpz_struct_get_partial2_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void resonance_h_struct_get_id_info(
     const void* s,
     char** d,
@@ -3311,58 +3172,49 @@ void resonance_h_struct_get_c_val(
 void resonance_h_struct_set_c_val(
     void* struct_obj,
     std::complex<double> value_in);
-
 void spin_orbit_map1_struct_get_orb_mat_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void spin_orbit_map1_struct_get_vec0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void spin_orbit_map1_struct_get_spin_q_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void spin_axis_struct_get_l_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void spin_axis_struct_get_n0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void spin_axis_struct_get_m_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ptc_normal_form_struct_get_ele_origin(
     const void* struct_obj,
     void** ptr_out);
 void ptc_normal_form_struct_set_ele_origin(
     void* struct_obj,
     const void* src_ptr);
-
 void ptc_normal_form_struct_get_orb0_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void ptc_normal_form_struct_get_valid_map(
     const void* struct_obj,
     bool* value_out);
@@ -3580,30 +3432,25 @@ void tao_lat_sigma_struct_get_mat_info(
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_spin_ele_struct_get_dn_dpz(const void* struct_obj, void** ptr_out);
 void tao_spin_ele_struct_set_dn_dpz(void* struct_obj, const void* src_ptr);
-
 void tao_spin_ele_struct_get_orb_eigen_val_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_ele_struct_get_orb_eigen_vec_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_spin_ele_struct_get_spin_eigen_vec_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_spin_ele_struct_get_valid(const void* struct_obj, bool* value_out);
 void tao_spin_ele_struct_set_valid(void* struct_obj, bool value_in);
 void tao_plot_cache_struct_get_ele_to_s(const void* struct_obj, void** ptr_out);
@@ -3628,19 +3475,16 @@ void tao_spin_polarization_struct_get_pol_limit_dk(
 void tao_spin_polarization_struct_set_pol_limit_dk(
     void* struct_obj,
     double value_in);
-
 void tao_spin_polarization_struct_get_pol_limit_dk_partial_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_polarization_struct_get_pol_limit_dk_partial2_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_polarization_struct_get_pol_rate_bks(
     const void* struct_obj,
     double* value_out);
@@ -3653,19 +3497,16 @@ void tao_spin_polarization_struct_get_depol_rate(
 void tao_spin_polarization_struct_set_depol_rate(
     void* struct_obj,
     double value_in);
-
 void tao_spin_polarization_struct_get_depol_rate_partial_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_polarization_struct_get_depol_rate_partial2_info(
     const void* s,
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_spin_polarization_struct_get_integral_bn(
     const void* struct_obj,
     double* value_out);
@@ -4064,7 +3905,6 @@ void tao_dynamic_aperture_struct_get_pz_info(
     double** d,
     int* bounds,
     bool* is_alloc);
-
 void tao_dynamic_aperture_struct_get_ellipse_scale(
     const void* struct_obj,
     double* value_out);
@@ -4181,14 +4021,12 @@ void tao_spin_map_struct_get_ix_uni(const void* struct_obj, int* value_out);
 void tao_spin_map_struct_set_ix_uni(void* struct_obj, int value_in);
 void tao_spin_map_struct_get_ix_branch(const void* struct_obj, int* value_out);
 void tao_spin_map_struct_set_ix_branch(void* struct_obj, int value_in);
-
 void tao_spin_map_struct_get_mat8_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_data_struct_get_ele_name_info(
     const void* s,
     char** d,
@@ -4478,14 +4316,12 @@ void tao_universe_struct_get_ele_order(const void* struct_obj, void** ptr_out);
 void tao_universe_struct_set_ele_order(void* struct_obj, const void* src_ptr);
 void tao_universe_struct_get_spin_map(const void* struct_obj, void** ptr_out);
 void tao_universe_struct_set_spin_map(void* struct_obj, const void* src_ptr);
-
 void tao_universe_struct_get_dModel_dVar_info(
     const void* s,
     double** d,
     int* bounds,
     int* strides,
     bool* is_alloc);
-
 void tao_universe_struct_get_ix_uni(const void* struct_obj, int* value_out);
 void tao_universe_struct_set_ix_uni(void* struct_obj, int value_in);
 void tao_universe_struct_get_n_d2_data_used(

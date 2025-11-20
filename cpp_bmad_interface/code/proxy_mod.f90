@@ -119,16 +119,18 @@ contains
         bind(c, name='spline_struct_get_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spline_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%coef)) then
       data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef, 1)))
       bounds(1) = int(lbound(struct_obj%coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%coef, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -559,54 +561,56 @@ contains
   ! ac_kicker_struct%amp_vs_time: 1D_ALLOC_type
 
   subroutine ac_kicker_struct_get_amp_vs_time_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ac_kicker_struct_get_amp_vs_time_info')
+        bind(c, name='ac_kicker_struct_get_amp_vs_time_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ac_kicker_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%amp_vs_time)) then
-        data_ptr = c_loc(struct_obj%amp_vs_time(lbound(struct_obj%amp_vs_time, 1)))
-        bounds(1) = int(lbound(struct_obj%amp_vs_time, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%amp_vs_time, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%amp_vs_time(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%amp_vs_time) .and. is_contiguous(struct_obj%amp_vs_time)) then
+      data_ptr = c_loc(struct_obj%amp_vs_time(lbound(struct_obj%amp_vs_time, 1)))
+      bounds(1) = int(lbound(struct_obj%amp_vs_time, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%amp_vs_time, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%amp_vs_time(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! ac_kicker_struct%frequency: 1D_ALLOC_type
 
   subroutine ac_kicker_struct_get_frequency_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ac_kicker_struct_get_frequency_info')
+        bind(c, name='ac_kicker_struct_get_frequency_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ac_kicker_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%frequency)) then
-        data_ptr = c_loc(struct_obj%frequency(lbound(struct_obj%frequency, 1)))
-        bounds(1) = int(lbound(struct_obj%frequency, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%frequency, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%frequency(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%frequency) .and. is_contiguous(struct_obj%frequency)) then
+      data_ptr = c_loc(struct_obj%frequency(lbound(struct_obj%frequency, 1)))
+      bounds(1) = int(lbound(struct_obj%frequency, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%frequency, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%frequency(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -777,16 +781,18 @@ contains
         bind(c, name='photon_reflect_table_struct_get_angle_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%angle)) then
+    if (allocated(struct_obj%angle) .and. is_contiguous(struct_obj%angle)) then
       data_ptr = c_loc(struct_obj%angle(lbound(struct_obj%angle, 1)))
       bounds(1) = int(lbound(struct_obj%angle, 1), c_int)
       bounds(2) = int(ubound(struct_obj%angle, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -801,16 +807,18 @@ contains
         bind(c, name='photon_reflect_table_struct_get_energy_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%energy)) then
+    if (allocated(struct_obj%energy) .and. is_contiguous(struct_obj%energy)) then
       data_ptr = c_loc(struct_obj%energy(lbound(struct_obj%energy, 1)))
       bounds(1) = int(lbound(struct_obj%energy, 1), c_int)
       bounds(2) = int(ubound(struct_obj%energy, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -822,27 +830,28 @@ contains
   ! photon_reflect_table_struct%int1: 1D_ALLOC_type
 
   subroutine photon_reflect_table_struct_get_int1_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='photon_reflect_table_struct_get_int1_info')
+        bind(c, name='photon_reflect_table_struct_get_int1_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(photon_reflect_table_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%int1)) then
-        data_ptr = c_loc(struct_obj%int1(lbound(struct_obj%int1, 1)))
-        bounds(1) = int(lbound(struct_obj%int1, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%int1, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%int1(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%int1) .and. is_contiguous(struct_obj%int1)) then
+      data_ptr = c_loc(struct_obj%int1(lbound(struct_obj%int1, 1)))
+      bounds(1) = int(lbound(struct_obj%int1, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%int1, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%int1(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -852,27 +861,29 @@ contains
         bind(c, name='photon_reflect_table_struct_get_p_reflect_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%p_reflect)) then
-      data_ptr = c_loc(struct_obj%p_reflect(lbound(struct_obj%p_reflect,1), lbound(struct_obj%p_reflect,2)))
+    if (allocated(struct_obj%p_reflect) .and. is_contiguous(struct_obj%p_reflect)) then
+      data_ptr = c_loc(struct_obj%p_reflect(lbound(struct_obj%p_reflect, 1), lbound(struct_obj%p_reflect, 2)))
       bounds(1) = int(lbound(struct_obj%p_reflect, 1), c_int)
       bounds(2) = int(ubound(struct_obj%p_reflect, 1), c_int)
       bounds(3) = int(lbound(struct_obj%p_reflect, 2), c_int)
       bounds(4) = int(ubound(struct_obj%p_reflect, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -902,16 +913,18 @@ contains
         bind(c, name='photon_reflect_table_struct_get_p_reflect_scratch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%p_reflect_scratch)) then
+    if (allocated(struct_obj%p_reflect_scratch) .and. is_contiguous(struct_obj%p_reflect_scratch)) then
       data_ptr = c_loc(struct_obj%p_reflect_scratch(lbound(struct_obj%p_reflect_scratch, 1)))
       bounds(1) = int(lbound(struct_obj%p_reflect_scratch, 1), c_int)
       bounds(2) = int(ubound(struct_obj%p_reflect_scratch, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -926,16 +939,18 @@ contains
         bind(c, name='photon_reflect_table_struct_get_bragg_angle_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%bragg_angle)) then
+    if (allocated(struct_obj%bragg_angle) .and. is_contiguous(struct_obj%bragg_angle)) then
       data_ptr = c_loc(struct_obj%bragg_angle(lbound(struct_obj%bragg_angle, 1)))
       bounds(1) = int(lbound(struct_obj%bragg_angle, 1), c_int)
       bounds(2) = int(ubound(struct_obj%bragg_angle, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -1083,27 +1098,28 @@ contains
   ! photon_reflect_surface_struct%table: 1D_ALLOC_type
 
   subroutine photon_reflect_surface_struct_get_table_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='photon_reflect_surface_struct_get_table_info')
+        bind(c, name='photon_reflect_surface_struct_get_table_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(photon_reflect_surface_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%table)) then
-        data_ptr = c_loc(struct_obj%table(lbound(struct_obj%table, 1)))
-        bounds(1) = int(lbound(struct_obj%table, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%table, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%table(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%table) .and. is_contiguous(struct_obj%table)) then
+      data_ptr = c_loc(struct_obj%table(lbound(struct_obj%table, 1)))
+      bounds(1) = int(lbound(struct_obj%table, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%table, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%table(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -1222,16 +1238,18 @@ contains
         bind(c, name='coord_struct_get_vec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(coord_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%vec)) then
       data_ptr = c_loc(struct_obj%vec(lbound(struct_obj%vec, 1)))
       bounds(1) = int(lbound(struct_obj%vec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%vec, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -1284,16 +1302,18 @@ contains
         bind(c, name='coord_struct_get_spin_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(coord_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%spin)) then
       data_ptr = c_loc(struct_obj%spin(lbound(struct_obj%spin, 1)))
       bounds(1) = int(lbound(struct_obj%spin, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -1308,16 +1328,18 @@ contains
         bind(c, name='coord_struct_get_field_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(coord_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%field)) then
       data_ptr = c_loc(struct_obj%field(lbound(struct_obj%field, 1)))
       bounds(1) = int(lbound(struct_obj%field, 1), c_int)
       bounds(2) = int(ubound(struct_obj%field, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -1332,16 +1354,18 @@ contains
         bind(c, name='coord_struct_get_phase_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(coord_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%phase)) then
       data_ptr = c_loc(struct_obj%phase(lbound(struct_obj%phase, 1)))
       bounds(1) = int(lbound(struct_obj%phase, 1), c_int)
       bounds(2) = int(ubound(struct_obj%phase, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -1690,27 +1714,28 @@ contains
   ! coord_array_struct%orbit: 1D_ALLOC_type
 
   subroutine coord_array_struct_get_orbit_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='coord_array_struct_get_orbit_info')
+        bind(c, name='coord_array_struct_get_orbit_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(coord_array_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%orbit)) then
-        data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
-        bounds(1) = int(lbound(struct_obj%orbit, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%orbit, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%orbit(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%orbit) .and. is_contiguous(struct_obj%orbit)) then
+      data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
+      bounds(1) = int(lbound(struct_obj%orbit, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%orbit, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%orbit(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -2132,16 +2157,18 @@ contains
         bind(c, name='wake_sr_z_long_struct_get_w_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wake_sr_z_long_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%w)) then
+    if (allocated(struct_obj%w) .and. is_contiguous(struct_obj%w)) then
       data_ptr = c_loc(struct_obj%w(lbound(struct_obj%w, 1)))
       bounds(1) = int(lbound(struct_obj%w, 1), c_int)
       bounds(2) = int(ubound(struct_obj%w, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -2156,16 +2183,18 @@ contains
         bind(c, name='wake_sr_z_long_struct_get_fw_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wake_sr_z_long_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%fw)) then
+    if (allocated(struct_obj%fw) .and. is_contiguous(struct_obj%fw)) then
       data_ptr = c_loc(struct_obj%fw(lbound(struct_obj%fw, 1)))
       bounds(1) = int(lbound(struct_obj%fw, 1), c_int)
       bounds(2) = int(ubound(struct_obj%fw, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -2180,16 +2209,18 @@ contains
         bind(c, name='wake_sr_z_long_struct_get_fbunch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wake_sr_z_long_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%fbunch)) then
+    if (allocated(struct_obj%fbunch) .and. is_contiguous(struct_obj%fbunch)) then
       data_ptr = c_loc(struct_obj%fbunch(lbound(struct_obj%fbunch, 1)))
       bounds(1) = int(lbound(struct_obj%fbunch, 1), c_int)
       bounds(2) = int(ubound(struct_obj%fbunch, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -2204,16 +2235,18 @@ contains
         bind(c, name='wake_sr_z_long_struct_get_w_out_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wake_sr_z_long_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%w_out)) then
+    if (allocated(struct_obj%w_out) .and. is_contiguous(struct_obj%w_out)) then
       data_ptr = c_loc(struct_obj%w_out(lbound(struct_obj%w_out, 1)))
       bounds(1) = int(lbound(struct_obj%w_out, 1), c_int)
       bounds(2) = int(ubound(struct_obj%w_out, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -2663,54 +2696,56 @@ contains
   ! wake_sr_struct%long: 1D_ALLOC_type
 
   subroutine wake_sr_struct_get_long_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='wake_sr_struct_get_long_info')
+        bind(c, name='wake_sr_struct_get_long_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(wake_sr_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%long)) then
-        data_ptr = c_loc(struct_obj%long(lbound(struct_obj%long, 1)))
-        bounds(1) = int(lbound(struct_obj%long, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%long, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%long(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%long) .and. is_contiguous(struct_obj%long)) then
+      data_ptr = c_loc(struct_obj%long(lbound(struct_obj%long, 1)))
+      bounds(1) = int(lbound(struct_obj%long, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%long, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%long(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! wake_sr_struct%trans: 1D_ALLOC_type
 
   subroutine wake_sr_struct_get_trans_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='wake_sr_struct_get_trans_info')
+        bind(c, name='wake_sr_struct_get_trans_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(wake_sr_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%trans)) then
-        data_ptr = c_loc(struct_obj%trans(lbound(struct_obj%trans, 1)))
-        bounds(1) = int(lbound(struct_obj%trans, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%trans, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%trans(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%trans) .and. is_contiguous(struct_obj%trans)) then
+      data_ptr = c_loc(struct_obj%trans(lbound(struct_obj%trans, 1)))
+      bounds(1) = int(lbound(struct_obj%trans, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%trans, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%trans(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -3210,27 +3245,28 @@ contains
   ! wake_lr_struct%mode: 1D_ALLOC_type
 
   subroutine wake_lr_struct_get_mode_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='wake_lr_struct_get_mode_info')
+        bind(c, name='wake_lr_struct_get_mode_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(wake_lr_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%mode)) then
-        data_ptr = c_loc(struct_obj%mode(lbound(struct_obj%mode, 1)))
-        bounds(1) = int(lbound(struct_obj%mode, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%mode, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%mode(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%mode) .and. is_contiguous(struct_obj%mode)) then
+      data_ptr = c_loc(struct_obj%mode(lbound(struct_obj%mode, 1)))
+      bounds(1) = int(lbound(struct_obj%mode, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%mode, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%mode(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -3590,16 +3626,18 @@ contains
         bind(c, name='taylor_term_struct_get_expn_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(taylor_term_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%expn)) then
       data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
       bounds(1) = int(lbound(struct_obj%expn, 1), c_int)
       bounds(2) = int(ubound(struct_obj%expn, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -3682,27 +3720,28 @@ contains
   ! taylor_struct%term: 1D_PTR_type
 
   subroutine taylor_struct_get_term_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='taylor_struct_get_term_info')
+        bind(c, name='taylor_struct_get_term_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(taylor_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%term)) then
-        data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
-        bounds(1) = int(lbound(struct_obj%term, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%term, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%term) .and. is_contiguous(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      bounds(1) = int(lbound(struct_obj%term, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%term, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -3783,16 +3822,18 @@ contains
         bind(c, name='em_taylor_term_struct_get_expn_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_taylor_term_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%expn)) then
       data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
       bounds(1) = int(lbound(struct_obj%expn, 1), c_int)
       bounds(2) = int(ubound(struct_obj%expn, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -3875,27 +3916,28 @@ contains
   ! em_taylor_struct%term: 1D_ALLOC_type
 
   subroutine em_taylor_struct_get_term_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='em_taylor_struct_get_term_info')
+        bind(c, name='em_taylor_struct_get_term_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(em_taylor_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%term)) then
-        data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
-        bounds(1) = int(lbound(struct_obj%term, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%term, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%term) .and. is_contiguous(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      bounds(1) = int(lbound(struct_obj%term, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%term, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -4224,27 +4266,28 @@ contains
   ! cartesian_map_term_struct%term: 1D_ALLOC_type
 
   subroutine cartesian_map_term_struct_get_term_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='cartesian_map_term_struct_get_term_info')
+        bind(c, name='cartesian_map_term_struct_get_term_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(cartesian_map_term_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%term)) then
-        data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
-        bounds(1) = int(lbound(struct_obj%term, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%term, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%term) .and. is_contiguous(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      bounds(1) = int(lbound(struct_obj%term, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%term, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -4325,16 +4368,18 @@ contains
         bind(c, name='cartesian_map_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(cartesian_map_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -4619,27 +4664,28 @@ contains
   ! cylindrical_map_term_struct%term: 1D_ALLOC_type
 
   subroutine cylindrical_map_term_struct_get_term_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='cylindrical_map_term_struct_get_term_info')
+        bind(c, name='cylindrical_map_term_struct_get_term_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(cylindrical_map_term_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%term)) then
-        data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
-        bounds(1) = int(lbound(struct_obj%term, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%term, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%term) .and. is_contiguous(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      bounds(1) = int(lbound(struct_obj%term, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%term, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -4853,16 +4899,18 @@ contains
         bind(c, name='cylindrical_map_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(cylindrical_map_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -4956,27 +5004,29 @@ contains
         bind(c, name='bicubic_cmplx_coef_struct_get_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bicubic_cmplx_coef_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef,1), lbound(struct_obj%coef,2)))
+    if (.true. .and. is_contiguous(struct_obj%coef)) then
+      data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef, 1), lbound(struct_obj%coef, 2)))
       bounds(1) = int(lbound(struct_obj%coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%coef, 1), c_int)
       bounds(3) = int(lbound(struct_obj%coef, 2), c_int)
       bounds(4) = int(ubound(struct_obj%coef, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -4987,16 +5037,18 @@ contains
         bind(c, name='bicubic_cmplx_coef_struct_get_i_box_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bicubic_cmplx_coef_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%i_box)) then
       data_ptr = c_loc(struct_obj%i_box(lbound(struct_obj%i_box, 1)))
       bounds(1) = int(lbound(struct_obj%i_box, 1), c_int)
       bounds(2) = int(ubound(struct_obj%i_box, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5060,36 +5112,36 @@ contains
   ! tricubic_cmplx_coef_struct%coef: 3D_NOT_complex
 
   subroutine tricubic_cmplx_coef_struct_get_coef_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated) &
-      bind(c, name='tricubic_cmplx_coef_struct_get_coef_info')
+        bind(c, name='tricubic_cmplx_coef_struct_get_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(6), intent(out) :: bounds
-    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
     type(tricubic_cmplx_coef_struct), pointer :: struct_obj
-    integer :: d1_size, d2_size
+    integer(c_int), dimension(3), intent(out) :: strides
+    integer :: d1, d2
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%coef( &
-        lbound(struct_obj%coef,1), lbound(struct_obj%coef,2), lbound(struct_obj%coef,3)))
-        
+    if (.true. .and. is_contiguous(struct_obj%coef)) then
+      data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef, 1), lbound(struct_obj%coef, 2), lbound(struct_obj%coef, 3)))
       bounds(1) = int(lbound(struct_obj%coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%coef, 1), c_int)
       bounds(3) = int(lbound(struct_obj%coef, 2), c_int)
       bounds(4) = int(ubound(struct_obj%coef, 2), c_int)
       bounds(5) = int(lbound(struct_obj%coef, 3), c_int)
       bounds(6) = int(ubound(struct_obj%coef, 3), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
-      d2_size = bounds(4) - bounds(3) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
-      strides(3) = d1_size * d2_size
+      d1 = bounds(2) - bounds(1) + 1
+      d2 = bounds(4) - bounds(3) + 1
+      strides(2) = d1
+      strides(3) = d1 * d2
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -5100,16 +5152,18 @@ contains
         bind(c, name='tricubic_cmplx_coef_struct_get_i_box_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tricubic_cmplx_coef_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%i_box)) then
       data_ptr = c_loc(struct_obj%i_box(lbound(struct_obj%i_box, 1)))
       bounds(1) = int(lbound(struct_obj%i_box, 1), c_int)
       bounds(2) = int(ubound(struct_obj%i_box, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5176,16 +5230,18 @@ contains
         bind(c, name='grid_field_pt1_struct_get_E_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(grid_field_pt1_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%E)) then
       data_ptr = c_loc(struct_obj%E(lbound(struct_obj%E, 1)))
       bounds(1) = int(lbound(struct_obj%E, 1), c_int)
       bounds(2) = int(ubound(struct_obj%E, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5200,16 +5256,18 @@ contains
         bind(c, name='grid_field_pt1_struct_get_B_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(grid_field_pt1_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%B)) then
       data_ptr = c_loc(struct_obj%B(lbound(struct_obj%B, 1)))
       bounds(1) = int(lbound(struct_obj%B, 1), c_int)
       bounds(2) = int(ubound(struct_obj%B, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5320,39 +5378,38 @@ contains
   ! grid_field_pt_struct%pt: 3D_ALLOC_type
 
   subroutine grid_field_pt_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='grid_field_pt_struct_get_pt_info')
+        bind(c, name='grid_field_pt_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(6), intent(out) :: bounds
-    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(grid_field_pt_struct), pointer :: struct_obj
+    integer(c_int), dimension(3), intent(out) :: strides
     integer :: d1, d2
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-      data_ptr = c_loc(struct_obj%pt( &
-        lbound(struct_obj%pt,1), &
-        lbound(struct_obj%pt,2), &
-        lbound(struct_obj%pt,3)  &
-      ))
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1), lbound(struct_obj%pt, 2), lbound(struct_obj%pt, 3)))
       bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
       bounds(3) = int(lbound(struct_obj%pt, 2), c_int)
       bounds(4) = int(ubound(struct_obj%pt, 2), c_int)
       bounds(5) = int(lbound(struct_obj%pt, 3), c_int)
       bounds(6) = int(ubound(struct_obj%pt, 3), c_int)
-      
+      strides(1) = 1_c_int
       d1 = bounds(2) - bounds(1) + 1
       d2 = bounds(4) - bounds(3) + 1
-      strides(1) = 1_c_int
       strides(2) = d1
       strides(3) = d1 * d2
       el_size = int(storage_size(struct_obj%pt(bounds(1), bounds(3), bounds(5))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -5567,16 +5624,18 @@ contains
         bind(c, name='grid_field_struct_get_dr_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(grid_field_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%dr)) then
       data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
       bounds(1) = int(lbound(struct_obj%dr, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dr, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5591,16 +5650,18 @@ contains
         bind(c, name='grid_field_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(grid_field_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5658,39 +5719,38 @@ contains
   ! grid_field_struct%bi_coef: 3D_NOT_type
 
   subroutine grid_field_struct_get_bi_coef_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='grid_field_struct_get_bi_coef_info')
+        bind(c, name='grid_field_struct_get_bi_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(6), intent(out) :: bounds
-    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(grid_field_struct), pointer :: struct_obj
+    integer(c_int), dimension(3), intent(out) :: strides
     integer :: d1, d2
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%bi_coef( &
-        lbound(struct_obj%bi_coef,1), &
-        lbound(struct_obj%bi_coef,2), &
-        lbound(struct_obj%bi_coef,3)  &
-      ))
+    if (.true. .and. is_contiguous(struct_obj%bi_coef)) then
+      data_ptr = c_loc(struct_obj%bi_coef(lbound(struct_obj%bi_coef, 1), lbound(struct_obj%bi_coef, 2), lbound(struct_obj%bi_coef, 3)))
       bounds(1) = int(lbound(struct_obj%bi_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%bi_coef, 1), c_int)
       bounds(3) = int(lbound(struct_obj%bi_coef, 2), c_int)
       bounds(4) = int(ubound(struct_obj%bi_coef, 2), c_int)
       bounds(5) = int(lbound(struct_obj%bi_coef, 3), c_int)
       bounds(6) = int(ubound(struct_obj%bi_coef, 3), c_int)
-      
+      strides(1) = 1_c_int
       d1 = bounds(2) - bounds(1) + 1
       d2 = bounds(4) - bounds(3) + 1
-      strides(1) = 1_c_int
       strides(2) = d1
       strides(3) = d1 * d2
       el_size = int(storage_size(struct_obj%bi_coef(bounds(1), bounds(3), bounds(5))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -5698,39 +5758,38 @@ contains
   ! grid_field_struct%tri_coef: 3D_NOT_type
 
   subroutine grid_field_struct_get_tri_coef_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='grid_field_struct_get_tri_coef_info')
+        bind(c, name='grid_field_struct_get_tri_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(6), intent(out) :: bounds
-    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(grid_field_struct), pointer :: struct_obj
+    integer(c_int), dimension(3), intent(out) :: strides
     integer :: d1, d2
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%tri_coef( &
-        lbound(struct_obj%tri_coef,1), &
-        lbound(struct_obj%tri_coef,2), &
-        lbound(struct_obj%tri_coef,3)  &
-      ))
+    if (.true. .and. is_contiguous(struct_obj%tri_coef)) then
+      data_ptr = c_loc(struct_obj%tri_coef(lbound(struct_obj%tri_coef, 1), lbound(struct_obj%tri_coef, 2), lbound(struct_obj%tri_coef, 3)))
       bounds(1) = int(lbound(struct_obj%tri_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%tri_coef, 1), c_int)
       bounds(3) = int(lbound(struct_obj%tri_coef, 2), c_int)
       bounds(4) = int(ubound(struct_obj%tri_coef, 2), c_int)
       bounds(5) = int(lbound(struct_obj%tri_coef, 3), c_int)
       bounds(6) = int(ubound(struct_obj%tri_coef, 3), c_int)
-      
+      strides(1) = 1_c_int
       d1 = bounds(2) - bounds(1) + 1
       d2 = bounds(4) - bounds(3) + 1
-      strides(1) = 1_c_int
       strides(2) = d1
       strides(3) = d1 * d2
       el_size = int(storage_size(struct_obj%tri_coef(bounds(1), bounds(3), bounds(5))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -5793,16 +5852,18 @@ contains
         bind(c, name='floor_position_struct_get_r_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(floor_position_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r)) then
       data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r, 1)))
       bounds(1) = int(lbound(struct_obj%r, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -5817,27 +5878,29 @@ contains
         bind(c, name='floor_position_struct_get_w_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(floor_position_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%w(lbound(struct_obj%w,1), lbound(struct_obj%w,2)))
+    if (.true. .and. is_contiguous(struct_obj%w)) then
+      data_ptr = c_loc(struct_obj%w(lbound(struct_obj%w, 1), lbound(struct_obj%w, 2)))
       bounds(1) = int(lbound(struct_obj%w, 1), c_int)
       bounds(2) = int(ubound(struct_obj%w, 1), c_int)
       bounds(3) = int(lbound(struct_obj%w, 2), c_int)
       bounds(4) = int(ubound(struct_obj%w, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -6685,27 +6748,29 @@ contains
         bind(c, name='mode3_struct_get_v_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(mode3_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v,1), lbound(struct_obj%v,2)))
+    if (.true. .and. is_contiguous(struct_obj%v)) then
+      data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v, 1), lbound(struct_obj%v, 2)))
       bounds(1) = int(lbound(struct_obj%v, 1), c_int)
       bounds(2) = int(ubound(struct_obj%v, 1), c_int)
       bounds(3) = int(lbound(struct_obj%v, 2), c_int)
       bounds(4) = int(ubound(struct_obj%v, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -7096,16 +7161,18 @@ contains
         bind(c, name='rad_map_struct_get_ref_orb_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(rad_map_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%ref_orb)) then
       data_ptr = c_loc(struct_obj%ref_orb(lbound(struct_obj%ref_orb, 1)))
       bounds(1) = int(lbound(struct_obj%ref_orb, 1), c_int)
       bounds(2) = int(ubound(struct_obj%ref_orb, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -7120,27 +7187,29 @@ contains
         bind(c, name='rad_map_struct_get_damp_dmat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(rad_map_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%damp_dmat(lbound(struct_obj%damp_dmat,1), lbound(struct_obj%damp_dmat,2)))
+    if (.true. .and. is_contiguous(struct_obj%damp_dmat)) then
+      data_ptr = c_loc(struct_obj%damp_dmat(lbound(struct_obj%damp_dmat, 1), lbound(struct_obj%damp_dmat, 2)))
       bounds(1) = int(lbound(struct_obj%damp_dmat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%damp_dmat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%damp_dmat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%damp_dmat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -7151,16 +7220,18 @@ contains
         bind(c, name='rad_map_struct_get_xfer_damp_vec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(rad_map_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%xfer_damp_vec)) then
       data_ptr = c_loc(struct_obj%xfer_damp_vec(lbound(struct_obj%xfer_damp_vec, 1)))
       bounds(1) = int(lbound(struct_obj%xfer_damp_vec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%xfer_damp_vec, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -7175,27 +7246,29 @@ contains
         bind(c, name='rad_map_struct_get_xfer_damp_mat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(rad_map_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%xfer_damp_mat(lbound(struct_obj%xfer_damp_mat,1), lbound(struct_obj%xfer_damp_mat,2)))
+    if (.true. .and. is_contiguous(struct_obj%xfer_damp_mat)) then
+      data_ptr = c_loc(struct_obj%xfer_damp_mat(lbound(struct_obj%xfer_damp_mat, 1), lbound(struct_obj%xfer_damp_mat, 2)))
       bounds(1) = int(lbound(struct_obj%xfer_damp_mat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%xfer_damp_mat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%xfer_damp_mat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%xfer_damp_mat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -7206,27 +7279,29 @@ contains
         bind(c, name='rad_map_struct_get_stoc_mat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(rad_map_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%stoc_mat(lbound(struct_obj%stoc_mat,1), lbound(struct_obj%stoc_mat,2)))
+    if (.true. .and. is_contiguous(struct_obj%stoc_mat)) then
+      data_ptr = c_loc(struct_obj%stoc_mat(lbound(struct_obj%stoc_mat, 1), lbound(struct_obj%stoc_mat, 2)))
       bounds(1) = int(lbound(struct_obj%stoc_mat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%stoc_mat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%stoc_mat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%stoc_mat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -7459,27 +7534,29 @@ contains
         bind(c, name='gen_grad1_struct_get_deriv_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(gen_grad1_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%deriv)) then
-      data_ptr = c_loc(struct_obj%deriv(lbound(struct_obj%deriv,1), lbound(struct_obj%deriv,2)))
+    if (allocated(struct_obj%deriv) .and. is_contiguous(struct_obj%deriv)) then
+      data_ptr = c_loc(struct_obj%deriv(lbound(struct_obj%deriv, 1), lbound(struct_obj%deriv, 2)))
       bounds(1) = int(lbound(struct_obj%deriv, 1), c_int)
       bounds(2) = int(ubound(struct_obj%deriv, 1), c_int)
       bounds(3) = int(lbound(struct_obj%deriv, 2), c_int)
       bounds(4) = int(ubound(struct_obj%deriv, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -7567,27 +7644,28 @@ contains
   ! gen_grad_map_struct%gg: 1D_ALLOC_type
 
   subroutine gen_grad_map_struct_get_gg_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='gen_grad_map_struct_get_gg_info')
+        bind(c, name='gen_grad_map_struct_get_gg_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(gen_grad_map_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%gg)) then
-        data_ptr = c_loc(struct_obj%gg(lbound(struct_obj%gg, 1)))
-        bounds(1) = int(lbound(struct_obj%gg, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%gg, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%gg(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%gg) .and. is_contiguous(struct_obj%gg)) then
+      data_ptr = c_loc(struct_obj%gg(lbound(struct_obj%gg, 1)))
+      bounds(1) = int(lbound(struct_obj%gg, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%gg, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%gg(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -7692,16 +7770,18 @@ contains
         bind(c, name='gen_grad_map_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(gen_grad_map_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -7991,16 +8071,18 @@ contains
         bind(c, name='surface_segmented_struct_get_dr_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_segmented_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%dr)) then
       data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
       bounds(1) = int(lbound(struct_obj%dr, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dr, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8015,16 +8097,18 @@ contains
         bind(c, name='surface_segmented_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_segmented_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8036,31 +8120,34 @@ contains
   ! surface_segmented_struct%pt: 2D_ALLOC_type
 
   subroutine surface_segmented_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='surface_segmented_struct_get_pt_info')
+        bind(c, name='surface_segmented_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(4), intent(out) :: bounds
-    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(surface_segmented_struct), pointer :: struct_obj
-    integer :: d1, d2
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1), lbound(struct_obj%pt, 2)))
       bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
       bounds(3) = int(lbound(struct_obj%pt, 2), c_int)
       bounds(4) = int(ubound(struct_obj%pt, 2), c_int)
-      
-      d1 = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
+      d1 = bounds(2) - bounds(1) + 1
       strides(2) = d1
       el_size = int(storage_size(struct_obj%pt(bounds(1), bounds(3))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -8308,16 +8395,18 @@ contains
         bind(c, name='surface_h_misalign_struct_get_dr_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_h_misalign_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%dr)) then
       data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
       bounds(1) = int(lbound(struct_obj%dr, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dr, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8332,16 +8421,18 @@ contains
         bind(c, name='surface_h_misalign_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_h_misalign_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8353,31 +8444,34 @@ contains
   ! surface_h_misalign_struct%pt: 2D_ALLOC_type
 
   subroutine surface_h_misalign_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='surface_h_misalign_struct_get_pt_info')
+        bind(c, name='surface_h_misalign_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(4), intent(out) :: bounds
-    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(surface_h_misalign_struct), pointer :: struct_obj
-    integer :: d1, d2
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1), lbound(struct_obj%pt, 2)))
       bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
       bounds(3) = int(lbound(struct_obj%pt, 2), c_int)
       bounds(4) = int(ubound(struct_obj%pt, 2), c_int)
-      
-      d1 = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
+      d1 = bounds(2) - bounds(1) + 1
       strides(2) = d1
       el_size = int(storage_size(struct_obj%pt(bounds(1), bounds(3))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -8625,16 +8719,18 @@ contains
         bind(c, name='surface_displacement_struct_get_dr_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_displacement_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%dr)) then
       data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
       bounds(1) = int(lbound(struct_obj%dr, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dr, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8649,16 +8745,18 @@ contains
         bind(c, name='surface_displacement_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_displacement_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8670,31 +8768,34 @@ contains
   ! surface_displacement_struct%pt: 2D_ALLOC_type
 
   subroutine surface_displacement_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='surface_displacement_struct_get_pt_info')
+        bind(c, name='surface_displacement_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(4), intent(out) :: bounds
-    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(surface_displacement_struct), pointer :: struct_obj
-    integer :: d1, d2
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1), lbound(struct_obj%pt, 2)))
       bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
       bounds(3) = int(lbound(struct_obj%pt, 2), c_int)
       bounds(4) = int(ubound(struct_obj%pt, 2), c_int)
-      
-      d1 = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
+      d1 = bounds(2) - bounds(1) + 1
       strides(2) = d1
       el_size = int(storage_size(struct_obj%pt(bounds(1), bounds(3))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -8757,16 +8858,18 @@ contains
         bind(c, name='target_point_struct_get_r_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(target_point_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r)) then
       data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r, 1)))
       bounds(1) = int(lbound(struct_obj%r, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -8833,27 +8936,29 @@ contains
         bind(c, name='surface_curvature_struct_get_xy_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_curvature_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%xy(lbound(struct_obj%xy,1), lbound(struct_obj%xy,2)))
+    if (.true. .and. is_contiguous(struct_obj%xy)) then
+      data_ptr = c_loc(struct_obj%xy(lbound(struct_obj%xy, 1), lbound(struct_obj%xy, 2)))
       bounds(1) = int(lbound(struct_obj%xy, 1), c_int)
       bounds(2) = int(ubound(struct_obj%xy, 1), c_int)
       bounds(3) = int(lbound(struct_obj%xy, 2), c_int)
       bounds(4) = int(ubound(struct_obj%xy, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -8883,16 +8988,18 @@ contains
         bind(c, name='surface_curvature_struct_get_elliptical_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(surface_curvature_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%elliptical)) then
       data_ptr = c_loc(struct_obj%elliptical(lbound(struct_obj%elliptical, 1)))
       bounds(1) = int(lbound(struct_obj%elliptical, 1), c_int)
       bounds(2) = int(ubound(struct_obj%elliptical, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9034,27 +9141,28 @@ contains
   ! photon_target_struct%corner: 1D_NOT_type
 
   subroutine photon_target_struct_get_corner_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='photon_target_struct_get_corner_info')
+        bind(c, name='photon_target_struct_get_corner_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(photon_target_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%corner(lbound(struct_obj%corner, 1)))
-        bounds(1) = int(lbound(struct_obj%corner, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%corner, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%corner(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%corner)) then
+      data_ptr = c_loc(struct_obj%corner(lbound(struct_obj%corner, 1)))
+      bounds(1) = int(lbound(struct_obj%corner, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%corner, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%corner(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -9251,16 +9359,18 @@ contains
         bind(c, name='photon_material_struct_get_h_norm_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_material_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%h_norm)) then
       data_ptr = c_loc(struct_obj%h_norm(lbound(struct_obj%h_norm, 1)))
       bounds(1) = int(lbound(struct_obj%h_norm, 1), c_int)
       bounds(2) = int(ubound(struct_obj%h_norm, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9275,16 +9385,18 @@ contains
         bind(c, name='photon_material_struct_get_l_ref_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_material_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%l_ref)) then
       data_ptr = c_loc(struct_obj%l_ref(lbound(struct_obj%l_ref, 1)))
       bounds(1) = int(lbound(struct_obj%l_ref, 1), c_int)
       bounds(2) = int(ubound(struct_obj%l_ref, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9465,16 +9577,18 @@ contains
         bind(c, name='pixel_pt_struct_get_orbit_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_pt_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%orbit)) then
       data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
       bounds(1) = int(lbound(struct_obj%orbit, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orbit, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9489,16 +9603,18 @@ contains
         bind(c, name='pixel_pt_struct_get_orbit_rms_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_pt_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%orbit_rms)) then
       data_ptr = c_loc(struct_obj%orbit_rms(lbound(struct_obj%orbit_rms, 1)))
       bounds(1) = int(lbound(struct_obj%orbit_rms, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orbit_rms, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9513,16 +9629,18 @@ contains
         bind(c, name='pixel_pt_struct_get_init_orbit_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_pt_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%init_orbit)) then
       data_ptr = c_loc(struct_obj%init_orbit(lbound(struct_obj%init_orbit, 1)))
       bounds(1) = int(lbound(struct_obj%init_orbit, 1), c_int)
       bounds(2) = int(ubound(struct_obj%init_orbit, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9537,16 +9655,18 @@ contains
         bind(c, name='pixel_pt_struct_get_init_orbit_rms_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_pt_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%init_orbit_rms)) then
       data_ptr = c_loc(struct_obj%init_orbit_rms(lbound(struct_obj%init_orbit_rms, 1)))
       bounds(1) = int(lbound(struct_obj%init_orbit_rms, 1), c_int)
       bounds(2) = int(ubound(struct_obj%init_orbit_rms, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9613,16 +9733,18 @@ contains
         bind(c, name='pixel_detec_struct_get_dr_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_detec_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%dr)) then
       data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
       bounds(1) = int(lbound(struct_obj%dr, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dr, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9637,16 +9759,18 @@ contains
         bind(c, name='pixel_detec_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(pixel_detec_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -9715,31 +9839,34 @@ contains
   ! pixel_detec_struct%pt: 2D_ALLOC_type
 
   subroutine pixel_detec_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
-    bind(c, name='pixel_detec_struct_get_pt_info')
+        bind(c, name='pixel_detec_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(4), intent(out) :: bounds
-    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(pixel_detec_struct), pointer :: struct_obj
-    integer :: d1, d2
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt,1), lbound(struct_obj%pt,2)))
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1), lbound(struct_obj%pt, 2)))
       bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
       bounds(3) = int(lbound(struct_obj%pt, 2), c_int)
       bounds(4) = int(ubound(struct_obj%pt, 2), c_int)
-      
-      d1 = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
+      d1 = bounds(2) - bounds(1) + 1
       strides(2) = d1
       el_size = int(storage_size(struct_obj%pt(bounds(1), bounds(3))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      strides = 0_c_int
+      el_size = 0
       is_allocated = .false.
     endif
   end subroutine
@@ -10007,27 +10134,28 @@ contains
   ! photon_element_struct%init_energy_prob: 1D_ALLOC_type
 
   subroutine photon_element_struct_get_init_energy_prob_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='photon_element_struct_get_init_energy_prob_info')
+        bind(c, name='photon_element_struct_get_init_energy_prob_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(photon_element_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%init_energy_prob)) then
-        data_ptr = c_loc(struct_obj%init_energy_prob(lbound(struct_obj%init_energy_prob, 1)))
-        bounds(1) = int(lbound(struct_obj%init_energy_prob, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%init_energy_prob, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%init_energy_prob(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%init_energy_prob) .and. is_contiguous(struct_obj%init_energy_prob)) then
+      data_ptr = c_loc(struct_obj%init_energy_prob(lbound(struct_obj%init_energy_prob, 1)))
+      bounds(1) = int(lbound(struct_obj%init_energy_prob, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%init_energy_prob, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%init_energy_prob(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -10037,16 +10165,18 @@ contains
         bind(c, name='photon_element_struct_get_integrated_init_energy_prob_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(photon_element_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%integrated_init_energy_prob)) then
+    if (allocated(struct_obj%integrated_init_energy_prob) .and. is_contiguous(struct_obj%integrated_init_energy_prob)) then
       data_ptr = c_loc(struct_obj%integrated_init_energy_prob(lbound(struct_obj%integrated_init_energy_prob, 1)))
       bounds(1) = int(lbound(struct_obj%integrated_init_energy_prob, 1), c_int)
       bounds(2) = int(ubound(struct_obj%integrated_init_energy_prob, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -10389,27 +10519,28 @@ contains
   ! wall3d_section_struct%v: 1D_ALLOC_type
 
   subroutine wall3d_section_struct_get_v_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='wall3d_section_struct_get_v_info')
+        bind(c, name='wall3d_section_struct_get_v_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(wall3d_section_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%v)) then
-        data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v, 1)))
-        bounds(1) = int(lbound(struct_obj%v, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%v, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%v(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%v) .and. is_contiguous(struct_obj%v)) then
+      data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v, 1)))
+      bounds(1) = int(lbound(struct_obj%v, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%v, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%v(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -10598,16 +10729,18 @@ contains
         bind(c, name='wall3d_section_struct_get_r0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wall3d_section_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%r0)) then
       data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
       bounds(1) = int(lbound(struct_obj%r0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -10660,16 +10793,18 @@ contains
         bind(c, name='wall3d_section_struct_get_x0_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wall3d_section_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%x0_coef)) then
       data_ptr = c_loc(struct_obj%x0_coef(lbound(struct_obj%x0_coef, 1)))
       bounds(1) = int(lbound(struct_obj%x0_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%x0_coef, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -10684,16 +10819,18 @@ contains
         bind(c, name='wall3d_section_struct_get_y0_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wall3d_section_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%y0_coef)) then
       data_ptr = c_loc(struct_obj%y0_coef(lbound(struct_obj%y0_coef, 1)))
       bounds(1) = int(lbound(struct_obj%y0_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%y0_coef, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -10727,16 +10864,18 @@ contains
         bind(c, name='wall3d_section_struct_get_p1_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wall3d_section_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%p1_coef)) then
       data_ptr = c_loc(struct_obj%p1_coef(lbound(struct_obj%p1_coef, 1)))
       bounds(1) = int(lbound(struct_obj%p1_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%p1_coef, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -10751,16 +10890,18 @@ contains
         bind(c, name='wall3d_section_struct_get_p2_coef_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(wall3d_section_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%p2_coef)) then
       data_ptr = c_loc(struct_obj%p2_coef(lbound(struct_obj%p2_coef, 1)))
       bounds(1) = int(lbound(struct_obj%p2_coef, 1), c_int)
       bounds(2) = int(ubound(struct_obj%p2_coef, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -11022,27 +11163,28 @@ contains
   ! wall3d_struct%section: 1D_ALLOC_type
 
   subroutine wall3d_struct_get_section_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='wall3d_struct_get_section_info')
+        bind(c, name='wall3d_struct_get_section_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(wall3d_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%section)) then
-        data_ptr = c_loc(struct_obj%section(lbound(struct_obj%section, 1)))
-        bounds(1) = int(lbound(struct_obj%section, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%section, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%section(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%section) .and. is_contiguous(struct_obj%section)) then
+      data_ptr = c_loc(struct_obj%section(lbound(struct_obj%section, 1)))
+      bounds(1) = int(lbound(struct_obj%section, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%section, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%section(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -11238,16 +11380,18 @@ contains
         bind(c, name='control_struct_get_y_knot_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(control_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%y_knot)) then
+    if (allocated(struct_obj%y_knot) .and. is_contiguous(struct_obj%y_knot)) then
       data_ptr = c_loc(struct_obj%y_knot(lbound(struct_obj%y_knot, 1)))
       bounds(1) = int(lbound(struct_obj%y_knot, 1), c_int)
       bounds(2) = int(ubound(struct_obj%y_knot, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -11259,27 +11403,28 @@ contains
   ! control_struct%stack: 1D_ALLOC_type
 
   subroutine control_struct_get_stack_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='control_struct_get_stack_info')
+        bind(c, name='control_struct_get_stack_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(control_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%stack)) then
-        data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
-        bounds(1) = int(lbound(struct_obj%stack, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%stack, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%stack(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%stack) .and. is_contiguous(struct_obj%stack)) then
+      data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
+      bounds(1) = int(lbound(struct_obj%stack, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%stack, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%stack(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -11576,16 +11721,18 @@ contains
         bind(c, name='control_ramp1_struct_get_y_knot_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(control_ramp1_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%y_knot)) then
+    if (allocated(struct_obj%y_knot) .and. is_contiguous(struct_obj%y_knot)) then
       data_ptr = c_loc(struct_obj%y_knot(lbound(struct_obj%y_knot, 1)))
       bounds(1) = int(lbound(struct_obj%y_knot, 1), c_int)
       bounds(2) = int(ubound(struct_obj%y_knot, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -11597,27 +11744,28 @@ contains
   ! control_ramp1_struct%stack: 1D_ALLOC_type
 
   subroutine control_ramp1_struct_get_stack_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='control_ramp1_struct_get_stack_info')
+        bind(c, name='control_ramp1_struct_get_stack_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(control_ramp1_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%stack)) then
-        data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
-        bounds(1) = int(lbound(struct_obj%stack, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%stack, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%stack(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%stack) .and. is_contiguous(struct_obj%stack)) then
+      data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
+      bounds(1) = int(lbound(struct_obj%stack, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%stack, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%stack(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -11751,81 +11899,84 @@ contains
   ! controller_struct%var: 1D_ALLOC_type
 
   subroutine controller_struct_get_var_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='controller_struct_get_var_info')
+        bind(c, name='controller_struct_get_var_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(controller_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%var)) then
-        data_ptr = c_loc(struct_obj%var(lbound(struct_obj%var, 1)))
-        bounds(1) = int(lbound(struct_obj%var, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%var, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%var(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%var) .and. is_contiguous(struct_obj%var)) then
+      data_ptr = c_loc(struct_obj%var(lbound(struct_obj%var, 1)))
+      bounds(1) = int(lbound(struct_obj%var, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%var, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%var(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! controller_struct%ramp: 1D_ALLOC_type
 
   subroutine controller_struct_get_ramp_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='controller_struct_get_ramp_info')
+        bind(c, name='controller_struct_get_ramp_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(controller_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ramp)) then
-        data_ptr = c_loc(struct_obj%ramp(lbound(struct_obj%ramp, 1)))
-        bounds(1) = int(lbound(struct_obj%ramp, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ramp, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ramp(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%ramp) .and. is_contiguous(struct_obj%ramp)) then
+      data_ptr = c_loc(struct_obj%ramp(lbound(struct_obj%ramp, 1)))
+      bounds(1) = int(lbound(struct_obj%ramp, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ramp, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ramp(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! controller_struct%ramper_lord: 1D_ALLOC_type
 
   subroutine controller_struct_get_ramper_lord_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='controller_struct_get_ramper_lord_info')
+        bind(c, name='controller_struct_get_ramper_lord_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(controller_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ramper_lord)) then
-        data_ptr = c_loc(struct_obj%ramper_lord(lbound(struct_obj%ramper_lord, 1)))
-        bounds(1) = int(lbound(struct_obj%ramper_lord, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ramper_lord, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ramper_lord(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%ramper_lord) .and. is_contiguous(struct_obj%ramper_lord)) then
+      data_ptr = c_loc(struct_obj%ramper_lord(lbound(struct_obj%ramper_lord, 1)))
+      bounds(1) = int(lbound(struct_obj%ramper_lord, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ramper_lord, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ramper_lord(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -11835,16 +11986,18 @@ contains
         bind(c, name='controller_struct_get_x_knot_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(controller_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%x_knot)) then
+    if (allocated(struct_obj%x_knot) .and. is_contiguous(struct_obj%x_knot)) then
       data_ptr = c_loc(struct_obj%x_knot(lbound(struct_obj%x_knot, 1)))
       bounds(1) = int(lbound(struct_obj%x_knot, 1), c_int)
       bounds(2) = int(ubound(struct_obj%x_knot, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -12020,16 +12173,18 @@ contains
         bind(c, name='kv_beam_init_struct_get_part_per_phi_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(kv_beam_init_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%part_per_phi)) then
       data_ptr = c_loc(struct_obj%part_per_phi(lbound(struct_obj%part_per_phi, 1)))
       bounds(1) = int(lbound(struct_obj%part_per_phi, 1), c_int)
       bounds(2) = int(ubound(struct_obj%part_per_phi, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -12354,16 +12509,18 @@ contains
         bind(c, name='beam_init_struct_get_spin_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(beam_init_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%spin)) then
       data_ptr = c_loc(struct_obj%spin(lbound(struct_obj%spin, 1)))
       bounds(1) = int(lbound(struct_obj%spin, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -12375,27 +12532,28 @@ contains
   ! beam_init_struct%ellipse: 1D_NOT_type
 
   subroutine beam_init_struct_get_ellipse_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='beam_init_struct_get_ellipse_info')
+        bind(c, name='beam_init_struct_get_ellipse_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(beam_init_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%ellipse(lbound(struct_obj%ellipse, 1)))
-        bounds(1) = int(lbound(struct_obj%ellipse, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ellipse, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ellipse(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%ellipse)) then
+      data_ptr = c_loc(struct_obj%ellipse(lbound(struct_obj%ellipse, 1)))
+      bounds(1) = int(lbound(struct_obj%ellipse, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ellipse, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ellipse(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -12423,27 +12581,28 @@ contains
   ! beam_init_struct%grid: 1D_NOT_type
 
   subroutine beam_init_struct_get_grid_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='beam_init_struct_get_grid_info')
+        bind(c, name='beam_init_struct_get_grid_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(beam_init_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%grid(lbound(struct_obj%grid, 1)))
-        bounds(1) = int(lbound(struct_obj%grid, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%grid, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%grid(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%grid)) then
+      data_ptr = c_loc(struct_obj%grid(lbound(struct_obj%grid, 1)))
+      bounds(1) = int(lbound(struct_obj%grid, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%grid, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%grid(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -12453,16 +12612,18 @@ contains
         bind(c, name='beam_init_struct_get_center_jitter_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(beam_init_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%center_jitter)) then
       data_ptr = c_loc(struct_obj%center_jitter(lbound(struct_obj%center_jitter, 1)))
       bounds(1) = int(lbound(struct_obj%center_jitter, 1), c_int)
       bounds(2) = int(ubound(struct_obj%center_jitter, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -12477,16 +12638,18 @@ contains
         bind(c, name='beam_init_struct_get_emit_jitter_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(beam_init_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%emit_jitter)) then
       data_ptr = c_loc(struct_obj%emit_jitter(lbound(struct_obj%emit_jitter, 1)))
       bounds(1) = int(lbound(struct_obj%emit_jitter, 1), c_int)
       bounds(2) = int(ubound(struct_obj%emit_jitter, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -12766,16 +12929,18 @@ contains
         bind(c, name='beam_init_struct_get_center_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(beam_init_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%center)) then
       data_ptr = c_loc(struct_obj%center(lbound(struct_obj%center, 1)))
       bounds(1) = int(lbound(struct_obj%center, 1), c_int)
       bounds(2) = int(ubound(struct_obj%center, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -13164,27 +13329,29 @@ contains
         bind(c, name='lat_param_struct_get_t1_with_RF_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(lat_param_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%t1_with_RF(lbound(struct_obj%t1_with_RF,1), lbound(struct_obj%t1_with_RF,2)))
+    if (.true. .and. is_contiguous(struct_obj%t1_with_RF)) then
+      data_ptr = c_loc(struct_obj%t1_with_RF(lbound(struct_obj%t1_with_RF, 1), lbound(struct_obj%t1_with_RF, 2)))
       bounds(1) = int(lbound(struct_obj%t1_with_RF, 1), c_int)
       bounds(2) = int(ubound(struct_obj%t1_with_RF, 1), c_int)
       bounds(3) = int(lbound(struct_obj%t1_with_RF, 2), c_int)
       bounds(4) = int(ubound(struct_obj%t1_with_RF, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -13195,27 +13362,29 @@ contains
         bind(c, name='lat_param_struct_get_t1_no_RF_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(lat_param_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%t1_no_RF(lbound(struct_obj%t1_no_RF,1), lbound(struct_obj%t1_no_RF,2)))
+    if (.true. .and. is_contiguous(struct_obj%t1_no_RF)) then
+      data_ptr = c_loc(struct_obj%t1_no_RF(lbound(struct_obj%t1_no_RF, 1), lbound(struct_obj%t1_no_RF, 2)))
       bounds(1) = int(lbound(struct_obj%t1_no_RF, 1), c_int)
       bounds(2) = int(ubound(struct_obj%t1_no_RF, 1), c_int)
       bounds(3) = int(lbound(struct_obj%t1_no_RF, 2), c_int)
       bounds(4) = int(ubound(struct_obj%t1_no_RF, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -13851,16 +14020,18 @@ contains
         bind(c, name='anormal_mode_struct_get_synch_int_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(anormal_mode_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%synch_int)) then
       data_ptr = c_loc(struct_obj%synch_int(lbound(struct_obj%synch_int, 1)))
       bounds(1) = int(lbound(struct_obj%synch_int, 1), c_int)
       bounds(2) = int(ubound(struct_obj%synch_int, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -14188,16 +14359,18 @@ contains
         bind(c, name='normal_modes_struct_get_synch_int_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(normal_modes_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%synch_int)) then
       data_ptr = c_loc(struct_obj%synch_int(lbound(struct_obj%synch_int, 1)))
       bounds(1) = int(lbound(struct_obj%synch_int, 1), c_int)
       bounds(2) = int(ubound(struct_obj%synch_int, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -14500,16 +14673,18 @@ contains
         bind(c, name='em_field_struct_get_E_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_field_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%E)) then
       data_ptr = c_loc(struct_obj%E(lbound(struct_obj%E, 1)))
       bounds(1) = int(lbound(struct_obj%E, 1), c_int)
       bounds(2) = int(ubound(struct_obj%E, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -14524,16 +14699,18 @@ contains
         bind(c, name='em_field_struct_get_B_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_field_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%B)) then
       data_ptr = c_loc(struct_obj%B(lbound(struct_obj%B, 1)))
       bounds(1) = int(lbound(struct_obj%B, 1), c_int)
       bounds(2) = int(ubound(struct_obj%B, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -14548,27 +14725,29 @@ contains
         bind(c, name='em_field_struct_get_dE_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_field_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%dE(lbound(struct_obj%dE,1), lbound(struct_obj%dE,2)))
+    if (.true. .and. is_contiguous(struct_obj%dE)) then
+      data_ptr = c_loc(struct_obj%dE(lbound(struct_obj%dE, 1), lbound(struct_obj%dE, 2)))
       bounds(1) = int(lbound(struct_obj%dE, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dE, 1), c_int)
       bounds(3) = int(lbound(struct_obj%dE, 2), c_int)
       bounds(4) = int(ubound(struct_obj%dE, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -14579,27 +14758,29 @@ contains
         bind(c, name='em_field_struct_get_dB_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_field_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%dB(lbound(struct_obj%dB,1), lbound(struct_obj%dB,2)))
+    if (.true. .and. is_contiguous(struct_obj%dB)) then
+      data_ptr = c_loc(struct_obj%dB(lbound(struct_obj%dB, 1), lbound(struct_obj%dB, 2)))
       bounds(1) = int(lbound(struct_obj%dB, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dB, 1), c_int)
       bounds(3) = int(lbound(struct_obj%dB, 2), c_int)
       bounds(4) = int(ubound(struct_obj%dB, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -14648,16 +14829,18 @@ contains
         bind(c, name='em_field_struct_get_A_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(em_field_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%A)) then
       data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
       bounds(1) = int(lbound(struct_obj%A, 1), c_int)
       bounds(2) = int(ubound(struct_obj%A, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -15010,16 +15193,18 @@ contains
         bind(c, name='track_point_struct_get_vec0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(track_point_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%vec0)) then
       data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
       bounds(1) = int(lbound(struct_obj%vec0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%vec0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -15034,27 +15219,29 @@ contains
         bind(c, name='track_point_struct_get_mat6_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(track_point_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6,1), lbound(struct_obj%mat6,2)))
+    if (.true. .and. is_contiguous(struct_obj%mat6)) then
+      data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6, 1), lbound(struct_obj%mat6, 2)))
       bounds(1) = int(lbound(struct_obj%mat6, 1), c_int)
       bounds(2) = int(ubound(struct_obj%mat6, 1), c_int)
       bounds(3) = int(lbound(struct_obj%mat6, 2), c_int)
       bounds(4) = int(ubound(struct_obj%mat6, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -15114,27 +15301,28 @@ contains
   ! track_struct%pt: 1D_ALLOC_type
 
   subroutine track_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='track_struct_get_pt_info')
+        bind(c, name='track_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(track_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-        data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
-        bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%pt(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
+      bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%pt(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -15424,16 +15612,18 @@ contains
         bind(c, name='space_charge_common_struct_get_space_charge_mesh_size_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(space_charge_common_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%space_charge_mesh_size)) then
       data_ptr = c_loc(struct_obj%space_charge_mesh_size(lbound(struct_obj%space_charge_mesh_size, 1)))
       bounds(1) = int(lbound(struct_obj%space_charge_mesh_size, 1), c_int)
       bounds(2) = int(ubound(struct_obj%space_charge_mesh_size, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -15448,16 +15638,18 @@ contains
         bind(c, name='space_charge_common_struct_get_csr3d_mesh_size_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(space_charge_common_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%csr3d_mesh_size)) then
       data_ptr = c_loc(struct_obj%csr3d_mesh_size(lbound(struct_obj%csr3d_mesh_size, 1)))
       bounds(1) = int(lbound(struct_obj%csr3d_mesh_size, 1), c_int)
       bounds(2) = int(ubound(struct_obj%csr3d_mesh_size, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -15685,16 +15877,18 @@ contains
         bind(c, name='bmad_common_struct_get_d_orb_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bmad_common_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%d_orb)) then
       data_ptr = c_loc(struct_obj%d_orb(lbound(struct_obj%d_orb, 1)))
       bounds(1) = int(lbound(struct_obj%d_orb, 1), c_int)
       bounds(2) = int(ubound(struct_obj%d_orb, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -16912,27 +17106,28 @@ contains
   ! rad_int_branch_struct%ele: 1D_ALLOC_type
 
   subroutine rad_int_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='rad_int_branch_struct_get_ele_info')
+        bind(c, name='rad_int_branch_struct_get_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(rad_int_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ele)) then
-        data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
-        bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%ele) .and. is_contiguous(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -16991,27 +17186,28 @@ contains
   ! rad_int_all_ele_struct%branch: 1D_ALLOC_type
 
   subroutine rad_int_all_ele_struct_get_branch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='rad_int_all_ele_struct_get_branch_info')
+        bind(c, name='rad_int_all_ele_struct_get_branch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(rad_int_all_ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%branch)) then
-        data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
-        bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%branch) .and. is_contiguous(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -17293,27 +17489,28 @@ contains
   ! rf_ele_struct%steps: 1D_ALLOC_type
 
   subroutine rf_ele_struct_get_steps_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='rf_ele_struct_get_steps_info')
+        bind(c, name='rf_ele_struct_get_steps_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(rf_ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%steps)) then
-        data_ptr = c_loc(struct_obj%steps(lbound(struct_obj%steps, 1)))
-        bounds(1) = int(lbound(struct_obj%steps, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%steps, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%steps(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%steps) .and. is_contiguous(struct_obj%steps)) then
+      data_ptr = c_loc(struct_obj%steps(lbound(struct_obj%steps, 1)))
+      bounds(1) = int(lbound(struct_obj%steps, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%steps, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%steps(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -17513,8 +17710,6 @@ contains
     
     if (associated(struct_obj%descrip)) then
       data_ptr = c_loc(struct_obj%descrip)
-      ! Use 'len' for full length including spaces, or 'len_trim' if preferred.
-      ! usually for allocatables, 'len' is the desired exact memory size.
       str_len = int(len(struct_obj%descrip), c_int)
       is_allocated = .true.
     else
@@ -17937,27 +18132,28 @@ contains
   ! ele_struct%taylor: 1D_NOT_type
 
   subroutine ele_struct_get_taylor_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_taylor_info')
+        bind(c, name='ele_struct_get_taylor_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%taylor(lbound(struct_obj%taylor, 1)))
-        bounds(1) = int(lbound(struct_obj%taylor, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%taylor, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%taylor(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%taylor)) then
+      data_ptr = c_loc(struct_obj%taylor(lbound(struct_obj%taylor, 1)))
+      bounds(1) = int(lbound(struct_obj%taylor, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%taylor, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%taylor(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -17967,16 +18163,18 @@ contains
         bind(c, name='ele_struct_get_spin_taylor_ref_orb_in_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%spin_taylor_ref_orb_in)) then
       data_ptr = c_loc(struct_obj%spin_taylor_ref_orb_in(lbound(struct_obj%spin_taylor_ref_orb_in, 1)))
       bounds(1) = int(lbound(struct_obj%spin_taylor_ref_orb_in, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin_taylor_ref_orb_in, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -17988,27 +18186,28 @@ contains
   ! ele_struct%spin_taylor: 1D_NOT_type
 
   subroutine ele_struct_get_spin_taylor_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_spin_taylor_info')
+        bind(c, name='ele_struct_get_spin_taylor_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%spin_taylor(lbound(struct_obj%spin_taylor, 1)))
-        bounds(1) = int(lbound(struct_obj%spin_taylor, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%spin_taylor, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%spin_taylor(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%spin_taylor)) then
+      data_ptr = c_loc(struct_obj%spin_taylor(lbound(struct_obj%spin_taylor, 1)))
+      bounds(1) = int(lbound(struct_obj%spin_taylor, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%spin_taylor, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%spin_taylor(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -18042,135 +18241,140 @@ contains
   ! ele_struct%wall3d: 1D_PTR_type
 
   subroutine ele_struct_get_wall3d_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_wall3d_info')
+        bind(c, name='ele_struct_get_wall3d_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%wall3d)) then
-        data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
-        bounds(1) = int(lbound(struct_obj%wall3d, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%wall3d, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%wall3d(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%wall3d) .and. is_contiguous(struct_obj%wall3d)) then
+      data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
+      bounds(1) = int(lbound(struct_obj%wall3d, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%wall3d, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%wall3d(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! ele_struct%cartesian_map: 1D_PTR_type
 
   subroutine ele_struct_get_cartesian_map_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_cartesian_map_info')
+        bind(c, name='ele_struct_get_cartesian_map_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%cartesian_map)) then
-        data_ptr = c_loc(struct_obj%cartesian_map(lbound(struct_obj%cartesian_map, 1)))
-        bounds(1) = int(lbound(struct_obj%cartesian_map, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%cartesian_map, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%cartesian_map(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%cartesian_map) .and. is_contiguous(struct_obj%cartesian_map)) then
+      data_ptr = c_loc(struct_obj%cartesian_map(lbound(struct_obj%cartesian_map, 1)))
+      bounds(1) = int(lbound(struct_obj%cartesian_map, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%cartesian_map, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%cartesian_map(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! ele_struct%cylindrical_map: 1D_PTR_type
 
   subroutine ele_struct_get_cylindrical_map_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_cylindrical_map_info')
+        bind(c, name='ele_struct_get_cylindrical_map_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%cylindrical_map)) then
-        data_ptr = c_loc(struct_obj%cylindrical_map(lbound(struct_obj%cylindrical_map, 1)))
-        bounds(1) = int(lbound(struct_obj%cylindrical_map, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%cylindrical_map, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%cylindrical_map(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%cylindrical_map) .and. is_contiguous(struct_obj%cylindrical_map)) then
+      data_ptr = c_loc(struct_obj%cylindrical_map(lbound(struct_obj%cylindrical_map, 1)))
+      bounds(1) = int(lbound(struct_obj%cylindrical_map, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%cylindrical_map, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%cylindrical_map(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! ele_struct%gen_grad_map: 1D_PTR_type
 
   subroutine ele_struct_get_gen_grad_map_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_gen_grad_map_info')
+        bind(c, name='ele_struct_get_gen_grad_map_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%gen_grad_map)) then
-        data_ptr = c_loc(struct_obj%gen_grad_map(lbound(struct_obj%gen_grad_map, 1)))
-        bounds(1) = int(lbound(struct_obj%gen_grad_map, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%gen_grad_map, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%gen_grad_map(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%gen_grad_map) .and. is_contiguous(struct_obj%gen_grad_map)) then
+      data_ptr = c_loc(struct_obj%gen_grad_map(lbound(struct_obj%gen_grad_map, 1)))
+      bounds(1) = int(lbound(struct_obj%gen_grad_map, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%gen_grad_map, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%gen_grad_map(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! ele_struct%grid_field: 1D_PTR_type
 
   subroutine ele_struct_get_grid_field_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='ele_struct_get_grid_field_info')
+        bind(c, name='ele_struct_get_grid_field_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(ele_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%grid_field)) then
-        data_ptr = c_loc(struct_obj%grid_field(lbound(struct_obj%grid_field, 1)))
-        bounds(1) = int(lbound(struct_obj%grid_field, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%grid_field, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%grid_field(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%grid_field) .and. is_contiguous(struct_obj%grid_field)) then
+      data_ptr = c_loc(struct_obj%grid_field(lbound(struct_obj%grid_field, 1)))
+      bounds(1) = int(lbound(struct_obj%grid_field, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%grid_field, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%grid_field(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -18264,16 +18468,18 @@ contains
         bind(c, name='ele_struct_get_value_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%value)) then
       data_ptr = c_loc(struct_obj%value(lbound(struct_obj%value, 1)))
       bounds(1) = int(lbound(struct_obj%value, 1), c_int)
       bounds(2) = int(ubound(struct_obj%value, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18288,16 +18494,18 @@ contains
         bind(c, name='ele_struct_get_old_value_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%old_value)) then
       data_ptr = c_loc(struct_obj%old_value(lbound(struct_obj%old_value, 1)))
       bounds(1) = int(lbound(struct_obj%old_value, 1), c_int)
       bounds(2) = int(ubound(struct_obj%old_value, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18312,27 +18520,29 @@ contains
         bind(c, name='ele_struct_get_spin_q_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q,1), lbound(struct_obj%spin_q,2)))
+    if (.true. .and. is_contiguous(struct_obj%spin_q)) then
+      data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q, 1), lbound(struct_obj%spin_q, 2)))
       bounds(1) = int(lbound(struct_obj%spin_q, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin_q, 1), c_int)
       bounds(3) = int(lbound(struct_obj%spin_q, 2), c_int)
       bounds(4) = int(ubound(struct_obj%spin_q, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -18343,16 +18553,18 @@ contains
         bind(c, name='ele_struct_get_vec0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%vec0)) then
       data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
       bounds(1) = int(lbound(struct_obj%vec0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%vec0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18367,27 +18579,29 @@ contains
         bind(c, name='ele_struct_get_mat6_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6,1), lbound(struct_obj%mat6,2)))
+    if (.true. .and. is_contiguous(struct_obj%mat6)) then
+      data_ptr = c_loc(struct_obj%mat6(lbound(struct_obj%mat6, 1), lbound(struct_obj%mat6, 2)))
       bounds(1) = int(lbound(struct_obj%mat6, 1), c_int)
       bounds(2) = int(ubound(struct_obj%mat6, 1), c_int)
       bounds(3) = int(lbound(struct_obj%mat6, 2), c_int)
       bounds(4) = int(ubound(struct_obj%mat6, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -18398,27 +18612,29 @@ contains
         bind(c, name='ele_struct_get_c_mat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%c_mat(lbound(struct_obj%c_mat,1), lbound(struct_obj%c_mat,2)))
+    if (.true. .and. is_contiguous(struct_obj%c_mat)) then
+      data_ptr = c_loc(struct_obj%c_mat(lbound(struct_obj%c_mat, 1), lbound(struct_obj%c_mat, 2)))
       bounds(1) = int(lbound(struct_obj%c_mat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%c_mat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%c_mat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%c_mat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -18505,16 +18721,18 @@ contains
         bind(c, name='ele_struct_get_a_pole_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%a_pole)) then
+    if (associated(struct_obj%a_pole) .and. is_contiguous(struct_obj%a_pole)) then
       data_ptr = c_loc(struct_obj%a_pole(lbound(struct_obj%a_pole, 1)))
       bounds(1) = int(lbound(struct_obj%a_pole, 1), c_int)
       bounds(2) = int(ubound(struct_obj%a_pole, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18529,16 +18747,18 @@ contains
         bind(c, name='ele_struct_get_b_pole_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%b_pole)) then
+    if (associated(struct_obj%b_pole) .and. is_contiguous(struct_obj%b_pole)) then
       data_ptr = c_loc(struct_obj%b_pole(lbound(struct_obj%b_pole, 1)))
       bounds(1) = int(lbound(struct_obj%b_pole, 1), c_int)
       bounds(2) = int(ubound(struct_obj%b_pole, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18553,16 +18773,18 @@ contains
         bind(c, name='ele_struct_get_a_pole_elec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%a_pole_elec)) then
+    if (associated(struct_obj%a_pole_elec) .and. is_contiguous(struct_obj%a_pole_elec)) then
       data_ptr = c_loc(struct_obj%a_pole_elec(lbound(struct_obj%a_pole_elec, 1)))
       bounds(1) = int(lbound(struct_obj%a_pole_elec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%a_pole_elec, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18577,16 +18799,18 @@ contains
         bind(c, name='ele_struct_get_b_pole_elec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%b_pole_elec)) then
+    if (associated(struct_obj%b_pole_elec) .and. is_contiguous(struct_obj%b_pole_elec)) then
       data_ptr = c_loc(struct_obj%b_pole_elec(lbound(struct_obj%b_pole_elec, 1)))
       bounds(1) = int(lbound(struct_obj%b_pole_elec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%b_pole_elec, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18601,16 +18825,18 @@ contains
         bind(c, name='ele_struct_get_custom_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%custom)) then
+    if (associated(struct_obj%custom) .and. is_contiguous(struct_obj%custom)) then
       data_ptr = c_loc(struct_obj%custom(lbound(struct_obj%custom, 1)))
       bounds(1) = int(lbound(struct_obj%custom, 1), c_int)
       bounds(2) = int(ubound(struct_obj%custom, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -18622,36 +18848,36 @@ contains
   ! ele_struct%r: 3D_PTR_real
 
   subroutine ele_struct_get_r_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated) &
-      bind(c, name='ele_struct_get_r_info')
+        bind(c, name='ele_struct_get_r_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(6), intent(out) :: bounds
-    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-    integer :: d1_size, d2_size
+    integer(c_int), dimension(3), intent(out) :: strides
+    integer :: d1, d2
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%r)) then
-      data_ptr = c_loc(struct_obj%r( &
-        lbound(struct_obj%r,1), lbound(struct_obj%r,2), lbound(struct_obj%r,3)))
-        
+    if (associated(struct_obj%r) .and. is_contiguous(struct_obj%r)) then
+      data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r, 1), lbound(struct_obj%r, 2), lbound(struct_obj%r, 3)))
       bounds(1) = int(lbound(struct_obj%r, 1), c_int)
       bounds(2) = int(ubound(struct_obj%r, 1), c_int)
       bounds(3) = int(lbound(struct_obj%r, 2), c_int)
       bounds(4) = int(ubound(struct_obj%r, 2), c_int)
       bounds(5) = int(lbound(struct_obj%r, 3), c_int)
       bounds(6) = int(ubound(struct_obj%r, 3), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
-      d2_size = bounds(4) - bounds(3) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
-      strides(3) = d1_size * d2_size
+      d1 = bounds(2) - bounds(1) + 1
+      d2 = bounds(4) - bounds(3) + 1
+      strides(2) = d1
+      strides(3) = d1 * d2
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -19474,16 +19700,18 @@ contains
         bind(c, name='complex_taylor_term_struct_get_expn_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(complex_taylor_term_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%expn)) then
       data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
       bounds(1) = int(lbound(struct_obj%expn, 1), c_int)
       bounds(2) = int(ubound(struct_obj%expn, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -19566,27 +19794,28 @@ contains
   ! complex_taylor_struct%term: 1D_PTR_type
 
   subroutine complex_taylor_struct_get_term_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='complex_taylor_struct_get_term_info')
+        bind(c, name='complex_taylor_struct_get_term_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(complex_taylor_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%term)) then
-        data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
-        bounds(1) = int(lbound(struct_obj%term, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%term, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%term) .and. is_contiguous(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      bounds(1) = int(lbound(struct_obj%term, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%term, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%term(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -19896,27 +20125,28 @@ contains
   ! branch_struct%ele: 1D_PTR_type
 
   subroutine branch_struct_get_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='branch_struct_get_ele_info')
+        bind(c, name='branch_struct_get_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%ele)) then
-        data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
-        bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%ele) .and. is_contiguous(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -19965,27 +20195,28 @@ contains
   ! branch_struct%wall3d: 1D_PTR_type
 
   subroutine branch_struct_get_wall3d_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='branch_struct_get_wall3d_info')
+        bind(c, name='branch_struct_get_wall3d_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%wall3d)) then
-        data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
-        bounds(1) = int(lbound(struct_obj%wall3d, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%wall3d, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%wall3d(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%wall3d) .and. is_contiguous(struct_obj%wall3d)) then
+      data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
+      bounds(1) = int(lbound(struct_obj%wall3d, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%wall3d, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%wall3d(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -20210,27 +20441,28 @@ contains
   ! lat_struct%constant: 1D_ALLOC_type
 
   subroutine lat_struct_get_constant_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_struct_get_constant_info')
+        bind(c, name='lat_struct_get_constant_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%constant)) then
-        data_ptr = c_loc(struct_obj%constant(lbound(struct_obj%constant, 1)))
-        bounds(1) = int(lbound(struct_obj%constant, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%constant, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%constant(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%constant) .and. is_contiguous(struct_obj%constant)) then
+      data_ptr = c_loc(struct_obj%constant(lbound(struct_obj%constant, 1)))
+      bounds(1) = int(lbound(struct_obj%constant, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%constant, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%constant(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -20387,81 +20619,84 @@ contains
   ! lat_struct%ele: 1D_PTR_type
 
   subroutine lat_struct_get_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_struct_get_ele_info')
+        bind(c, name='lat_struct_get_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%ele)) then
-        data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
-        bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%ele) .and. is_contiguous(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! lat_struct%branch: 1D_ALLOC_type
 
   subroutine lat_struct_get_branch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_struct_get_branch_info')
+        bind(c, name='lat_struct_get_branch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%branch)) then
-        data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
-        bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%branch) .and. is_contiguous(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! lat_struct%control: 1D_ALLOC_type
 
   subroutine lat_struct_get_control_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_struct_get_control_info')
+        bind(c, name='lat_struct_get_control_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%control)) then
-        data_ptr = c_loc(struct_obj%control(lbound(struct_obj%control, 1)))
-        bounds(1) = int(lbound(struct_obj%control, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%control, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%control(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%control) .and. is_contiguous(struct_obj%control)) then
+      data_ptr = c_loc(struct_obj%control(lbound(struct_obj%control, 1)))
+      bounds(1) = int(lbound(struct_obj%control, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%control, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%control(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -20540,16 +20775,18 @@ contains
         bind(c, name='lat_struct_get_custom_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(lat_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%custom)) then
+    if (allocated(struct_obj%custom) .and. is_contiguous(struct_obj%custom)) then
       data_ptr = c_loc(struct_obj%custom(lbound(struct_obj%custom, 1)))
       bounds(1) = int(lbound(struct_obj%custom, 1), c_int)
       bounds(2) = int(ubound(struct_obj%custom, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -20690,16 +20927,18 @@ contains
         bind(c, name='lat_struct_get_ic_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(lat_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ic)) then
+    if (allocated(struct_obj%ic) .and. is_contiguous(struct_obj%ic)) then
       data_ptr = c_loc(struct_obj%ic(lbound(struct_obj%ic, 1)))
       bounds(1) = int(lbound(struct_obj%ic, 1), c_int)
       bounds(2) = int(ubound(struct_obj%ic, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -20820,27 +21059,28 @@ contains
   ! bunch_struct%particle: 1D_ALLOC_type
 
   subroutine bunch_struct_get_particle_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bunch_struct_get_particle_info')
+        bind(c, name='bunch_struct_get_particle_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bunch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%particle)) then
-        data_ptr = c_loc(struct_obj%particle(lbound(struct_obj%particle, 1)))
-        bounds(1) = int(lbound(struct_obj%particle, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%particle, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%particle(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%particle) .and. is_contiguous(struct_obj%particle)) then
+      data_ptr = c_loc(struct_obj%particle(lbound(struct_obj%particle, 1)))
+      bounds(1) = int(lbound(struct_obj%particle, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%particle, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%particle(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -20850,16 +21090,18 @@ contains
         bind(c, name='bunch_struct_get_ix_z_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bunch_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ix_z)) then
+    if (allocated(struct_obj%ix_z) .and. is_contiguous(struct_obj%ix_z)) then
       data_ptr = c_loc(struct_obj%ix_z(lbound(struct_obj%ix_z, 1)))
       bounds(1) = int(lbound(struct_obj%ix_z, 1), c_int)
       bounds(2) = int(ubound(struct_obj%ix_z, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -21301,27 +21543,29 @@ contains
         bind(c, name='bunch_params_struct_get_sigma_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bunch_params_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%sigma(lbound(struct_obj%sigma,1), lbound(struct_obj%sigma,2)))
+    if (.true. .and. is_contiguous(struct_obj%sigma)) then
+      data_ptr = c_loc(struct_obj%sigma(lbound(struct_obj%sigma, 1), lbound(struct_obj%sigma, 2)))
       bounds(1) = int(lbound(struct_obj%sigma, 1), c_int)
       bounds(2) = int(ubound(struct_obj%sigma, 1), c_int)
       bounds(3) = int(lbound(struct_obj%sigma, 2), c_int)
       bounds(4) = int(ubound(struct_obj%sigma, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -21332,16 +21576,18 @@ contains
         bind(c, name='bunch_params_struct_get_rel_max_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bunch_params_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%rel_max)) then
       data_ptr = c_loc(struct_obj%rel_max(lbound(struct_obj%rel_max, 1)))
       bounds(1) = int(lbound(struct_obj%rel_max, 1), c_int)
       bounds(2) = int(ubound(struct_obj%rel_max, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -21356,16 +21602,18 @@ contains
         bind(c, name='bunch_params_struct_get_rel_min_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(bunch_params_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%rel_min)) then
       data_ptr = c_loc(struct_obj%rel_min(lbound(struct_obj%rel_min, 1)))
       bounds(1) = int(lbound(struct_obj%rel_min, 1), c_int)
       bounds(2) = int(ubound(struct_obj%rel_min, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -21676,27 +21924,28 @@ contains
   ! beam_struct%bunch: 1D_ALLOC_type
 
   subroutine beam_struct_get_bunch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='beam_struct_get_bunch_info')
+        bind(c, name='beam_struct_get_bunch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(beam_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%bunch)) then
-        data_ptr = c_loc(struct_obj%bunch(lbound(struct_obj%bunch, 1)))
-        bounds(1) = int(lbound(struct_obj%bunch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%bunch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%bunch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%bunch) .and. is_contiguous(struct_obj%bunch)) then
+      data_ptr = c_loc(struct_obj%bunch(lbound(struct_obj%bunch, 1)))
+      bounds(1) = int(lbound(struct_obj%bunch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%bunch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%bunch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -22134,27 +22383,28 @@ contains
   ! aperture_scan_struct%point: 1D_ALLOC_type
 
   subroutine aperture_scan_struct_get_point_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='aperture_scan_struct_get_point_info')
+        bind(c, name='aperture_scan_struct_get_point_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(aperture_scan_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%point)) then
-        data_ptr = c_loc(struct_obj%point(lbound(struct_obj%point, 1)))
-        bounds(1) = int(lbound(struct_obj%point, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%point, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%point(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%point) .and. is_contiguous(struct_obj%point)) then
+      data_ptr = c_loc(struct_obj%point(lbound(struct_obj%point, 1)))
+      bounds(1) = int(lbound(struct_obj%point, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%point, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%point(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -22256,16 +22506,18 @@ contains
         bind(c, name='tao_spin_dn_dpz_struct_get_vec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_dn_dpz_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%vec)) then
       data_ptr = c_loc(struct_obj%vec(lbound(struct_obj%vec, 1)))
       bounds(1) = int(lbound(struct_obj%vec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%vec, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22280,27 +22532,29 @@ contains
         bind(c, name='tao_spin_dn_dpz_struct_get_partial_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_dn_dpz_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%partial(lbound(struct_obj%partial,1), lbound(struct_obj%partial,2)))
+    if (.true. .and. is_contiguous(struct_obj%partial)) then
+      data_ptr = c_loc(struct_obj%partial(lbound(struct_obj%partial, 1), lbound(struct_obj%partial, 2)))
       bounds(1) = int(lbound(struct_obj%partial, 1), c_int)
       bounds(2) = int(ubound(struct_obj%partial, 1), c_int)
       bounds(3) = int(lbound(struct_obj%partial, 2), c_int)
       bounds(4) = int(ubound(struct_obj%partial, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -22311,27 +22565,29 @@ contains
         bind(c, name='tao_spin_dn_dpz_struct_get_partial2_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_dn_dpz_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%partial2(lbound(struct_obj%partial2,1), lbound(struct_obj%partial2,2)))
+    if (.true. .and. is_contiguous(struct_obj%partial2)) then
+      data_ptr = c_loc(struct_obj%partial2(lbound(struct_obj%partial2, 1), lbound(struct_obj%partial2, 2)))
       bounds(1) = int(lbound(struct_obj%partial2, 1), c_int)
       bounds(2) = int(ubound(struct_obj%partial2, 1), c_int)
       bounds(3) = int(lbound(struct_obj%partial2, 2), c_int)
       bounds(4) = int(ubound(struct_obj%partial2, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -22493,27 +22749,29 @@ contains
         bind(c, name='spin_orbit_map1_struct_get_orb_mat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_orbit_map1_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%orb_mat(lbound(struct_obj%orb_mat,1), lbound(struct_obj%orb_mat,2)))
+    if (.true. .and. is_contiguous(struct_obj%orb_mat)) then
+      data_ptr = c_loc(struct_obj%orb_mat(lbound(struct_obj%orb_mat, 1), lbound(struct_obj%orb_mat, 2)))
       bounds(1) = int(lbound(struct_obj%orb_mat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orb_mat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%orb_mat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%orb_mat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -22524,16 +22782,18 @@ contains
         bind(c, name='spin_orbit_map1_struct_get_vec0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_orbit_map1_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%vec0)) then
       data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
       bounds(1) = int(lbound(struct_obj%vec0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%vec0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22548,27 +22808,29 @@ contains
         bind(c, name='spin_orbit_map1_struct_get_spin_q_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_orbit_map1_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q,1), lbound(struct_obj%spin_q,2)))
+    if (.true. .and. is_contiguous(struct_obj%spin_q)) then
+      data_ptr = c_loc(struct_obj%spin_q(lbound(struct_obj%spin_q, 1), lbound(struct_obj%spin_q, 2)))
       bounds(1) = int(lbound(struct_obj%spin_q, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin_q, 1), c_int)
       bounds(3) = int(lbound(struct_obj%spin_q, 2), c_int)
       bounds(4) = int(ubound(struct_obj%spin_q, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -22631,16 +22893,18 @@ contains
         bind(c, name='spin_axis_struct_get_l_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_axis_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%l)) then
       data_ptr = c_loc(struct_obj%l(lbound(struct_obj%l, 1)))
       bounds(1) = int(lbound(struct_obj%l, 1), c_int)
       bounds(2) = int(ubound(struct_obj%l, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22655,16 +22919,18 @@ contains
         bind(c, name='spin_axis_struct_get_n0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_axis_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%n0)) then
       data_ptr = c_loc(struct_obj%n0(lbound(struct_obj%n0, 1)))
       bounds(1) = int(lbound(struct_obj%n0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%n0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22679,16 +22945,18 @@ contains
         bind(c, name='spin_axis_struct_get_m_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(spin_axis_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%m)) then
       data_ptr = c_loc(struct_obj%m(lbound(struct_obj%m, 1)))
       bounds(1) = int(lbound(struct_obj%m, 1), c_int)
       bounds(2) = int(ubound(struct_obj%m, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22782,16 +23050,18 @@ contains
         bind(c, name='ptc_normal_form_struct_get_orb0_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(ptc_normal_form_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%orb0)) then
       data_ptr = c_loc(struct_obj%orb0(lbound(struct_obj%orb0, 1)))
       bounds(1) = int(lbound(struct_obj%orb0, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orb0, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -22901,189 +23171,196 @@ contains
   ! bmad_normal_form_struct%M: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_M_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_M_info')
+        bind(c, name='bmad_normal_form_struct_get_M_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%M(lbound(struct_obj%M, 1)))
-        bounds(1) = int(lbound(struct_obj%M, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%M, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%M(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%M)) then
+      data_ptr = c_loc(struct_obj%M(lbound(struct_obj%M, 1)))
+      bounds(1) = int(lbound(struct_obj%M, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%M, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%M(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%A: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_A_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_A_info')
+        bind(c, name='bmad_normal_form_struct_get_A_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
-        bounds(1) = int(lbound(struct_obj%A, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%A, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%A(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%A)) then
+      data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
+      bounds(1) = int(lbound(struct_obj%A, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%A, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%A(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%A_inv: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_A_inv_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_A_inv_info')
+        bind(c, name='bmad_normal_form_struct_get_A_inv_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%A_inv(lbound(struct_obj%A_inv, 1)))
-        bounds(1) = int(lbound(struct_obj%A_inv, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%A_inv, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%A_inv(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%A_inv)) then
+      data_ptr = c_loc(struct_obj%A_inv(lbound(struct_obj%A_inv, 1)))
+      bounds(1) = int(lbound(struct_obj%A_inv, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%A_inv, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%A_inv(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%dhdj: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_dhdj_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_dhdj_info')
+        bind(c, name='bmad_normal_form_struct_get_dhdj_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%dhdj(lbound(struct_obj%dhdj, 1)))
-        bounds(1) = int(lbound(struct_obj%dhdj, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%dhdj, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%dhdj(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%dhdj)) then
+      data_ptr = c_loc(struct_obj%dhdj(lbound(struct_obj%dhdj, 1)))
+      bounds(1) = int(lbound(struct_obj%dhdj, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%dhdj, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%dhdj(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%F: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_F_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_F_info')
+        bind(c, name='bmad_normal_form_struct_get_F_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%F(lbound(struct_obj%F, 1)))
-        bounds(1) = int(lbound(struct_obj%F, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%F, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%F(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%F)) then
+      data_ptr = c_loc(struct_obj%F(lbound(struct_obj%F, 1)))
+      bounds(1) = int(lbound(struct_obj%F, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%F, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%F(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%L: 1D_NOT_type
 
   subroutine bmad_normal_form_struct_get_L_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_L_info')
+        bind(c, name='bmad_normal_form_struct_get_L_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-        data_ptr = c_loc(struct_obj%L(lbound(struct_obj%L, 1)))
-        bounds(1) = int(lbound(struct_obj%L, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%L, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%L(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (.true. .and. is_contiguous(struct_obj%L)) then
+      data_ptr = c_loc(struct_obj%L(lbound(struct_obj%L, 1)))
+      bounds(1) = int(lbound(struct_obj%L, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%L, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%L(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! bmad_normal_form_struct%h: 1D_ALLOC_type
 
   subroutine bmad_normal_form_struct_get_h_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bmad_normal_form_struct_get_h_info')
+        bind(c, name='bmad_normal_form_struct_get_h_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bmad_normal_form_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%h)) then
-        data_ptr = c_loc(struct_obj%h(lbound(struct_obj%h, 1)))
-        bounds(1) = int(lbound(struct_obj%h, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%h, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%h(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%h) .and. is_contiguous(struct_obj%h)) then
+      data_ptr = c_loc(struct_obj%h(lbound(struct_obj%h, 1)))
+      bounds(1) = int(lbound(struct_obj%h, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%h, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%h(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -23142,27 +23419,28 @@ contains
   ! bunch_track_struct%pt: 1D_ALLOC_type
 
   subroutine bunch_track_struct_get_pt_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='bunch_track_struct_get_pt_info')
+        bind(c, name='bunch_track_struct_get_pt_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(bunch_track_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pt)) then
-        data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
-        bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%pt(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%pt) .and. is_contiguous(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
+      bounds(1) = int(lbound(struct_obj%pt, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%pt, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%pt(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -23800,27 +24078,28 @@ contains
   ! lat_ele_order_array_struct%ele: 1D_ALLOC_type
 
   subroutine lat_ele_order_array_struct_get_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_ele_order_array_struct_get_ele_info')
+        bind(c, name='lat_ele_order_array_struct_get_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_ele_order_array_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ele)) then
-        data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
-        bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%ele) .and. is_contiguous(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -23882,27 +24161,29 @@ contains
         bind(c, name='tao_lat_sigma_struct_get_mat_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_lat_sigma_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%mat(lbound(struct_obj%mat,1), lbound(struct_obj%mat,2)))
+    if (.true. .and. is_contiguous(struct_obj%mat)) then
+      data_ptr = c_loc(struct_obj%mat(lbound(struct_obj%mat, 1), lbound(struct_obj%mat, 2)))
       bounds(1) = int(lbound(struct_obj%mat, 1), c_int)
       bounds(2) = int(ubound(struct_obj%mat, 1), c_int)
       bounds(3) = int(lbound(struct_obj%mat, 2), c_int)
       bounds(4) = int(ubound(struct_obj%mat, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -23986,16 +24267,18 @@ contains
         bind(c, name='tao_spin_ele_struct_get_orb_eigen_val_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_ele_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%orb_eigen_val)) then
       data_ptr = c_loc(struct_obj%orb_eigen_val(lbound(struct_obj%orb_eigen_val, 1)))
       bounds(1) = int(lbound(struct_obj%orb_eigen_val, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orb_eigen_val, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -24010,27 +24293,29 @@ contains
         bind(c, name='tao_spin_ele_struct_get_orb_eigen_vec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_ele_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%orb_eigen_vec(lbound(struct_obj%orb_eigen_vec,1), lbound(struct_obj%orb_eigen_vec,2)))
+    if (.true. .and. is_contiguous(struct_obj%orb_eigen_vec)) then
+      data_ptr = c_loc(struct_obj%orb_eigen_vec(lbound(struct_obj%orb_eigen_vec, 1), lbound(struct_obj%orb_eigen_vec, 2)))
       bounds(1) = int(lbound(struct_obj%orb_eigen_vec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%orb_eigen_vec, 1), c_int)
       bounds(3) = int(lbound(struct_obj%orb_eigen_vec, 2), c_int)
       bounds(4) = int(ubound(struct_obj%orb_eigen_vec, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -24041,27 +24326,29 @@ contains
         bind(c, name='tao_spin_ele_struct_get_spin_eigen_vec_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_ele_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%spin_eigen_vec(lbound(struct_obj%spin_eigen_vec,1), lbound(struct_obj%spin_eigen_vec,2)))
+    if (.true. .and. is_contiguous(struct_obj%spin_eigen_vec)) then
+      data_ptr = c_loc(struct_obj%spin_eigen_vec(lbound(struct_obj%spin_eigen_vec, 1), lbound(struct_obj%spin_eigen_vec, 2)))
       bounds(1) = int(lbound(struct_obj%spin_eigen_vec, 1), c_int)
       bounds(2) = int(ubound(struct_obj%spin_eigen_vec, 1), c_int)
       bounds(3) = int(lbound(struct_obj%spin_eigen_vec, 2), c_int)
       bounds(4) = int(ubound(struct_obj%spin_eigen_vec, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -24313,16 +24600,18 @@ contains
         bind(c, name='tao_spin_polarization_struct_get_pol_limit_dk_partial_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_polarization_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%pol_limit_dk_partial)) then
       data_ptr = c_loc(struct_obj%pol_limit_dk_partial(lbound(struct_obj%pol_limit_dk_partial, 1)))
       bounds(1) = int(lbound(struct_obj%pol_limit_dk_partial, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pol_limit_dk_partial, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -24337,16 +24626,18 @@ contains
         bind(c, name='tao_spin_polarization_struct_get_pol_limit_dk_partial2_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_polarization_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%pol_limit_dk_partial2)) then
       data_ptr = c_loc(struct_obj%pol_limit_dk_partial2(lbound(struct_obj%pol_limit_dk_partial2, 1)))
       bounds(1) = int(lbound(struct_obj%pol_limit_dk_partial2, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pol_limit_dk_partial2, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -24399,16 +24690,18 @@ contains
         bind(c, name='tao_spin_polarization_struct_get_depol_rate_partial_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_polarization_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%depol_rate_partial)) then
       data_ptr = c_loc(struct_obj%depol_rate_partial(lbound(struct_obj%depol_rate_partial, 1)))
       bounds(1) = int(lbound(struct_obj%depol_rate_partial, 1), c_int)
       bounds(2) = int(ubound(struct_obj%depol_rate_partial, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -24423,16 +24716,18 @@ contains
         bind(c, name='tao_spin_polarization_struct_get_depol_rate_partial2_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_polarization_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
+    if (.true. .and. is_contiguous(struct_obj%depol_rate_partial2)) then
       data_ptr = c_loc(struct_obj%depol_rate_partial2(lbound(struct_obj%depol_rate_partial2, 1)))
       bounds(1) = int(lbound(struct_obj%depol_rate_partial2, 1), c_int)
       bounds(2) = int(ubound(struct_obj%depol_rate_partial2, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -24560,27 +24855,28 @@ contains
   ! tao_spin_polarization_struct%q_ele: 1D_ALLOC_type
 
   subroutine tao_spin_polarization_struct_get_q_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_spin_polarization_struct_get_q_ele_info')
+        bind(c, name='tao_spin_polarization_struct_get_q_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_spin_polarization_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%q_ele)) then
-        data_ptr = c_loc(struct_obj%q_ele(lbound(struct_obj%q_ele, 1)))
-        bounds(1) = int(lbound(struct_obj%q_ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%q_ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%q_ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%q_ele) .and. is_contiguous(struct_obj%q_ele)) then
+      data_ptr = c_loc(struct_obj%q_ele(lbound(struct_obj%q_ele, 1)))
+      bounds(1) = int(lbound(struct_obj%q_ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%q_ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%q_ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -24666,162 +24962,168 @@ contains
   ! tao_lattice_branch_struct%lat_sigma: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_lat_sigma_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_lat_sigma_info')
+        bind(c, name='tao_lattice_branch_struct_get_lat_sigma_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%lat_sigma)) then
-        data_ptr = c_loc(struct_obj%lat_sigma(lbound(struct_obj%lat_sigma, 1)))
-        bounds(1) = int(lbound(struct_obj%lat_sigma, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%lat_sigma, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%lat_sigma(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%lat_sigma) .and. is_contiguous(struct_obj%lat_sigma)) then
+      data_ptr = c_loc(struct_obj%lat_sigma(lbound(struct_obj%lat_sigma, 1)))
+      bounds(1) = int(lbound(struct_obj%lat_sigma, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%lat_sigma, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%lat_sigma(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%spin_ele: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_spin_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_spin_ele_info')
+        bind(c, name='tao_lattice_branch_struct_get_spin_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%spin_ele)) then
-        data_ptr = c_loc(struct_obj%spin_ele(lbound(struct_obj%spin_ele, 1)))
-        bounds(1) = int(lbound(struct_obj%spin_ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%spin_ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%spin_ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%spin_ele) .and. is_contiguous(struct_obj%spin_ele)) then
+      data_ptr = c_loc(struct_obj%spin_ele(lbound(struct_obj%spin_ele, 1)))
+      bounds(1) = int(lbound(struct_obj%spin_ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%spin_ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%spin_ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%bunch_params: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_bunch_params_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_bunch_params_info')
+        bind(c, name='tao_lattice_branch_struct_get_bunch_params_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%bunch_params)) then
-        data_ptr = c_loc(struct_obj%bunch_params(lbound(struct_obj%bunch_params, 1)))
-        bounds(1) = int(lbound(struct_obj%bunch_params, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%bunch_params, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%bunch_params(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%bunch_params) .and. is_contiguous(struct_obj%bunch_params)) then
+      data_ptr = c_loc(struct_obj%bunch_params(lbound(struct_obj%bunch_params, 1)))
+      bounds(1) = int(lbound(struct_obj%bunch_params, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%bunch_params, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%bunch_params(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%bunch_params_comb: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_bunch_params_comb_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_bunch_params_comb_info')
+        bind(c, name='tao_lattice_branch_struct_get_bunch_params_comb_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%bunch_params_comb)) then
-        data_ptr = c_loc(struct_obj%bunch_params_comb(lbound(struct_obj%bunch_params_comb, 1)))
-        bounds(1) = int(lbound(struct_obj%bunch_params_comb, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%bunch_params_comb, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%bunch_params_comb(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%bunch_params_comb) .and. is_contiguous(struct_obj%bunch_params_comb)) then
+      data_ptr = c_loc(struct_obj%bunch_params_comb(lbound(struct_obj%bunch_params_comb, 1)))
+      bounds(1) = int(lbound(struct_obj%bunch_params_comb, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%bunch_params_comb, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%bunch_params_comb(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%orbit: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_orbit_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_orbit_info')
+        bind(c, name='tao_lattice_branch_struct_get_orbit_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%orbit)) then
-        data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
-        bounds(1) = int(lbound(struct_obj%orbit, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%orbit, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%orbit(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%orbit) .and. is_contiguous(struct_obj%orbit)) then
+      data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
+      bounds(1) = int(lbound(struct_obj%orbit, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%orbit, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%orbit(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%plot_cache: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_plot_cache_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_plot_cache_info')
+        bind(c, name='tao_lattice_branch_struct_get_plot_cache_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%plot_cache)) then
-        data_ptr = c_loc(struct_obj%plot_cache(lbound(struct_obj%plot_cache, 1)))
-        bounds(1) = int(lbound(struct_obj%plot_cache, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%plot_cache, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%plot_cache(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%plot_cache) .and. is_contiguous(struct_obj%plot_cache)) then
+      data_ptr = c_loc(struct_obj%plot_cache(lbound(struct_obj%plot_cache, 1)))
+      bounds(1) = int(lbound(struct_obj%plot_cache, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%plot_cache, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%plot_cache(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -24975,54 +25277,56 @@ contains
   ! tao_lattice_branch_struct%high_E_orb: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_high_E_orb_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_high_E_orb_info')
+        bind(c, name='tao_lattice_branch_struct_get_high_E_orb_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%high_E_orb)) then
-        data_ptr = c_loc(struct_obj%high_E_orb(lbound(struct_obj%high_E_orb, 1)))
-        bounds(1) = int(lbound(struct_obj%high_E_orb, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%high_E_orb, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%high_E_orb(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%high_E_orb) .and. is_contiguous(struct_obj%high_E_orb)) then
+      data_ptr = c_loc(struct_obj%high_E_orb(lbound(struct_obj%high_E_orb, 1)))
+      bounds(1) = int(lbound(struct_obj%high_E_orb, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%high_E_orb, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%high_E_orb(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_lattice_branch_struct%low_E_orb: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_low_E_orb_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_branch_struct_get_low_E_orb_info')
+        bind(c, name='tao_lattice_branch_struct_get_low_E_orb_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%low_E_orb)) then
-        data_ptr = c_loc(struct_obj%low_E_orb(lbound(struct_obj%low_E_orb, 1)))
-        bounds(1) = int(lbound(struct_obj%low_E_orb, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%low_E_orb, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%low_E_orb(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%low_E_orb) .and. is_contiguous(struct_obj%low_E_orb)) then
+      data_ptr = c_loc(struct_obj%low_E_orb(lbound(struct_obj%low_E_orb, 1)))
+      bounds(1) = int(lbound(struct_obj%low_E_orb, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%low_E_orb, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%low_E_orb(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -25779,27 +26083,28 @@ contains
   ! tao_d1_data_struct%d: 1D_PTR_type
 
   subroutine tao_d1_data_struct_get_d_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_d1_data_struct_get_d_info')
+        bind(c, name='tao_d1_data_struct_get_d_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_d1_data_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%d)) then
-        data_ptr = c_loc(struct_obj%d(lbound(struct_obj%d, 1)))
-        bounds(1) = int(lbound(struct_obj%d, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%d, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%d(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%d) .and. is_contiguous(struct_obj%d)) then
+      data_ptr = c_loc(struct_obj%d(lbound(struct_obj%d, 1)))
+      bounds(1) = int(lbound(struct_obj%d, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%d, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%d(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -25991,27 +26296,28 @@ contains
   ! tao_lattice_struct%tao_branch: 1D_ALLOC_type
 
   subroutine tao_lattice_struct_get_tao_branch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_lattice_struct_get_tao_branch_info')
+        bind(c, name='tao_lattice_struct_get_tao_branch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_lattice_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%tao_branch)) then
-        data_ptr = c_loc(struct_obj%tao_branch(lbound(struct_obj%tao_branch, 1)))
-        bounds(1) = int(lbound(struct_obj%tao_branch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%tao_branch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%tao_branch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%tao_branch) .and. is_contiguous(struct_obj%tao_branch)) then
+      data_ptr = c_loc(struct_obj%tao_branch(lbound(struct_obj%tao_branch, 1)))
+      bounds(1) = int(lbound(struct_obj%tao_branch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%tao_branch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%tao_branch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -26265,27 +26571,28 @@ contains
   ! tao_dynamic_aperture_struct%scan: 1D_ALLOC_type
 
   subroutine tao_dynamic_aperture_struct_get_scan_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_dynamic_aperture_struct_get_scan_info')
+        bind(c, name='tao_dynamic_aperture_struct_get_scan_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%scan)) then
-        data_ptr = c_loc(struct_obj%scan(lbound(struct_obj%scan, 1)))
-        bounds(1) = int(lbound(struct_obj%scan, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%scan, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%scan(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%scan) .and. is_contiguous(struct_obj%scan)) then
+      data_ptr = c_loc(struct_obj%scan(lbound(struct_obj%scan, 1)))
+      bounds(1) = int(lbound(struct_obj%scan, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%scan, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%scan(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -26295,16 +26602,18 @@ contains
         bind(c, name='tao_dynamic_aperture_struct_get_pz_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
     
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%pz)) then
+    if (allocated(struct_obj%pz) .and. is_contiguous(struct_obj%pz)) then
       data_ptr = c_loc(struct_obj%pz(lbound(struct_obj%pz, 1)))
       bounds(1) = int(lbound(struct_obj%pz, 1), c_int)
       bounds(2) = int(ubound(struct_obj%pz, 1), c_int)
+      
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
@@ -26425,27 +26734,28 @@ contains
   ! tao_model_branch_struct%ele: 1D_ALLOC_type
 
   subroutine tao_model_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_model_branch_struct_get_ele_info')
+        bind(c, name='tao_model_branch_struct_get_ele_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_model_branch_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%ele)) then
-        data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
-        bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%ele) .and. is_contiguous(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      bounds(1) = int(lbound(struct_obj%ele, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%ele, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%ele(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -26691,27 +27001,28 @@ contains
   ! tao_d2_data_struct%d1: 1D_ALLOC_type
 
   subroutine tao_d2_data_struct_get_d1_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_d2_data_struct_get_d1_info')
+        bind(c, name='tao_d2_data_struct_get_d1_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_d2_data_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%d1)) then
-        data_ptr = c_loc(struct_obj%d1(lbound(struct_obj%d1, 1)))
-        bounds(1) = int(lbound(struct_obj%d1, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%d1, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%d1(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%d1) .and. is_contiguous(struct_obj%d1)) then
+      data_ptr = c_loc(struct_obj%d1(lbound(struct_obj%d1, 1)))
+      bounds(1) = int(lbound(struct_obj%d1, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%d1, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%d1(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -27047,27 +27358,29 @@ contains
         bind(c, name='tao_spin_map_struct_get_mat8_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_spin_map_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (.true.) then
-      data_ptr = c_loc(struct_obj%mat8(lbound(struct_obj%mat8,1), lbound(struct_obj%mat8,2)))
+    if (.true. .and. is_contiguous(struct_obj%mat8)) then
+      data_ptr = c_loc(struct_obj%mat8(lbound(struct_obj%mat8, 1), lbound(struct_obj%mat8, 2)))
       bounds(1) = int(lbound(struct_obj%mat8, 1), c_int)
       bounds(2) = int(ubound(struct_obj%mat8, 1), c_int)
       bounds(3) = int(lbound(struct_obj%mat8, 2), c_int)
       bounds(4) = int(ubound(struct_obj%mat8, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
@@ -27221,8 +27534,6 @@ contains
     
     if (allocated(struct_obj%data_type)) then
       data_ptr = c_loc(struct_obj%data_type)
-      ! Use 'len' for full length including spaces, or 'len_trim' if preferred.
-      ! usually for allocatables, 'len' is the desired exact memory size.
       str_len = int(len(struct_obj%data_type), c_int)
       is_allocated = .true.
     else
@@ -28577,27 +28888,28 @@ contains
   ! lat_ele_order_struct%branch: 1D_ALLOC_type
 
   subroutine lat_ele_order_struct_get_branch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='lat_ele_order_struct_get_branch_info')
+        bind(c, name='lat_ele_order_struct_get_branch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(lat_ele_order_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%branch)) then
-        data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
-        bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%branch) .and. is_contiguous(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      bounds(1) = int(lbound(struct_obj%branch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%branch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%branch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -28779,81 +29091,84 @@ contains
   ! tao_universe_struct%model_branch: 1D_PTR_type
 
   subroutine tao_universe_struct_get_model_branch_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_universe_struct_get_model_branch_info')
+        bind(c, name='tao_universe_struct_get_model_branch_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_universe_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (associated(struct_obj%model_branch)) then
-        data_ptr = c_loc(struct_obj%model_branch(lbound(struct_obj%model_branch, 1)))
-        bounds(1) = int(lbound(struct_obj%model_branch, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%model_branch, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%model_branch(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (associated(struct_obj%model_branch) .and. is_contiguous(struct_obj%model_branch)) then
+      data_ptr = c_loc(struct_obj%model_branch(lbound(struct_obj%model_branch, 1)))
+      bounds(1) = int(lbound(struct_obj%model_branch, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%model_branch, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%model_branch(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_universe_struct%d2_data: 1D_ALLOC_type
 
   subroutine tao_universe_struct_get_d2_data_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_universe_struct_get_d2_data_info')
+        bind(c, name='tao_universe_struct_get_d2_data_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_universe_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%d2_data)) then
-        data_ptr = c_loc(struct_obj%d2_data(lbound(struct_obj%d2_data, 1)))
-        bounds(1) = int(lbound(struct_obj%d2_data, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%d2_data, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%d2_data(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%d2_data) .and. is_contiguous(struct_obj%d2_data)) then
+      data_ptr = c_loc(struct_obj%d2_data(lbound(struct_obj%d2_data, 1)))
+      bounds(1) = int(lbound(struct_obj%d2_data, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%d2_data, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%d2_data(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
   ! tao_universe_struct%data: 1D_ALLOC_type
 
   subroutine tao_universe_struct_get_data_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
-      bind(c, name='tao_universe_struct_get_data_info')
+        bind(c, name='tao_universe_struct_get_data_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: el_size
     type(tao_universe_struct), pointer :: struct_obj
+    integer(c_size_t), intent(out) :: el_size
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%data)) then
-        data_ptr = c_loc(struct_obj%data(lbound(struct_obj%data, 1)))
-        bounds(1) = int(lbound(struct_obj%data, 1), c_int)
-        bounds(2) = int(ubound(struct_obj%data, 1), c_int)
-        ! storage_size returns bits, divide by 8
-        el_size = int(storage_size(struct_obj%data(bounds(1))) / 8, c_size_t)
-        is_allocated = .true.
+    if (allocated(struct_obj%data) .and. is_contiguous(struct_obj%data)) then
+      data_ptr = c_loc(struct_obj%data(lbound(struct_obj%data, 1)))
+      bounds(1) = int(lbound(struct_obj%data, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%data, 1), c_int)
+      
+      el_size = int(storage_size(struct_obj%data(bounds(1))) / 8, c_size_t)
+      is_allocated = .true.
     else
-        data_ptr = c_null_ptr
-        bounds = 0
-        el_size = 0
-        is_allocated = .false.
+      data_ptr = c_null_ptr
+      bounds = 0_c_int
+      el_size = 0
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -28968,27 +29283,29 @@ contains
         bind(c, name='tao_universe_struct_get_dModel_dVar_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
-    integer(c_int), dimension(2), intent(out) :: strides
+    integer(c_int), dimension(4), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
     type(tao_universe_struct), pointer :: struct_obj
-    integer :: d1_size
+    integer(c_int), dimension(2), intent(out) :: strides
+    integer :: d1
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     
-    if (allocated(struct_obj%dModel_dVar)) then
-      data_ptr = c_loc(struct_obj%dModel_dVar(lbound(struct_obj%dModel_dVar,1), lbound(struct_obj%dModel_dVar,2)))
+    if (allocated(struct_obj%dModel_dVar) .and. is_contiguous(struct_obj%dModel_dVar)) then
+      data_ptr = c_loc(struct_obj%dModel_dVar(lbound(struct_obj%dModel_dVar, 1), lbound(struct_obj%dModel_dVar, 2)))
       bounds(1) = int(lbound(struct_obj%dModel_dVar, 1), c_int)
       bounds(2) = int(ubound(struct_obj%dModel_dVar, 1), c_int)
       bounds(3) = int(lbound(struct_obj%dModel_dVar, 2), c_int)
       bounds(4) = int(ubound(struct_obj%dModel_dVar, 2), c_int)
-      
-      d1_size = bounds(2) - bounds(1) + 1
       strides(1) = 1_c_int
-      strides(2) = d1_size
+      d1 = bounds(2) - bounds(1) + 1
+      strides(2) = d1
+      
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      bounds = 0_c_int; strides = 0_c_int
+      bounds = 0_c_int
+      strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
