@@ -7,6 +7,7 @@
 namespace tao {
 using std::complex;
 using std::string;
+using std::to_string;
 
 template <typename T>
 string to_string(const complex<T>&);

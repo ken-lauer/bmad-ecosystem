@@ -1739,4 +1739,208 @@ std::string to_string(
 template std::string to_string(
     const tao::FortranArray1D<std::complex<double>>&);
 
+class BmadProxyHelpers {
+ public:
+  // -------------------------------------------------------------------------
+  // 1D Array Helper
+  // -------------------------------------------------------------------------
+  template <typename T, typename Func>
+  static FortranArray1D<T> get_array_1d(const void* ptr, Func getter_func) {
+    T* data_ptr = nullptr;
+    int bounds[2]; // index 0=lower, 1=upper
+    bool is_allocated = false;
+
+    // Call the generated C-bound Fortran routine
+    getter_func(ptr, &data_ptr, bounds, &is_allocated);
+
+    int size = (is_allocated) ? (bounds[1] - bounds[0] + 1) : 0;
+    return FortranArray1D<T>(
+        data_ptr, size, bounds[0], bounds[1], is_allocated);
+  }
+
+  // -------------------------------------------------------------------------
+  // 2D Array Helper
+  // -------------------------------------------------------------------------
+  template <typename T, typename Func>
+  static FortranArray2D<T> get_array_2d(const void* ptr, Func getter_func) {
+    T* data_ptr = nullptr;
+    int bounds[4]; // dim1_low, dim1_up, dim2_low, dim2_up
+    int strides[2];
+    bool is_allocated = false;
+
+    getter_func(ptr, &data_ptr, bounds, strides, &is_allocated);
+
+    int dim1_size = (is_allocated) ? (bounds[1] - bounds[0] + 1) : 0;
+    int dim2_size = (is_allocated) ? (bounds[3] - bounds[2] + 1) : 0;
+
+    return FortranArray2D<T>(
+        data_ptr,
+        dim1_size,
+        bounds[0],
+        bounds[1],
+        dim2_size,
+        bounds[2],
+        bounds[3],
+        strides[0],
+        strides[1],
+        is_allocated);
+  }
+
+  // -------------------------------------------------------------------------
+  // 3D Array Helper
+  // -------------------------------------------------------------------------
+  template <typename T, typename Func>
+  static FortranArray3D<T> get_array_3d(const void* ptr, Func getter_func) {
+    T* data_ptr = nullptr;
+    int bounds[6]; // dim1_low, dim1_up, ... dim3_up
+    int strides[3];
+    bool is_allocated = false;
+
+    getter_func(ptr, &data_ptr, bounds, strides, &is_allocated);
+
+    int dim1_size = (is_allocated) ? (bounds[1] - bounds[0] + 1) : 0;
+    int dim2_size = (is_allocated) ? (bounds[3] - bounds[2] + 1) : 0;
+    int dim3_size = (is_allocated) ? (bounds[5] - bounds[4] + 1) : 0;
+
+    return FortranArray3D<T>(
+        data_ptr,
+        dim1_size,
+        bounds[0],
+        bounds[1],
+        dim2_size,
+        bounds[2],
+        bounds[3],
+        dim3_size,
+        bounds[4],
+        bounds[5],
+        strides[0],
+        strides[1],
+        strides[2],
+        is_allocated);
+  }
+
+  // -------------------------------------------------------------------------
+  // Helper for 1D array of character strings
+  // -------------------------------------------------------------------------
+  template <typename Func>
+  static FortranCharArray1D get_char_array_1d(
+      const void* ptr,
+      Func getter_func) {
+    char* data_ptr = nullptr;
+    int bounds[2];
+    int str_len = 0;
+    bool is_allocated = false;
+
+    getter_func(ptr, &data_ptr, bounds, &str_len, &is_allocated);
+
+    int size = (is_allocated) ? (bounds[1] - bounds[0] + 1) : 0;
+    return FortranCharArray1D(
+        data_ptr, size, bounds[0], bounds[1], str_len, is_allocated);
+  }
+  // -------------------------------------------------------------------------
+  // Character Scalar Helper
+  // -------------------------------------------------------------------------
+  template <typename Func>
+  static std::string get_string(const void* ptr, Func getter_func) {
+    char* data_ptr = nullptr;
+    int str_len = 0;
+    bool is_allocated = false;
+
+    // Call Fortran
+    getter_func(ptr, &data_ptr, &str_len, &is_allocated);
+
+    if (is_allocated && data_ptr && str_len > 0) {
+      return std::string(data_ptr, static_cast<size_t>(str_len));
+    }
+    return std::string(); // Empty string if not allocated/associated
+  }
+  // -------------------------------------------------------------------------
+  // Derived Type Array Helpers
+  // -------------------------------------------------------------------------
+  template <typename ArrayT, typename Func>
+  static ArrayT get_type_array_1d(const void* ptr, Func getter_func) {
+    void* data_ptr = nullptr;
+    int bounds[2] = {0, 0};
+    bool is_allocated = false;
+    size_t element_size = 0;
+
+    // Call the C-bound Fortran interface
+    getter_func(ptr, &data_ptr, bounds, &is_allocated, &element_size);
+
+    int size = (is_allocated) ? (bounds[1] - bounds[0] + 1) : 0;
+
+    // Invoke the non-owning constructor of the specific array type
+    return ArrayT(
+        data_ptr, // void* struct_array
+        size, // int size
+        bounds[0], // int lower
+        bounds[1], // int upper
+        is_allocated, // bool valid
+        element_size // size_t element_size
+    );
+  }
+  // -------------------------------------------------------------------------
+  // Derived Type 2D Helper (Targeting FortranTypeArrayND<T, 2>)
+  // -------------------------------------------------------------------------
+  template <typename ArrayT, typename Func>
+  static ArrayT get_type_array_2d(const void* ptr, Func getter_func) {
+    // 1. Marshall Output from Fortran C-Interface
+    void* data_ptr = nullptr;
+    int bounds[4]; // dim1_L, dim1_U, dim2_L, dim2_U
+    int strides_in[2];
+    bool is_allocated = false;
+    size_t element_size = 0;
+
+    getter_func(
+        ptr, &data_ptr, bounds, strides_in, &is_allocated, &element_size);
+
+    // 2. Compute Derived Dimensions
+    //    (Ensure 0 size if not allocated to avoid garbage data in std::array)
+    int d1_sz = is_allocated ? (bounds[1] - bounds[0] + 1) : 0;
+    int d2_sz = is_allocated ? (bounds[3] - bounds[2] + 1) : 0;
+
+    // 3. Construct std::arrays for the FortranTypeArrayND constructor
+    //    Note: We must explicitly cast strides from int (Fortran) to size_t (C++)
+    std::array<int, 2> sizes = {d1_sz, d2_sz};
+    std::array<int, 2> lowers = {bounds[0], bounds[2]};
+    std::array<int, 2> uppers = {bounds[1], bounds[3]};
+    std::array<size_t, 2> strides = {
+        static_cast<size_t>(strides_in[0]), static_cast<size_t>(strides_in[1])};
+
+    // 4. Invoke Constructor
+    //    (ArrayT = FortranTypeArrayND<ProxyType, 2>)
+    return ArrayT(
+        data_ptr, sizes, lowers, uppers, strides, is_allocated, element_size);
+  }
+
+  // -------------------------------------------------------------------------
+  // Derived Type 3D Helper (Targeting FortranTypeArrayND<T, 3>)
+  // -------------------------------------------------------------------------
+  template <typename ArrayT, typename Func>
+  static ArrayT get_type_array_3d(const void* ptr, Func getter_func) {
+    void* data_ptr = nullptr;
+    int bounds[6]; // d1L, d1U, ... d3U
+    int strides_in[3];
+    bool is_allocated = false;
+    size_t element_size = 0;
+
+    getter_func(
+        ptr, &data_ptr, bounds, strides_in, &is_allocated, &element_size);
+
+    int d1_sz = is_allocated ? (bounds[1] - bounds[0] + 1) : 0;
+    int d2_sz = is_allocated ? (bounds[3] - bounds[2] + 1) : 0;
+    int d3_sz = is_allocated ? (bounds[5] - bounds[4] + 1) : 0;
+
+    std::array<int, 3> sizes = {d1_sz, d2_sz, d3_sz};
+    std::array<int, 3> lowers = {bounds[0], bounds[2], bounds[4]};
+    std::array<int, 3> uppers = {bounds[1], bounds[3], bounds[5]};
+    std::array<size_t, 3> strides = {
+        static_cast<size_t>(strides_in[0]),
+        static_cast<size_t>(strides_in[1]),
+        static_cast<size_t>(strides_in[2])};
+
+    return ArrayT(
+        data_ptr, sizes, lowers, uppers, strides, is_allocated, element_size);
+  }
+};
 } // namespace tao

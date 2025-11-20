@@ -17,11 +17,10 @@ void spline_struct_get_x1(const void* struct_obj, double* value_out);
 void spline_struct_set_x1(void* struct_obj, double value_in);
 
 void spline_struct_get_coef_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void spin_polar_struct_get_polarization(
     const void* struct_obj,
@@ -53,22 +52,18 @@ void ac_kicker_freq_struct_set_rf_clock_harmonic(
     int value_in);
 
 void ac_kicker_struct_get_amp_vs_time_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ac_kicker_struct_get_frequency_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void interval1_coef_struct_get_c0(const void* struct_obj, double* value_out);
 void interval1_coef_struct_set_c0(void* struct_obj, double value_in);
@@ -78,42 +73,30 @@ void interval1_coef_struct_get_n_exp(const void* struct_obj, double* value_out);
 void interval1_coef_struct_set_n_exp(void* struct_obj, double value_in);
 
 void photon_reflect_table_struct_get_angle_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void photon_reflect_table_struct_get_energy_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void photon_reflect_table_struct_get_int1_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void photon_reflect_table_struct_get_p_reflect_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void photon_reflect_table_struct_get_max_energy(
     const void* struct_obj,
@@ -123,65 +106,51 @@ void photon_reflect_table_struct_set_max_energy(
     double value_in);
 
 void photon_reflect_table_struct_get_p_reflect_scratch_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void photon_reflect_table_struct_get_bragg_angle_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void photon_reflect_surface_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void photon_reflect_surface_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void photon_reflect_surface_struct_get_description_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void photon_reflect_surface_struct_set_description(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void photon_reflect_surface_struct_get_reflectivity_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void photon_reflect_surface_struct_set_reflectivity_file(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void photon_reflect_surface_struct_get_table_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void photon_reflect_surface_struct_get_surface_roughness_rms(
     const void* struct_obj,
@@ -203,11 +172,10 @@ void photon_reflect_surface_struct_set_ix_surface(
     int value_in);
 
 void coord_struct_get_vec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void coord_struct_get_s(const void* struct_obj, double* value_out);
 void coord_struct_set_s(void* struct_obj, double value_in);
@@ -215,25 +183,22 @@ void coord_struct_get_t(const void* struct_obj, long double* value_out);
 void coord_struct_set_t(void* struct_obj, long double value_in);
 
 void coord_struct_get_spin_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void coord_struct_get_field_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void coord_struct_get_phase_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void coord_struct_get_charge(const void* struct_obj, double* value_out);
 void coord_struct_set_charge(void* struct_obj, double value_in);
@@ -267,13 +232,11 @@ void coord_struct_get_location(const void* struct_obj, int* value_out);
 void coord_struct_set_location(void* struct_obj, int value_in);
 
 void coord_array_struct_get_orbit_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bpm_phase_coupling_struct_get_K_22a(
     const void* struct_obj,
@@ -315,14 +278,11 @@ void bpm_phase_coupling_struct_get_phi_b(
     const void* struct_obj,
     double* value_out);
 void bpm_phase_coupling_struct_set_phi_b(void* struct_obj, double value_in);
-
 void expression_atom_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void expression_atom_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
@@ -335,36 +295,28 @@ void expression_atom_struct_get_value(
 void expression_atom_struct_set_value(void* struct_obj, double value_in);
 
 void wake_sr_z_long_struct_get_w_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wake_sr_z_long_struct_get_fw_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wake_sr_z_long_struct_get_fbunch_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wake_sr_z_long_struct_get_w_out_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wake_sr_z_long_struct_get_dz(const void* struct_obj, double* value_out);
 void wake_sr_z_long_struct_set_dz(void* struct_obj, double value_in);
@@ -412,14 +364,11 @@ void wake_sr_mode_struct_get_position_dependence(
 void wake_sr_mode_struct_set_position_dependence(
     void* struct_obj,
     int value_in);
-
 void wake_sr_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wake_sr_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
@@ -428,22 +377,18 @@ void wake_sr_struct_get_z_long(const void* struct_obj, void** ptr_out);
 void wake_sr_struct_set_z_long(void* struct_obj, const void* src_ptr);
 
 void wake_sr_struct_get_long_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void wake_sr_struct_get_trans_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void wake_sr_struct_get_z_ref_long(const void* struct_obj, double* value_out);
 void wake_sr_struct_set_z_ref_long(void* struct_obj, double value_in);
@@ -487,27 +432,22 @@ void wake_lr_mode_struct_get_m(const void* struct_obj, int* value_out);
 void wake_lr_mode_struct_set_m(void* struct_obj, int value_in);
 void wake_lr_mode_struct_get_polarized(const void* struct_obj, bool* value_out);
 void wake_lr_mode_struct_set_polarized(void* struct_obj, bool value_in);
-
 void wake_lr_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wake_lr_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void wake_lr_struct_get_mode_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void wake_lr_struct_get_t_ref(const void* struct_obj, double* value_out);
 void wake_lr_struct_set_t_ref(void* struct_obj, double value_in);
@@ -531,45 +471,39 @@ void taylor_term_struct_get_coef(const void* struct_obj, double* value_out);
 void taylor_term_struct_set_coef(void* struct_obj, double value_in);
 
 void taylor_term_struct_get_expn_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void taylor_struct_get_ref(const void* struct_obj, double* value_out);
 void taylor_struct_set_ref(void* struct_obj, double value_in);
 
 void taylor_struct_get_term_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void em_taylor_term_struct_get_coef(const void* struct_obj, double* value_out);
 void em_taylor_term_struct_set_coef(void* struct_obj, double value_in);
 
 void em_taylor_term_struct_get_expn_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void em_taylor_struct_get_ref(const void* struct_obj, double* value_out);
 void em_taylor_struct_set_ref(void* struct_obj, double value_in);
 
 void em_taylor_struct_get_term_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void cartesian_map_term1_struct_get_coef(
     const void* struct_obj,
@@ -607,14 +541,11 @@ void cartesian_map_term1_struct_get_form(
     const void* struct_obj,
     int* value_out);
 void cartesian_map_term1_struct_set_form(void* struct_obj, int value_in);
-
 void cartesian_map_term_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void cartesian_map_term_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
@@ -625,13 +556,11 @@ void cartesian_map_term_struct_get_n_link(
 void cartesian_map_term_struct_set_n_link(void* struct_obj, int value_in);
 
 void cartesian_map_term_struct_get_term_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void cartesian_map_struct_get_field_scale(
     const void* struct_obj,
@@ -639,11 +568,10 @@ void cartesian_map_struct_get_field_scale(
 void cartesian_map_struct_set_field_scale(void* struct_obj, double value_in);
 
 void cartesian_map_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void cartesian_map_struct_get_master_parameter(
     const void* struct_obj,
@@ -671,14 +599,11 @@ void cylindrical_map_term1_struct_get_b_coef(
 void cylindrical_map_term1_struct_set_b_coef(
     void* struct_obj,
     std::complex<double> value_in);
-
 void cylindrical_map_term_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void cylindrical_map_term_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
@@ -689,13 +614,11 @@ void cylindrical_map_term_struct_get_n_link(
 void cylindrical_map_term_struct_set_n_link(void* struct_obj, int value_in);
 
 void cylindrical_map_term_struct_get_term_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void cylindrical_map_struct_get_m(const void* struct_obj, int* value_out);
 void cylindrical_map_struct_set_m(void* struct_obj, int value_in);
@@ -733,78 +656,57 @@ void cylindrical_map_struct_get_dz(const void* struct_obj, double* value_out);
 void cylindrical_map_struct_set_dz(void* struct_obj, double value_in);
 
 void cylindrical_map_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void cylindrical_map_struct_get_ptr(const void* struct_obj, void** ptr_out);
 void cylindrical_map_struct_set_ptr(void* struct_obj, const void* src_ptr);
 
 void bicubic_cmplx_coef_struct_get_coef_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void bicubic_cmplx_coef_struct_get_i_box_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tricubic_cmplx_coef_struct_get_coef_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* dim3_size,
-    int* dim3_lower,
-    int* dim3_upper,
-    int* stride1,
-    int* stride2,
-    int* stride3);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tricubic_cmplx_coef_struct_get_i_box_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void grid_field_pt1_struct_get_E_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    bool* is_alloc);
 
 void grid_field_pt1_struct_get_B_info(
-    const void* struct_obj,
-    std::complex<double>** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    std::complex<double>** d,
+    int* bounds,
+    bool* is_alloc);
 
 void grid_field_pt_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void grid_field_pt_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
@@ -813,22 +715,12 @@ void grid_field_pt_struct_get_n_link(const void* struct_obj, int* value_out);
 void grid_field_pt_struct_set_n_link(void* struct_obj, int value_in);
 
 void grid_field_pt_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* dim3_size,
-    int* dim3_lower,
-    int* dim3_upper,
-    int* stride1,
-    int* stride2,
-    int* stride3,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void grid_field_struct_get_geometry(const void* struct_obj, int* value_out);
 void grid_field_struct_set_geometry(void* struct_obj, int value_in);
@@ -858,18 +750,16 @@ void grid_field_struct_get_interpolation_order(
 void grid_field_struct_set_interpolation_order(void* struct_obj, int value_in);
 
 void grid_field_struct_get_dr_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void grid_field_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void grid_field_struct_get_curved_ref_frame(
     const void* struct_obj,
@@ -879,57 +769,33 @@ void grid_field_struct_get_ptr(const void* struct_obj, void** ptr_out);
 void grid_field_struct_set_ptr(void* struct_obj, const void* src_ptr);
 
 void grid_field_struct_get_bi_coef_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* dim3_size,
-    int* dim3_lower,
-    int* dim3_upper,
-    int* stride1,
-    int* stride2,
-    int* stride3,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void grid_field_struct_get_tri_coef_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* dim3_size,
-    int* dim3_lower,
-    int* dim3_upper,
-    int* stride1,
-    int* stride2,
-    int* stride3,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void floor_position_struct_get_r_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void floor_position_struct_get_w_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void floor_position_struct_get_theta(const void* struct_obj, double* value_out);
 void floor_position_struct_set_theta(void* struct_obj, double value_in);
@@ -1029,16 +895,11 @@ void twiss_struct_get_detap_dpz(const void* struct_obj, double* value_out);
 void twiss_struct_set_detap_dpz(void* struct_obj, double value_in);
 
 void mode3_struct_get_v_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void mode3_struct_get_a(const void* struct_obj, void** ptr_out);
 void mode3_struct_set_a(void* struct_obj, const void* src_ptr);
@@ -1086,54 +947,37 @@ void bookkeeping_state_struct_get_has_misalign(
 void bookkeeping_state_struct_set_has_misalign(void* struct_obj, bool value_in);
 
 void rad_map_struct_get_ref_orb_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void rad_map_struct_get_damp_dmat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void rad_map_struct_get_xfer_damp_vec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void rad_map_struct_get_xfer_damp_mat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void rad_map_struct_get_stoc_mat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void rad_map_ele_struct_get_rm0(const void* struct_obj, void** ptr_out);
 void rad_map_ele_struct_set_rm0(void* struct_obj, const void* src_ptr);
@@ -1149,38 +993,28 @@ void gen_grad1_struct_get_n_deriv_max(const void* struct_obj, int* value_out);
 void gen_grad1_struct_set_n_deriv_max(void* struct_obj, int value_in);
 
 void gen_grad1_struct_get_deriv_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void gen_grad_map_struct_get_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void gen_grad_map_struct_set_file(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void gen_grad_map_struct_get_gg_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void gen_grad_map_struct_get_ele_anchor_pt(
     const void* struct_obj,
@@ -1196,11 +1030,10 @@ void gen_grad_map_struct_get_dz(const void* struct_obj, double* value_out);
 void gen_grad_map_struct_set_dz(void* struct_obj, double value_in);
 
 void gen_grad_map_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void gen_grad_map_struct_get_field_scale(
     const void* struct_obj,
@@ -1240,32 +1073,24 @@ void surface_segmented_struct_get_active(
 void surface_segmented_struct_set_active(void* struct_obj, bool value_in);
 
 void surface_segmented_struct_get_dr_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_segmented_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_segmented_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void surface_h_misalign_pt_struct_get_x0(
     const void* struct_obj,
@@ -1301,32 +1126,24 @@ void surface_h_misalign_struct_get_active(
 void surface_h_misalign_struct_set_active(void* struct_obj, bool value_in);
 
 void surface_h_misalign_struct_get_dr_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_h_misalign_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_h_misalign_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void surface_displacement_pt_struct_get_x0(
     const void* struct_obj,
@@ -1364,51 +1181,37 @@ void surface_displacement_struct_get_active(
 void surface_displacement_struct_set_active(void* struct_obj, bool value_in);
 
 void surface_displacement_struct_get_dr_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_displacement_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_displacement_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void target_point_struct_get_r_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_curvature_struct_get_xy_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void surface_curvature_struct_get_spherical(
     const void* struct_obj,
@@ -1416,11 +1219,10 @@ void surface_curvature_struct_get_spherical(
 void surface_curvature_struct_set_spherical(void* struct_obj, double value_in);
 
 void surface_curvature_struct_get_elliptical_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void surface_curvature_struct_get_has_curvature(
     const void* struct_obj,
@@ -1436,12 +1238,11 @@ void photon_target_struct_get_ele_loc(const void* struct_obj, void** ptr_out);
 void photon_target_struct_set_ele_loc(void* struct_obj, const void* src_ptr);
 
 void photon_target_struct_get_corner_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void photon_target_struct_get_center(const void* struct_obj, void** ptr_out);
 void photon_target_struct_set_center(void* struct_obj, const void* src_ptr);
@@ -1483,18 +1284,16 @@ void photon_material_struct_set_f_hkl(
     std::complex<double> value_in);
 
 void photon_material_struct_get_h_norm_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void photon_material_struct_get_l_ref_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_pt_struct_get_n_photon(const void* struct_obj, long long* value_out);
 void pixel_pt_struct_set_n_photon(void* struct_obj, long long value_in);
@@ -1514,46 +1313,40 @@ void pixel_pt_struct_get_intensity(const void* struct_obj, double* value_out);
 void pixel_pt_struct_set_intensity(void* struct_obj, double value_in);
 
 void pixel_pt_struct_get_orbit_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_pt_struct_get_orbit_rms_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_pt_struct_get_init_orbit_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_pt_struct_get_init_orbit_rms_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_detec_struct_get_dr_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_detec_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void pixel_detec_struct_get_n_track_tot(
     const void* struct_obj,
@@ -1569,18 +1362,12 @@ void pixel_detec_struct_get_n_hit_pixel(
 void pixel_detec_struct_set_n_hit_pixel(void* struct_obj, long long value_in);
 
 void pixel_detec_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    int* strides,
+    bool* a,
+    size_t* es);
 
 void photon_element_struct_get_curvature(
     const void* struct_obj,
@@ -1628,21 +1415,17 @@ void photon_element_struct_set_reflectivity_table_pi(
     const void* src_ptr);
 
 void photon_element_struct_get_init_energy_prob_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void photon_element_struct_get_integrated_init_energy_prob_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wall3d_vertex_struct_get_x(const void* struct_obj, double* value_out);
 void wall3d_vertex_struct_set_x(void* struct_obj, double value_in);
@@ -1666,39 +1449,31 @@ void wall3d_vertex_struct_get_y0(const void* struct_obj, double* value_out);
 void wall3d_vertex_struct_set_y0(void* struct_obj, double value_in);
 void wall3d_vertex_struct_get_type(const void* struct_obj, int* value_out);
 void wall3d_vertex_struct_set_type(void* struct_obj, int value_in);
-
 void wall3d_section_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wall3d_section_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void wall3d_section_struct_get_material_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wall3d_section_struct_set_material(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void wall3d_section_struct_get_v_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void wall3d_section_struct_get_surface(const void* struct_obj, void** ptr_out);
 void wall3d_section_struct_set_surface(void* struct_obj, const void* src_ptr);
@@ -1730,11 +1505,10 @@ void wall3d_section_struct_get_s(const void* struct_obj, double* value_out);
 void wall3d_section_struct_set_s(void* struct_obj, double value_in);
 
 void wall3d_section_struct_get_r0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wall3d_section_struct_get_dx0_ds(
     const void* struct_obj,
@@ -1746,43 +1520,33 @@ void wall3d_section_struct_get_dy0_ds(
 void wall3d_section_struct_set_dy0_ds(void* struct_obj, double value_in);
 
 void wall3d_section_struct_get_x0_coef_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wall3d_section_struct_get_y0_coef_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wall3d_section_struct_get_dr_ds(const void* struct_obj, double* value_out);
 void wall3d_section_struct_set_dr_ds(void* struct_obj, double value_in);
 
 void wall3d_section_struct_get_p1_coef_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void wall3d_section_struct_get_p2_coef_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
-void wall3d_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void wall3d_struct_get_name_info(const void* s, char** d, int* bounds, bool* a);
 void wall3d_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
 void wall3d_struct_get_type(const void* struct_obj, int* value_out);
 void wall3d_struct_set_type(void* struct_obj, int value_in);
@@ -1792,26 +1556,20 @@ void wall3d_struct_get_n_link(const void* struct_obj, int* value_out);
 void wall3d_struct_set_n_link(void* struct_obj, int value_in);
 void wall3d_struct_get_thickness(const void* struct_obj, double* value_out);
 void wall3d_struct_set_thickness(void* struct_obj, double value_in);
-
 void wall3d_struct_get_clear_material_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wall3d_struct_set_clear_material(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void wall3d_struct_get_opaque_material_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void wall3d_struct_set_opaque_material(
     void* struct_obj,
     const char* str_ptr,
@@ -1822,13 +1580,11 @@ void wall3d_struct_get_ele_anchor_pt(const void* struct_obj, int* value_out);
 void wall3d_struct_set_ele_anchor_pt(void* struct_obj, int value_in);
 
 void wall3d_struct_get_section_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ramper_lord_struct_get_ix_ele(const void* struct_obj, int* value_out);
 void ramper_lord_struct_set_ix_ele(void* struct_obj, int value_in);
@@ -1842,60 +1598,47 @@ void control_struct_get_value(const void* struct_obj, double* value_out);
 void control_struct_set_value(void* struct_obj, double value_in);
 
 void control_struct_get_y_knot_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void control_struct_get_stack_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void control_struct_get_slave(const void* struct_obj, void** ptr_out);
 void control_struct_set_slave(void* struct_obj, const void* src_ptr);
 void control_struct_get_lord(const void* struct_obj, void** ptr_out);
 void control_struct_set_lord(void* struct_obj, const void* src_ptr);
-
 void control_struct_get_slave_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void control_struct_set_slave_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void control_struct_get_attribute_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void control_struct_set_attribute(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 void control_struct_get_ix_attrib(const void* struct_obj, int* value_out);
 void control_struct_set_ix_attrib(void* struct_obj, int value_in);
-
 void control_var1_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void control_var1_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
@@ -1908,41 +1651,32 @@ void control_var1_struct_get_old_value(
 void control_var1_struct_set_old_value(void* struct_obj, double value_in);
 
 void control_ramp1_struct_get_y_knot_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void control_ramp1_struct_get_stack_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void control_ramp1_struct_get_attribute_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void control_ramp1_struct_set_attribute(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void control_ramp1_struct_get_slave_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void control_ramp1_struct_set_slave_name(
     void* struct_obj,
     const char* str_ptr,
@@ -1953,39 +1687,31 @@ void control_ramp1_struct_get_is_controller(
 void control_ramp1_struct_set_is_controller(void* struct_obj, bool value_in);
 
 void controller_struct_get_var_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void controller_struct_get_ramp_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void controller_struct_get_ramper_lord_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void controller_struct_get_x_knot_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ellipse_beam_init_struct_get_part_per_ellipse(
     const void* struct_obj,
@@ -2005,11 +1731,10 @@ void ellipse_beam_init_struct_set_sigma_cutoff(
     double value_in);
 
 void kv_beam_init_struct_get_part_per_phi_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void kv_beam_init_struct_get_n_I2(const void* struct_obj, int* value_out);
 void kv_beam_init_struct_set_n_I2(void* struct_obj, int value_in);
@@ -2031,66 +1756,57 @@ void grid_beam_init_struct_get_px_max(
     const void* struct_obj,
     double* value_out);
 void grid_beam_init_struct_set_px_max(void* struct_obj, double value_in);
-
 void beam_init_struct_get_position_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void beam_init_struct_set_position_file(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void beam_init_struct_get_distribution_type_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    int* str_len);
+    const void* s,
+    char** d,
+    int* bounds, // [lower, upper]
+    int* str_len,
+    bool* is_alloc);
 
 void beam_init_struct_get_spin_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void beam_init_struct_get_ellipse_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void beam_init_struct_get_KV(const void* struct_obj, void** ptr_out);
 void beam_init_struct_set_KV(void* struct_obj, const void* src_ptr);
 
 void beam_init_struct_get_grid_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void beam_init_struct_get_center_jitter_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void beam_init_struct_get_emit_jitter_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void beam_init_struct_get_sig_z_jitter(
     const void* struct_obj,
@@ -2108,26 +1824,20 @@ void beam_init_struct_get_renorm_center(
 void beam_init_struct_set_renorm_center(void* struct_obj, bool value_in);
 void beam_init_struct_get_renorm_sigma(const void* struct_obj, bool* value_out);
 void beam_init_struct_set_renorm_sigma(void* struct_obj, bool value_in);
-
 void beam_init_struct_get_random_engine_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void beam_init_struct_set_random_engine(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void beam_init_struct_get_random_gauss_converter_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void beam_init_struct_set_random_gauss_converter(
     void* struct_obj,
     const char* str_ptr,
@@ -2154,11 +1864,10 @@ void beam_init_struct_get_dPz_dz(const void* struct_obj, double* value_out);
 void beam_init_struct_set_dPz_dz(void* struct_obj, double value_in);
 
 void beam_init_struct_get_center_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void beam_init_struct_get_t_offset(const void* struct_obj, double* value_out);
 void beam_init_struct_set_t_offset(void* struct_obj, double value_in);
@@ -2176,14 +1885,11 @@ void beam_init_struct_get_n_bunch(const void* struct_obj, int* value_out);
 void beam_init_struct_set_n_bunch(void* struct_obj, int value_in);
 void beam_init_struct_get_ix_turn(const void* struct_obj, int* value_out);
 void beam_init_struct_set_ix_turn(void* struct_obj, int value_in);
-
 void beam_init_struct_get_species_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void beam_init_struct_set_species(
     void* struct_obj,
     const char* str_ptr,
@@ -2202,14 +1908,11 @@ void beam_init_struct_get_use_t_coords(const void* struct_obj, bool* value_out);
 void beam_init_struct_set_use_t_coords(void* struct_obj, bool value_in);
 void beam_init_struct_get_use_z_as_t(const void* struct_obj, bool* value_out);
 void beam_init_struct_set_use_z_as_t(void* struct_obj, bool value_in);
-
 void beam_init_struct_get_file_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void beam_init_struct_set_file_name(
     void* struct_obj,
     const char* str_ptr,
@@ -2226,28 +1929,18 @@ void lat_param_struct_get_unstable_factor(
 void lat_param_struct_set_unstable_factor(void* struct_obj, double value_in);
 
 void lat_param_struct_get_t1_with_RF_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void lat_param_struct_get_t1_no_RF_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void lat_param_struct_get_spin_tune(const void* struct_obj, double* value_out);
 void lat_param_struct_set_spin_tune(void* struct_obj, double value_in);
@@ -2307,14 +2000,11 @@ void pre_tracker_struct_get_ix_ele_start(
 void pre_tracker_struct_set_ix_ele_start(void* struct_obj, int value_in);
 void pre_tracker_struct_get_ix_ele_end(const void* struct_obj, int* value_out);
 void pre_tracker_struct_set_ix_ele_end(void* struct_obj, int value_in);
-
 void pre_tracker_struct_get_input_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void pre_tracker_struct_set_input_file(
     void* struct_obj,
     const char* str_ptr,
@@ -2331,11 +2021,10 @@ void anormal_mode_struct_set_emittance_no_vert(
     double value_in);
 
 void anormal_mode_struct_get_synch_int_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void anormal_mode_struct_get_j_damp(const void* struct_obj, double* value_out);
 void anormal_mode_struct_set_j_damp(void* struct_obj, double value_in);
@@ -2381,11 +2070,10 @@ void linac_normal_mode_struct_set_b_emittance_end(
     double value_in);
 
 void normal_modes_struct_get_synch_int_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void normal_modes_struct_get_sigE_E(const void* struct_obj, double* value_out);
 void normal_modes_struct_set_sigE_E(void* struct_obj, double value_in);
@@ -2425,42 +2113,30 @@ void normal_modes_struct_get_lin(const void* struct_obj, void** ptr_out);
 void normal_modes_struct_set_lin(void* struct_obj, const void* src_ptr);
 
 void em_field_struct_get_E_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void em_field_struct_get_B_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void em_field_struct_get_dE_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void em_field_struct_get_dB_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void em_field_struct_get_phi(const void* struct_obj, double* value_out);
 void em_field_struct_set_phi(void* struct_obj, double value_in);
@@ -2468,11 +2144,10 @@ void em_field_struct_get_phi_B(const void* struct_obj, double* value_out);
 void em_field_struct_set_phi_B(void* struct_obj, double value_in);
 
 void em_field_struct_get_A_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void strong_beam_struct_get_ix_slice(const void* struct_obj, int* value_out);
 void strong_beam_struct_set_ix_slice(void* struct_obj, int value_in);
@@ -2500,32 +2175,24 @@ void track_point_struct_get_strong_beam(const void* struct_obj, void** ptr_out);
 void track_point_struct_set_strong_beam(void* struct_obj, const void* src_ptr);
 
 void track_point_struct_get_vec0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void track_point_struct_get_mat6_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void track_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void track_struct_get_ds_save(const void* struct_obj, double* value_out);
 void track_struct_set_ds_save(void* struct_obj, double value_in);
@@ -2585,18 +2252,16 @@ void space_charge_common_struct_set_particle_sigma_cutoff(
     double value_in);
 
 void space_charge_common_struct_get_space_charge_mesh_size_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void space_charge_common_struct_get_csr3d_mesh_size_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void space_charge_common_struct_get_n_bin(
     const void* struct_obj,
@@ -2630,14 +2295,11 @@ void space_charge_common_struct_get_debug(
     const void* struct_obj,
     bool* value_out);
 void space_charge_common_struct_set_debug(void* struct_obj, bool value_in);
-
 void space_charge_common_struct_get_diagnostic_output_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void space_charge_common_struct_set_diagnostic_output_file(
     void* struct_obj,
     const char* str_ptr,
@@ -2650,11 +2312,10 @@ void bmad_common_struct_set_max_aperture_limit(
     double value_in);
 
 void bmad_common_struct_get_d_orb_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void bmad_common_struct_get_default_ds_step(
     const void* struct_obj,
@@ -2902,22 +2563,18 @@ void rad_int1_struct_get_n_steps(const void* struct_obj, double* value_out);
 void rad_int1_struct_set_n_steps(void* struct_obj, double value_in);
 
 void rad_int_branch_struct_get_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void rad_int_all_ele_struct_get_branch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void rf_stair_step_struct_get_E_tot0(const void* struct_obj, double* value_out);
 void rf_stair_step_struct_set_E_tot0(void* struct_obj, double value_in);
@@ -2939,63 +2596,35 @@ void rf_stair_step_struct_get_ix_step(const void* struct_obj, int* value_out);
 void rf_stair_step_struct_set_ix_step(void* struct_obj, int value_in);
 
 void rf_ele_struct_get_steps_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void rf_ele_struct_get_ds_step(const void* struct_obj, double* value_out);
 void rf_ele_struct_set_ds_step(void* struct_obj, double value_in);
-
-void ele_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void ele_struct_get_name_info(const void* s, char** d, int* bounds, bool* a);
 void ele_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
-
-void ele_struct_get_type_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void ele_struct_get_type_info(const void* s, char** d, int* bounds, bool* a);
 void ele_struct_set_type(void* struct_obj, const char* str_ptr, int str_len);
-
-void ele_struct_get_alias_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void ele_struct_get_alias_info(const void* s, char** d, int* bounds, bool* a);
 void ele_struct_set_alias(void* struct_obj, const char* str_ptr, int str_len);
-
 void ele_struct_get_component_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void ele_struct_set_component_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void ele_struct_get_descrip_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    char** d,
+    int* len,
+    bool* is_alloc);
 
 void ele_struct_set_descrip(void* struct_obj, const char* str_ptr, int str_len);
 void ele_struct_get_a(const void* struct_obj, void** ptr_out);
@@ -3036,75 +2665,62 @@ void ele_struct_get_rad_map(const void* struct_obj, void** ptr_out);
 void ele_struct_set_rad_map(void* struct_obj, const void* src_ptr);
 
 void ele_struct_get_taylor_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_spin_taylor_ref_orb_in_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_spin_taylor_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_wake(const void* struct_obj, void** ptr_out);
 void ele_struct_set_wake(void* struct_obj, const void* src_ptr);
 
 void ele_struct_get_wall3d_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_cartesian_map_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_cylindrical_map_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_gen_grad_map_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_grid_field_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void ele_struct_get_map_ref_orb_in(const void* struct_obj, void** ptr_out);
 void ele_struct_set_map_ref_orb_in(void* struct_obj, const void* src_ptr);
@@ -3116,61 +2732,43 @@ void ele_struct_get_time_ref_orb_out(const void* struct_obj, void** ptr_out);
 void ele_struct_set_time_ref_orb_out(void* struct_obj, const void* src_ptr);
 
 void ele_struct_get_value_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_old_value_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_spin_q_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void ele_struct_get_vec0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_mat6_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void ele_struct_get_c_mat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void ele_struct_get_gamma_c(const void* struct_obj, double* value_out);
 void ele_struct_set_gamma_c(void* struct_obj, double value_in);
@@ -3182,61 +2780,41 @@ void ele_struct_get_ref_time(const void* struct_obj, double* value_out);
 void ele_struct_set_ref_time(void* struct_obj, double value_in);
 
 void ele_struct_get_a_pole_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_b_pole_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_a_pole_elec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_b_pole_elec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_custom_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ele_struct_get_r_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* dim3_size,
-    int* dim3_lower,
-    int* dim3_upper,
-    int* stride1,
-    int* stride2,
-    int* stride3,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void ele_struct_get_key(const void* struct_obj, int* value_out);
 void ele_struct_set_key(void* struct_obj, int value_in);
@@ -3334,11 +2912,10 @@ void complex_taylor_term_struct_set_coef(
     std::complex<double> value_in);
 
 void complex_taylor_term_struct_get_expn_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void complex_taylor_struct_get_ref(
     const void* struct_obj,
@@ -3348,21 +2925,13 @@ void complex_taylor_struct_set_ref(
     std::complex<double> value_in);
 
 void complex_taylor_struct_get_term_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
-void branch_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void branch_struct_get_name_info(const void* s, char** d, int* bounds, bool* a);
 void branch_struct_set_name(void* struct_obj, const char* str_ptr, int str_len);
 void branch_struct_get_ix_branch(const void* struct_obj, int* value_out);
 void branch_struct_set_ix_branch(void* struct_obj, int value_in);
@@ -3388,13 +2957,11 @@ void branch_struct_get_z(const void* struct_obj, void** ptr_out);
 void branch_struct_set_z(void* struct_obj, const void* src_ptr);
 
 void branch_struct_get_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void branch_struct_get_param(const void* struct_obj, void** ptr_out);
 void branch_struct_set_param(void* struct_obj, const void* src_ptr);
@@ -3402,82 +2969,50 @@ void branch_struct_get_particle_start(const void* struct_obj, void** ptr_out);
 void branch_struct_set_particle_start(void* struct_obj, const void* src_ptr);
 
 void branch_struct_get_wall3d_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void lat_struct_get_use_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void lat_struct_set_use_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
-void lat_struct_get_lattice_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void lat_struct_get_lattice_info(const void* s, char** d, int* bounds, bool* a);
 void lat_struct_set_lattice(void* struct_obj, const char* str_ptr, int str_len);
-
-void lat_struct_get_machine_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void lat_struct_get_machine_info(const void* s, char** d, int* bounds, bool* a);
 void lat_struct_set_machine(void* struct_obj, const char* str_ptr, int str_len);
-
 void lat_struct_get_input_file_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void lat_struct_set_input_file_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
-void lat_struct_get_title_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void lat_struct_get_title_info(const void* s, char** d, int* bounds, bool* a);
 void lat_struct_set_title(void* struct_obj, const char* str_ptr, int str_len);
 
 void lat_struct_get_print_str_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
+    const void* s,
+    char** d,
+    int* bounds, // [lower, upper]
     int* str_len,
-    bool* is_allocated);
+    bool* is_alloc);
 
 void lat_struct_get_constant_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void lat_struct_get_a(const void* struct_obj, void** ptr_out);
 void lat_struct_set_a(void* struct_obj, const void* src_ptr);
@@ -3493,31 +3028,25 @@ void lat_struct_get_ele_init(const void* struct_obj, void** ptr_out);
 void lat_struct_set_ele_init(void* struct_obj, const void* src_ptr);
 
 void lat_struct_get_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void lat_struct_get_branch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void lat_struct_get_control_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void lat_struct_get_particle_start(const void* struct_obj, void** ptr_out);
 void lat_struct_set_particle_start(void* struct_obj, const void* src_ptr);
@@ -3527,12 +3056,10 @@ void lat_struct_get_pre_tracker(const void* struct_obj, void** ptr_out);
 void lat_struct_set_pre_tracker(void* struct_obj, const void* src_ptr);
 
 void lat_struct_get_custom_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void lat_struct_get_version(const void* struct_obj, int* value_out);
 void lat_struct_set_version(void* struct_obj, int value_in);
@@ -3548,12 +3075,10 @@ void lat_struct_get_input_taylor_order(const void* struct_obj, int* value_out);
 void lat_struct_set_input_taylor_order(void* struct_obj, int value_in);
 
 void lat_struct_get_ic_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void lat_struct_get_photon_type(const void* struct_obj, int* value_out);
 void lat_struct_set_photon_type(void* struct_obj, int value_in);
@@ -3565,21 +3090,17 @@ void lat_struct_get_ramper_slave_bookkeeping(
 void lat_struct_set_ramper_slave_bookkeeping(void* struct_obj, int value_in);
 
 void bunch_struct_get_particle_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bunch_struct_get_ix_z_info(
-    const void* struct_obj,
-    int** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    int** d,
+    int* bounds,
+    bool* is_alloc);
 
 void bunch_struct_get_charge_tot(const void* struct_obj, double* value_out);
 void bunch_struct_set_charge_tot(void* struct_obj, double value_in);
@@ -3623,30 +3144,23 @@ void bunch_params_struct_get_c(const void* struct_obj, void** ptr_out);
 void bunch_params_struct_set_c(void* struct_obj, const void* src_ptr);
 
 void bunch_params_struct_get_sigma_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void bunch_params_struct_get_rel_max_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void bunch_params_struct_get_rel_min_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void bunch_params_struct_get_s(const void* struct_obj, double* value_out);
 void bunch_params_struct_set_s(void* struct_obj, double value_in);
@@ -3694,13 +3208,11 @@ void bunch_params_struct_get_twiss_valid(
 void bunch_params_struct_set_twiss_valid(void* struct_obj, bool value_in);
 
 void beam_struct_get_bunch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void aperture_point_struct_get_x(const void* struct_obj, double* value_out);
 void aperture_point_struct_set_x(void* struct_obj, double value_in);
@@ -3740,27 +3252,22 @@ void aperture_param_struct_get_abs_accuracy(
     const void* struct_obj,
     double* value_out);
 void aperture_param_struct_set_abs_accuracy(void* struct_obj, double value_in);
-
 void aperture_param_struct_get_start_ele_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void aperture_param_struct_set_start_ele(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void aperture_scan_struct_get_point_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void aperture_scan_struct_get_ref_orb(const void* struct_obj, void** ptr_out);
 void aperture_scan_struct_set_ref_orb(void* struct_obj, const void* src_ptr);
@@ -3770,43 +3277,30 @@ void aperture_scan_struct_get_pz_start(
 void aperture_scan_struct_set_pz_start(void* struct_obj, double value_in);
 
 void tao_spin_dn_dpz_struct_get_vec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_dn_dpz_struct_get_partial_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_spin_dn_dpz_struct_get_partial2_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void resonance_h_struct_get_id_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void resonance_h_struct_set_id(
     void* struct_obj,
     const char* str_ptr,
@@ -3819,56 +3313,42 @@ void resonance_h_struct_set_c_val(
     std::complex<double> value_in);
 
 void spin_orbit_map1_struct_get_orb_mat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void spin_orbit_map1_struct_get_vec0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void spin_orbit_map1_struct_get_spin_q_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void spin_axis_struct_get_l_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void spin_axis_struct_get_n0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void spin_axis_struct_get_m_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ptc_normal_form_struct_get_ele_origin(
     const void* struct_obj,
@@ -3878,11 +3358,10 @@ void ptc_normal_form_struct_set_ele_origin(
     const void* src_ptr);
 
 void ptc_normal_form_struct_get_orb0_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void ptc_normal_form_struct_get_valid_map(
     const void* struct_obj,
@@ -3896,70 +3375,60 @@ void bmad_normal_form_struct_set_ele_origin(
     const void* src_ptr);
 
 void bmad_normal_form_struct_get_M_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_A_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_A_inv_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_dhdj_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_F_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_L_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bmad_normal_form_struct_get_h_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bunch_track_struct_get_pt_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void bunch_track_struct_get_ds_save(const void* struct_obj, double* value_out);
 void bunch_track_struct_set_ds_save(void* struct_obj, double value_in);
@@ -4099,59 +3568,41 @@ void lat_ele_order1_struct_get_ix_order(const void* struct_obj, int* value_out);
 void lat_ele_order1_struct_set_ix_order(void* struct_obj, int value_in);
 
 void lat_ele_order_array_struct_get_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lat_sigma_struct_get_mat_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_spin_ele_struct_get_dn_dpz(const void* struct_obj, void** ptr_out);
 void tao_spin_ele_struct_set_dn_dpz(void* struct_obj, const void* src_ptr);
 
 void tao_spin_ele_struct_get_orb_eigen_val_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_ele_struct_get_orb_eigen_vec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_spin_ele_struct_get_spin_eigen_vec_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_spin_ele_struct_get_valid(const void* struct_obj, bool* value_out);
 void tao_spin_ele_struct_set_valid(void* struct_obj, bool value_in);
@@ -4179,18 +3630,16 @@ void tao_spin_polarization_struct_set_pol_limit_dk(
     double value_in);
 
 void tao_spin_polarization_struct_get_pol_limit_dk_partial_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_polarization_struct_get_pol_limit_dk_partial2_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_polarization_struct_get_pol_rate_bks(
     const void* struct_obj,
@@ -4206,18 +3655,16 @@ void tao_spin_polarization_struct_set_depol_rate(
     double value_in);
 
 void tao_spin_polarization_struct_get_depol_rate_partial_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_polarization_struct_get_depol_rate_partial2_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_spin_polarization_struct_get_integral_bn(
     const void* struct_obj,
@@ -4255,13 +3702,11 @@ void tao_spin_polarization_struct_set_q_1turn(
     const void* src_ptr);
 
 void tao_spin_polarization_struct_get_q_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_tao_lat(
     const void* struct_obj,
@@ -4271,58 +3716,46 @@ void tao_lattice_branch_struct_set_tao_lat(
     const void* src_ptr);
 
 void tao_lattice_branch_struct_get_lat_sigma_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_spin_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_bunch_params_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_bunch_params_comb_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_orbit_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_plot_cache_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_spin(const void* struct_obj, void** ptr_out);
 void tao_lattice_branch_struct_set_spin(void* struct_obj, const void* src_ptr);
@@ -4356,22 +3789,18 @@ void tao_lattice_branch_struct_set_bmad_normal_form(
     const void* src_ptr);
 
 void tao_lattice_branch_struct_get_high_E_orb_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_low_E_orb_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_branch_struct_get_cache_x_min(
     const void* struct_obj,
@@ -4495,26 +3924,20 @@ void tao_beam_branch_struct_get_init_starting_distribution(
 void tao_beam_branch_struct_set_init_starting_distribution(
     void* struct_obj,
     bool value_in);
-
 void tao_beam_branch_struct_get_track_start_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_beam_branch_struct_set_track_start(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_beam_branch_struct_get_track_end_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_beam_branch_struct_set_track_end(
     void* struct_obj,
     const char* str_ptr,
@@ -4531,14 +3954,11 @@ void tao_beam_branch_struct_get_ix_track_end(
     const void* struct_obj,
     int* value_out);
 void tao_beam_branch_struct_set_ix_track_end(void* struct_obj, int value_in);
-
 void tao_d1_data_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d1_data_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
@@ -4547,21 +3967,17 @@ void tao_d1_data_struct_get_d2(const void* struct_obj, void** ptr_out);
 void tao_d1_data_struct_set_d2(void* struct_obj, const void* src_ptr);
 
 void tao_d1_data_struct_get_d_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_lattice_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_lattice_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
@@ -4586,45 +4002,35 @@ void tao_lattice_struct_set_rad_int_by_ele_6d(
     const void* src_ptr);
 
 void tao_lattice_struct_get_tao_branch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_beam_uni_struct_get_saved_at_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_beam_uni_struct_set_saved_at(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_beam_uni_struct_get_dump_file_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_beam_uni_struct_set_dump_file(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_beam_uni_struct_get_dump_at_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_beam_uni_struct_set_dump_at(
     void* struct_obj,
     const char* str_ptr,
@@ -4647,21 +4053,17 @@ void tao_dynamic_aperture_struct_set_param(
     const void* src_ptr);
 
 void tao_dynamic_aperture_struct_get_scan_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_dynamic_aperture_struct_get_pz_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    bool* is_alloc);
 
 void tao_dynamic_aperture_struct_get_ellipse_scale(
     const void* struct_obj,
@@ -4679,93 +4081,73 @@ void tao_dynamic_aperture_struct_get_b_emit(
 void tao_dynamic_aperture_struct_set_b_emit(void* struct_obj, double value_in);
 
 void tao_model_branch_struct_get_ele_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_model_branch_struct_get_beam(const void* struct_obj, void** ptr_out);
 void tao_model_branch_struct_set_beam(void* struct_obj, const void* src_ptr);
-
 void tao_d2_data_struct_get_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d2_data_struct_set_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_d2_data_struct_get_data_file_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d2_data_struct_set_data_file_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_d2_data_struct_get_ref_file_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d2_data_struct_set_ref_file_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_d2_data_struct_get_data_date_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d2_data_struct_set_data_date(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_d2_data_struct_get_ref_date_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_d2_data_struct_set_ref_date(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void tao_d2_data_struct_get_descrip_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    int* str_len);
+    const void* s,
+    char** d,
+    int* bounds, // [lower, upper]
+    int* str_len,
+    bool* is_alloc);
 
 void tao_d2_data_struct_get_d1_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_d2_data_struct_get_ix_universe(const void* struct_obj, int* value_out);
 void tao_d2_data_struct_set_ix_universe(void* struct_obj, int value_in);
@@ -4801,106 +4183,75 @@ void tao_spin_map_struct_get_ix_branch(const void* struct_obj, int* value_out);
 void tao_spin_map_struct_set_ix_branch(void* struct_obj, int value_in);
 
 void tao_spin_map_struct_get_mat8_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_data_struct_get_ele_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_ele_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_data_struct_get_ele_start_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_ele_start_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_data_struct_get_ele_ref_name_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_ele_ref_name(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
 
 void tao_data_struct_get_data_type_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated);
+    const void* s,
+    char** d,
+    int* len,
+    bool* is_alloc);
 
 void tao_data_struct_set_data_type(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_data_struct_get_merit_type_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_merit_type(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
-void tao_data_struct_get_id_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+void tao_data_struct_get_id_info(const void* s, char** d, int* bounds, bool* a);
 void tao_data_struct_set_id(void* struct_obj, const char* str_ptr, int str_len);
-
 void tao_data_struct_get_data_source_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_data_source(
     void* struct_obj,
     const char* str_ptr,
     int str_len);
-
 void tao_data_struct_get_why_invalid_info(
-    const void* struct_obj,
-    char** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound);
-
+    const void* s,
+    char** d,
+    int* bounds,
+    bool* a);
 void tao_data_struct_set_why_invalid(
     void* struct_obj,
     const char* str_ptr,
@@ -5073,13 +4424,11 @@ void tao_universe_calc_struct_set_spin_matrices(
     bool value_in);
 
 void lat_ele_order_struct_get_branch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_universe_struct_get_model(const void* struct_obj, void** ptr_out);
 void tao_universe_struct_set_model(void* struct_obj, const void* src_ptr);
@@ -5097,31 +4446,25 @@ void tao_universe_struct_set_dynamic_aperture(
     const void* src_ptr);
 
 void tao_universe_struct_get_model_branch_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_universe_struct_get_d2_data_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_universe_struct_get_data_info(
-    const void* struct_obj,
-    void** data_ptr,
-    int* size_out,
-    int* lower_bound,
-    int* upper_bound,
-    bool* is_allocated,
-    size_t* element_size);
+    const void* s,
+    void** d,
+    int* bounds,
+    bool* is_alloc,
+    size_t* el_size);
 
 void tao_universe_struct_get_ping_scale(const void* struct_obj, void** ptr_out);
 void tao_universe_struct_set_ping_scale(void* struct_obj, const void* src_ptr);
@@ -5137,17 +4480,11 @@ void tao_universe_struct_get_spin_map(const void* struct_obj, void** ptr_out);
 void tao_universe_struct_set_spin_map(void* struct_obj, const void* src_ptr);
 
 void tao_universe_struct_get_dModel_dVar_info(
-    const void* struct_obj,
-    double** data_ptr,
-    int* dim1_size,
-    int* dim1_lower,
-    int* dim1_upper,
-    int* dim2_size,
-    int* dim2_lower,
-    int* dim2_upper,
-    int* stride1,
-    int* stride2,
-    bool* is_allocated);
+    const void* s,
+    double** d,
+    int* bounds,
+    int* strides,
+    bool* is_alloc);
 
 void tao_universe_struct_get_ix_uni(const void* struct_obj, int* value_out);
 void tao_universe_struct_set_ix_uni(void* struct_obj, int value_in);
@@ -5726,6 +5063,8 @@ using SplineProxyArray1D = FortranTypeArray1D<
     SplineProxy,
     allocate_fortran_spline_struct,
     deallocate_fortran_spline_struct>;
+using SplineProxyArray2D = FortranTypeArray2D<SplineProxy>;
+using SplineProxyArray3D = FortranTypeArray3D<SplineProxy>;
 
 class SpinPolarProxy;
 
@@ -5733,6 +5072,8 @@ using SpinPolarProxyArray1D = FortranTypeArray1D<
     SpinPolarProxy,
     allocate_fortran_spin_polar_struct,
     deallocate_fortran_spin_polar_struct>;
+using SpinPolarProxyArray2D = FortranTypeArray2D<SpinPolarProxy>;
+using SpinPolarProxyArray3D = FortranTypeArray3D<SpinPolarProxy>;
 
 class AcKickerTimeProxy;
 
@@ -5740,6 +5081,8 @@ using AcKickerTimeProxyArray1D = FortranTypeArray1D<
     AcKickerTimeProxy,
     allocate_fortran_ac_kicker_time_struct,
     deallocate_fortran_ac_kicker_time_struct>;
+using AcKickerTimeProxyArray2D = FortranTypeArray2D<AcKickerTimeProxy>;
+using AcKickerTimeProxyArray3D = FortranTypeArray3D<AcKickerTimeProxy>;
 
 class AcKickerFreqProxy;
 
@@ -5747,6 +5090,8 @@ using AcKickerFreqProxyArray1D = FortranTypeArray1D<
     AcKickerFreqProxy,
     allocate_fortran_ac_kicker_freq_struct,
     deallocate_fortran_ac_kicker_freq_struct>;
+using AcKickerFreqProxyArray2D = FortranTypeArray2D<AcKickerFreqProxy>;
+using AcKickerFreqProxyArray3D = FortranTypeArray3D<AcKickerFreqProxy>;
 
 class AcKickerProxy;
 
@@ -5754,6 +5099,8 @@ using AcKickerProxyArray1D = FortranTypeArray1D<
     AcKickerProxy,
     allocate_fortran_ac_kicker_struct,
     deallocate_fortran_ac_kicker_struct>;
+using AcKickerProxyArray2D = FortranTypeArray2D<AcKickerProxy>;
+using AcKickerProxyArray3D = FortranTypeArray3D<AcKickerProxy>;
 
 class Interval1CoefProxy;
 
@@ -5761,6 +5108,8 @@ using Interval1CoefProxyArray1D = FortranTypeArray1D<
     Interval1CoefProxy,
     allocate_fortran_interval1_coef_struct,
     deallocate_fortran_interval1_coef_struct>;
+using Interval1CoefProxyArray2D = FortranTypeArray2D<Interval1CoefProxy>;
+using Interval1CoefProxyArray3D = FortranTypeArray3D<Interval1CoefProxy>;
 
 class PhotonReflectTableProxy;
 
@@ -5768,6 +5117,10 @@ using PhotonReflectTableProxyArray1D = FortranTypeArray1D<
     PhotonReflectTableProxy,
     allocate_fortran_photon_reflect_table_struct,
     deallocate_fortran_photon_reflect_table_struct>;
+using PhotonReflectTableProxyArray2D =
+    FortranTypeArray2D<PhotonReflectTableProxy>;
+using PhotonReflectTableProxyArray3D =
+    FortranTypeArray3D<PhotonReflectTableProxy>;
 
 class PhotonReflectSurfaceProxy;
 
@@ -5775,6 +5128,10 @@ using PhotonReflectSurfaceProxyArray1D = FortranTypeArray1D<
     PhotonReflectSurfaceProxy,
     allocate_fortran_photon_reflect_surface_struct,
     deallocate_fortran_photon_reflect_surface_struct>;
+using PhotonReflectSurfaceProxyArray2D =
+    FortranTypeArray2D<PhotonReflectSurfaceProxy>;
+using PhotonReflectSurfaceProxyArray3D =
+    FortranTypeArray3D<PhotonReflectSurfaceProxy>;
 
 class CoordProxy;
 
@@ -5782,6 +5139,8 @@ using CoordProxyArray1D = FortranTypeArray1D<
     CoordProxy,
     allocate_fortran_coord_struct,
     deallocate_fortran_coord_struct>;
+using CoordProxyArray2D = FortranTypeArray2D<CoordProxy>;
+using CoordProxyArray3D = FortranTypeArray3D<CoordProxy>;
 
 class CoordArrayProxy;
 
@@ -5789,6 +5148,8 @@ using CoordArrayProxyArray1D = FortranTypeArray1D<
     CoordArrayProxy,
     allocate_fortran_coord_array_struct,
     deallocate_fortran_coord_array_struct>;
+using CoordArrayProxyArray2D = FortranTypeArray2D<CoordArrayProxy>;
+using CoordArrayProxyArray3D = FortranTypeArray3D<CoordArrayProxy>;
 
 class BpmPhaseCouplingProxy;
 
@@ -5796,6 +5157,8 @@ using BpmPhaseCouplingProxyArray1D = FortranTypeArray1D<
     BpmPhaseCouplingProxy,
     allocate_fortran_bpm_phase_coupling_struct,
     deallocate_fortran_bpm_phase_coupling_struct>;
+using BpmPhaseCouplingProxyArray2D = FortranTypeArray2D<BpmPhaseCouplingProxy>;
+using BpmPhaseCouplingProxyArray3D = FortranTypeArray3D<BpmPhaseCouplingProxy>;
 
 class ExpressionAtomProxy;
 
@@ -5803,6 +5166,8 @@ using ExpressionAtomProxyArray1D = FortranTypeArray1D<
     ExpressionAtomProxy,
     allocate_fortran_expression_atom_struct,
     deallocate_fortran_expression_atom_struct>;
+using ExpressionAtomProxyArray2D = FortranTypeArray2D<ExpressionAtomProxy>;
+using ExpressionAtomProxyArray3D = FortranTypeArray3D<ExpressionAtomProxy>;
 
 class WakeSrZLongProxy;
 
@@ -5810,6 +5175,8 @@ using WakeSrZLongProxyArray1D = FortranTypeArray1D<
     WakeSrZLongProxy,
     allocate_fortran_wake_sr_z_long_struct,
     deallocate_fortran_wake_sr_z_long_struct>;
+using WakeSrZLongProxyArray2D = FortranTypeArray2D<WakeSrZLongProxy>;
+using WakeSrZLongProxyArray3D = FortranTypeArray3D<WakeSrZLongProxy>;
 
 class WakeSrModeProxy;
 
@@ -5817,6 +5184,8 @@ using WakeSrModeProxyArray1D = FortranTypeArray1D<
     WakeSrModeProxy,
     allocate_fortran_wake_sr_mode_struct,
     deallocate_fortran_wake_sr_mode_struct>;
+using WakeSrModeProxyArray2D = FortranTypeArray2D<WakeSrModeProxy>;
+using WakeSrModeProxyArray3D = FortranTypeArray3D<WakeSrModeProxy>;
 
 class WakeSrProxy;
 
@@ -5824,6 +5193,8 @@ using WakeSrProxyArray1D = FortranTypeArray1D<
     WakeSrProxy,
     allocate_fortran_wake_sr_struct,
     deallocate_fortran_wake_sr_struct>;
+using WakeSrProxyArray2D = FortranTypeArray2D<WakeSrProxy>;
+using WakeSrProxyArray3D = FortranTypeArray3D<WakeSrProxy>;
 
 class WakeLrModeProxy;
 
@@ -5831,6 +5202,8 @@ using WakeLrModeProxyArray1D = FortranTypeArray1D<
     WakeLrModeProxy,
     allocate_fortran_wake_lr_mode_struct,
     deallocate_fortran_wake_lr_mode_struct>;
+using WakeLrModeProxyArray2D = FortranTypeArray2D<WakeLrModeProxy>;
+using WakeLrModeProxyArray3D = FortranTypeArray3D<WakeLrModeProxy>;
 
 class WakeLrProxy;
 
@@ -5838,6 +5211,8 @@ using WakeLrProxyArray1D = FortranTypeArray1D<
     WakeLrProxy,
     allocate_fortran_wake_lr_struct,
     deallocate_fortran_wake_lr_struct>;
+using WakeLrProxyArray2D = FortranTypeArray2D<WakeLrProxy>;
+using WakeLrProxyArray3D = FortranTypeArray3D<WakeLrProxy>;
 
 class LatEleLocProxy;
 
@@ -5845,6 +5220,8 @@ using LatEleLocProxyArray1D = FortranTypeArray1D<
     LatEleLocProxy,
     allocate_fortran_lat_ele_loc_struct,
     deallocate_fortran_lat_ele_loc_struct>;
+using LatEleLocProxyArray2D = FortranTypeArray2D<LatEleLocProxy>;
+using LatEleLocProxyArray3D = FortranTypeArray3D<LatEleLocProxy>;
 
 class WakeProxy;
 
@@ -5852,6 +5229,8 @@ using WakeProxyArray1D = FortranTypeArray1D<
     WakeProxy,
     allocate_fortran_wake_struct,
     deallocate_fortran_wake_struct>;
+using WakeProxyArray2D = FortranTypeArray2D<WakeProxy>;
+using WakeProxyArray3D = FortranTypeArray3D<WakeProxy>;
 
 class TaylorTermProxy;
 
@@ -5859,6 +5238,8 @@ using TaylorTermProxyArray1D = FortranTypeArray1D<
     TaylorTermProxy,
     allocate_fortran_taylor_term_struct,
     deallocate_fortran_taylor_term_struct>;
+using TaylorTermProxyArray2D = FortranTypeArray2D<TaylorTermProxy>;
+using TaylorTermProxyArray3D = FortranTypeArray3D<TaylorTermProxy>;
 
 class TaylorProxy;
 
@@ -5866,6 +5247,8 @@ using TaylorProxyArray1D = FortranTypeArray1D<
     TaylorProxy,
     allocate_fortran_taylor_struct,
     deallocate_fortran_taylor_struct>;
+using TaylorProxyArray2D = FortranTypeArray2D<TaylorProxy>;
+using TaylorProxyArray3D = FortranTypeArray3D<TaylorProxy>;
 
 class EmTaylorTermProxy;
 
@@ -5873,6 +5256,8 @@ using EmTaylorTermProxyArray1D = FortranTypeArray1D<
     EmTaylorTermProxy,
     allocate_fortran_em_taylor_term_struct,
     deallocate_fortran_em_taylor_term_struct>;
+using EmTaylorTermProxyArray2D = FortranTypeArray2D<EmTaylorTermProxy>;
+using EmTaylorTermProxyArray3D = FortranTypeArray3D<EmTaylorTermProxy>;
 
 class EmTaylorProxy;
 
@@ -5880,6 +5265,8 @@ using EmTaylorProxyArray1D = FortranTypeArray1D<
     EmTaylorProxy,
     allocate_fortran_em_taylor_struct,
     deallocate_fortran_em_taylor_struct>;
+using EmTaylorProxyArray2D = FortranTypeArray2D<EmTaylorProxy>;
+using EmTaylorProxyArray3D = FortranTypeArray3D<EmTaylorProxy>;
 
 class CartesianMapTerm1Proxy;
 
@@ -5887,6 +5274,10 @@ using CartesianMapTerm1ProxyArray1D = FortranTypeArray1D<
     CartesianMapTerm1Proxy,
     allocate_fortran_cartesian_map_term1_struct,
     deallocate_fortran_cartesian_map_term1_struct>;
+using CartesianMapTerm1ProxyArray2D =
+    FortranTypeArray2D<CartesianMapTerm1Proxy>;
+using CartesianMapTerm1ProxyArray3D =
+    FortranTypeArray3D<CartesianMapTerm1Proxy>;
 
 class CartesianMapTermProxy;
 
@@ -5894,6 +5285,8 @@ using CartesianMapTermProxyArray1D = FortranTypeArray1D<
     CartesianMapTermProxy,
     allocate_fortran_cartesian_map_term_struct,
     deallocate_fortran_cartesian_map_term_struct>;
+using CartesianMapTermProxyArray2D = FortranTypeArray2D<CartesianMapTermProxy>;
+using CartesianMapTermProxyArray3D = FortranTypeArray3D<CartesianMapTermProxy>;
 
 class CartesianMapProxy;
 
@@ -5901,6 +5294,8 @@ using CartesianMapProxyArray1D = FortranTypeArray1D<
     CartesianMapProxy,
     allocate_fortran_cartesian_map_struct,
     deallocate_fortran_cartesian_map_struct>;
+using CartesianMapProxyArray2D = FortranTypeArray2D<CartesianMapProxy>;
+using CartesianMapProxyArray3D = FortranTypeArray3D<CartesianMapProxy>;
 
 class CylindricalMapTerm1Proxy;
 
@@ -5908,6 +5303,10 @@ using CylindricalMapTerm1ProxyArray1D = FortranTypeArray1D<
     CylindricalMapTerm1Proxy,
     allocate_fortran_cylindrical_map_term1_struct,
     deallocate_fortran_cylindrical_map_term1_struct>;
+using CylindricalMapTerm1ProxyArray2D =
+    FortranTypeArray2D<CylindricalMapTerm1Proxy>;
+using CylindricalMapTerm1ProxyArray3D =
+    FortranTypeArray3D<CylindricalMapTerm1Proxy>;
 
 class CylindricalMapTermProxy;
 
@@ -5915,6 +5314,10 @@ using CylindricalMapTermProxyArray1D = FortranTypeArray1D<
     CylindricalMapTermProxy,
     allocate_fortran_cylindrical_map_term_struct,
     deallocate_fortran_cylindrical_map_term_struct>;
+using CylindricalMapTermProxyArray2D =
+    FortranTypeArray2D<CylindricalMapTermProxy>;
+using CylindricalMapTermProxyArray3D =
+    FortranTypeArray3D<CylindricalMapTermProxy>;
 
 class CylindricalMapProxy;
 
@@ -5922,6 +5325,8 @@ using CylindricalMapProxyArray1D = FortranTypeArray1D<
     CylindricalMapProxy,
     allocate_fortran_cylindrical_map_struct,
     deallocate_fortran_cylindrical_map_struct>;
+using CylindricalMapProxyArray2D = FortranTypeArray2D<CylindricalMapProxy>;
+using CylindricalMapProxyArray3D = FortranTypeArray3D<CylindricalMapProxy>;
 
 class BicubicCmplxCoefProxy;
 
@@ -5929,6 +5334,8 @@ using BicubicCmplxCoefProxyArray1D = FortranTypeArray1D<
     BicubicCmplxCoefProxy,
     allocate_fortran_bicubic_cmplx_coef_struct,
     deallocate_fortran_bicubic_cmplx_coef_struct>;
+using BicubicCmplxCoefProxyArray2D = FortranTypeArray2D<BicubicCmplxCoefProxy>;
+using BicubicCmplxCoefProxyArray3D = FortranTypeArray3D<BicubicCmplxCoefProxy>;
 
 class TricubicCmplxCoefProxy;
 
@@ -5936,6 +5343,10 @@ using TricubicCmplxCoefProxyArray1D = FortranTypeArray1D<
     TricubicCmplxCoefProxy,
     allocate_fortran_tricubic_cmplx_coef_struct,
     deallocate_fortran_tricubic_cmplx_coef_struct>;
+using TricubicCmplxCoefProxyArray2D =
+    FortranTypeArray2D<TricubicCmplxCoefProxy>;
+using TricubicCmplxCoefProxyArray3D =
+    FortranTypeArray3D<TricubicCmplxCoefProxy>;
 
 class GridFieldPt1Proxy;
 
@@ -5943,6 +5354,8 @@ using GridFieldPt1ProxyArray1D = FortranTypeArray1D<
     GridFieldPt1Proxy,
     allocate_fortran_grid_field_pt1_struct,
     deallocate_fortran_grid_field_pt1_struct>;
+using GridFieldPt1ProxyArray2D = FortranTypeArray2D<GridFieldPt1Proxy>;
+using GridFieldPt1ProxyArray3D = FortranTypeArray3D<GridFieldPt1Proxy>;
 
 class GridFieldPtProxy;
 
@@ -5950,6 +5363,8 @@ using GridFieldPtProxyArray1D = FortranTypeArray1D<
     GridFieldPtProxy,
     allocate_fortran_grid_field_pt_struct,
     deallocate_fortran_grid_field_pt_struct>;
+using GridFieldPtProxyArray2D = FortranTypeArray2D<GridFieldPtProxy>;
+using GridFieldPtProxyArray3D = FortranTypeArray3D<GridFieldPtProxy>;
 
 class GridFieldProxy;
 
@@ -5957,6 +5372,8 @@ using GridFieldProxyArray1D = FortranTypeArray1D<
     GridFieldProxy,
     allocate_fortran_grid_field_struct,
     deallocate_fortran_grid_field_struct>;
+using GridFieldProxyArray2D = FortranTypeArray2D<GridFieldProxy>;
+using GridFieldProxyArray3D = FortranTypeArray3D<GridFieldProxy>;
 
 class FloorPositionProxy;
 
@@ -5964,6 +5381,8 @@ using FloorPositionProxyArray1D = FortranTypeArray1D<
     FloorPositionProxy,
     allocate_fortran_floor_position_struct,
     deallocate_fortran_floor_position_struct>;
+using FloorPositionProxyArray2D = FortranTypeArray2D<FloorPositionProxy>;
+using FloorPositionProxyArray3D = FortranTypeArray3D<FloorPositionProxy>;
 
 class HighEnergySpaceChargeProxy;
 
@@ -5971,6 +5390,10 @@ using HighEnergySpaceChargeProxyArray1D = FortranTypeArray1D<
     HighEnergySpaceChargeProxy,
     allocate_fortran_high_energy_space_charge_struct,
     deallocate_fortran_high_energy_space_charge_struct>;
+using HighEnergySpaceChargeProxyArray2D =
+    FortranTypeArray2D<HighEnergySpaceChargeProxy>;
+using HighEnergySpaceChargeProxyArray3D =
+    FortranTypeArray3D<HighEnergySpaceChargeProxy>;
 
 class XyDispProxy;
 
@@ -5978,6 +5401,8 @@ using XyDispProxyArray1D = FortranTypeArray1D<
     XyDispProxy,
     allocate_fortran_xy_disp_struct,
     deallocate_fortran_xy_disp_struct>;
+using XyDispProxyArray2D = FortranTypeArray2D<XyDispProxy>;
+using XyDispProxyArray3D = FortranTypeArray3D<XyDispProxy>;
 
 class TwissProxy;
 
@@ -5985,6 +5410,8 @@ using TwissProxyArray1D = FortranTypeArray1D<
     TwissProxy,
     allocate_fortran_twiss_struct,
     deallocate_fortran_twiss_struct>;
+using TwissProxyArray2D = FortranTypeArray2D<TwissProxy>;
+using TwissProxyArray3D = FortranTypeArray3D<TwissProxy>;
 
 class Mode3Proxy;
 
@@ -5992,6 +5419,8 @@ using Mode3ProxyArray1D = FortranTypeArray1D<
     Mode3Proxy,
     allocate_fortran_mode3_struct,
     deallocate_fortran_mode3_struct>;
+using Mode3ProxyArray2D = FortranTypeArray2D<Mode3Proxy>;
+using Mode3ProxyArray3D = FortranTypeArray3D<Mode3Proxy>;
 
 class BookkeepingStateProxy;
 
@@ -5999,6 +5428,8 @@ using BookkeepingStateProxyArray1D = FortranTypeArray1D<
     BookkeepingStateProxy,
     allocate_fortran_bookkeeping_state_struct,
     deallocate_fortran_bookkeeping_state_struct>;
+using BookkeepingStateProxyArray2D = FortranTypeArray2D<BookkeepingStateProxy>;
+using BookkeepingStateProxyArray3D = FortranTypeArray3D<BookkeepingStateProxy>;
 
 class RadMapProxy;
 
@@ -6006,6 +5437,8 @@ using RadMapProxyArray1D = FortranTypeArray1D<
     RadMapProxy,
     allocate_fortran_rad_map_struct,
     deallocate_fortran_rad_map_struct>;
+using RadMapProxyArray2D = FortranTypeArray2D<RadMapProxy>;
+using RadMapProxyArray3D = FortranTypeArray3D<RadMapProxy>;
 
 class RadMapEleProxy;
 
@@ -6013,6 +5446,8 @@ using RadMapEleProxyArray1D = FortranTypeArray1D<
     RadMapEleProxy,
     allocate_fortran_rad_map_ele_struct,
     deallocate_fortran_rad_map_ele_struct>;
+using RadMapEleProxyArray2D = FortranTypeArray2D<RadMapEleProxy>;
+using RadMapEleProxyArray3D = FortranTypeArray3D<RadMapEleProxy>;
 
 class GenGrad1Proxy;
 
@@ -6020,6 +5455,8 @@ using GenGrad1ProxyArray1D = FortranTypeArray1D<
     GenGrad1Proxy,
     allocate_fortran_gen_grad1_struct,
     deallocate_fortran_gen_grad1_struct>;
+using GenGrad1ProxyArray2D = FortranTypeArray2D<GenGrad1Proxy>;
+using GenGrad1ProxyArray3D = FortranTypeArray3D<GenGrad1Proxy>;
 
 class GenGradMapProxy;
 
@@ -6027,6 +5464,8 @@ using GenGradMapProxyArray1D = FortranTypeArray1D<
     GenGradMapProxy,
     allocate_fortran_gen_grad_map_struct,
     deallocate_fortran_gen_grad_map_struct>;
+using GenGradMapProxyArray2D = FortranTypeArray2D<GenGradMapProxy>;
+using GenGradMapProxyArray3D = FortranTypeArray3D<GenGradMapProxy>;
 
 class SurfaceSegmentedPtProxy;
 
@@ -6034,6 +5473,10 @@ using SurfaceSegmentedPtProxyArray1D = FortranTypeArray1D<
     SurfaceSegmentedPtProxy,
     allocate_fortran_surface_segmented_pt_struct,
     deallocate_fortran_surface_segmented_pt_struct>;
+using SurfaceSegmentedPtProxyArray2D =
+    FortranTypeArray2D<SurfaceSegmentedPtProxy>;
+using SurfaceSegmentedPtProxyArray3D =
+    FortranTypeArray3D<SurfaceSegmentedPtProxy>;
 
 class SurfaceSegmentedProxy;
 
@@ -6041,6 +5484,8 @@ using SurfaceSegmentedProxyArray1D = FortranTypeArray1D<
     SurfaceSegmentedProxy,
     allocate_fortran_surface_segmented_struct,
     deallocate_fortran_surface_segmented_struct>;
+using SurfaceSegmentedProxyArray2D = FortranTypeArray2D<SurfaceSegmentedProxy>;
+using SurfaceSegmentedProxyArray3D = FortranTypeArray3D<SurfaceSegmentedProxy>;
 
 class SurfaceHMisalignPtProxy;
 
@@ -6048,6 +5493,10 @@ using SurfaceHMisalignPtProxyArray1D = FortranTypeArray1D<
     SurfaceHMisalignPtProxy,
     allocate_fortran_surface_h_misalign_pt_struct,
     deallocate_fortran_surface_h_misalign_pt_struct>;
+using SurfaceHMisalignPtProxyArray2D =
+    FortranTypeArray2D<SurfaceHMisalignPtProxy>;
+using SurfaceHMisalignPtProxyArray3D =
+    FortranTypeArray3D<SurfaceHMisalignPtProxy>;
 
 class SurfaceHMisalignProxy;
 
@@ -6055,6 +5504,8 @@ using SurfaceHMisalignProxyArray1D = FortranTypeArray1D<
     SurfaceHMisalignProxy,
     allocate_fortran_surface_h_misalign_struct,
     deallocate_fortran_surface_h_misalign_struct>;
+using SurfaceHMisalignProxyArray2D = FortranTypeArray2D<SurfaceHMisalignProxy>;
+using SurfaceHMisalignProxyArray3D = FortranTypeArray3D<SurfaceHMisalignProxy>;
 
 class SurfaceDisplacementPtProxy;
 
@@ -6062,6 +5513,10 @@ using SurfaceDisplacementPtProxyArray1D = FortranTypeArray1D<
     SurfaceDisplacementPtProxy,
     allocate_fortran_surface_displacement_pt_struct,
     deallocate_fortran_surface_displacement_pt_struct>;
+using SurfaceDisplacementPtProxyArray2D =
+    FortranTypeArray2D<SurfaceDisplacementPtProxy>;
+using SurfaceDisplacementPtProxyArray3D =
+    FortranTypeArray3D<SurfaceDisplacementPtProxy>;
 
 class SurfaceDisplacementProxy;
 
@@ -6069,6 +5524,10 @@ using SurfaceDisplacementProxyArray1D = FortranTypeArray1D<
     SurfaceDisplacementProxy,
     allocate_fortran_surface_displacement_struct,
     deallocate_fortran_surface_displacement_struct>;
+using SurfaceDisplacementProxyArray2D =
+    FortranTypeArray2D<SurfaceDisplacementProxy>;
+using SurfaceDisplacementProxyArray3D =
+    FortranTypeArray3D<SurfaceDisplacementProxy>;
 
 class TargetPointProxy;
 
@@ -6076,6 +5535,8 @@ using TargetPointProxyArray1D = FortranTypeArray1D<
     TargetPointProxy,
     allocate_fortran_target_point_struct,
     deallocate_fortran_target_point_struct>;
+using TargetPointProxyArray2D = FortranTypeArray2D<TargetPointProxy>;
+using TargetPointProxyArray3D = FortranTypeArray3D<TargetPointProxy>;
 
 class SurfaceCurvatureProxy;
 
@@ -6083,6 +5544,8 @@ using SurfaceCurvatureProxyArray1D = FortranTypeArray1D<
     SurfaceCurvatureProxy,
     allocate_fortran_surface_curvature_struct,
     deallocate_fortran_surface_curvature_struct>;
+using SurfaceCurvatureProxyArray2D = FortranTypeArray2D<SurfaceCurvatureProxy>;
+using SurfaceCurvatureProxyArray3D = FortranTypeArray3D<SurfaceCurvatureProxy>;
 
 class PhotonTargetProxy;
 
@@ -6090,6 +5553,8 @@ using PhotonTargetProxyArray1D = FortranTypeArray1D<
     PhotonTargetProxy,
     allocate_fortran_photon_target_struct,
     deallocate_fortran_photon_target_struct>;
+using PhotonTargetProxyArray2D = FortranTypeArray2D<PhotonTargetProxy>;
+using PhotonTargetProxyArray3D = FortranTypeArray3D<PhotonTargetProxy>;
 
 class PhotonMaterialProxy;
 
@@ -6097,6 +5562,8 @@ using PhotonMaterialProxyArray1D = FortranTypeArray1D<
     PhotonMaterialProxy,
     allocate_fortran_photon_material_struct,
     deallocate_fortran_photon_material_struct>;
+using PhotonMaterialProxyArray2D = FortranTypeArray2D<PhotonMaterialProxy>;
+using PhotonMaterialProxyArray3D = FortranTypeArray3D<PhotonMaterialProxy>;
 
 class PixelPtProxy;
 
@@ -6104,6 +5571,8 @@ using PixelPtProxyArray1D = FortranTypeArray1D<
     PixelPtProxy,
     allocate_fortran_pixel_pt_struct,
     deallocate_fortran_pixel_pt_struct>;
+using PixelPtProxyArray2D = FortranTypeArray2D<PixelPtProxy>;
+using PixelPtProxyArray3D = FortranTypeArray3D<PixelPtProxy>;
 
 class PixelDetecProxy;
 
@@ -6111,6 +5580,8 @@ using PixelDetecProxyArray1D = FortranTypeArray1D<
     PixelDetecProxy,
     allocate_fortran_pixel_detec_struct,
     deallocate_fortran_pixel_detec_struct>;
+using PixelDetecProxyArray2D = FortranTypeArray2D<PixelDetecProxy>;
+using PixelDetecProxyArray3D = FortranTypeArray3D<PixelDetecProxy>;
 
 class PhotonElementProxy;
 
@@ -6118,6 +5589,8 @@ using PhotonElementProxyArray1D = FortranTypeArray1D<
     PhotonElementProxy,
     allocate_fortran_photon_element_struct,
     deallocate_fortran_photon_element_struct>;
+using PhotonElementProxyArray2D = FortranTypeArray2D<PhotonElementProxy>;
+using PhotonElementProxyArray3D = FortranTypeArray3D<PhotonElementProxy>;
 
 class Wall3dVertexProxy;
 
@@ -6125,6 +5598,8 @@ using Wall3dVertexProxyArray1D = FortranTypeArray1D<
     Wall3dVertexProxy,
     allocate_fortran_wall3d_vertex_struct,
     deallocate_fortran_wall3d_vertex_struct>;
+using Wall3dVertexProxyArray2D = FortranTypeArray2D<Wall3dVertexProxy>;
+using Wall3dVertexProxyArray3D = FortranTypeArray3D<Wall3dVertexProxy>;
 
 class Wall3dSectionProxy;
 
@@ -6132,6 +5607,8 @@ using Wall3dSectionProxyArray1D = FortranTypeArray1D<
     Wall3dSectionProxy,
     allocate_fortran_wall3d_section_struct,
     deallocate_fortran_wall3d_section_struct>;
+using Wall3dSectionProxyArray2D = FortranTypeArray2D<Wall3dSectionProxy>;
+using Wall3dSectionProxyArray3D = FortranTypeArray3D<Wall3dSectionProxy>;
 
 class Wall3dProxy;
 
@@ -6139,6 +5616,8 @@ using Wall3dProxyArray1D = FortranTypeArray1D<
     Wall3dProxy,
     allocate_fortran_wall3d_struct,
     deallocate_fortran_wall3d_struct>;
+using Wall3dProxyArray2D = FortranTypeArray2D<Wall3dProxy>;
+using Wall3dProxyArray3D = FortranTypeArray3D<Wall3dProxy>;
 
 class RamperLordProxy;
 
@@ -6146,6 +5625,8 @@ using RamperLordProxyArray1D = FortranTypeArray1D<
     RamperLordProxy,
     allocate_fortran_ramper_lord_struct,
     deallocate_fortran_ramper_lord_struct>;
+using RamperLordProxyArray2D = FortranTypeArray2D<RamperLordProxy>;
+using RamperLordProxyArray3D = FortranTypeArray3D<RamperLordProxy>;
 
 class ControlProxy;
 
@@ -6153,6 +5634,8 @@ using ControlProxyArray1D = FortranTypeArray1D<
     ControlProxy,
     allocate_fortran_control_struct,
     deallocate_fortran_control_struct>;
+using ControlProxyArray2D = FortranTypeArray2D<ControlProxy>;
+using ControlProxyArray3D = FortranTypeArray3D<ControlProxy>;
 
 class ControlVar1Proxy;
 
@@ -6160,6 +5643,8 @@ using ControlVar1ProxyArray1D = FortranTypeArray1D<
     ControlVar1Proxy,
     allocate_fortran_control_var1_struct,
     deallocate_fortran_control_var1_struct>;
+using ControlVar1ProxyArray2D = FortranTypeArray2D<ControlVar1Proxy>;
+using ControlVar1ProxyArray3D = FortranTypeArray3D<ControlVar1Proxy>;
 
 class ControlRamp1Proxy;
 
@@ -6167,6 +5652,8 @@ using ControlRamp1ProxyArray1D = FortranTypeArray1D<
     ControlRamp1Proxy,
     allocate_fortran_control_ramp1_struct,
     deallocate_fortran_control_ramp1_struct>;
+using ControlRamp1ProxyArray2D = FortranTypeArray2D<ControlRamp1Proxy>;
+using ControlRamp1ProxyArray3D = FortranTypeArray3D<ControlRamp1Proxy>;
 
 class ControllerProxy;
 
@@ -6174,6 +5661,8 @@ using ControllerProxyArray1D = FortranTypeArray1D<
     ControllerProxy,
     allocate_fortran_controller_struct,
     deallocate_fortran_controller_struct>;
+using ControllerProxyArray2D = FortranTypeArray2D<ControllerProxy>;
+using ControllerProxyArray3D = FortranTypeArray3D<ControllerProxy>;
 
 class EllipseBeamInitProxy;
 
@@ -6181,6 +5670,8 @@ using EllipseBeamInitProxyArray1D = FortranTypeArray1D<
     EllipseBeamInitProxy,
     allocate_fortran_ellipse_beam_init_struct,
     deallocate_fortran_ellipse_beam_init_struct>;
+using EllipseBeamInitProxyArray2D = FortranTypeArray2D<EllipseBeamInitProxy>;
+using EllipseBeamInitProxyArray3D = FortranTypeArray3D<EllipseBeamInitProxy>;
 
 class KvBeamInitProxy;
 
@@ -6188,6 +5679,8 @@ using KvBeamInitProxyArray1D = FortranTypeArray1D<
     KvBeamInitProxy,
     allocate_fortran_kv_beam_init_struct,
     deallocate_fortran_kv_beam_init_struct>;
+using KvBeamInitProxyArray2D = FortranTypeArray2D<KvBeamInitProxy>;
+using KvBeamInitProxyArray3D = FortranTypeArray3D<KvBeamInitProxy>;
 
 class GridBeamInitProxy;
 
@@ -6195,6 +5688,8 @@ using GridBeamInitProxyArray1D = FortranTypeArray1D<
     GridBeamInitProxy,
     allocate_fortran_grid_beam_init_struct,
     deallocate_fortran_grid_beam_init_struct>;
+using GridBeamInitProxyArray2D = FortranTypeArray2D<GridBeamInitProxy>;
+using GridBeamInitProxyArray3D = FortranTypeArray3D<GridBeamInitProxy>;
 
 class BeamInitProxy;
 
@@ -6202,6 +5697,8 @@ using BeamInitProxyArray1D = FortranTypeArray1D<
     BeamInitProxy,
     allocate_fortran_beam_init_struct,
     deallocate_fortran_beam_init_struct>;
+using BeamInitProxyArray2D = FortranTypeArray2D<BeamInitProxy>;
+using BeamInitProxyArray3D = FortranTypeArray3D<BeamInitProxy>;
 
 class LatParamProxy;
 
@@ -6209,6 +5706,8 @@ using LatParamProxyArray1D = FortranTypeArray1D<
     LatParamProxy,
     allocate_fortran_lat_param_struct,
     deallocate_fortran_lat_param_struct>;
+using LatParamProxyArray2D = FortranTypeArray2D<LatParamProxy>;
+using LatParamProxyArray3D = FortranTypeArray3D<LatParamProxy>;
 
 class ModeInfoProxy;
 
@@ -6216,6 +5715,8 @@ using ModeInfoProxyArray1D = FortranTypeArray1D<
     ModeInfoProxy,
     allocate_fortran_mode_info_struct,
     deallocate_fortran_mode_info_struct>;
+using ModeInfoProxyArray2D = FortranTypeArray2D<ModeInfoProxy>;
+using ModeInfoProxyArray3D = FortranTypeArray3D<ModeInfoProxy>;
 
 class PreTrackerProxy;
 
@@ -6223,6 +5724,8 @@ using PreTrackerProxyArray1D = FortranTypeArray1D<
     PreTrackerProxy,
     allocate_fortran_pre_tracker_struct,
     deallocate_fortran_pre_tracker_struct>;
+using PreTrackerProxyArray2D = FortranTypeArray2D<PreTrackerProxy>;
+using PreTrackerProxyArray3D = FortranTypeArray3D<PreTrackerProxy>;
 
 class AnormalModeProxy;
 
@@ -6230,6 +5733,8 @@ using AnormalModeProxyArray1D = FortranTypeArray1D<
     AnormalModeProxy,
     allocate_fortran_anormal_mode_struct,
     deallocate_fortran_anormal_mode_struct>;
+using AnormalModeProxyArray2D = FortranTypeArray2D<AnormalModeProxy>;
+using AnormalModeProxyArray3D = FortranTypeArray3D<AnormalModeProxy>;
 
 class LinacNormalModeProxy;
 
@@ -6237,6 +5742,8 @@ using LinacNormalModeProxyArray1D = FortranTypeArray1D<
     LinacNormalModeProxy,
     allocate_fortran_linac_normal_mode_struct,
     deallocate_fortran_linac_normal_mode_struct>;
+using LinacNormalModeProxyArray2D = FortranTypeArray2D<LinacNormalModeProxy>;
+using LinacNormalModeProxyArray3D = FortranTypeArray3D<LinacNormalModeProxy>;
 
 class NormalModesProxy;
 
@@ -6244,6 +5751,8 @@ using NormalModesProxyArray1D = FortranTypeArray1D<
     NormalModesProxy,
     allocate_fortran_normal_modes_struct,
     deallocate_fortran_normal_modes_struct>;
+using NormalModesProxyArray2D = FortranTypeArray2D<NormalModesProxy>;
+using NormalModesProxyArray3D = FortranTypeArray3D<NormalModesProxy>;
 
 class EmFieldProxy;
 
@@ -6251,6 +5760,8 @@ using EmFieldProxyArray1D = FortranTypeArray1D<
     EmFieldProxy,
     allocate_fortran_em_field_struct,
     deallocate_fortran_em_field_struct>;
+using EmFieldProxyArray2D = FortranTypeArray2D<EmFieldProxy>;
+using EmFieldProxyArray3D = FortranTypeArray3D<EmFieldProxy>;
 
 class StrongBeamProxy;
 
@@ -6258,6 +5769,8 @@ using StrongBeamProxyArray1D = FortranTypeArray1D<
     StrongBeamProxy,
     allocate_fortran_strong_beam_struct,
     deallocate_fortran_strong_beam_struct>;
+using StrongBeamProxyArray2D = FortranTypeArray2D<StrongBeamProxy>;
+using StrongBeamProxyArray3D = FortranTypeArray3D<StrongBeamProxy>;
 
 class TrackPointProxy;
 
@@ -6265,6 +5778,8 @@ using TrackPointProxyArray1D = FortranTypeArray1D<
     TrackPointProxy,
     allocate_fortran_track_point_struct,
     deallocate_fortran_track_point_struct>;
+using TrackPointProxyArray2D = FortranTypeArray2D<TrackPointProxy>;
+using TrackPointProxyArray3D = FortranTypeArray3D<TrackPointProxy>;
 
 class TrackProxy;
 
@@ -6272,6 +5787,8 @@ using TrackProxyArray1D = FortranTypeArray1D<
     TrackProxy,
     allocate_fortran_track_struct,
     deallocate_fortran_track_struct>;
+using TrackProxyArray2D = FortranTypeArray2D<TrackProxy>;
+using TrackProxyArray3D = FortranTypeArray3D<TrackProxy>;
 
 class SpaceChargeCommonProxy;
 
@@ -6279,6 +5796,10 @@ using SpaceChargeCommonProxyArray1D = FortranTypeArray1D<
     SpaceChargeCommonProxy,
     allocate_fortran_space_charge_common_struct,
     deallocate_fortran_space_charge_common_struct>;
+using SpaceChargeCommonProxyArray2D =
+    FortranTypeArray2D<SpaceChargeCommonProxy>;
+using SpaceChargeCommonProxyArray3D =
+    FortranTypeArray3D<SpaceChargeCommonProxy>;
 
 class BmadCommonProxy;
 
@@ -6286,6 +5807,8 @@ using BmadCommonProxyArray1D = FortranTypeArray1D<
     BmadCommonProxy,
     allocate_fortran_bmad_common_struct,
     deallocate_fortran_bmad_common_struct>;
+using BmadCommonProxyArray2D = FortranTypeArray2D<BmadCommonProxy>;
+using BmadCommonProxyArray3D = FortranTypeArray3D<BmadCommonProxy>;
 
 class RadInt1Proxy;
 
@@ -6293,6 +5816,8 @@ using RadInt1ProxyArray1D = FortranTypeArray1D<
     RadInt1Proxy,
     allocate_fortran_rad_int1_struct,
     deallocate_fortran_rad_int1_struct>;
+using RadInt1ProxyArray2D = FortranTypeArray2D<RadInt1Proxy>;
+using RadInt1ProxyArray3D = FortranTypeArray3D<RadInt1Proxy>;
 
 class RadIntBranchProxy;
 
@@ -6300,6 +5825,8 @@ using RadIntBranchProxyArray1D = FortranTypeArray1D<
     RadIntBranchProxy,
     allocate_fortran_rad_int_branch_struct,
     deallocate_fortran_rad_int_branch_struct>;
+using RadIntBranchProxyArray2D = FortranTypeArray2D<RadIntBranchProxy>;
+using RadIntBranchProxyArray3D = FortranTypeArray3D<RadIntBranchProxy>;
 
 class RadIntAllEleProxy;
 
@@ -6307,6 +5834,8 @@ using RadIntAllEleProxyArray1D = FortranTypeArray1D<
     RadIntAllEleProxy,
     allocate_fortran_rad_int_all_ele_struct,
     deallocate_fortran_rad_int_all_ele_struct>;
+using RadIntAllEleProxyArray2D = FortranTypeArray2D<RadIntAllEleProxy>;
+using RadIntAllEleProxyArray3D = FortranTypeArray3D<RadIntAllEleProxy>;
 
 class RfStairStepProxy;
 
@@ -6314,6 +5843,8 @@ using RfStairStepProxyArray1D = FortranTypeArray1D<
     RfStairStepProxy,
     allocate_fortran_rf_stair_step_struct,
     deallocate_fortran_rf_stair_step_struct>;
+using RfStairStepProxyArray2D = FortranTypeArray2D<RfStairStepProxy>;
+using RfStairStepProxyArray3D = FortranTypeArray3D<RfStairStepProxy>;
 
 class RfEleProxy;
 
@@ -6321,6 +5852,8 @@ using RfEleProxyArray1D = FortranTypeArray1D<
     RfEleProxy,
     allocate_fortran_rf_ele_struct,
     deallocate_fortran_rf_ele_struct>;
+using RfEleProxyArray2D = FortranTypeArray2D<RfEleProxy>;
+using RfEleProxyArray3D = FortranTypeArray3D<RfEleProxy>;
 
 class EleProxy;
 
@@ -6328,6 +5861,8 @@ using EleProxyArray1D = FortranTypeArray1D<
     EleProxy,
     allocate_fortran_ele_struct,
     deallocate_fortran_ele_struct>;
+using EleProxyArray2D = FortranTypeArray2D<EleProxy>;
+using EleProxyArray3D = FortranTypeArray3D<EleProxy>;
 
 class ComplexTaylorTermProxy;
 
@@ -6335,6 +5870,10 @@ using ComplexTaylorTermProxyArray1D = FortranTypeArray1D<
     ComplexTaylorTermProxy,
     allocate_fortran_complex_taylor_term_struct,
     deallocate_fortran_complex_taylor_term_struct>;
+using ComplexTaylorTermProxyArray2D =
+    FortranTypeArray2D<ComplexTaylorTermProxy>;
+using ComplexTaylorTermProxyArray3D =
+    FortranTypeArray3D<ComplexTaylorTermProxy>;
 
 class ComplexTaylorProxy;
 
@@ -6342,6 +5881,8 @@ using ComplexTaylorProxyArray1D = FortranTypeArray1D<
     ComplexTaylorProxy,
     allocate_fortran_complex_taylor_struct,
     deallocate_fortran_complex_taylor_struct>;
+using ComplexTaylorProxyArray2D = FortranTypeArray2D<ComplexTaylorProxy>;
+using ComplexTaylorProxyArray3D = FortranTypeArray3D<ComplexTaylorProxy>;
 
 class BranchProxy;
 
@@ -6349,6 +5890,8 @@ using BranchProxyArray1D = FortranTypeArray1D<
     BranchProxy,
     allocate_fortran_branch_struct,
     deallocate_fortran_branch_struct>;
+using BranchProxyArray2D = FortranTypeArray2D<BranchProxy>;
+using BranchProxyArray3D = FortranTypeArray3D<BranchProxy>;
 
 class LatProxy;
 
@@ -6356,6 +5899,8 @@ using LatProxyArray1D = FortranTypeArray1D<
     LatProxy,
     allocate_fortran_lat_struct,
     deallocate_fortran_lat_struct>;
+using LatProxyArray2D = FortranTypeArray2D<LatProxy>;
+using LatProxyArray3D = FortranTypeArray3D<LatProxy>;
 
 class BunchProxy;
 
@@ -6363,6 +5908,8 @@ using BunchProxyArray1D = FortranTypeArray1D<
     BunchProxy,
     allocate_fortran_bunch_struct,
     deallocate_fortran_bunch_struct>;
+using BunchProxyArray2D = FortranTypeArray2D<BunchProxy>;
+using BunchProxyArray3D = FortranTypeArray3D<BunchProxy>;
 
 class BunchParamsProxy;
 
@@ -6370,6 +5917,8 @@ using BunchParamsProxyArray1D = FortranTypeArray1D<
     BunchParamsProxy,
     allocate_fortran_bunch_params_struct,
     deallocate_fortran_bunch_params_struct>;
+using BunchParamsProxyArray2D = FortranTypeArray2D<BunchParamsProxy>;
+using BunchParamsProxyArray3D = FortranTypeArray3D<BunchParamsProxy>;
 
 class BeamProxy;
 
@@ -6377,6 +5926,8 @@ using BeamProxyArray1D = FortranTypeArray1D<
     BeamProxy,
     allocate_fortran_beam_struct,
     deallocate_fortran_beam_struct>;
+using BeamProxyArray2D = FortranTypeArray2D<BeamProxy>;
+using BeamProxyArray3D = FortranTypeArray3D<BeamProxy>;
 
 class AperturePointProxy;
 
@@ -6384,6 +5935,8 @@ using AperturePointProxyArray1D = FortranTypeArray1D<
     AperturePointProxy,
     allocate_fortran_aperture_point_struct,
     deallocate_fortran_aperture_point_struct>;
+using AperturePointProxyArray2D = FortranTypeArray2D<AperturePointProxy>;
+using AperturePointProxyArray3D = FortranTypeArray3D<AperturePointProxy>;
 
 class ApertureParamProxy;
 
@@ -6391,6 +5944,8 @@ using ApertureParamProxyArray1D = FortranTypeArray1D<
     ApertureParamProxy,
     allocate_fortran_aperture_param_struct,
     deallocate_fortran_aperture_param_struct>;
+using ApertureParamProxyArray2D = FortranTypeArray2D<ApertureParamProxy>;
+using ApertureParamProxyArray3D = FortranTypeArray3D<ApertureParamProxy>;
 
 class ApertureScanProxy;
 
@@ -6398,6 +5953,8 @@ using ApertureScanProxyArray1D = FortranTypeArray1D<
     ApertureScanProxy,
     allocate_fortran_aperture_scan_struct,
     deallocate_fortran_aperture_scan_struct>;
+using ApertureScanProxyArray2D = FortranTypeArray2D<ApertureScanProxy>;
+using ApertureScanProxyArray3D = FortranTypeArray3D<ApertureScanProxy>;
 
 class TaoSpinDnDpzProxy;
 
@@ -6405,6 +5962,8 @@ using TaoSpinDnDpzProxyArray1D = FortranTypeArray1D<
     TaoSpinDnDpzProxy,
     allocate_fortran_tao_spin_dn_dpz_struct,
     deallocate_fortran_tao_spin_dn_dpz_struct>;
+using TaoSpinDnDpzProxyArray2D = FortranTypeArray2D<TaoSpinDnDpzProxy>;
+using TaoSpinDnDpzProxyArray3D = FortranTypeArray3D<TaoSpinDnDpzProxy>;
 
 class ResonanceHProxy;
 
@@ -6412,6 +5971,8 @@ using ResonanceHProxyArray1D = FortranTypeArray1D<
     ResonanceHProxy,
     allocate_fortran_resonance_h_struct,
     deallocate_fortran_resonance_h_struct>;
+using ResonanceHProxyArray2D = FortranTypeArray2D<ResonanceHProxy>;
+using ResonanceHProxyArray3D = FortranTypeArray3D<ResonanceHProxy>;
 
 class SpinOrbitMap1Proxy;
 
@@ -6419,6 +5980,8 @@ using SpinOrbitMap1ProxyArray1D = FortranTypeArray1D<
     SpinOrbitMap1Proxy,
     allocate_fortran_spin_orbit_map1_struct,
     deallocate_fortran_spin_orbit_map1_struct>;
+using SpinOrbitMap1ProxyArray2D = FortranTypeArray2D<SpinOrbitMap1Proxy>;
+using SpinOrbitMap1ProxyArray3D = FortranTypeArray3D<SpinOrbitMap1Proxy>;
 
 class SpinAxisProxy;
 
@@ -6426,6 +5989,8 @@ using SpinAxisProxyArray1D = FortranTypeArray1D<
     SpinAxisProxy,
     allocate_fortran_spin_axis_struct,
     deallocate_fortran_spin_axis_struct>;
+using SpinAxisProxyArray2D = FortranTypeArray2D<SpinAxisProxy>;
+using SpinAxisProxyArray3D = FortranTypeArray3D<SpinAxisProxy>;
 
 class PtcNormalFormProxy;
 
@@ -6433,6 +5998,8 @@ using PtcNormalFormProxyArray1D = FortranTypeArray1D<
     PtcNormalFormProxy,
     allocate_fortran_ptc_normal_form_struct,
     deallocate_fortran_ptc_normal_form_struct>;
+using PtcNormalFormProxyArray2D = FortranTypeArray2D<PtcNormalFormProxy>;
+using PtcNormalFormProxyArray3D = FortranTypeArray3D<PtcNormalFormProxy>;
 
 class BmadNormalFormProxy;
 
@@ -6440,6 +6007,8 @@ using BmadNormalFormProxyArray1D = FortranTypeArray1D<
     BmadNormalFormProxy,
     allocate_fortran_bmad_normal_form_struct,
     deallocate_fortran_bmad_normal_form_struct>;
+using BmadNormalFormProxyArray2D = FortranTypeArray2D<BmadNormalFormProxy>;
+using BmadNormalFormProxyArray3D = FortranTypeArray3D<BmadNormalFormProxy>;
 
 class BunchTrackProxy;
 
@@ -6447,6 +6016,8 @@ using BunchTrackProxyArray1D = FortranTypeArray1D<
     BunchTrackProxy,
     allocate_fortran_bunch_track_struct,
     deallocate_fortran_bunch_track_struct>;
+using BunchTrackProxyArray2D = FortranTypeArray2D<BunchTrackProxy>;
+using BunchTrackProxyArray3D = FortranTypeArray3D<BunchTrackProxy>;
 
 class SummationRdtProxy;
 
@@ -6454,6 +6025,8 @@ using SummationRdtProxyArray1D = FortranTypeArray1D<
     SummationRdtProxy,
     allocate_fortran_summation_rdt_struct,
     deallocate_fortran_summation_rdt_struct>;
+using SummationRdtProxyArray2D = FortranTypeArray2D<SummationRdtProxy>;
+using SummationRdtProxyArray3D = FortranTypeArray3D<SummationRdtProxy>;
 
 class LatEleOrder1Proxy;
 
@@ -6461,6 +6034,8 @@ using LatEleOrder1ProxyArray1D = FortranTypeArray1D<
     LatEleOrder1Proxy,
     allocate_fortran_lat_ele_order1_struct,
     deallocate_fortran_lat_ele_order1_struct>;
+using LatEleOrder1ProxyArray2D = FortranTypeArray2D<LatEleOrder1Proxy>;
+using LatEleOrder1ProxyArray3D = FortranTypeArray3D<LatEleOrder1Proxy>;
 
 class LatEleOrderArrayProxy;
 
@@ -6468,6 +6043,8 @@ using LatEleOrderArrayProxyArray1D = FortranTypeArray1D<
     LatEleOrderArrayProxy,
     allocate_fortran_lat_ele_order_array_struct,
     deallocate_fortran_lat_ele_order_array_struct>;
+using LatEleOrderArrayProxyArray2D = FortranTypeArray2D<LatEleOrderArrayProxy>;
+using LatEleOrderArrayProxyArray3D = FortranTypeArray3D<LatEleOrderArrayProxy>;
 
 class TaoLatSigmaProxy;
 
@@ -6475,6 +6052,8 @@ using TaoLatSigmaProxyArray1D = FortranTypeArray1D<
     TaoLatSigmaProxy,
     allocate_fortran_tao_lat_sigma_struct,
     deallocate_fortran_tao_lat_sigma_struct>;
+using TaoLatSigmaProxyArray2D = FortranTypeArray2D<TaoLatSigmaProxy>;
+using TaoLatSigmaProxyArray3D = FortranTypeArray3D<TaoLatSigmaProxy>;
 
 class TaoSpinEleProxy;
 
@@ -6482,6 +6061,8 @@ using TaoSpinEleProxyArray1D = FortranTypeArray1D<
     TaoSpinEleProxy,
     allocate_fortran_tao_spin_ele_struct,
     deallocate_fortran_tao_spin_ele_struct>;
+using TaoSpinEleProxyArray2D = FortranTypeArray2D<TaoSpinEleProxy>;
+using TaoSpinEleProxyArray3D = FortranTypeArray3D<TaoSpinEleProxy>;
 
 class TaoPlotCacheProxy;
 
@@ -6489,6 +6070,8 @@ using TaoPlotCacheProxyArray1D = FortranTypeArray1D<
     TaoPlotCacheProxy,
     allocate_fortran_tao_plot_cache_struct,
     deallocate_fortran_tao_plot_cache_struct>;
+using TaoPlotCacheProxyArray2D = FortranTypeArray2D<TaoPlotCacheProxy>;
+using TaoPlotCacheProxyArray3D = FortranTypeArray3D<TaoPlotCacheProxy>;
 
 class TaoSpinPolarizationProxy;
 
@@ -6496,6 +6079,10 @@ using TaoSpinPolarizationProxyArray1D = FortranTypeArray1D<
     TaoSpinPolarizationProxy,
     allocate_fortran_tao_spin_polarization_struct,
     deallocate_fortran_tao_spin_polarization_struct>;
+using TaoSpinPolarizationProxyArray2D =
+    FortranTypeArray2D<TaoSpinPolarizationProxy>;
+using TaoSpinPolarizationProxyArray3D =
+    FortranTypeArray3D<TaoSpinPolarizationProxy>;
 
 class TaoLatticeBranchProxy;
 
@@ -6503,6 +6090,8 @@ using TaoLatticeBranchProxyArray1D = FortranTypeArray1D<
     TaoLatticeBranchProxy,
     allocate_fortran_tao_lattice_branch_struct,
     deallocate_fortran_tao_lattice_branch_struct>;
+using TaoLatticeBranchProxyArray2D = FortranTypeArray2D<TaoLatticeBranchProxy>;
+using TaoLatticeBranchProxyArray3D = FortranTypeArray3D<TaoLatticeBranchProxy>;
 
 class TaoModelElementProxy;
 
@@ -6510,6 +6099,8 @@ using TaoModelElementProxyArray1D = FortranTypeArray1D<
     TaoModelElementProxy,
     allocate_fortran_tao_model_element_struct,
     deallocate_fortran_tao_model_element_struct>;
+using TaoModelElementProxyArray2D = FortranTypeArray2D<TaoModelElementProxy>;
+using TaoModelElementProxyArray3D = FortranTypeArray3D<TaoModelElementProxy>;
 
 class TaoBeamBranchProxy;
 
@@ -6517,6 +6108,8 @@ using TaoBeamBranchProxyArray1D = FortranTypeArray1D<
     TaoBeamBranchProxy,
     allocate_fortran_tao_beam_branch_struct,
     deallocate_fortran_tao_beam_branch_struct>;
+using TaoBeamBranchProxyArray2D = FortranTypeArray2D<TaoBeamBranchProxy>;
+using TaoBeamBranchProxyArray3D = FortranTypeArray3D<TaoBeamBranchProxy>;
 
 class TaoD1DataProxy;
 
@@ -6524,6 +6117,8 @@ using TaoD1DataProxyArray1D = FortranTypeArray1D<
     TaoD1DataProxy,
     allocate_fortran_tao_d1_data_struct,
     deallocate_fortran_tao_d1_data_struct>;
+using TaoD1DataProxyArray2D = FortranTypeArray2D<TaoD1DataProxy>;
+using TaoD1DataProxyArray3D = FortranTypeArray3D<TaoD1DataProxy>;
 
 class TaoLatticeProxy;
 
@@ -6531,6 +6126,8 @@ using TaoLatticeProxyArray1D = FortranTypeArray1D<
     TaoLatticeProxy,
     allocate_fortran_tao_lattice_struct,
     deallocate_fortran_tao_lattice_struct>;
+using TaoLatticeProxyArray2D = FortranTypeArray2D<TaoLatticeProxy>;
+using TaoLatticeProxyArray3D = FortranTypeArray3D<TaoLatticeProxy>;
 
 class TaoBeamUniProxy;
 
@@ -6538,6 +6135,8 @@ using TaoBeamUniProxyArray1D = FortranTypeArray1D<
     TaoBeamUniProxy,
     allocate_fortran_tao_beam_uni_struct,
     deallocate_fortran_tao_beam_uni_struct>;
+using TaoBeamUniProxyArray2D = FortranTypeArray2D<TaoBeamUniProxy>;
+using TaoBeamUniProxyArray3D = FortranTypeArray3D<TaoBeamUniProxy>;
 
 class TaoDynamicApertureProxy;
 
@@ -6545,6 +6144,10 @@ using TaoDynamicApertureProxyArray1D = FortranTypeArray1D<
     TaoDynamicApertureProxy,
     allocate_fortran_tao_dynamic_aperture_struct,
     deallocate_fortran_tao_dynamic_aperture_struct>;
+using TaoDynamicApertureProxyArray2D =
+    FortranTypeArray2D<TaoDynamicApertureProxy>;
+using TaoDynamicApertureProxyArray3D =
+    FortranTypeArray3D<TaoDynamicApertureProxy>;
 
 class TaoModelBranchProxy;
 
@@ -6552,6 +6155,8 @@ using TaoModelBranchProxyArray1D = FortranTypeArray1D<
     TaoModelBranchProxy,
     allocate_fortran_tao_model_branch_struct,
     deallocate_fortran_tao_model_branch_struct>;
+using TaoModelBranchProxyArray2D = FortranTypeArray2D<TaoModelBranchProxy>;
+using TaoModelBranchProxyArray3D = FortranTypeArray3D<TaoModelBranchProxy>;
 
 class TaoD2DataProxy;
 
@@ -6559,6 +6164,8 @@ using TaoD2DataProxyArray1D = FortranTypeArray1D<
     TaoD2DataProxy,
     allocate_fortran_tao_d2_data_struct,
     deallocate_fortran_tao_d2_data_struct>;
+using TaoD2DataProxyArray2D = FortranTypeArray2D<TaoD2DataProxy>;
+using TaoD2DataProxyArray3D = FortranTypeArray3D<TaoD2DataProxy>;
 
 class TaoSpinMapProxy;
 
@@ -6566,6 +6173,8 @@ using TaoSpinMapProxyArray1D = FortranTypeArray1D<
     TaoSpinMapProxy,
     allocate_fortran_tao_spin_map_struct,
     deallocate_fortran_tao_spin_map_struct>;
+using TaoSpinMapProxyArray2D = FortranTypeArray2D<TaoSpinMapProxy>;
+using TaoSpinMapProxyArray3D = FortranTypeArray3D<TaoSpinMapProxy>;
 
 class TaoDataProxy;
 
@@ -6573,6 +6182,8 @@ using TaoDataProxyArray1D = FortranTypeArray1D<
     TaoDataProxy,
     allocate_fortran_tao_data_struct,
     deallocate_fortran_tao_data_struct>;
+using TaoDataProxyArray2D = FortranTypeArray2D<TaoDataProxy>;
+using TaoDataProxyArray3D = FortranTypeArray3D<TaoDataProxy>;
 
 class TaoPingScaleProxy;
 
@@ -6580,6 +6191,8 @@ using TaoPingScaleProxyArray1D = FortranTypeArray1D<
     TaoPingScaleProxy,
     allocate_fortran_tao_ping_scale_struct,
     deallocate_fortran_tao_ping_scale_struct>;
+using TaoPingScaleProxyArray2D = FortranTypeArray2D<TaoPingScaleProxy>;
+using TaoPingScaleProxyArray3D = FortranTypeArray3D<TaoPingScaleProxy>;
 
 class TaoUniverseCalcProxy;
 
@@ -6587,6 +6200,8 @@ using TaoUniverseCalcProxyArray1D = FortranTypeArray1D<
     TaoUniverseCalcProxy,
     allocate_fortran_tao_universe_calc_struct,
     deallocate_fortran_tao_universe_calc_struct>;
+using TaoUniverseCalcProxyArray2D = FortranTypeArray2D<TaoUniverseCalcProxy>;
+using TaoUniverseCalcProxyArray3D = FortranTypeArray3D<TaoUniverseCalcProxy>;
 
 class LatEleOrderProxy;
 
@@ -6594,6 +6209,8 @@ using LatEleOrderProxyArray1D = FortranTypeArray1D<
     LatEleOrderProxy,
     allocate_fortran_lat_ele_order_struct,
     deallocate_fortran_lat_ele_order_struct>;
+using LatEleOrderProxyArray2D = FortranTypeArray2D<LatEleOrderProxy>;
+using LatEleOrderProxyArray3D = FortranTypeArray3D<LatEleOrderProxy>;
 
 class TaoUniverseProxy;
 
@@ -6601,6 +6218,8 @@ using TaoUniverseProxyArray1D = FortranTypeArray1D<
     TaoUniverseProxy,
     allocate_fortran_tao_universe_struct,
     deallocate_fortran_tao_universe_struct>;
+using TaoUniverseProxyArray2D = FortranTypeArray2D<TaoUniverseProxy>;
+using TaoUniverseProxyArray3D = FortranTypeArray3D<TaoUniverseProxy>;
 
 template <>
 struct FortranTraits<SplineProxy> {
@@ -6839,13 +6458,10 @@ class PhotonReflectSurfaceProxy
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   std::string description() const; // 0D_NOT_character
-  FortranArray1D<char> get_description_chars() const; // 0D_NOT_character
   void set_description(const std::string& value);
   std::string reflectivity_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_reflectivity_file_chars() const; // 0D_NOT_character
   void set_reflectivity_file(const std::string& value);
   PhotonReflectTableProxyArray1D table() const; // 1D_ALLOC_type
   double surface_roughness_rms() const; // 0D_NOT_real
@@ -7010,7 +6626,6 @@ class ExpressionAtomProxy : public FortranProxy<ExpressionAtomProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   int type() const; // 0D_NOT_integer
   void set_type(int value);
@@ -7123,7 +6738,6 @@ class WakeSrProxy : public FortranProxy<WakeSrProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   WakeSrZLongProxy z_long() const; // 0D_NOT_type
   void set_z_long(const WakeSrZLongProxy& src);
@@ -7216,7 +6830,6 @@ class WakeLrProxy : public FortranProxy<WakeLrProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   WakeLrModeProxyArray1D mode() const; // 1D_ALLOC_type
   double t_ref() const; // 0D_NOT_real
@@ -7460,7 +7073,6 @@ class CartesianMapTermProxy : public FortranProxy<CartesianMapTermProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
@@ -7553,7 +7165,6 @@ class CylindricalMapTermProxy : public FortranProxy<CylindricalMapTermProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
@@ -7704,11 +7315,10 @@ class GridFieldPtProxy : public FortranProxy<GridFieldPtProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   int n_link() const; // 0D_NOT_integer
   void set_n_link(int value);
-  FortranTypeArray3D<GridFieldPt1Proxy> pt() const; // 3D_ALLOC_type
+  GridFieldPt1ProxyArray3D pt() const; // 3D_ALLOC_type
 };
 
 template <>
@@ -7755,8 +7365,8 @@ class GridFieldProxy : public FortranProxy<GridFieldProxy> {
   void set_curved_ref_frame(bool value);
   std::optional<GridFieldPtProxy> ptr() const; // 0D_PTR_type
   void set_ptr(const GridFieldPtProxy& src);
-  FortranTypeArray3D<BicubicCmplxCoefProxy> bi_coef() const; // 3D_NOT_type
-  FortranTypeArray3D<TricubicCmplxCoefProxy> tri_coef() const; // 3D_NOT_type
+  BicubicCmplxCoefProxyArray3D bi_coef() const; // 3D_NOT_type
+  TricubicCmplxCoefProxyArray3D tri_coef() const; // 3D_NOT_type
 };
 
 template <>
@@ -8114,7 +7724,6 @@ class GenGradMapProxy : public FortranProxy<GenGradMapProxy> {
   using FortranProxy::operator=;
 
   std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   void set_file(const std::string& value);
   GenGrad1ProxyArray1D gg() const; // 1D_ALLOC_type
   int ele_anchor_pt() const; // 0D_NOT_integer
@@ -8196,7 +7805,7 @@ class SurfaceSegmentedProxy : public FortranProxy<SurfaceSegmentedProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
-  FortranTypeArray2D<SurfaceSegmentedPtProxy> pt() const; // 2D_ALLOC_type
+  SurfaceSegmentedPtProxyArray2D pt() const; // 2D_ALLOC_type
 };
 
 template <>
@@ -8261,7 +7870,7 @@ class SurfaceHMisalignProxy : public FortranProxy<SurfaceHMisalignProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
-  FortranTypeArray2D<SurfaceHMisalignPtProxy> pt() const; // 2D_ALLOC_type
+  SurfaceHMisalignPtProxyArray2D pt() const; // 2D_ALLOC_type
 };
 
 template <>
@@ -8327,7 +7936,7 @@ class SurfaceDisplacementProxy : public FortranProxy<SurfaceDisplacementProxy> {
   void set_active(bool value);
   FortranArray1D<double> dr() const; // 1D_NOT_real
   FortranArray1D<double> r0() const; // 1D_NOT_real
-  FortranTypeArray2D<SurfaceDisplacementPtProxy> pt() const; // 2D_ALLOC_type
+  SurfaceDisplacementPtProxyArray2D pt() const; // 2D_ALLOC_type
 };
 
 template <>
@@ -8526,7 +8135,7 @@ class PixelDetecProxy : public FortranProxy<PixelDetecProxy> {
   void set_n_hit_detec(long long value);
   long long n_hit_pixel() const; // 0D_NOT_integer8
   void set_n_hit_pixel(long long value);
-  FortranTypeArray2D<PixelPtProxy> pt() const; // 2D_ALLOC_type
+  PixelPtProxyArray2D pt() const; // 2D_ALLOC_type
 };
 
 template <>
@@ -8640,10 +8249,8 @@ class Wall3dSectionProxy : public FortranProxy<Wall3dSectionProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   std::string material() const; // 0D_NOT_character
-  FortranArray1D<char> get_material_chars() const; // 0D_NOT_character
   void set_material(const std::string& value);
   Wall3dVertexProxyArray1D v() const; // 1D_ALLOC_type
   std::optional<PhotonReflectSurfaceProxy> surface() const; // 0D_PTR_type
@@ -8700,7 +8307,6 @@ class Wall3dProxy : public FortranProxy<Wall3dProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   int type() const; // 0D_NOT_integer
   void set_type(int value);
@@ -8711,10 +8317,8 @@ class Wall3dProxy : public FortranProxy<Wall3dProxy> {
   double thickness() const; // 0D_NOT_real
   void set_thickness(double value);
   std::string clear_material() const; // 0D_NOT_character
-  FortranArray1D<char> get_clear_material_chars() const; // 0D_NOT_character
   void set_clear_material(const std::string& value);
   std::string opaque_material() const; // 0D_NOT_character
-  FortranArray1D<char> get_opaque_material_chars() const; // 0D_NOT_character
   void set_opaque_material(const std::string& value);
   bool superimpose() const; // 0D_NOT_logical
   void set_superimpose(bool value);
@@ -8784,10 +8388,8 @@ class ControlProxy : public FortranProxy<ControlProxy> {
   LatEleLocProxy lord() const; // 0D_NOT_type
   void set_lord(const LatEleLocProxy& src);
   std::string slave_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
   void set_slave_name(const std::string& value);
   std::string attribute() const; // 0D_NOT_character
-  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
   void set_attribute(const std::string& value);
   int ix_attrib() const; // 0D_NOT_integer
   void set_ix_attrib(int value);
@@ -8816,7 +8418,6 @@ class ControlVar1Proxy : public FortranProxy<ControlVar1Proxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   double value() const; // 0D_NOT_real
   void set_value(double value);
@@ -8849,10 +8450,8 @@ class ControlRamp1Proxy : public FortranProxy<ControlRamp1Proxy> {
   FortranArray1D<double> y_knot() const; // 1D_ALLOC_real
   ExpressionAtomProxyArray1D stack() const; // 1D_ALLOC_type
   std::string attribute() const; // 0D_NOT_character
-  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
   void set_attribute(const std::string& value);
   std::string slave_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
   void set_slave_name(const std::string& value);
   bool is_controller() const; // 0D_NOT_logical
   void set_is_controller(bool value);
@@ -9004,7 +8603,6 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   using FortranProxy::operator=;
 
   std::string position_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_position_file_chars() const; // 0D_NOT_character
   void set_position_file(const std::string& value);
   FortranCharArray1D distribution_type() const; // 1D_NOT_character
   FortranArray1D<double> spin() const; // 1D_NOT_real
@@ -9025,11 +8623,8 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   bool renorm_sigma() const; // 0D_NOT_logical
   void set_renorm_sigma(bool value);
   std::string random_engine() const; // 0D_NOT_character
-  FortranArray1D<char> get_random_engine_chars() const; // 0D_NOT_character
   void set_random_engine(const std::string& value);
   std::string random_gauss_converter() const; // 0D_NOT_character
-  FortranArray1D<char> get_random_gauss_converter_chars()
-      const; // 0D_NOT_character
   void set_random_gauss_converter(const std::string& value);
   double random_sigma_cutoff() const; // 0D_NOT_real
   void set_random_sigma_cutoff(double value);
@@ -9059,7 +8654,6 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   int ix_turn() const; // 0D_NOT_integer
   void set_ix_turn(int value);
   std::string species() const; // 0D_NOT_character
-  FortranArray1D<char> get_species_chars() const; // 0D_NOT_character
   void set_species(const std::string& value);
   bool full_6D_coupling_calc() const; // 0D_NOT_logical
   void set_full_6D_coupling_calc(bool value);
@@ -9070,7 +8664,6 @@ class BeamInitProxy : public FortranProxy<BeamInitProxy> {
   bool use_z_as_t() const; // 0D_NOT_logical
   void set_use_z_as_t(bool value);
   std::string file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_name_chars() const; // 0D_NOT_character
   void set_file_name(const std::string& value);
 };
 
@@ -9195,7 +8788,6 @@ class PreTrackerProxy : public FortranProxy<PreTrackerProxy> {
   int ix_ele_end() const; // 0D_NOT_integer
   void set_ix_ele_end(int value);
   std::string input_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_input_file_chars() const; // 0D_NOT_character
   void set_input_file(const std::string& value);
 };
 
@@ -9516,8 +9108,6 @@ class SpaceChargeCommonProxy : public FortranProxy<SpaceChargeCommonProxy> {
   bool debug() const; // 0D_NOT_logical
   void set_debug(bool value);
   std::string diagnostic_output_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_diagnostic_output_file_chars()
-      const; // 0D_NOT_character
   void set_diagnostic_output_file(const std::string& value);
 };
 
@@ -9830,19 +9420,14 @@ class EleProxy : public FortranProxy<EleProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   std::string type() const; // 0D_NOT_character
-  FortranArray1D<char> get_type_chars() const; // 0D_NOT_character
   void set_type(const std::string& value);
   std::string alias() const; // 0D_NOT_character
-  FortranArray1D<char> get_alias_chars() const; // 0D_NOT_character
   void set_alias(const std::string& value);
   std::string component_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_component_name_chars() const; // 0D_NOT_character
   void set_component_name(const std::string& value);
   std::string descrip() const; // 0D_PTR_character
-  FortranArray1D<char> get_descrip_chars() const; // 0D_PTR_character
   void set_descrip(const std::string& value);
   TwissProxy a() const; // 0D_NOT_type
   void set_a(const TwissProxy& src);
@@ -10072,7 +9657,6 @@ class BranchProxy : public FortranProxy<BranchProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   int ix_branch() const; // 0D_NOT_integer
   void set_ix_branch(int value);
@@ -10127,19 +9711,14 @@ class LatProxy : public FortranProxy<LatProxy> {
   using FortranProxy::operator=;
 
   std::string use_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_use_name_chars() const; // 0D_NOT_character
   void set_use_name(const std::string& value);
   std::string lattice() const; // 0D_NOT_character
-  FortranArray1D<char> get_lattice_chars() const; // 0D_NOT_character
   void set_lattice(const std::string& value);
   std::string machine() const; // 0D_NOT_character
-  FortranArray1D<char> get_machine_chars() const; // 0D_NOT_character
   void set_machine(const std::string& value);
   std::string input_file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_input_file_name_chars() const; // 0D_NOT_character
   void set_input_file_name(const std::string& value);
   std::string title() const; // 0D_NOT_character
-  FortranArray1D<char> get_title_chars() const; // 0D_NOT_character
   void set_title(const std::string& value);
   FortranCharArray1D print_str() const; // 1D_ALLOC_character
   ExpressionAtomProxyArray1D constant() const; // 1D_ALLOC_type
@@ -10401,7 +9980,6 @@ class ApertureParamProxy : public FortranProxy<ApertureParamProxy> {
   double abs_accuracy() const; // 0D_NOT_real
   void set_abs_accuracy(double value);
   std::string start_ele() const; // 0D_NOT_character
-  FortranArray1D<char> get_start_ele_chars() const; // 0D_NOT_character
   void set_start_ele(const std::string& value);
 };
 
@@ -10484,7 +10062,6 @@ class ResonanceHProxy : public FortranProxy<ResonanceHProxy> {
   using FortranProxy::operator=;
 
   std::string id() const; // 0D_NOT_character
-  FortranArray1D<char> get_id_chars() const; // 0D_NOT_character
   void set_id(const std::string& value);
   std::complex<double> c_val() const; // 0D_NOT_complex
   void set_c_val(std::complex<double> value);
@@ -11030,10 +10607,8 @@ class TaoBeamBranchProxy : public FortranProxy<TaoBeamBranchProxy> {
   bool init_starting_distribution() const; // 0D_NOT_logical
   void set_init_starting_distribution(bool value);
   std::string track_start() const; // 0D_NOT_character
-  FortranArray1D<char> get_track_start_chars() const; // 0D_NOT_character
   void set_track_start(const std::string& value);
   std::string track_end() const; // 0D_NOT_character
-  FortranArray1D<char> get_track_end_chars() const; // 0D_NOT_character
   void set_track_end(const std::string& value);
   int ix_branch() const; // 0D_NOT_integer
   void set_ix_branch(int value);
@@ -11066,7 +10641,6 @@ class TaoD1DataProxy : public FortranProxy<TaoD1DataProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   std::optional<TaoD2DataProxy> d2() const; // 0D_PTR_type
   void set_d2(const TaoD2DataProxy& src);
@@ -11096,7 +10670,6 @@ class TaoLatticeProxy : public FortranProxy<TaoLatticeProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   LatProxy lat() const; // 0D_NOT_type
   void set_lat(const LatProxy& src);
@@ -11134,13 +10707,10 @@ class TaoBeamUniProxy : public FortranProxy<TaoBeamUniProxy> {
   using FortranProxy::operator=;
 
   std::string saved_at() const; // 0D_NOT_character
-  FortranArray1D<char> get_saved_at_chars() const; // 0D_NOT_character
   void set_saved_at(const std::string& value);
   std::string dump_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_dump_file_chars() const; // 0D_NOT_character
   void set_dump_file(const std::string& value);
   std::string dump_at() const; // 0D_NOT_character
-  FortranArray1D<char> get_dump_at_chars() const; // 0D_NOT_character
   void set_dump_at(const std::string& value);
   bool track_beam_in_universe() const; // 0D_NOT_logical
   void set_track_beam_in_universe(bool value);
@@ -11232,19 +10802,14 @@ class TaoD2DataProxy : public FortranProxy<TaoD2DataProxy> {
   using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
   void set_name(const std::string& value);
   std::string data_file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_data_file_name_chars() const; // 0D_NOT_character
   void set_data_file_name(const std::string& value);
   std::string ref_file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_ref_file_name_chars() const; // 0D_NOT_character
   void set_ref_file_name(const std::string& value);
   std::string data_date() const; // 0D_NOT_character
-  FortranArray1D<char> get_data_date_chars() const; // 0D_NOT_character
   void set_data_date(const std::string& value);
   std::string ref_date() const; // 0D_NOT_character
-  FortranArray1D<char> get_ref_date_chars() const; // 0D_NOT_character
   void set_ref_date(const std::string& value);
   FortranCharArray1D descrip() const; // 1D_NOT_character
   TaoD1DataProxyArray1D d1() const; // 1D_ALLOC_type
@@ -11326,28 +10891,20 @@ class TaoDataProxy : public FortranProxy<TaoDataProxy> {
   using FortranProxy::operator=;
 
   std::string ele_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_ele_name_chars() const; // 0D_NOT_character
   void set_ele_name(const std::string& value);
   std::string ele_start_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_ele_start_name_chars() const; // 0D_NOT_character
   void set_ele_start_name(const std::string& value);
   std::string ele_ref_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_ele_ref_name_chars() const; // 0D_NOT_character
   void set_ele_ref_name(const std::string& value);
   std::string data_type() const; // 0D_ALLOC_character
-  FortranArray1D<char> get_data_type_chars() const; // 0D_ALLOC_character
   void set_data_type(const std::string& value);
   std::string merit_type() const; // 0D_NOT_character
-  FortranArray1D<char> get_merit_type_chars() const; // 0D_NOT_character
   void set_merit_type(const std::string& value);
   std::string id() const; // 0D_NOT_character
-  FortranArray1D<char> get_id_chars() const; // 0D_NOT_character
   void set_id(const std::string& value);
   std::string data_source() const; // 0D_NOT_character
-  FortranArray1D<char> get_data_source_chars() const; // 0D_NOT_character
   void set_data_source(const std::string& value);
   std::string why_invalid() const; // 0D_NOT_character
-  FortranArray1D<char> get_why_invalid_chars() const; // 0D_NOT_character
   void set_why_invalid(const std::string& value);
   int ix_uni() const; // 0D_NOT_integer
   void set_ix_uni(int value);

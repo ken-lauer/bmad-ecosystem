@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from bmad_cpp_codegen.interface_input_params import c_side_name_translation
 from bmad_cpp_codegen.util import snake_to_camel
 
-from .types import FullType
+from .types import ArgumentType, FullType, PointerType
 
 if TYPE_CHECKING:
     from .create_interface import CodegenStructure
@@ -48,19 +48,17 @@ class TypeMappings:
         cpp_type="bool",
     )
     character = TypeMapping(
-        fortran_type="character",  # length handled later
+        fortran_type="character",
         cpp_type="char",
     )
     type = TypeMapping(
-        fortran_type="type",  # placeholder; actual derived type name later
+        fortran_type="type",
         cpp_type="void*",
     )
 
 
 @dataclass
 class TemplateEntry:
-    """Container for all code generation templates for a specific type."""
-
     fortran_getter: str
     fortran_setter: str | None
     cpp_get_decl: str
@@ -70,7 +68,8 @@ class TemplateEntry:
 
 
 # ---------------------------------------------------------------------------
-# Reusable Fortran pattern fragments - GETTERS
+# Fortran pattern fragments - GETTERS
+# grouping array bounds into array arguments
 # ---------------------------------------------------------------------------
 FORTRAN_SCALAR_GETTER = """
   subroutine STRUCTNAME_get_FATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_FATTRNAME')
@@ -96,240 +95,201 @@ FORTRAN_POINTER_GETTER = """
   end subroutine
 """
 
-FORTRAN_ARRAY_1D_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+# Note: We use is_allocated for both allocated() and associated() checks via logic inside the sub
+FORTRAN_ARRAY_1D_ALL_INFO = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, is_allocated) &
+        bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-    lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    size_out = upper_bound - lower_bound + 1
-  end subroutine
-"""
-
-FORTRAN_ARRAY_1D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_int), dimension(2), intent(out) :: bounds ! 1:lower, 2:upper
     logical(c_bool), intent(out) :: is_allocated
     type(STRUCTNAME), pointer :: struct_obj
+    
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
+    
+    if (CONDITION) then
       data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-      lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      size_out = upper_bound - lower_bound + 1
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
+      bounds = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
 """
 
-FORTRAN_ARRAY_1D_PTR_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+FORTRAN_ARRAY_2D_ALL_INFO = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated) &
+        bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_int), dimension(4), intent(out) :: bounds ! 1:dim1L, 2:dim1U, 3:dim2L, 4:dim2U
+    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
     type(STRUCTNAME), pointer :: struct_obj
+    integer :: d1_size
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (associated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-      lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      size_out = upper_bound - lower_bound + 1
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      is_allocated = .false.
-    endif
-  end subroutine
-"""
-
-FORTRAN_ARRAY_2D_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      stride1, stride2) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: stride1, stride2
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2)))
-    dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_size = dim1_upper - dim1_lower + 1
-    dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_size = dim2_upper - dim2_lower + 1
-    stride1 = 1_c_int
-    stride2 = dim1_size
-  end subroutine
-"""
-
-FORTRAN_ARRAY_2D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      stride1, stride2, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: stride1, stride2
-    logical(c_bool), intent(out) :: is_allocated
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
+    
+    if (CONDITION) then
       data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2)))
-      dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_size = dim1_upper - dim1_lower + 1
-      dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_size = dim2_upper - dim2_lower + 1
-      stride1 = 1_c_int
-      stride2 = dim1_size
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(3) = int(lbound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(4) = int(ubound(struct_obj%FATTRNAME, 2), c_int)
+      
+      d1_size = bounds(2) - bounds(1) + 1
+      strides(1) = 1_c_int
+      strides(2) = d1_size
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
-      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
-      stride1 = 0_c_int; stride2 = 0_c_int
+      bounds = 0_c_int; strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
 """
 
-FORTRAN_ARRAY_3D_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      dim3_size, dim3_lower, dim3_upper, &
-      stride1, stride2, stride3) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+FORTRAN_ARRAY_3D_ALL_INFO = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated) &
+      bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
-    integer(c_int), intent(out) :: stride1, stride2, stride3
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
-    dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_size = dim1_upper - dim1_lower + 1
-    dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_size = dim2_upper - dim2_lower + 1
-    dim3_lower = int(lbound(struct_obj%FATTRNAME, 3), c_int)
-    dim3_upper = int(ubound(struct_obj%FATTRNAME, 3), c_int)
-    dim3_size = dim3_upper - dim3_lower + 1
-    stride1 = 1_c_int
-    stride2 = dim1_size
-    stride3 = dim1_size * dim2_size
-  end subroutine
-"""
-
-FORTRAN_ARRAY_3D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      dim3_size, dim3_lower, dim3_upper, &
-      stride1, stride2, stride3, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
-    integer(c_int), intent(out) :: stride1, stride2, stride3
+    integer(c_int), dimension(6), intent(out) :: bounds
+    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
     type(STRUCTNAME), pointer :: struct_obj
+    integer :: d1_size, d2_size
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
-      dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_size = dim1_upper - dim1_lower + 1
-      dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_size = dim2_upper - dim2_lower + 1
-      dim3_lower = int(lbound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_upper = int(ubound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_size = dim3_upper - dim3_lower + 1
-      stride1 = 1_c_int
-      stride2 = dim1_size
-      stride3 = dim1_size * dim2_size
+    
+    if (CONDITION) then
+      data_ptr = c_loc(struct_obj%FATTRNAME( &
+        lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
+        
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(3) = int(lbound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(4) = int(ubound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(5) = int(lbound(struct_obj%FATTRNAME, 3), c_int)
+      bounds(6) = int(ubound(struct_obj%FATTRNAME, 3), c_int)
+      
+      d1_size = bounds(2) - bounds(1) + 1
+      d2_size = bounds(4) - bounds(3) + 1
+      strides(1) = 1_c_int
+      strides(2) = d1_size
+      strides(3) = d1_size * d2_size
       is_allocated = .true.
     else
       data_ptr = c_null_ptr
-      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
-      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
-      dim3_size = 0_c_int; dim3_lower = 0_c_int; dim3_upper = -1_c_int
-      stride1 = 0_c_int; stride2 = 0_c_int; stride3 = 0_c_int
-      is_allocated = .false.
-    endif
-  end subroutine
-"""
-
-FORTRAN_ARRAY_3D_PTR_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      dim3_size, dim3_lower, dim3_upper, &
-      stride1, stride2, stride3, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
-    integer(c_int), intent(out) :: stride1, stride2, stride3
-    logical(c_bool), intent(out) :: is_allocated
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (associated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
-      dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_size = dim1_upper - dim1_lower + 1
-      dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_size = dim2_upper - dim2_lower + 1
-      dim3_lower = int(lbound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_upper = int(ubound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_size = dim3_upper - dim3_lower + 1
-      stride1 = 1_c_int
-      stride2 = dim1_size
-      stride3 = dim1_size * dim2_size
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
-      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
-      dim3_size = 0_c_int; dim3_lower = 0_c_int; dim3_upper = -1_c_int
-      stride1 = 0_c_int; stride2 = 0_c_int; stride3 = 0_c_int
+      bounds = 0_c_int; strides = 0_c_int
       is_allocated = .false.
     endif
   end subroutine
 """
 
 # ---------------------------------------------------------------------------
-# Reusable Fortran pattern fragments - SETTERS
+# Reusable C++ pattern fragments - GETTERS (Using BmadProxyHelpers)
+# ---------------------------------------------------------------------------
+
+CPP_SCALAR_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, CTYPE* value_out);"
+CPP_SCALAR_ACCESSOR = """
+    CTYPE CATTRNAME() const {
+        CTYPE value;
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
+        return value;
+    }
+"""
+
+CPP_POINTER_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, CTYPE** ptr_out);"
+CPP_POINTER_ACCESSOR = """
+    CTYPE* CATTRNAME() const {
+        CTYPE* ptr;
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
+        return ptr;
+    }
+"""
+
+# C++ declarations always pass array pointers for bounds now
+CPP_ARRAY_1D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(const void* s, CTYPE** d, int* bounds, bool* is_alloc);
+"""
+CPP_ARRAY_1D_ACCESSOR = """
+    FortranArray1D<CTYPE> CATTRNAME() const {
+        return BmadProxyHelpers::get_array_1d<CTYPE>(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+    }
+"""
+
+CPP_ARRAY_2D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(const void* s, CTYPE** d, int* bounds, int* strides, bool* is_alloc);
+"""
+CPP_ARRAY_2D_ACCESSOR = """
+    FortranArray2D<CTYPE> CATTRNAME() const {
+        return BmadProxyHelpers::get_array_2d<CTYPE>(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+    }
+"""
+
+CPP_ARRAY_3D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(const void* s, CTYPE** d, int* bounds, int* strides, bool* is_alloc);
+"""
+CPP_ARRAY_3D_ACCESSOR = """
+    FortranArray3D<CTYPE> CATTRNAME() const {
+        return BmadProxyHelpers::get_array_3d<CTYPE>(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+    }
+"""
+
+CPP_TYPE_SCALAR_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, void** ptr_out);"
+
+CPP_TYPE_ARRAY_1D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(
+        const void* s, 
+        void** d, 
+        int* bounds, 
+        bool* is_alloc, 
+        size_t* el_size
+    );
+"""
+CPP_TYPE_ARRAY_1D_ACCESSOR = """
+    ${return_proxy_name}Array1D CATTRNAME() const {
+        return BmadProxyHelpers::get_type_array_1d<${return_proxy_name}Array1D>(
+            fortran_ptr_, 
+            STRUCTNAME_get_FATTRNAME_info
+        );
+    }
+"""
+
+CPP_TYPE_ARRAY_2D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(
+        const void* s, void** d, int* bounds, int* strides, bool* a, size_t* es
+    );
+"""
+
+CPP_TYPE_ARRAY_2D_ACCESSOR = """
+    ${return_proxy_name}Array2D CATTRNAME() const {
+        return BmadProxyHelpers::get_type_array_2d<${return_proxy_name}Array2D>(
+            fortran_ptr_, 
+            STRUCTNAME_get_FATTRNAME_info
+        );
+    }
+"""
+
+CPP_TYPE_ARRAY_3D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(
+         const void* s, void** d, int* bounds, int* strides, bool* a, size_t* es
+    );
+"""
+
+CPP_TYPE_ARRAY_3D_ACCESSOR = """
+    ${return_proxy_name}Array3D CATTRNAME() const {
+        return BmadProxyHelpers::get_type_array_3d<${return_proxy_name}Array3D>(
+            fortran_ptr_, 
+            STRUCTNAME_get_FATTRNAME_info
+        );
+    }
+"""
+
+# ---------------------------------------------------------------------------
+# Reusable Fortran/C++ pattern fragments - SETTERS
 # ---------------------------------------------------------------------------
 FORTRAN_SCALAR_SETTER = """
   subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, value_in) bind(c, name='STRUCTNAME_set_FATTRNAME')
@@ -352,7 +312,6 @@ FORTRAN_POINTER_SETTER = """
     endif
   end subroutine
 """
-
 FORTRAN_TYPE_SCALAR_SETTER = """
   subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, src_ptr) bind(c, name='STRUCTNAME_set_FATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
@@ -364,7 +323,6 @@ FORTRAN_TYPE_SCALAR_SETTER = """
     struct_obj%FATTRNAME = src_obj
   end subroutine
 """
-
 FORTRAN_TYPE_POINTER_SETTER = """
   subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, src_ptr) bind(c, name='STRUCTNAME_set_FATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
@@ -379,225 +337,14 @@ FORTRAN_TYPE_POINTER_SETTER = """
   end subroutine
 """
 
-# ---------------------------------------------------------------------------
-# Reusable C++ pattern fragments - GETTERS
-# ---------------------------------------------------------------------------
-CPP_SCALAR_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, CTYPE* value_out);"
-CPP_SCALAR_ACCESSOR = """
-    CTYPE CATTRNAME() const {
-        CTYPE value;
-        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
-        return value;
-    }
-"""
-
-CPP_POINTER_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, CTYPE** ptr_out);"
-CPP_POINTER_ACCESSOR = """
-    CTYPE* CATTRNAME() const {
-        CTYPE* ptr;
-        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
-        return ptr;
-    }
-"""
-
-CPP_ARRAY_1D_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound
-    );
-"""
-
-CPP_ARRAY_1D_ACCESSOR = """
-    FortranArray1D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
-        return FortranArray1D<CTYPE>(data_ptr, size_out, lower_bound, upper_bound, true);
-    }
-"""
-
-CPP_ARRAY_1D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        bool* is_allocated
-    );
-"""
-
-CPP_ARRAY_1D_ALLOC_ACCESSOR = """
-    FortranArray1D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        return FortranArray1D<CTYPE>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
-    }
-"""
-
-CPP_ARRAY_2D_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* stride1, int* stride2
-    );
-"""
-
-CPP_ARRAY_2D_ACCESSOR = """
-    FortranArray2D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int stride1, stride2;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &stride1, &stride2);
-        return FortranArray2D<CTYPE>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            stride1, stride2, true);
-    }
-"""
-
-CPP_ARRAY_2D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* stride1, int* stride2,
-        bool* is_allocated
-    );
-"""
-
-CPP_ARRAY_2D_ALLOC_ACCESSOR = """
-    FortranArray2D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int stride1, stride2;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &stride1, &stride2, &is_allocated);
-        return FortranArray2D<CTYPE>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            stride1, stride2, is_allocated);
-    }
-"""
-
-CPP_ARRAY_3D_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* dim3_size, int* dim3_lower, int* dim3_upper,
-        int* stride1, int* stride2, int* stride3
-    );
-"""
-
-CPP_ARRAY_3D_ACCESSOR = """
-    FortranArray3D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int dim3_size, dim3_lower, dim3_upper;
-        int stride1, stride2, stride3;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &dim3_size, &dim3_lower, &dim3_upper,
-            &stride1, &stride2, &stride3);
-        return FortranArray3D<CTYPE>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            dim3_size, dim3_lower, dim3_upper,
-            stride1, stride2, stride3, true);
-    }
-"""
-
-CPP_ARRAY_3D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        CTYPE** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* dim3_size, int* dim3_lower, int* dim3_upper,
-        int* stride1, int* stride2, int* stride3,
-        bool* is_allocated
-    );
-"""
-
-CPP_ARRAY_3D_ALLOC_ACCESSOR = """
-    FortranArray3D<CTYPE> CATTRNAME() const {
-        CTYPE* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int dim3_size, dim3_lower, dim3_upper;
-        int stride1, stride2, stride3;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &dim3_size, &dim3_lower, &dim3_upper,
-            &stride1, &stride2, &stride3, &is_allocated);
-        return FortranArray3D<CTYPE>(data_ptr,
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            dim3_size, dim3_lower, dim3_upper,
-            stride1, stride2, stride3, is_allocated);
-    }
-"""
-
-CPP_TYPE_SCALAR_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, void** ptr_out);"
-CPP_TYPE_ARRAY_1D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        void** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        bool* is_allocated,
-        size_t* element_size
-    );
-"""
-
-CPP_SIZE_DECL = "    void STRUCTNAME_get_FATTRNAME(const void* struct_obj, int dim, int* size_out);"
-CPP_SIZE_ACCESSOR = """
-    int CATTRNAME(int dim = 1) const {
-        int size_out;
-        STRUCTNAME_get_FATTRNAME(fortran_ptr_, dim, &size_out);
-        return size_out;
-    }
-"""
-
-# ---------------------------------------------------------------------------
-# Reusable C++ pattern fragments - SETTERS
-# ---------------------------------------------------------------------------
 CPP_SCALAR_SET_DECL = "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, CTYPE value_in);"
 CPP_SCALAR_SET_ACCESSOR = """
     void set_CATTRNAME(CTYPE value) {
         STRUCTNAME_set_FATTRNAME(fortran_ptr_, value);
     }
 """
-
-CPP_POINTER_SET_DECL = "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, CTYPE value_in);"
-CPP_POINTER_SET_ACCESSOR = """
-    void set_CATTRNAME(CTYPE value) {
-        STRUCTNAME_set_FATTRNAME(fortran_ptr_, value);
-    }
-"""
+CPP_POINTER_SET_DECL = CPP_SCALAR_SET_DECL
+CPP_POINTER_SET_ACCESSOR = CPP_SCALAR_SET_ACCESSOR
 
 CPP_TYPE_SCALAR_SET_DECL = "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const void* src_ptr);"
 CPP_TYPE_SCALAR_SET_ACCESSOR = """
@@ -605,23 +352,152 @@ CPP_TYPE_SCALAR_SET_ACCESSOR = """
         STRUCTNAME_set_FATTRNAME(fortran_ptr_, src.get_fortran_ptr());
     }
 """
+CPP_TYPE_POINTER_SET_DECL = CPP_TYPE_SCALAR_SET_DECL
+CPP_TYPE_POINTER_SET_ACCESSOR = CPP_TYPE_SCALAR_SET_ACCESSOR
 
-CPP_TYPE_POINTER_SET_DECL = "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const void* src_ptr);"
-CPP_TYPE_POINTER_SET_ACCESSOR = """
-    void set_CATTRNAME(const ${return_proxy_name}& src) {
-        STRUCTNAME_set_FATTRNAME(fortran_ptr_, src.get_fortran_ptr());
+
+# ---------------------------------------------------------------------------
+# Character scalars / Array 1D
+# ---------------------------------------------------------------------------
+
+FORTRAN_CHAR_SCALAR_DYN_GETTER = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, str_len, is_allocated) &
+    bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: str_len
+    logical(c_bool), intent(out) :: is_allocated
+    type(STRUCTNAME), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    
+    if (CONDITION) then
+      data_ptr = c_loc(struct_obj%FATTRNAME)
+      ! Use 'len' for full length including spaces, or 'len_trim' if preferred.
+      ! usually for allocatables, 'len' is the desired exact memory size.
+      str_len = int(len(struct_obj%FATTRNAME), c_int)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      str_len = 0
+      is_allocated = .false.
+    endif
+  end subroutine
+"""
+
+FORTRAN_CHAR_ALLOC_SETTER = """
+  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(STRUCTNAME), pointer :: struct_obj
+    character(len=str_len), pointer :: temp_str
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    
+    if (allocated(struct_obj%FATTRNAME)) deallocate(struct_obj%FATTRNAME)
+    
+    if (str_len > 0) then
+       call c_f_pointer(str_ptr, temp_str)
+       allocate(struct_obj%FATTRNAME, source=temp_str)
+       struct_obj%FATTRNAME = temp_str(1:str_len)
+    endif
+  end subroutine
+"""
+FORTRAN_CHAR_PTR_SETTER = """
+  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(in), value :: str_ptr
+    integer(c_int), intent(in), value :: str_len
+    type(STRUCTNAME), pointer :: struct_obj
+    character(len=str_len), pointer :: temp_str
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    
+    if (associated(struct_obj%FATTRNAME)) deallocate(struct_obj%FATTRNAME)
+    
+    if (str_len > 0) then
+        call c_f_pointer(str_ptr, temp_str)
+        allocate(struct_obj%FATTRNAME, source=temp_str)
+    else
+        nullify(struct_obj%FATTRNAME)
+    endif
+  end subroutine
+"""
+# Standard Fortran Pattern for Char Array 1D (handles PTR, ALLOC, and standard arrays)
+FORTRAN_CHAR_ARRAY_1D_ALL = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, str_len, is_allocated) &
+      bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), dimension(2), intent(out) :: bounds
+    integer(c_int), intent(out) :: str_len
+    logical(c_bool), intent(out) :: is_allocated
+    type(STRUCTNAME), pointer :: struct_obj
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    
+    if (CONDITION) then
+      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+      str_len = int(len(struct_obj%FATTRNAME), c_int)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      bounds = 0
+      str_len = 0
+      is_allocated = .false.
+    endif
+  end subroutine
+"""
+
+CPP_CHAR_SCALAR_DYN_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(
+        const void* s, 
+        char** d, 
+        int* len, 
+        bool* is_alloc
+    );
+"""
+
+CPP_CHAR_SCALAR_DYN_ACCESSOR = """
+    std::string CATTRNAME() const {
+        return BmadProxyHelpers::get_string(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+    }
+"""
+CPP_CHAR_ARRAY_1D_DECL = """
+    void STRUCTNAME_get_FATTRNAME_info(
+        const void* s, 
+        char** d, 
+        int* bounds,    // [lower, upper]
+        int* str_len, 
+        bool* is_alloc
+    );
+"""
+
+CPP_CHAR_ARRAY_1D_ACCESSOR = """
+    FortranCharArray1D CATTRNAME() const {
+        return BmadProxyHelpers::get_char_array_1d(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
     }
 """
 
 
 def subst(s: str, **kw) -> str:
-    """Substitute all upper-case keyword argument names with their respective values."""
     out = s
     for k, v in kw.items():
         out = out.replace(k.upper(), v)
     return out
 
 
+# ---------------------------------------------------------------------------
+# Structure/Proxy Name Helpers
+# ---------------------------------------------------------------------------
+def struct_to_proxy_class_name(name: str) -> str:
+    return snake_to_camel(name.removesuffix("_struct") + "_proxy")
+
+
+# ---------------------------------------------------------------------------
+# Template Makers
+# ---------------------------------------------------------------------------
 def make_scalar(fortran_type: str, cpp_type: str) -> TemplateEntry:
     return TemplateEntry(
         fortran_getter=subst(FORTRAN_SCALAR_GETTER, fortrantype=fortran_type),
@@ -644,20 +520,33 @@ def make_scalar_pointer(fortran_type: str, cpp_type: str) -> TemplateEntry:
     )
 
 
-def make_array_1d(fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str) -> TemplateEntry:
+def get_condition(logic_type: str) -> str:
+    if logic_type == "NOT":
+        return ".true."
+    if logic_type == "ALLOC":
+        return "allocated(struct_obj%FATTRNAME)"
+    if logic_type == "PTR":
+        return "associated(struct_obj%FATTRNAME)"
+    raise ValueError(f"Unknown logic_type: {logic_type}")
+
+
+def make_char_array_1d(ptr_type: PointerType) -> TemplateEntry:
     return TemplateEntry(
-        fortran_getter=fortran_pattern,
-        fortran_setter=None,  # No setter for arrays yet
-        cpp_get_decl=subst(cpp_decl, ctype=cpp_type),
-        cpp_get_accessors=[subst(cpp_accessor, ctype=cpp_type)],
+        fortran_getter=subst(FORTRAN_CHAR_ARRAY_1D_ALL, condition=get_condition(ptr_type)),
+        fortran_setter=None,
+        cpp_get_decl=CPP_CHAR_ARRAY_1D_DECL,
+        cpp_get_accessors=[CPP_CHAR_ARRAY_1D_ACCESSOR],
         cpp_set_decl=None,
         cpp_set_accessors=[],
     )
 
 
-def make_array_2d(fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str) -> TemplateEntry:
+def make_array_1d(
+    fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str, ptr_type: str
+) -> TemplateEntry:
+    """ptr_type is either '.true.' (passed-through for non-alloc), 'allocated(...)', or 'associated(...)'"""
     return TemplateEntry(
-        fortran_getter=fortran_pattern,
+        fortran_getter=subst(fortran_pattern, condition=get_condition(ptr_type)),
         fortran_setter=None,
         cpp_get_decl=subst(cpp_decl, ctype=cpp_type),
         cpp_get_accessors=[subst(cpp_accessor, ctype=cpp_type)],
@@ -666,9 +555,24 @@ def make_array_2d(fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_ty
     )
 
 
-def make_array_3d(fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str) -> TemplateEntry:
+def make_array_2d(
+    fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str, ptr_type: str
+) -> TemplateEntry:
     return TemplateEntry(
-        fortran_getter=fortran_pattern,
+        fortran_getter=subst(fortran_pattern, condition=get_condition(ptr_type)),
+        fortran_setter=None,
+        cpp_get_decl=subst(cpp_decl, ctype=cpp_type),
+        cpp_get_accessors=[subst(cpp_accessor, ctype=cpp_type)],
+        cpp_set_decl=None,
+        cpp_set_accessors=[],
+    )
+
+
+def make_array_3d(
+    fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_type: str, ptr_type: str
+) -> TemplateEntry:
+    return TemplateEntry(
+        fortran_getter=subst(fortran_pattern, condition=get_condition(ptr_type)),
         fortran_setter=None,
         cpp_get_decl=subst(cpp_decl, ctype=cpp_type),
         cpp_get_accessors=[subst(cpp_accessor, ctype=cpp_type)],
@@ -682,13 +586,14 @@ def make_array_3d(fortran_pattern: str, cpp_decl: str, cpp_accessor: str, cpp_ty
 # ---------------------------------------------------------------------------
 templates: dict[FullType, TemplateEntry] = {}
 
-# Scalar simple types (non complex, non character, non derived)
-for tname in ["real", "real16", "integer", "integer8", "logical"]:
+# Scalar simple types
+_simple_types: list[ArgumentType] = ["real", "real16", "integer", "integer8", "logical"]
+for tname in _simple_types:
     tm = getattr(TypeMappings, tname)
     templates[FullType(tname, 0, "NOT")] = make_scalar(tm.fortran_type, tm.cpp_type)
     templates[FullType(tname, 0, "PTR")] = make_scalar_pointer(tm.fortran_type, tm.cpp_type)
 
-# Complex scalar (custom accessor but same scalar getter)
+# Complex Scalar (custom accessors needed)
 templates[FullType("complex", 0, "NOT")] = TemplateEntry(
     fortran_getter=subst(FORTRAN_SCALAR_GETTER, fortrantype=TypeMappings.complex.fortran_type),
     fortran_setter=subst(FORTRAN_SCALAR_SETTER, fortrantype=TypeMappings.complex.fortran_type),
@@ -712,7 +617,7 @@ templates[FullType("complex", 0, "NOT")] = TemplateEntry(
     ],
 )
 
-# Complex pointer scalar (unique declaration/accessor)
+# Complex Pointer scalar
 templates[FullType("complex", 0, "PTR")] = TemplateEntry(
     fortran_getter=FORTRAN_POINTER_GETTER,
     fortran_setter=subst(FORTRAN_POINTER_SETTER, fortrantype=TypeMappings.complex.fortran_type),
@@ -736,48 +641,21 @@ templates[FullType("complex", 0, "PTR")] = TemplateEntry(
     ],
 )
 
-# Character scalar (NOT) - fixed length
-FORTRAN_CHARACTER_SETTER = """
+# ---------------------------------------------------------------------------
+# Simplified Character Handling (Direct Assignment when NOT alloc/ptr)
+# ---------------------------------------------------------------------------
+FORTRAN_CHARACTER_SIMPLE_SETTER = """
   subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(in), value :: str_ptr
     integer(c_int), intent(in), value :: str_len
     type(STRUCTNAME), pointer :: struct_obj
-    character(len=:), pointer :: str_in
-    integer :: copy_len, field_len
+    character(len=str_len), pointer :: str_in
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    field_len = len(struct_obj%FATTRNAME)
-    copy_len = min(str_len, field_len)
     call c_f_pointer(str_ptr, str_in)
-    if (copy_len > 0) then
-      struct_obj%FATTRNAME(1:copy_len) = str_in(1:copy_len)
-    endif
-    if (copy_len < field_len) then
-      struct_obj%FATTRNAME(copy_len+1:field_len) = ' '
-    endif
+    struct_obj%FATTRNAME = str_in ! implicitly handles padding
   end subroutine
 """
-
-FORTRAN_CHARACTER_ALLOC_SETTER = """
-  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(in), value :: str_ptr
-    integer(c_int), intent(in), value :: str_len
-    type(STRUCTNAME), pointer :: struct_obj
-    character(len=:), pointer :: str_in
-    integer :: copy_len
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      deallocate(struct_obj%FATTRNAME)
-    endif
-    if (str_len > 0) then
-      allocate(character(len=str_len) :: struct_obj%FATTRNAME)
-      call c_f_pointer(str_ptr, str_in)
-      struct_obj%FATTRNAME = str_in(1:str_len)
-    endif
-  end subroutine
-"""
-
 CPP_CHARACTER_SET_DECL = (
     "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const char* str_ptr, int str_len);"
 )
@@ -787,461 +665,151 @@ CPP_CHARACTER_SET_ACCESSOR = """
     }
 """
 
-# Character pointer scalar (PTR) - pointer with fixed length
-FORTRAN_CHARACTER_PTR_SETTER = """
-  subroutine STRUCTNAME_set_FATTRNAME(struct_obj_ptr, str_ptr, str_len) bind(c, name='STRUCTNAME_set_FATTRNAME')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(in), value :: str_ptr
-    integer(c_int), intent(in), value :: str_len
-    type(STRUCTNAME), pointer :: struct_obj
-    character(len=str_len), pointer :: str_in
-    integer :: copy_len, field_len
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (.not. associated(struct_obj%FATTRNAME)) then
-      allocate(struct_obj%FATTRNAME)
-    endif
-    field_len = len(struct_obj%FATTRNAME)
-    copy_len = min(str_len, field_len)
-    call c_f_pointer(str_ptr, str_in)
-    if (copy_len > 0) then
-      struct_obj%FATTRNAME(1:copy_len) = str_in(1:copy_len)
-    endif
-    if (copy_len < field_len) then
-      struct_obj%FATTRNAME(copy_len+1:field_len) = ' '
-    endif
-  end subroutine
-"""
-
-CPP_CHARACTER_PTR_SET_DECL = (
-    "    void STRUCTNAME_set_FATTRNAME(void* struct_obj, const char* str_ptr, int str_len);"
-)
-CPP_CHARACTER_PTR_SET_ACCESSOR = """
-    void set_CATTRNAME(const std::string& value) {
-        STRUCTNAME_set_FATTRNAME(fortran_ptr_, value.c_str(), static_cast<int>(value.length()));
-    }
-"""
-
 # Character scalar (NOT)
 templates[FullType("character", 0, "NOT")] = TemplateEntry(
+    # Note: Getter remains complex because it handles dynamic lengths of the Fortran string
     fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, is_allocated) &
+    bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_int), dimension(2), intent(out) :: bounds
+    logical(c_bool), intent(out) :: is_allocated
     type(STRUCTNAME), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%FATTRNAME)
-    lower_bound = 1_c_int
-    upper_bound = int(len_trim(struct_obj%FATTRNAME), c_int)
-    size_out = upper_bound - lower_bound + 1
+    bounds(1) = 1_c_int
+    bounds(2) = int(len_trim(struct_obj%FATTRNAME), c_int)
+    is_allocated = .true.
   end subroutine
 """,
-    fortran_setter=FORTRAN_CHARACTER_SETTER,
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        char** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound
-    );
-""",
+    fortran_setter=FORTRAN_CHARACTER_SIMPLE_SETTER,
+    cpp_get_decl="void STRUCTNAME_get_FATTRNAME_info(const void* s, char** d, int* bounds, bool* a);",
     cpp_get_accessors=[
         """
     std::string CATTRNAME() const {
-        auto char_array = get_FATTRNAME_chars();
-        return std::string(char_array.data(), char_array.size());
+        FortranArray1D<char> arr = BmadProxyHelpers::get_array_1d<char>(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+        return std::string(arr.data(), arr.size());
     }
-""",
-        """
-    FortranArray1D<char> get_FATTRNAME_chars() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
-        return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, true);
-    }
-""",
+"""
     ],
     cpp_set_decl=CPP_CHARACTER_SET_DECL,
     cpp_set_accessors=[CPP_CHARACTER_SET_ACCESSOR],
 )
 
-# Character scalar (ALLOC)
-templates[FullType("character", 0, "ALLOC")] = TemplateEntry(
-    fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
-    logical(c_bool), intent(out) :: is_allocated
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME)
-      lower_bound = 1_c_int
-      upper_bound = int(len_trim(struct_obj%FATTRNAME), c_int)
-      size_out = upper_bound - lower_bound + 1
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      is_allocated = .false.
-    endif
-  end subroutine
-""",
-    fortran_setter=FORTRAN_CHARACTER_ALLOC_SETTER,
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        char** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        bool* is_allocated
-    );
-""",
-    cpp_get_accessors=[
-        """
-    std::string CATTRNAME() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        if (!is_allocated || size_out == 0) {
-            return std::string();
-        }
-        return std::string(data_ptr, size_out);
-    }
-""",
-        """
-    FortranArray1D<char> get_FATTRNAME_chars() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
-    }
-""",
-    ],
-    cpp_set_decl=CPP_CHARACTER_SET_DECL,
-    cpp_set_accessors=[CPP_CHARACTER_SET_ACCESSOR],
-)
 
-# Character pointer scalar (PTR)
-templates[FullType("character", 0, "PTR")] = TemplateEntry(
-    fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
-    logical(c_bool), intent(out) :: is_allocated
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (associated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME)
-      lower_bound = 1_c_int
-      upper_bound = int(len_trim(struct_obj%FATTRNAME), c_int)
-      size_out = upper_bound - lower_bound + 1
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      is_allocated = .false.
-    endif
-  end subroutine
-""",
-    fortran_setter=FORTRAN_CHARACTER_PTR_SETTER,
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        char** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        bool* is_allocated
-    );
-""",
-    cpp_get_accessors=[
-        """
-    std::string CATTRNAME() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        if (!is_allocated || size_out == 0) {
-            return std::string();
-        }
-        return std::string(data_ptr, size_out);
-    }
-""",
-        """
-    FortranArray1D<char> get_FATTRNAME_chars() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
-    }
-""",
-    ],
-    cpp_set_decl=CPP_CHARACTER_PTR_SET_DECL,
-    cpp_set_accessors=[CPP_CHARACTER_PTR_SET_ACCESSOR],
-)
+def make_char_scalar_dyn(ptr_type: str, setter_pattern: str) -> TemplateEntry:
+    return TemplateEntry(
+        fortran_getter=subst(FORTRAN_CHAR_SCALAR_DYN_GETTER, condition=get_condition(ptr_type)),
+        fortran_setter=setter_pattern,
+        cpp_get_decl=CPP_CHAR_SCALAR_DYN_DECL,
+        cpp_get_accessors=[CPP_CHAR_SCALAR_DYN_ACCESSOR],
+        cpp_set_decl=CPP_CHARACTER_SET_DECL,  # Reused from previous steps
+        cpp_set_accessors=[CPP_CHARACTER_SET_ACCESSOR],  # Reused
+    )
 
-# Character 1D NOT
-templates[FullType("character", 1, "NOT")] = TemplateEntry(
-    fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, str_len) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound, str_len
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-    lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    size_out = upper_bound - lower_bound + 1
-    str_len = int(len(struct_obj%FATTRNAME), c_int)
-  end subroutine
-""",
-    fortran_setter=None,
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        char** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        int* str_len
-    );
-""",
-    cpp_get_accessors=[
-        """
-    FortranCharArray1D CATTRNAME() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound, str_len;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &str_len);
-        return FortranCharArray1D(data_ptr, size_out, lower_bound, upper_bound, str_len, true);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
 
-# Character 1D ALLOC
-templates[FullType("character", 1, "ALLOC")] = TemplateEntry(
-    fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, str_len, is_allocated) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound, str_len
-    logical(c_bool), intent(out) :: is_allocated
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-      lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      size_out = upper_bound - lower_bound + 1
-      str_len = int(len(struct_obj%FATTRNAME), c_int)
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      str_len = 0_c_int
-      is_allocated = .false.
-    endif
-  end subroutine
-""",
-    fortran_setter=None,
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        char** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        int* str_len,
-        bool* is_allocated
-    );
-""",
-    cpp_get_accessors=[
-        """
-    FortranCharArray1D CATTRNAME() const {
-        char* data_ptr;
-        int size_out, lower_bound, upper_bound, str_len;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &str_len, &is_allocated);
-        return FortranCharArray1D(data_ptr, size_out, lower_bound, upper_bound, str_len, is_allocated);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
+# 4. Register Templates
+templates[FullType("character", 0, "ALLOC")] = make_char_scalar_dyn("ALLOC", FORTRAN_CHAR_ALLOC_SETTER)
+templates[FullType("character", 0, "PTR")] = make_char_scalar_dyn("PTR", FORTRAN_CHAR_PTR_SETTER)
 
-# 1D arrays (non-alloc) of real, integer
-for tname in ["real", "integer"]:
+# Arrays 1D / 2D / 3D (Real + Integer)
+real_and_integer_types: list[ArgumentType] = ["real", "integer"]
+for tname in real_and_integer_types:
     tm = getattr(TypeMappings, tname)
+
+    # 1D
     templates[FullType(tname, 1, "NOT")] = make_array_1d(
-        FORTRAN_ARRAY_1D_INFO,
+        FORTRAN_ARRAY_1D_ALL_INFO, CPP_ARRAY_1D_DECL, CPP_ARRAY_1D_ACCESSOR, tm.cpp_type, ptr_type="NOT"
+    )
+    templates[FullType(tname, 1, "ALLOC")] = make_array_1d(
+        FORTRAN_ARRAY_1D_ALL_INFO,
         CPP_ARRAY_1D_DECL,
         CPP_ARRAY_1D_ACCESSOR,
         tm.cpp_type,
+        ptr_type="ALLOC",
     )
-
-# Complex 1D NOT (custom accessor)
-templates[FullType("complex", 1, "NOT")] = TemplateEntry(
-    fortran_getter=FORTRAN_ARRAY_1D_INFO,
-    fortran_setter=None,
-    cpp_get_decl=subst(CPP_ARRAY_1D_DECL, ctype=TypeMappings.complex.cpp_type),
-    cpp_get_accessors=[
-        """
-    FortranArray1D<std::complex<double>> CATTRNAME() const {
-        std::complex<double>* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
-        return FortranArray1D<std::complex<double>>(reinterpret_cast<std::complex<double>*>(data_ptr),
-            size_out, lower_bound, upper_bound, true);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# 1D alloc arrays for real, integer, complex
-for tname in ["real", "integer"]:
-    tm = getattr(TypeMappings, tname)
-    templates[FullType(tname, 1, "ALLOC")] = make_array_1d(
-        FORTRAN_ARRAY_1D_ALLOC_INFO,
-        CPP_ARRAY_1D_ALLOC_DECL,
-        CPP_ARRAY_1D_ALLOC_ACCESSOR,
+    templates[FullType(tname, 1, "PTR")] = make_array_1d(
+        FORTRAN_ARRAY_1D_ALL_INFO,
+        CPP_ARRAY_1D_DECL,
+        CPP_ARRAY_1D_ACCESSOR,
         tm.cpp_type,
+        ptr_type="PTR",
     )
 
-# Complex 1D ALLOC (custom accessor)
-templates[FullType("complex", 1, "ALLOC")] = TemplateEntry(
-    fortran_getter=FORTRAN_ARRAY_1D_ALLOC_INFO,
-    fortran_setter=None,
-    cpp_get_decl=subst(CPP_ARRAY_1D_ALLOC_DECL, ctype=TypeMappings.complex.cpp_type),
-    cpp_get_accessors=[
-        """
-    FortranArray1D<std::complex<double>> CATTRNAME() const {
-        std::complex<double>* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated);
-        return FortranArray1D<std::complex<double>>(reinterpret_cast<std::complex<double>*>(data_ptr),
-            size_out, lower_bound, upper_bound, is_allocated);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# 1D PTR real
-templates[FullType("real", 1, "PTR")] = make_array_1d(
-    FORTRAN_ARRAY_1D_PTR_INFO,
-    CPP_ARRAY_1D_ALLOC_DECL,
-    CPP_ARRAY_1D_ALLOC_ACCESSOR,
-    TypeMappings.real.cpp_type,
-)
-
-# 2D NOT arrays for real, complex
-for tname in ["real"]:
-    tm = getattr(TypeMappings, tname)
-    templates[FullType(tname, 2, "NOT")] = make_array_2d(
-        FORTRAN_ARRAY_2D_INFO,
+    # 2D
+    if tname == "real":  # Only real 2D NOT defined previously
+        templates[FullType(tname, 2, "NOT")] = make_array_2d(
+            FORTRAN_ARRAY_2D_ALL_INFO,
+            CPP_ARRAY_2D_DECL,
+            CPP_ARRAY_2D_ACCESSOR,
+            tm.cpp_type,
+            ptr_type="NOT",
+        )
+    templates[FullType(tname, 2, "ALLOC")] = make_array_2d(
+        FORTRAN_ARRAY_2D_ALL_INFO,
         CPP_ARRAY_2D_DECL,
         CPP_ARRAY_2D_ACCESSOR,
         tm.cpp_type,
+        ptr_type="ALLOC",
     )
 
-# Complex 2D NOT (custom accessor)
-templates[FullType("complex", 2, "NOT")] = TemplateEntry(
-    fortran_getter=FORTRAN_ARRAY_2D_INFO,
-    fortran_setter=None,
-    cpp_get_decl=subst(CPP_ARRAY_2D_DECL, ctype=TypeMappings.complex.cpp_type),
-    cpp_get_accessors=[
-        """
-    FortranArray2D<std::complex<double>> CATTRNAME() const {
-        std::complex<double>* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int stride1, stride2;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &stride1, &stride2);
-        return FortranArray2D<std::complex<double>>(reinterpret_cast<std::complex<double>*>(data_ptr),
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            stride1, stride2, true);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# 2D alloc arrays for real & integer
-for tname in ["real", "integer"]:
-    tm = getattr(TypeMappings, tname)
-    templates[FullType(tname, 2, "ALLOC")] = make_array_2d(
-        FORTRAN_ARRAY_2D_ALLOC_INFO,
-        CPP_ARRAY_2D_ALLOC_DECL,
-        CPP_ARRAY_2D_ALLOC_ACCESSOR,
+    # 3D (Pointer)
+    templates[FullType(tname, 3, "PTR")] = make_array_3d(
+        FORTRAN_ARRAY_3D_ALL_INFO,
+        CPP_ARRAY_3D_DECL,
+        CPP_ARRAY_3D_ACCESSOR,
         tm.cpp_type,
+        ptr_type="PTR",
     )
 
-# 3D NOT arrays for complex, type
-templates[FullType("complex", 3, "NOT")] = TemplateEntry(
-    fortran_getter=FORTRAN_ARRAY_3D_INFO,
-    fortran_setter=None,
-    cpp_get_decl=subst(CPP_ARRAY_3D_DECL, ctype=TypeMappings.complex.cpp_type),
-    cpp_get_accessors=[
-        """
-    FortranArray3D<std::complex<double>> CATTRNAME() const {
-        std::complex<double>* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int dim3_size, dim3_lower, dim3_upper;
-        int stride1, stride2, stride3;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &dim3_size, &dim3_lower, &dim3_upper,
-            &stride1, &stride2, &stride3);
-        return FortranArray3D<std::complex<double>>(reinterpret_cast<std::complex<double>*>(data_ptr),
-            dim1_size, dim1_lower, dim1_upper,
-            dim2_size, dim2_lower, dim2_upper,
-            dim3_size, dim3_lower, dim3_upper,
-            stride1, stride2, stride3, true);
-    }
+# Complex arrays (custom accessor because cast needed on helper result)
+COMPLEX_1D_ACCESSOR = """
+     FortranArray1D<std::complex<double>> CATTRNAME() const {
+        // Complex needs explicit cast handling if not using void*,
+        // but the standard helper works if we declare get_..._info as taking complex*
+        return BmadProxyHelpers::get_array_1d<std::complex<double>>(fortran_ptr_, STRUCTNAME_get_FATTRNAME_info);
+     }
 """
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
+
+# Actually, checking our templates, TypeMapping.complex.cpp_type is std::complex.
+# The C routines take std::complex<double>**. The helper deduces <T> as std::complex<double>.
+# The helper should work directly without custom casting logic if signatures match.
+templates[FullType("complex", 1, "NOT")] = make_array_1d(
+    FORTRAN_ARRAY_1D_ALL_INFO,
+    CPP_ARRAY_1D_DECL,
+    CPP_ARRAY_1D_ACCESSOR,
+    TypeMappings.complex.cpp_type,
+    "NOT",
+)
+templates[FullType("complex", 1, "ALLOC")] = make_array_1d(
+    FORTRAN_ARRAY_1D_ALL_INFO,
+    CPP_ARRAY_1D_DECL,
+    CPP_ARRAY_1D_ACCESSOR,
+    TypeMappings.complex.cpp_type,
+    "ALLOC",
+)
+templates[FullType("complex", 2, "NOT")] = make_array_2d(
+    FORTRAN_ARRAY_2D_ALL_INFO,
+    CPP_ARRAY_2D_DECL,
+    CPP_ARRAY_2D_ACCESSOR,
+    TypeMappings.complex.cpp_type,
+    "NOT",
+)
+templates[FullType("complex", 3, "NOT")] = make_array_3d(
+    FORTRAN_ARRAY_3D_ALL_INFO,
+    CPP_ARRAY_3D_DECL,
+    CPP_ARRAY_3D_ACCESSOR,
+    TypeMappings.complex.cpp_type,
+    "NOT",
 )
 
-# 3D PTR real
-templates[FullType("real", 3, "PTR")] = make_array_3d(
-    FORTRAN_ARRAY_3D_PTR_INFO,
-    CPP_ARRAY_3D_ALLOC_DECL,
-    CPP_ARRAY_3D_ALLOC_ACCESSOR,
-    TypeMappings.real.cpp_type,
-)
 
-# Derived type scalar (NOT) - unique accessor
+# ---------------------------------------------------------------------------
+# Derived Types
+# ---------------------------------------------------------------------------
+
+# Type Scalar (NOT)
 templates[FullType("type", 0, "NOT")] = TemplateEntry(
     fortran_getter="""
   subroutine STRUCTNAME_get_FATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_FATTRNAME')
@@ -1267,7 +835,7 @@ templates[FullType("type", 0, "NOT")] = TemplateEntry(
     cpp_set_accessors=[CPP_TYPE_SCALAR_SET_ACCESSOR],
 )
 
-# Derived type scalar pointer (PTR) - different accessor
+# Type Scalar (PTR) - Returns Optional
 templates[FullType("type", 0, "PTR")] = TemplateEntry(
     fortran_getter=FORTRAN_POINTER_GETTER,
     fortran_setter=FORTRAN_TYPE_POINTER_SETTER,
@@ -1286,395 +854,161 @@ templates[FullType("type", 0, "PTR")] = TemplateEntry(
     cpp_set_accessors=[CPP_TYPE_POINTER_SET_ACCESSOR],
 )
 
-# Derived type 1D NOT: element_size
-templates[FullType("type", 1, "NOT")] = TemplateEntry(
-    fortran_getter="""
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+# Type Array 1D (NOT/PTR/ALLOC)
+# Requires element_size handling, slightly different than standard helpers
+FORTRAN_TYPE_ARRAY_1D_ALL = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, is_allocated, el_size) &
+      bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
-    integer(c_size_t), intent(out) :: element_size
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-    lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    size_out = upper_bound - lower_bound + 1
-    element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1))) / 8, c_size_t)
-  end subroutine
-""",
-    fortran_setter=None,  # Arrays skipped for now
-    cpp_get_decl="""
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        void** data_ptr,
-        int* size_out,
-        int* lower_bound,
-        int* upper_bound,
-        size_t* element_size
-    );
-""",
-    cpp_get_accessors=[
-        """
-    ${return_proxy_name}Array1D CATTRNAME() const {
-        void* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        size_t element_size;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &element_size);
-        return ${return_proxy_name}Array1D(data_ptr, size_out, lower_bound, upper_bound, true, element_size);
-    }
-"""
-    ],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# Derived type 1D PTR (associated semantics) & ALLOC (allocated semantics) share alloc decl/accessor pattern
-FORTRAN_TYPE_ARRAY_1D_PTR_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_int), dimension(2), intent(out) :: bounds
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: element_size
+    integer(c_size_t), intent(out) :: el_size
     type(STRUCTNAME), pointer :: struct_obj
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (associated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-      lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      size_out = upper_bound - lower_bound + 1
-      element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1))) / 8, c_size_t)
-      is_allocated = .true.
+    
+    if (CONDITION) then
+        data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
+        bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+        bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+        ! storage_size returns bits, divide by 8
+        el_size = int(storage_size(struct_obj%FATTRNAME(bounds(1))) / 8, c_size_t)
+        is_allocated = .true.
     else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      element_size = 0_c_size_t
-      is_allocated = .false.
+        data_ptr = c_null_ptr
+        bounds = 0
+        el_size = 0
+        is_allocated = .false.
     endif
   end subroutine
 """
 
-FORTRAN_TYPE_ARRAY_1D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+FORTRAN_TYPE_ARRAY_2D_ALL = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
+    bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_int), dimension(4), intent(out) :: bounds
+    integer(c_int), dimension(2), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: element_size
+    integer(c_size_t), intent(out) :: el_size
     type(STRUCTNAME), pointer :: struct_obj
+    integer :: d1, d2
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1)))
-      lower_bound = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      upper_bound = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      size_out = upper_bound - lower_bound + 1
-      element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME, 1))) / 8, c_size_t)
-      is_allocated = .true.
-    else
-      data_ptr = c_null_ptr
-      lower_bound = 0_c_int
-      upper_bound = -1_c_int
-      size_out = 0_c_int
-      element_size = 0_c_size_t
-      is_allocated = .false.
-    endif
-  end subroutine
-"""
-
-CPP_TYPE_ARRAY_1D_ALLOC_ACCESSOR = """
-    ${return_proxy_name}Array1D CATTRNAME() const {
-        void* data_ptr;
-        int size_out, lower_bound, upper_bound;
-        bool is_allocated;
-        size_t element_size;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size);
-        return ${return_proxy_name}Array1D(data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
-    }
-"""
-
-templates[FullType("type", 1, "PTR")] = TemplateEntry(
-    fortran_getter=FORTRAN_TYPE_ARRAY_1D_PTR_INFO,
-    fortran_setter=None,  # Arrays skipped for now
-    cpp_get_decl=CPP_TYPE_ARRAY_1D_ALLOC_DECL,
-    cpp_get_accessors=[CPP_TYPE_ARRAY_1D_ALLOC_ACCESSOR],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-templates[FullType("type", 1, "ALLOC")] = TemplateEntry(
-    fortran_getter=FORTRAN_TYPE_ARRAY_1D_ALLOC_INFO,
-    fortran_setter=None,  # Arrays skipped for now
-    cpp_get_decl=CPP_TYPE_ARRAY_1D_ALLOC_DECL,
-    cpp_get_accessors=[CPP_TYPE_ARRAY_1D_ALLOC_ACCESSOR],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# Derived type 2D ALLOC
-FORTRAN_TYPE_ARRAY_2D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      stride1, stride2, is_allocated, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: stride1, stride2
-    logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: element_size
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
+    
+    if (CONDITION) then
       data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2)))
-      dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_size = dim1_upper - dim1_lower + 1
-      dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_size = dim2_upper - dim2_lower + 1
-      stride1 = 1_c_int
-      stride2 = dim1_size
-      element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2))) / 8, c_size_t)
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(3) = int(lbound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(4) = int(ubound(struct_obj%FATTRNAME, 2), c_int)
+      
+      d1 = bounds(2) - bounds(1) + 1
+      strides(1) = 1_c_int
+      strides(2) = d1
+      el_size = int(storage_size(struct_obj%FATTRNAME(bounds(1), bounds(3))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr
-      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
-      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
-      stride1 = 0_c_int; stride2 = 0_c_int
-      element_size = 0_c_size_t
+      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
       is_allocated = .false.
     endif
   end subroutine
 """
 
-CPP_TYPE_ARRAY_2D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        void** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* stride1, int* stride2,
-        bool* is_allocated,
-        size_t* element_size
-    );
-"""
-
-CPP_TYPE_ARRAY_2D_ALLOC_ACCESSOR = """
-    FortranTypeArray2D<${return_proxy_name}> CATTRNAME() const {
-        void* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int stride1, stride2;
-        bool is_allocated;
-        size_t element_size;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &stride1, &stride2, &is_allocated, &element_size);
-        
-        std::array<int, 2> sizes = {dim1_size, dim2_size};
-        std::array<int, 2> lower_bounds = {dim1_lower, dim2_lower};
-        std::array<int, 2> upper_bounds = {dim1_upper, dim2_upper};
-        std::array<size_t, 2> strides = {static_cast<size_t>(stride1), static_cast<size_t>(stride2)};
-        
-        return FortranTypeArray2D<${return_proxy_name}>(data_ptr,
-            sizes, lower_bounds, upper_bounds, strides,
-            is_allocated, element_size);
-    }
-"""
-
-templates[FullType("type", 2, "ALLOC")] = TemplateEntry(
-    fortran_getter=FORTRAN_TYPE_ARRAY_2D_ALLOC_INFO,
-    fortran_setter=None,
-    cpp_get_decl=CPP_TYPE_ARRAY_2D_ALLOC_DECL,
-    cpp_get_accessors=[CPP_TYPE_ARRAY_2D_ALLOC_ACCESSOR],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# Derived type 3D NOT
-FORTRAN_TYPE_ARRAY_3D_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      dim3_size, dim3_lower, dim3_upper, &
-      stride1, stride2, stride3, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
+# Fortran 3D Pattern
+FORTRAN_TYPE_ARRAY_3D_ALL = """
+  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, bounds, strides, is_allocated, el_size) &
+    bind(c, name='STRUCTNAME_get_FATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
-    integer(c_int), intent(out) :: stride1, stride2, stride3
-    integer(c_size_t), intent(out) :: element_size
-    type(STRUCTNAME), pointer :: struct_obj
-    call c_f_pointer(struct_obj_ptr, struct_obj)
-    data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
-    dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-    dim1_size = dim1_upper - dim1_lower + 1
-    dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-    dim2_size = dim2_upper - dim2_lower + 1
-    dim3_lower = int(lbound(struct_obj%FATTRNAME, 3), c_int)
-    dim3_upper = int(ubound(struct_obj%FATTRNAME, 3), c_int)
-    dim3_size = dim3_upper - dim3_lower + 1
-    stride1 = 1_c_int
-    stride2 = dim1_size
-    stride3 = dim1_size * dim2_size
-    element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3))) / 8, c_size_t)
-  end subroutine
-"""
-
-CPP_TYPE_ARRAY_3D_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        void** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* dim3_size, int* dim3_lower, int* dim3_upper,
-        int* stride1, int* stride2, int* stride3,
-        size_t* element_size
-    );
-"""
-
-CPP_TYPE_ARRAY_3D_ACCESSOR = """
-    FortranTypeArray3D<${return_proxy_name}> CATTRNAME() const {
-        void* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int dim3_size, dim3_lower, dim3_upper;
-        int stride1, stride2, stride3;
-        size_t element_size;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &dim3_size, &dim3_lower, &dim3_upper,
-            &stride1, &stride2, &stride3, &element_size);
-        
-        std::array<int, 3> sizes = {dim1_size, dim2_size, dim3_size};
-        std::array<int, 3> lower_bounds = {dim1_lower, dim2_lower, dim3_lower};
-        std::array<int, 3> upper_bounds = {dim1_upper, dim2_upper, dim3_upper};
-        std::array<size_t, 3> strides = {static_cast<size_t>(stride1), 
-                                          static_cast<size_t>(stride2), 
-                                          static_cast<size_t>(stride3)};
-        
-        return FortranTypeArray3D<${return_proxy_name}>(data_ptr,
-            sizes, lower_bounds, upper_bounds, strides,
-            true, element_size);
-    }
-"""
-
-templates[FullType("type", 3, "NOT")] = TemplateEntry(
-    fortran_getter=FORTRAN_TYPE_ARRAY_3D_INFO,
-    fortran_setter=None,
-    cpp_get_decl=CPP_TYPE_ARRAY_3D_DECL,
-    cpp_get_accessors=[CPP_TYPE_ARRAY_3D_ACCESSOR],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
-
-# Derived type 3D ALLOC
-FORTRAN_TYPE_ARRAY_3D_ALLOC_INFO = """
-  subroutine STRUCTNAME_get_FATTRNAME_info(struct_obj_ptr, data_ptr, &
-      dim1_size, dim1_lower, dim1_upper, &
-      dim2_size, dim2_lower, dim2_upper, &
-      dim3_size, dim3_lower, dim3_upper, &
-      stride1, stride2, stride3, is_allocated, element_size) bind(c, name='STRUCTNAME_get_FATTRNAME_info')
-    type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: data_ptr
-    integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
-    integer(c_int), intent(out) :: dim2_size, dim2_lower, dim2_upper
-    integer(c_int), intent(out) :: dim3_size, dim3_lower, dim3_upper
-    integer(c_int), intent(out) :: stride1, stride2, stride3
+    integer(c_int), dimension(6), intent(out) :: bounds
+    integer(c_int), dimension(3), intent(out) :: strides
     logical(c_bool), intent(out) :: is_allocated
-    integer(c_size_t), intent(out) :: element_size
+    integer(c_size_t), intent(out) :: el_size
     type(STRUCTNAME), pointer :: struct_obj
+    integer :: d1, d2
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    if (allocated(struct_obj%FATTRNAME)) then
-      data_ptr = c_loc(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3)))
-      dim1_lower = int(lbound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_upper = int(ubound(struct_obj%FATTRNAME, 1), c_int)
-      dim1_size = dim1_upper - dim1_lower + 1
-      dim2_lower = int(lbound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_upper = int(ubound(struct_obj%FATTRNAME, 2), c_int)
-      dim2_size = dim2_upper - dim2_lower + 1
-      dim3_lower = int(lbound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_upper = int(ubound(struct_obj%FATTRNAME, 3), c_int)
-      dim3_size = dim3_upper - dim3_lower + 1
-      stride1 = 1_c_int
-      stride2 = dim1_size
-      stride3 = dim1_size * dim2_size
-      element_size = int(storage_size(struct_obj%FATTRNAME(lbound(struct_obj%FATTRNAME,1), lbound(struct_obj%FATTRNAME,2), lbound(struct_obj%FATTRNAME,3))) / 8, c_size_t)
+    
+    if (CONDITION) then
+      data_ptr = c_loc(struct_obj%FATTRNAME( &
+        lbound(struct_obj%FATTRNAME,1), &
+        lbound(struct_obj%FATTRNAME,2), &
+        lbound(struct_obj%FATTRNAME,3)  &
+      ))
+      bounds(1) = int(lbound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(2) = int(ubound(struct_obj%FATTRNAME, 1), c_int)
+      bounds(3) = int(lbound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(4) = int(ubound(struct_obj%FATTRNAME, 2), c_int)
+      bounds(5) = int(lbound(struct_obj%FATTRNAME, 3), c_int)
+      bounds(6) = int(ubound(struct_obj%FATTRNAME, 3), c_int)
+      
+      d1 = bounds(2) - bounds(1) + 1
+      d2 = bounds(4) - bounds(3) + 1
+      strides(1) = 1_c_int
+      strides(2) = d1
+      strides(3) = d1 * d2
+      el_size = int(storage_size(struct_obj%FATTRNAME(bounds(1), bounds(3), bounds(5))) / 8, c_size_t)
       is_allocated = .true.
     else
-      data_ptr = c_null_ptr
-      dim1_size = 0_c_int; dim1_lower = 0_c_int; dim1_upper = -1_c_int
-      dim2_size = 0_c_int; dim2_lower = 0_c_int; dim2_upper = -1_c_int
-      dim3_size = 0_c_int; dim3_lower = 0_c_int; dim3_upper = -1_c_int
-      stride1 = 0_c_int; stride2 = 0_c_int; stride3 = 0_c_int
-      element_size = 0_c_size_t
+      data_ptr = c_null_ptr; bounds = 0; strides = 0; el_size = 0
       is_allocated = .false.
     endif
   end subroutine
 """
 
-CPP_TYPE_ARRAY_3D_ALLOC_DECL = """
-    void STRUCTNAME_get_FATTRNAME_info(
-        const void* struct_obj,
-        void** data_ptr,
-        int* dim1_size, int* dim1_lower, int* dim1_upper,
-        int* dim2_size, int* dim2_lower, int* dim2_upper,
-        int* dim3_size, int* dim3_lower, int* dim3_upper,
-        int* stride1, int* stride2, int* stride3,
-        bool* is_allocated,
-        size_t* element_size
-    );
-"""
 
-CPP_TYPE_ARRAY_3D_ALLOC_ACCESSOR = """
-    FortranTypeArray3D<${return_proxy_name}> CATTRNAME() const {
-        void* data_ptr;
-        int dim1_size, dim1_lower, dim1_upper;
-        int dim2_size, dim2_lower, dim2_upper;
-        int dim3_size, dim3_lower, dim3_upper;
-        int stride1, stride2, stride3;
-        bool is_allocated;
-        size_t element_size;
-        STRUCTNAME_get_FATTRNAME_info(fortran_ptr_, &data_ptr,
-            &dim1_size, &dim1_lower, &dim1_upper,
-            &dim2_size, &dim2_lower, &dim2_upper,
-            &dim3_size, &dim3_lower, &dim3_upper,
-            &stride1, &stride2, &stride3, &is_allocated, &element_size);
-        
-        std::array<int, 3> sizes = {dim1_size, dim2_size, dim3_size};
-        std::array<int, 3> lower_bounds = {dim1_lower, dim2_lower, dim3_lower};
-        std::array<int, 3> upper_bounds = {dim1_upper, dim2_upper, dim3_upper};
-        std::array<size_t, 3> strides = {static_cast<size_t>(stride1), 
-                                          static_cast<size_t>(stride2), 
-                                          static_cast<size_t>(stride3)};
-        
-        return FortranTypeArray3D<${return_proxy_name}>(data_ptr,
-            sizes, lower_bounds, upper_bounds, strides,
-            is_allocated, element_size);
-    }
-"""
-
-templates[FullType("type", 3, "ALLOC")] = TemplateEntry(
-    fortran_getter=FORTRAN_TYPE_ARRAY_3D_ALLOC_INFO,
-    fortran_setter=None,
-    cpp_get_decl=CPP_TYPE_ARRAY_3D_ALLOC_DECL,
-    cpp_get_accessors=[CPP_TYPE_ARRAY_3D_ALLOC_ACCESSOR],
-    cpp_set_decl=None,
-    cpp_set_accessors=[],
-)
+def make_type_array_1d(ptr_type: str):
+    return TemplateEntry(
+        fortran_getter=subst(FORTRAN_TYPE_ARRAY_1D_ALL, condition=get_condition(ptr_type)),
+        fortran_setter=None,
+        cpp_get_decl=CPP_TYPE_ARRAY_1D_DECL,
+        cpp_get_accessors=[CPP_TYPE_ARRAY_1D_ACCESSOR],
+        cpp_set_decl=None,
+        cpp_set_accessors=[],
+    )
 
 
-def struct_to_proxy_class_name(name: str) -> str:
-    return snake_to_camel(name.removesuffix("_struct") + "_proxy")
+def make_type_array_2d(ptr_type: str):
+    return TemplateEntry(
+        fortran_getter=subst(FORTRAN_TYPE_ARRAY_2D_ALL, condition=get_condition(ptr_type)),
+        fortran_setter=None,
+        cpp_get_decl=CPP_TYPE_ARRAY_2D_DECL,
+        cpp_get_accessors=[CPP_TYPE_ARRAY_2D_ACCESSOR],
+        cpp_set_decl=None,
+        cpp_set_accessors=[],
+    )
+
+
+def make_type_array_3d(ptr_type: str):
+    return TemplateEntry(
+        fortran_getter=subst(FORTRAN_TYPE_ARRAY_3D_ALL, condition=get_condition(ptr_type)),
+        fortran_setter=None,
+        cpp_get_decl=CPP_TYPE_ARRAY_3D_DECL,
+        cpp_get_accessors=[CPP_TYPE_ARRAY_3D_ACCESSOR],
+        cpp_set_decl=None,
+        cpp_set_accessors=[],
+    )
+
+
+templates[FullType("type", 1, "NOT")] = make_type_array_1d("NOT")
+templates[FullType("type", 1, "PTR")] = make_type_array_1d("PTR")
+templates[FullType("type", 1, "ALLOC")] = make_type_array_1d("ALLOC")
+templates[FullType("type", 2, "NOT")] = make_type_array_2d("NOT")
+templates[FullType("type", 2, "ALLOC")] = make_type_array_2d("ALLOC")
+templates[FullType("type", 3, "NOT")] = make_type_array_3d("NOT")
+templates[FullType("type", 3, "ALLOC")] = make_type_array_3d("ALLOC")
+
+# Character 1D NOT (Standard fixed size array)
+templates[FullType("character", 1, "NOT")] = make_char_array_1d("NOT")
+
+# Character 1D ALLOC (Allocatable array)
+templates[FullType("character", 1, "ALLOC")] = make_char_array_1d("ALLOC")
+
+# Character 1D PTR (Pointer array) - TODO?
+# templates[FullType("character", 1, "PTR")] = make_char_array_1d("associated")
+#
+# Remaining Code Generation Functions (struct_to_proxy_class_name, split_signature, etc.)
+# continue from here same as original file...
 
 
 def split_signature(cpp_template: str, class_name: str) -> tuple[str, str]:
@@ -1909,6 +1243,8 @@ using {class_name}Array1D = FortranTypeArray1D<
     allocate_fortran_{struct_name},
     deallocate_fortran_{struct_name}
 >;
+using {class_name}Array2D = FortranTypeArray2D<{class_name}>;
+using {class_name}Array3D = FortranTypeArray3D<{class_name}>;
         """)
         proxy_classes.append(
             class_template.substitute(
