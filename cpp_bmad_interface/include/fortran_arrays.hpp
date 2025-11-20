@@ -1700,9 +1700,40 @@ template <typename T>
 std::string to_string(const tao::FortranArray3D<T>& arr) {
   return std::string("todo");
 }
-template <typename T>
-std::string to_string(const tao::FortranTypeArray1D<T>& arr) {
-  return std::string("TypeArray1D");
+template <typename T, std::size_t N>
+std::string to_string(const tao::FortranTypeArrayND<T, N>& arr) {
+  using ::std::to_string;
+  using ::tao::to_string;
+
+  std::ostringstream oss;
+  oss << "[";
+  oss << "(todo fortran type array n-dimensional)";
+  oss << "]";
+  return oss.str();
+}
+template <typename T, auto Alloc, auto Dealloc>
+std::string to_string(const tao::FortranTypeArray1D<T, Alloc, Dealloc>& arr) {
+  using ::std::to_string;
+  using ::tao::to_string;
+
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < arr.size(); ++i) {
+    if (i > 0)
+      oss << ", ";
+    oss << to_string(arr[i]);
+  }
+  oss << "]";
+  return oss.str();
+}
+
+template <typename T, auto Alloc, auto Dealloc>
+std::string to_string(
+    const std::optional<tao::FortranTypeArray1D<T, Alloc, Dealloc>>& arr) {
+  if (arr.has_value()) {
+    return to_string(arr.value());
+  }
+  return "[]";
 }
 
 template std::string to_string(
