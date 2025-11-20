@@ -27,7 +27,15 @@ std::string to_string(const std::optional<T>& opt) {
   if (opt.has_value()) {
     return to_string(opt.value());
   }
-  return "null";
+  return "nullopt";
+}
+
+template <typename T>
+std::string to_string(const T* opt) {
+  if (opt) {
+    return to_string(*opt);
+  }
+  return "nullptr";
 }
 
 template string to_string(const complex<double>&);
