@@ -217,7 +217,7 @@ class Converter:
         indent = ""
         for dim in range(ndims, 0, -1):
             current_list = f"json_list{dim}"
-            name = member.name.lower() if dim == ndims else ""
+            name = member.name if dim == ndims else ""
 
             lines.append(f"{indent}call json%create_array({current_list}, '{name}')")
             lines.append(
