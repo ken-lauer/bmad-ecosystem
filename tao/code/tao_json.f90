@@ -2011,7 +2011,7 @@ type (json_value), pointer :: json_list1
     call json%rename(json_val, 'bmad_normal_form')
     call json%add(json_root, json_val)
   if (allocated(input%high_E_orb)) then
-    call json%create_array(json_list1, 'high_e_orb')
+    call json%create_array(json_list1, 'high_E_orb')
     do i1 = lbound(input%high_E_orb, 1), ubound(input%high_E_orb, 1)
       call coord_struct_to_json(input%high_E_orb(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2019,7 +2019,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (allocated(input%low_E_orb)) then
-    call json%create_array(json_list1, 'low_e_orb')
+    call json%create_array(json_list1, 'low_E_orb')
     do i1 = lbound(input%low_E_orb, 1), ubound(input%low_E_orb, 1)
       call coord_struct_to_json(input%low_E_orb(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3379,7 +3379,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%rename(json_val, 'spin_map')
     call json%add(json_root, json_val)
   if (allocated(input%dModel_dVar)) then
-    call json%create_array(json_list2, 'dmodel_dvar')
+    call json%create_array(json_list2, 'dModel_dVar')
     do i2 = lbound(input%dModel_dVar, 2), ubound(input%dModel_dVar, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%dModel_dVar, 1), ubound(input%dModel_dVar, 1)

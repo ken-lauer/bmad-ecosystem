@@ -57,7 +57,7 @@ type (json_value), pointer :: json_list1, json_list2
       nullify(json_list1)
     enddo
     call json%add(json_root, json_list2)
-    call json%create_array(json_list2, 'e')
+    call json%create_array(json_list2, 'E')
     do i2 = lbound(input%E, 2), ubound(input%E, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%E, 1), ubound(input%E, 1)
@@ -108,42 +108,42 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%DZ)) then
-    call json%create_array(json_list1, 'dz')
+    call json%create_array(json_list1, 'DZ')
     do i1 = lbound(input%DZ, 1), ubound(input%DZ, 1)
       call json%add(json_list1, '', input%DZ(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%T)) then
-    call json%create_array(json_list1, 't')
+    call json%create_array(json_list1, 'T')
     do i1 = lbound(input%T, 1), ubound(input%T, 1)
       call json%add(json_list1, '', input%T(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%TE)) then
-    call json%create_array(json_list1, 'te')
+    call json%create_array(json_list1, 'TE')
     do i1 = lbound(input%TE, 1), ubound(input%TE, 1)
       call json%add(json_list1, '', input%TE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list2, 'b')
+    call json%create_array(json_list2, 'B')
     do i2 = lbound(input%B, 2), ubound(input%B, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%B, 1), ubound(input%B, 1)
@@ -156,7 +156,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%E)) then
-    call json%create_array(json_list2, 'e')
+    call json%create_array(json_list2, 'E')
     do i2 = lbound(input%E, 2), ubound(input%E, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%E, 1), ubound(input%E, 1)
@@ -227,7 +227,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -235,7 +235,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -243,28 +243,28 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%DZ)) then
-    call json%create_array(json_list1, 'dz')
+    call json%create_array(json_list1, 'DZ')
     do i1 = lbound(input%DZ, 1), ubound(input%DZ, 1)
       call json%add(json_list1, '', input%DZ(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%T)) then
-    call json%create_array(json_list1, 't')
+    call json%create_array(json_list1, 'T')
     do i1 = lbound(input%T, 1), ubound(input%T, 1)
       call json%add(json_list1, '', input%T(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%TE)) then
-    call json%create_array(json_list1, 'te')
+    call json%create_array(json_list1, 'TE')
     do i1 = lbound(input%TE, 1), ubound(input%TE, 1)
       call json%add(json_list1, '', input%TE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list2, 'b')
+    call json%create_array(json_list2, 'B')
     do i2 = lbound(input%B, 2), ubound(input%B, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%B, 1), ubound(input%B, 1)
@@ -277,7 +277,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%E)) then
-    call json%create_array(json_list2, 'e')
+    call json%create_array(json_list2, 'E')
     do i2 = lbound(input%E, 2), ubound(input%E, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%E, 1), ubound(input%E, 1)
@@ -420,28 +420,28 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%ANGLE)) then
-    call json%create_array(json_list1, 'angle')
+    call json%create_array(json_list1, 'ANGLE')
     do i1 = lbound(input%ANGLE, 1), ubound(input%ANGLE, 1)
       call json%add(json_list1, '', input%ANGLE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D)) then
-    call json%create_array(json_list1, 'd')
+    call json%create_array(json_list1, 'D')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%add(json_list1, '', input%D(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%ENT)) then
-    call json%create_array(json_list2, 'ent')
+    call json%create_array(json_list2, 'ENT')
     do i2 = lbound(input%ENT, 2), ubound(input%ENT, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%ENT, 1), ubound(input%ENT, 1)
@@ -453,14 +453,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call json%add(json_list1, '', input%B(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%EXI)) then
-    call json%create_array(json_list2, 'exi')
+    call json%create_array(json_list2, 'EXI')
     do i2 = lbound(input%EXI, 2), ubound(input%EXI, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%EXI, 1), ubound(input%EXI, 1)
@@ -642,7 +642,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%S)) then
-    call json%create_array(json_list1, 's')
+    call json%create_array(json_list1, 'S')
     do i1 = lbound(input%S, 1), ubound(input%S, 1)
       call json%add(json_list1, '', input%S(i1))
     enddo
@@ -652,42 +652,42 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'n', int(input%N))
   endif
   if (associated(input%SX)) then
-    call json%create_array(json_list1, 'sx')
+    call json%create_array(json_list1, 'SX')
     do i1 = lbound(input%SX, 1), ubound(input%SX, 1)
       call json%add(json_list1, '', input%SX(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%SY)) then
-    call json%create_array(json_list1, 'sy')
+    call json%create_array(json_list1, 'SY')
     do i1 = lbound(input%SY, 1), ubound(input%SY, 1)
       call json%add(json_list1, '', input%SY(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FK)) then
-    call json%create_array(json_list1, 'fk')
+    call json%create_array(json_list1, 'FK')
     do i1 = lbound(input%FK, 1), ubound(input%FK, 1)
       call json%add(json_list1, '', input%FK(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%XM)) then
-    call json%create_array(json_list1, 'xm')
+    call json%create_array(json_list1, 'XM')
     do i1 = lbound(input%XM, 1), ubound(input%XM, 1)
       call json%add(json_list1, '', input%XM(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%YM)) then
-    call json%create_array(json_list1, 'ym')
+    call json%create_array(json_list1, 'YM')
     do i1 = lbound(input%YM, 1), ubound(input%YM, 1)
       call json%add(json_list1, '', input%YM(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BBK)) then
-    call json%create_array(json_list2, 'bbk')
+    call json%create_array(json_list2, 'BBK')
     do i2 = lbound(input%BBK, 2), ubound(input%BBK, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%BBK, 1), ubound(input%BBK, 1)
@@ -699,14 +699,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D)) then
-    call json%create_array(json_list1, 'd')
+    call json%create_array(json_list1, 'D')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%add(json_list1, '', input%D(i1))
     enddo
@@ -995,7 +995,7 @@ type (json_value), pointer :: json_list1, json_list2, json_list3
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list3, 'e')
+    call json%create_array(json_list3, 'E')
     do i3 = lbound(input%E, 3), ubound(input%E, 3)
       call json%create_array(json_list2, '')
       do i2 = lbound(input%E, 2), ubound(input%E, 2)
@@ -1010,7 +1010,7 @@ type (json_value), pointer :: json_list1, json_list2, json_list3
       nullify(json_list2)
     enddo
     call json%add(json_root, json_list3)
-    call json%create_array(json_list3, 'k')
+    call json%create_array(json_list3, 'K')
     do i3 = lbound(input%K, 3), ubound(input%K, 3)
       call json%create_array(json_list2, '')
       do i2 = lbound(input%K, 2), ubound(input%K, 2)
@@ -1025,7 +1025,7 @@ type (json_value), pointer :: json_list1, json_list2, json_list3
       nullify(json_list2)
     enddo
     call json%add(json_root, json_list3)
-    call json%create_array(json_list3, 'h')
+    call json%create_array(json_list3, 'H')
     do i3 = lbound(input%H, 3), ubound(input%H, 3)
       call json%create_array(json_list2, '')
       do i2 = lbound(input%H, 2), ubound(input%H, 2)
@@ -1040,7 +1040,7 @@ type (json_value), pointer :: json_list1, json_list2, json_list3
       nullify(json_list2)
     enddo
     call json%add(json_root, json_list3)
-    call json%create_array(json_list3, 'b')
+    call json%create_array(json_list3, 'B')
     do i3 = lbound(input%B, 3), ubound(input%B, 3)
       call json%create_array(json_list2, '')
       do i2 = lbound(input%B, 2), ubound(input%B, 2)
@@ -1055,7 +1055,7 @@ type (json_value), pointer :: json_list1, json_list2, json_list3
       nullify(json_list2)
     enddo
     call json%add(json_root, json_list3)
-    call json%create_array(json_list3, 's')
+    call json%create_array(json_list3, 'S')
     do i3 = lbound(input%S, 3), ubound(input%S, 3)
       call json%create_array(json_list2, '')
       do i2 = lbound(input%S, 2), ubound(input%S, 2)
@@ -1228,7 +1228,7 @@ type (json_value), pointer :: json_list1, json_list2
     enddo
     call json%add(json_root, json_list1)
     call json%add(json_root, 'nres', int(input%NRES))
-    call json%create_array(json_list2, 'm')
+    call json%create_array(json_list2, 'M')
     do i2 = lbound(input%M, 2), ubound(input%M, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%M, 1), ubound(input%M, 1)
@@ -1467,7 +1467,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'nd2', int(input%nd2))
   endif
   if (associated(input%C)) then
-    call json%create_array(json_list1, 'c')
+    call json%create_array(json_list1, 'C')
     do i1 = lbound(input%C, 1), ubound(input%C, 1)
       call complex_to_json(input%C(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1475,7 +1475,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%J)) then
-    call json%create_array(json_list2, 'j')
+    call json%create_array(json_list2, 'J')
     do i2 = lbound(input%J, 2), ubound(input%J, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%J, 1), ubound(input%J, 1)
@@ -1620,14 +1620,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -1649,7 +1649,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 't', input%t)
   endif
   if (associated(input%F)) then
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call json%add(json_list1, '', input%F(i1))
     enddo
@@ -1662,7 +1662,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'r', input%R)
   endif
   if (associated(input%PH)) then
-    call json%create_array(json_list1, 'ph')
+    call json%create_array(json_list1, 'PH')
     do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
       call json%add(json_list1, '', input%PH(i1))
     enddo
@@ -1695,14 +1695,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'h2', input%H2)
   endif
   if (associated(input%AN0)) then
-    call json%create_array(json_list1, 'an0')
+    call json%create_array(json_list1, 'AN0')
     do i1 = lbound(input%AN0, 1), ubound(input%AN0, 1)
       call json%add(json_list1, '', input%AN0(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN0)) then
-    call json%create_array(json_list1, 'bn0')
+    call json%create_array(json_list1, 'BN0')
     do i1 = lbound(input%BN0, 1), ubound(input%BN0, 1)
       call json%add(json_list1, '', input%BN0(i1))
     enddo
@@ -1740,7 +1740,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1748,7 +1748,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1777,7 +1777,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 't', input%t)
   endif
   if (associated(input%F)) then
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call REAL_8_to_json(input%F(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1785,7 +1785,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%PH)) then
-    call json%create_array(json_list1, 'ph')
+    call json%create_array(json_list1, 'PH')
     do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
       call REAL_8_to_json(input%PH(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1833,7 +1833,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN0)) then
-    call json%create_array(json_list1, 'an0')
+    call json%create_array(json_list1, 'AN0')
     do i1 = lbound(input%AN0, 1), ubound(input%AN0, 1)
       call REAL_8_to_json(input%AN0(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1841,7 +1841,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN0)) then
-    call json%create_array(json_list1, 'bn0')
+    call json%create_array(json_list1, 'BN0')
     do i1 = lbound(input%BN0, 1), ubound(input%BN0, 1)
       call REAL_8_to_json(input%BN0(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1877,12 +1877,12 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 't', input%t)
     call json%add(json_root, 'always_on', input%always_on)
     call json%add(json_root, 'xprime', input%xprime)
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call json%add(json_list1, '', input%F(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'ph')
+    call json%create_array(json_list1, 'PH')
     do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
       call json%add(json_list1, '', input%PH(i1))
     enddo
@@ -1952,14 +1952,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -2042,7 +2042,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call real_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2050,7 +2050,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call real_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2085,28 +2085,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%D_IN)) then
-    call json%create_array(json_list1, 'd_in')
+    call json%create_array(json_list1, 'D_IN')
     do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
       call json%add(json_list1, '', input%D_IN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%ANG_IN)) then
-    call json%create_array(json_list1, 'ang_in')
+    call json%create_array(json_list1, 'ANG_IN')
     do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
       call json%add(json_list1, '', input%ANG_IN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D_OUT)) then
-    call json%create_array(json_list1, 'd_out')
+    call json%create_array(json_list1, 'D_OUT')
     do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
       call json%add(json_list1, '', input%D_OUT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%ANG_OUT)) then
-    call json%create_array(json_list1, 'ang_out')
+    call json%create_array(json_list1, 'ANG_OUT')
     do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
       call json%add(json_list1, '', input%ANG_OUT(i1))
     enddo
@@ -2134,22 +2134,22 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'd_in')
+    call json%create_array(json_list1, 'D_IN')
     do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
       call json%add(json_list1, '', input%D_IN(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'd_out')
+    call json%create_array(json_list1, 'D_OUT')
     do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
       call json%add(json_list1, '', input%D_OUT(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'ang_in')
+    call json%create_array(json_list1, 'ANG_IN')
     do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
       call json%add(json_list1, '', input%ANG_IN(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'ang_out')
+    call json%create_array(json_list1, 'ANG_OUT')
     do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
       call json%add(json_list1, '', input%ANG_OUT(i1))
     enddo
@@ -2547,7 +2547,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'v')
+    call json%create_array(json_list1, 'V')
     do i1 = lbound(input%V, 1), ubound(input%V, 1)
       call TAYLOR_to_json(input%V(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2607,28 +2607,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -2678,7 +2678,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2686,7 +2686,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2694,7 +2694,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2702,7 +2702,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2842,7 +2842,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
     call json%add(json_root, 'n', int(input%N))
   if (associated(input%Z)) then
-    call json%create_array(json_list1, 'z')
+    call json%create_array(json_list1, 'Z')
     do i1 = lbound(input%Z, 1), ubound(input%Z, 1)
       call probe_to_json(input%Z(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -2954,12 +2954,12 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
     call json%add(json_root, 'ld', input%LD)
     call json%add(json_root, 'lc', input%LC)
-    call json%create_array(json_list1, 'k')
+    call json%create_array(json_list1, 'K')
     do i1 = lbound(input%K, 1), ubound(input%K, 1)
       call json%add(json_list1, '', input%K(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'ks')
+    call json%create_array(json_list1, 'KS')
     do i1 = lbound(input%KS, 1), ubound(input%KS, 1)
       call json%add(json_list1, '', input%KS(i1))
     enddo
@@ -3021,7 +3021,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'method', int(input%method))
     call json%add(json_root, 'aperture_on', input%APERTURE_ON)
     call json%add(json_root, 'aperture_kind', int(input%APERTURE_KIND))
-    call json%create_array(json_list1, 'aperture_r')
+    call json%create_array(json_list1, 'APERTURE_R')
     do i1 = lbound(input%APERTURE_R, 1), ubound(input%APERTURE_R, 1)
       call json%add(json_list1, '', input%APERTURE_R(i1))
     enddo
@@ -3032,14 +3032,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'aperture_dy', input%APERTURE_DY)
     call json%add(json_root, 'aperture_polygn', int(input%APERTURE_POLYGN))
   if (associated(input%APERTURE_POLYGX)) then
-    call json%create_array(json_list1, 'aperture_polygx')
+    call json%create_array(json_list1, 'APERTURE_POLYGX')
     do i1 = lbound(input%APERTURE_POLYGX, 1), ubound(input%APERTURE_POLYGX, 1)
       call json%add(json_list1, '', input%APERTURE_POLYGX(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%APERTURE_POLYGY)) then
-    call json%create_array(json_list1, 'aperture_polygy')
+    call json%create_array(json_list1, 'APERTURE_POLYGY')
     do i1 = lbound(input%APERTURE_POLYGY, 1), ubound(input%APERTURE_POLYGY, 1)
       call json%add(json_list1, '', input%APERTURE_POLYGY(i1))
     enddo
@@ -3115,7 +3115,7 @@ type (json_value), pointer :: json_list1
       call json%add(json_list1, '', input%bn(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'volt_freq_phas')
+    call json%create_array(json_list1, 'VOLT_FREQ_PHAS')
     do i1 = lbound(input%VOLT_FREQ_PHAS, 1), ubound(input%VOLT_FREQ_PHAS, 1)
       call json%add(json_list1, '', input%VOLT_FREQ_PHAS(i1))
     enddo
@@ -3126,7 +3126,7 @@ type (json_value), pointer :: json_list1
       call json%add(json_list1, '', input%fint_hgap_h1_h2_va_vs(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'recut_even_electric_mis')
+    call json%create_array(json_list1, 'recut_even_electric_MIS')
     do i1 = lbound(input%recut_even_electric_MIS, 1), ubound(input%recut_even_electric_MIS, 1)
       call json%add(json_list1, '', input%recut_even_electric_MIS(i1))
     enddo
@@ -3204,28 +3204,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -3271,28 +3271,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'd_ac', input%D_AC)
   endif
   if (associated(input%D_AN)) then
-    call json%create_array(json_list1, 'd_an')
+    call json%create_array(json_list1, 'D_AN')
     do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
       call json%add(json_list1, '', input%D_AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D_BN)) then
-    call json%create_array(json_list1, 'd_bn')
+    call json%create_array(json_list1, 'D_BN')
     do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
       call json%add(json_list1, '', input%D_BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D0_AN)) then
-    call json%create_array(json_list1, 'd0_an')
+    call json%create_array(json_list1, 'D0_AN')
     do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
       call json%add(json_list1, '', input%D0_AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D0_BN)) then
-    call json%create_array(json_list1, 'd0_bn')
+    call json%create_array(json_list1, 'D0_BN')
     do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
       call json%add(json_list1, '', input%D0_BN(i1))
     enddo
@@ -3550,7 +3550,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3558,7 +3558,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3566,7 +3566,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3574,7 +3574,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3640,7 +3640,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%D_AN)) then
-    call json%create_array(json_list1, 'd_an')
+    call json%create_array(json_list1, 'D_AN')
     do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
       call REAL_8_to_json(input%D_AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3648,7 +3648,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D_BN)) then
-    call json%create_array(json_list1, 'd_bn')
+    call json%create_array(json_list1, 'D_BN')
     do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
       call REAL_8_to_json(input%D_BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3656,7 +3656,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D0_AN)) then
-    call json%create_array(json_list1, 'd0_an')
+    call json%create_array(json_list1, 'D0_AN')
     do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
       call REAL_8_to_json(input%D0_AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3664,7 +3664,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%D0_BN)) then
-    call json%create_array(json_list1, 'd0_bn')
+    call json%create_array(json_list1, 'D0_BN')
     do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
       call REAL_8_to_json(input%D0_BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3890,21 +3890,21 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'd', input%D)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
@@ -3947,7 +3947,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3955,7 +3955,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3966,7 +3966,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'd', input%D)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
@@ -4087,7 +4087,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%ORB)) then
-    call json%create_array(json_list1, 'orb')
+    call json%create_array(json_list1, 'ORB')
     do i1 = lbound(input%ORB, 1), ubound(input%ORB, 1)
       call json%add(json_list1, '', input%ORB(i1))
     enddo
@@ -4352,7 +4352,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list2, 'a')
+    call json%create_array(json_list2, 'A')
     do i2 = lbound(input%A, 2), ubound(input%A, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%A, 1), ubound(input%A, 1)
@@ -4364,7 +4364,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%At)) then
-    call json%create_array(json_list2, 'at')
+    call json%create_array(json_list2, 'At')
     do i2 = lbound(input%At, 2), ubound(input%At, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%At, 1), ubound(input%At, 1)
@@ -4398,7 +4398,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'gamma0i_gambet_mass_ag')
+    call json%create_array(json_list1, 'GAMMA0I_GAMBET_MASS_AG')
     do i1 = lbound(input%GAMMA0I_GAMBET_MASS_AG, 1), ubound(input%GAMMA0I_GAMBET_MASS_AG, 1)
       call json%add(json_list1, '', input%GAMMA0I_GAMBET_MASS_AG(i1))
     enddo
@@ -4730,7 +4730,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'v')
+    call json%create_array(json_list1, 'V')
     do i1 = lbound(input%V, 1), ubound(input%V, 1)
       call TAYLOR_to_json(input%V(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -4792,14 +4792,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -4850,7 +4850,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -4858,7 +4858,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5155,7 +5155,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'lost', int(input%lost))
   endif
   if (associated(input%S)) then
-    call json%create_array(json_list1, 's')
+    call json%create_array(json_list1, 'S')
     do i1 = lbound(input%S, 1), ubound(input%S, 1)
       call json%add(json_list1, '', input%S(i1))
     enddo
@@ -5353,14 +5353,14 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -5429,7 +5429,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5437,7 +5437,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5524,21 +5524,21 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%MATX)) then
-    call json%create_array(json_list2, 'matx')
+    call json%create_array(json_list2, 'MATX')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX, 1), ubound(input%MATX, 1)
@@ -5550,7 +5550,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY)) then
-    call json%create_array(json_list2, 'maty')
+    call json%create_array(json_list2, 'MATY')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY, 1), ubound(input%MATY, 1)
@@ -5576,14 +5576,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -5630,7 +5630,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5638,7 +5638,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5646,7 +5646,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%MATX)) then
-    call json%create_array(json_list2, 'matx')
+    call json%create_array(json_list2, 'MATX')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX, 1), ubound(input%MATX, 1)
@@ -5659,7 +5659,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY)) then
-    call json%create_array(json_list2, 'maty')
+    call json%create_array(json_list2, 'MATY')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY, 1), ubound(input%MATY, 1)
@@ -5688,7 +5688,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5696,7 +5696,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5807,7 +5807,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%DNA)) then
-    call json%create_array(json_list1, 'dna')
+    call json%create_array(json_list1, 'DNA')
     do i1 = lbound(input%DNA, 1), ubound(input%DNA, 1)
       call layout_array_to_json(input%DNA(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -5916,7 +5916,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'kind', int(input%KIND))
   endif
   if (associated(input%R)) then
-    call json%create_array(json_list1, 'r')
+    call json%create_array(json_list1, 'R')
     do i1 = lbound(input%R, 1), ubound(input%R, 1)
       call json%add(json_list1, '', input%R(i1))
     enddo
@@ -5935,14 +5935,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'dy', input%DY)
   endif
   if (associated(input%POLYGX)) then
-    call json%create_array(json_list1, 'polygx')
+    call json%create_array(json_list1, 'POLYGX')
     do i1 = lbound(input%POLYGX, 1), ubound(input%POLYGX, 1)
       call json%add(json_list1, '', input%POLYGX(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%POLYGY)) then
-    call json%create_array(json_list1, 'polygy')
+    call json%create_array(json_list1, 'POLYGY')
     do i1 = lbound(input%POLYGY, 1), ubound(input%POLYGY, 1)
       call json%add(json_list1, '', input%POLYGY(i1))
     enddo
@@ -6013,7 +6013,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call S_APERTURE_to_json(input%A(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -6057,7 +6057,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'tiltd', input%TILTD)
   endif
   if (associated(input%EDGE)) then
-    call json%create_array(json_list1, 'edge')
+    call json%create_array(json_list1, 'EDGE')
     do i1 = lbound(input%EDGE, 1), ubound(input%EDGE, 1)
       call json%add(json_list1, '', input%EDGE(i1))
     enddo
@@ -6118,22 +6118,22 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'lc_ld_b0_p0')
+    call json%create_array(json_list1, 'LC_LD_B0_P0')
     do i1 = lbound(input%LC_LD_B0_P0, 1), ubound(input%LC_LD_B0_P0, 1)
       call json%add(json_list1, '', input%LC_LD_B0_P0(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'tiltd_edge')
+    call json%create_array(json_list1, 'TILTD_EDGE')
     do i1 = lbound(input%TILTD_EDGE, 1), ubound(input%TILTD_EDGE, 1)
       call json%add(json_list1, '', input%TILTD_EDGE(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'kin_kex_bendfringe_exact')
+    call json%create_array(json_list1, 'KIN_KEX_BENDFRINGE_EXACT')
     do i1 = lbound(input%KIN_KEX_BENDFRINGE_EXACT, 1), ubound(input%KIN_KEX_BENDFRINGE_EXACT, 1)
       call json%add(json_list1, '', input%KIN_KEX_BENDFRINGE_EXACT(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'method_nst_nmul_permfringe_highest')
+    call json%create_array(json_list1, 'METHOD_NST_NMUL_permfringe_highest')
     do i1 = lbound(input%METHOD_NST_NMUL_permfringe_highest, 1), ubound(input%METHOD_NST_NMUL_permfringe_highest, 1)
       call json%add(json_list1, '', int(input%METHOD_NST_NMUL_permfringe_highest(i1)))
     enddo
@@ -6166,14 +6166,14 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%ENT)) then
-    call json%create_array(json_list2, 'ent')
+    call json%create_array(json_list2, 'ENT')
     do i2 = lbound(input%ENT, 2), ubound(input%ENT, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%ENT, 1), ubound(input%ENT, 1)
@@ -6185,14 +6185,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%O)) then
-    call json%create_array(json_list1, 'o')
+    call json%create_array(json_list1, 'O')
     do i1 = lbound(input%O, 1), ubound(input%O, 1)
       call json%add(json_list1, '', input%O(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%MID)) then
-    call json%create_array(json_list2, 'mid')
+    call json%create_array(json_list2, 'MID')
     do i2 = lbound(input%MID, 2), ubound(input%MID, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MID, 1), ubound(input%MID, 1)
@@ -6204,14 +6204,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call json%add(json_list1, '', input%B(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%EXI)) then
-    call json%create_array(json_list2, 'exi')
+    call json%create_array(json_list2, 'EXI')
     do i2 = lbound(input%EXI, 2), ubound(input%EXI, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%EXI, 1), ubound(input%EXI, 1)
@@ -6306,12 +6306,12 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -6538,12 +6538,12 @@ type (json_value), pointer :: json_list1, json_list2
     call damap_to_json(input%DHDJ, json_val, depth=depth + 1, max_depth=max_depth)
     call json%rename(json_val, 'dhdj')
     call json%add(json_root, json_val)
-    call json%create_array(json_list1, 'tune')
+    call json%create_array(json_list1, 'TUNE')
     do i1 = lbound(input%TUNE, 1), ubound(input%TUNE, 1)
       call json%add(json_list1, '', input%TUNE(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'damping')
+    call json%create_array(json_list1, 'DAMPING')
     do i1 = lbound(input%DAMPING, 1), ubound(input%DAMPING, 1)
       call json%add(json_list1, '', input%DAMPING(i1))
     enddo
@@ -6551,7 +6551,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'nord', int(input%nord))
     call json%add(json_root, 'jtune', int(input%jtune))
     call json%add(json_root, 'nres', int(input%NRES))
-    call json%create_array(json_list2, 'm')
+    call json%create_array(json_list2, 'M')
     do i2 = lbound(input%M, 2), ubound(input%M, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%M, 1), ubound(input%M, 1)
@@ -6561,7 +6561,7 @@ type (json_value), pointer :: json_list1, json_list2
       nullify(json_list1)
     enddo
     call json%add(json_root, json_list2)
-    call json%create_array(json_list1, 'plane')
+    call json%create_array(json_list1, 'PLANE')
     do i1 = lbound(input%PLANE, 1), ubound(input%PLANE, 1)
       call json%add(json_list1, '', int(input%PLANE(i1)))
     enddo
@@ -6591,7 +6591,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -6621,7 +6621,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -6678,7 +6678,7 @@ type (json_value), pointer :: json_list1
   endif
   call json%create_object(json_root, '')
   if (associated(input%ORBIT_NODES)) then
-    call json%create_array(json_list1, 'orbit_nodes')
+    call json%create_array(json_list1, 'ORBIT_NODES')
     do i1 = lbound(input%ORBIT_NODES, 1), ubound(input%ORBIT_NODES, 1)
       call ORBIT_NODE_to_json(input%ORBIT_NODES(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -6795,7 +6795,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%LATTICE)) then
-    call json%create_array(json_list1, 'lattice')
+    call json%create_array(json_list1, 'LATTICE')
     do i1 = lbound(input%LATTICE, 1), ubound(input%LATTICE, 1)
       call json%add(json_list1, '', input%LATTICE(i1))
     enddo
@@ -6840,7 +6840,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call tree_element_to_json(input%B(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -6897,7 +6897,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%B)) then
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call tree_element_to_json(input%B(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -6965,28 +6965,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'b_x2', int(input%B_X2))
   endif
   if (associated(input%A_D)) then
-    call json%create_array(json_list1, 'a_d')
+    call json%create_array(json_list1, 'A_D')
     do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
       call json%add(json_list1, '', input%A_D(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%B_D)) then
-    call json%create_array(json_list1, 'b_d')
+    call json%create_array(json_list1, 'B_D')
     do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
       call json%add(json_list1, '', input%B_D(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%A_ANG)) then
-    call json%create_array(json_list1, 'a_ang')
+    call json%create_array(json_list1, 'A_ANG')
     do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
       call json%add(json_list1, '', input%A_ANG(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%B_ANG)) then
-    call json%create_array(json_list1, 'b_ang')
+    call json%create_array(json_list1, 'B_ANG')
     do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
       call json%add(json_list1, '', input%B_ANG(i1))
     enddo
@@ -7045,22 +7045,22 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'a_x2', int(input%A_X2))
     call json%add(json_root, 'b_x1', int(input%B_X1))
     call json%add(json_root, 'b_x2', int(input%B_X2))
-    call json%create_array(json_list1, 'a_d')
+    call json%create_array(json_list1, 'A_D')
     do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
       call json%add(json_list1, '', input%A_D(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'b_d')
+    call json%create_array(json_list1, 'B_D')
     do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
       call json%add(json_list1, '', input%B_D(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'a_ang')
+    call json%create_array(json_list1, 'A_ANG')
     do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
       call json%add(json_list1, '', input%A_ANG(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'b_ang')
+    call json%create_array(json_list1, 'B_ANG')
     do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
       call json%add(json_list1, '', input%B_ANG(i1))
     enddo
@@ -7151,7 +7151,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'n_name', int(input%n_name))
     call json%add(json_root, 'vorname', trim(input%VORNAME))
   if (associated(input%TPSAFIT)) then
-    call json%create_array(json_list1, 'tpsafit')
+    call json%create_array(json_list1, 'TPSAFIT')
     do i1 = lbound(input%TPSAFIT, 1), ubound(input%TPSAFIT, 1)
       call json%add(json_list1, '', input%TPSAFIT(i1))
     enddo
@@ -7164,22 +7164,22 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'set_element', input%SET_ELEMENT)
   endif
     call json%add(json_root, 'npara', int(input%NPARA))
-    call json%create_array(json_list1, 'ian')
+    call json%create_array(json_list1, 'IAN')
     do i1 = lbound(input%IAN, 1), ubound(input%IAN, 1)
       call json%add(json_list1, '', int(input%IAN(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'ibn')
+    call json%create_array(json_list1, 'IBN')
     do i1 = lbound(input%IBN, 1), ubound(input%IBN, 1)
       call json%add(json_list1, '', int(input%IBN(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'san')
+    call json%create_array(json_list1, 'SAN')
     do i1 = lbound(input%SAN, 1), ubound(input%SAN, 1)
       call json%add(json_list1, '', input%SAN(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'sbn')
+    call json%create_array(json_list1, 'SBN')
     do i1 = lbound(input%SBN, 1), ubound(input%SBN, 1)
       call json%add(json_list1, '', input%SBN(i1))
     enddo
@@ -7220,17 +7220,17 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'beta')
+    call json%create_array(json_list1, 'BETA')
     do i1 = lbound(input%BETA, 1), ubound(input%BETA, 1)
       call json%add(json_list1, '', int(input%BETA(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'alfa')
+    call json%create_array(json_list1, 'ALFA')
     do i1 = lbound(input%ALFA, 1), ubound(input%ALFA, 1)
       call json%add(json_list1, '', int(input%ALFA(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'dispersion')
+    call json%create_array(json_list1, 'DISPERSION')
     do i1 = lbound(input%DISPERSION, 1), ubound(input%DISPERSION, 1)
       call json%add(json_list1, '', int(input%DISPERSION(i1)))
     enddo
@@ -7257,12 +7257,12 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'iinternal')
+    call json%create_array(json_list1, 'Iinternal')
     do i1 = lbound(input%Iinternal, 1), ubound(input%Iinternal, 1)
       call json%add(json_list1, '', int(input%Iinternal(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'sinternal')
+    call json%create_array(json_list1, 'SInternal')
     do i1 = lbound(input%SInternal, 1), ubound(input%SInternal, 1)
       call json%add(json_list1, '', input%SInternal(i1))
     enddo
@@ -7297,7 +7297,7 @@ type (json_value), pointer :: json_list1
       call json%add(json_list1, '', int(input%ia(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'sa')
+    call json%create_array(json_list1, 'Sa')
     do i1 = lbound(input%Sa, 1), ubound(input%Sa, 1)
       call json%add(json_list1, '', input%Sa(i1))
     enddo
@@ -7338,7 +7338,7 @@ type (json_value), pointer :: json_list1
     call quaternion_to_json(input%q, json_val, depth=depth + 1, max_depth=max_depth)
     call json%rename(json_val, 'q')
     call json%add(json_root, json_val)
-    call json%create_array(json_list1, 'ac')
+    call json%create_array(json_list1, 'AC')
     do i1 = lbound(input%AC, 1), ubound(input%AC, 1)
       call rf_phasor_to_json(input%AC(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -7397,7 +7397,7 @@ type (json_value), pointer :: json_list1, json_list2
     enddo
     call json%add(json_root, json_list1)
     call json%add(json_root, 'nac', int(input%nac))
-    call json%create_array(json_list2, 'e_ij')
+    call json%create_array(json_list2, 'E_ij')
     do i2 = lbound(input%E_ij, 2), ubound(input%E_ij, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%E_ij, 1), ubound(input%E_ij, 1)
@@ -7497,7 +7497,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
@@ -7665,7 +7665,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'constant')
+    call json%create_array(json_list1, 'CONSTANT')
     do i1 = lbound(input%CONSTANT, 1), ubound(input%CONSTANT, 1)
       call json%add(json_list1, '', input%CONSTANT(i1))
     enddo
@@ -7795,21 +7795,21 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'n_min', int(input%n_min))
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%INTERNAL)) then
-    call json%create_array(json_list1, 'internal')
+    call json%create_array(json_list1, 'INTERNAL')
     do i1 = lbound(input%INTERNAL, 1), ubound(input%INTERNAL, 1)
       call json%add(json_list1, '', input%INTERNAL(i1))
     enddo
@@ -7855,7 +7855,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'n_min', int(input%n_min))
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -7863,7 +7863,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -7871,7 +7871,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%INTERNAL)) then
-    call json%create_array(json_list1, 'internal')
+    call json%create_array(json_list1, 'INTERNAL')
     do i1 = lbound(input%INTERNAL, 1), ubound(input%INTERNAL, 1)
       call REAL_8_to_json(input%INTERNAL(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -7948,28 +7948,28 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'b_sol', input%B_SOL)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -8050,7 +8050,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8058,7 +8058,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8076,7 +8076,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8084,7 +8084,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8202,7 +8202,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
@@ -8232,7 +8232,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
   ! skipped (hardcoded): P
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8266,14 +8266,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -8283,14 +8283,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -8340,7 +8340,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8348,7 +8348,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8359,7 +8359,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8367,7 +8367,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8453,7 +8453,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%D)) then
-    call json%create_array(json_list1, 'd')
+    call json%create_array(json_list1, 'D')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%add(json_list1, '', input%D(i1))
     enddo
@@ -8501,7 +8501,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%D)) then
-    call json%create_array(json_list1, 'd')
+    call json%create_array(json_list1, 'D')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%add(json_list1, '', input%D(i1))
     enddo
@@ -8545,7 +8545,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'sixtrack', input%SIXTRACK)
     call json%add(json_root, 'l_design', input%L_DESIGN)
     call json%add(json_root, 'dl_sixtrack', input%DL_SIXTRACK)
-    call json%create_array(json_list1, 'd')
+    call json%create_array(json_list1, 'D')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%add(json_list1, '', input%D(i1))
     enddo
@@ -8620,7 +8620,7 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'psi_dphas_dvds_phase0')
+    call json%create_array(json_list1, 'PSI_DPHAS_DVDS_phase0')
     do i1 = lbound(input%PSI_DPHAS_DVDS_phase0, 1), ubound(input%PSI_DPHAS_DVDS_phase0, 1)
       call json%add(json_list1, '', input%PSI_DPHAS_DVDS_phase0(i1))
     enddo
@@ -8657,14 +8657,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'b_sol', input%b_sol)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
@@ -8688,14 +8688,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -8717,14 +8717,14 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'vs', input%VS)
   endif
   if (associated(input%AE)) then
-    call json%create_array(json_list1, 'ae')
+    call json%create_array(json_list1, 'AE')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call json%add(json_list1, '', input%AE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BE)) then
-    call json%create_array(json_list1, 'be')
+    call json%create_array(json_list1, 'BE')
     do i1 = lbound(input%BE, 1), ubound(input%BE, 1)
       call json%add(json_list1, '', input%BE(i1))
     enddo
@@ -8745,7 +8745,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%PHI)) then
-    call json%create_array(json_list1, 'phi')
+    call json%create_array(json_list1, 'PHI')
     do i1 = lbound(input%PHI, 1), ubound(input%PHI, 1)
       call json%add(json_list1, '', input%PHI(i1))
     enddo
@@ -8795,7 +8795,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8803,7 +8803,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8830,7 +8830,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8838,7 +8838,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8869,7 +8869,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_val)
   endif
   if (associated(input%AE)) then
-    call json%create_array(json_list1, 'ae')
+    call json%create_array(json_list1, 'AE')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call REAL_8_to_json(input%AE(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8877,7 +8877,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BE)) then
-    call json%create_array(json_list1, 'be')
+    call json%create_array(json_list1, 'BE')
     do i1 = lbound(input%BE, 1), ubound(input%BE, 1)
       call REAL_8_to_json(input%BE(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8901,7 +8901,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, json_list1)
   endif
   if (associated(input%PHI)) then
-    call json%create_array(json_list1, 'phi')
+    call json%create_array(json_list1, 'PHI')
     do i1 = lbound(input%PHI, 1), ubound(input%PHI, 1)
       call REAL_8_to_json(input%PHI(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -8942,7 +8942,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%TP)) then
-    call json%create_array(json_list1, 'tp')
+    call json%create_array(json_list1, 'TP')
     do i1 = lbound(input%TP, 1), ubound(input%TP, 1)
       call TEMPORAL_PROBE_to_json(input%TP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9007,13 +9007,13 @@ type (json_value), pointer :: json_list1
   endif
     call json%add(json_root, 'r', input%r)
     call json%add(json_root, 'dt0', input%dt0)
-    call json%create_array(json_list1, 'pos')
+    call json%create_array(json_list1, 'POS')
     do i1 = lbound(input%POS, 1), ubound(input%POS, 1)
       call json%add(json_list1, '', input%POS(i1))
     enddo
     call json%add(json_root, json_list1)
     call json%add(json_root, 't', input%T)
-    call json%create_array(json_list1, 'ic')
+    call json%create_array(json_list1, 'IC')
     do i1 = lbound(input%IC, 1), ubound(input%IC, 1)
       call json%add(json_list1, '', input%IC(i1))
     enddo
@@ -9299,21 +9299,21 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%add(json_list1, '', input%AN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%add(json_list1, '', input%BN(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%MATX)) then
-    call json%create_array(json_list2, 'matx')
+    call json%create_array(json_list2, 'MATX')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX, 1), ubound(input%MATX, 1)
@@ -9325,7 +9325,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY)) then
-    call json%create_array(json_list2, 'maty')
+    call json%create_array(json_list2, 'MATY')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY, 1), ubound(input%MATY, 1)
@@ -9337,7 +9337,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATX2)) then
-    call json%create_array(json_list2, 'matx2')
+    call json%create_array(json_list2, 'MATX2')
     do i2 = lbound(input%MATX2, 2), ubound(input%MATX2, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX2, 1), ubound(input%MATX2, 1)
@@ -9349,7 +9349,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY2)) then
-    call json%create_array(json_list2, 'maty2')
+    call json%create_array(json_list2, 'MATY2')
     do i2 = lbound(input%MATY2, 2), ubound(input%MATY2, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY2, 1), ubound(input%MATY2, 1)
@@ -9368,7 +9368,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%RMATX)) then
-    call json%create_array(json_list2, 'rmatx')
+    call json%create_array(json_list2, 'RMATX')
     do i2 = lbound(input%RMATX, 2), ubound(input%RMATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%RMATX, 1), ubound(input%RMATX, 1)
@@ -9380,7 +9380,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%RMATY)) then
-    call json%create_array(json_list2, 'rmaty')
+    call json%create_array(json_list2, 'RMATY')
     do i2 = lbound(input%RMATY, 2), ubound(input%RMATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%RMATY, 1), ubound(input%RMATY, 1)
@@ -9392,21 +9392,21 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%Rlx)) then
-    call json%create_array(json_list1, 'rlx')
+    call json%create_array(json_list1, 'Rlx')
     do i1 = lbound(input%Rlx, 1), ubound(input%Rlx, 1)
       call json%add(json_list1, '', input%Rlx(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call json%add(json_list1, '', input%FINT(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call json%add(json_list1, '', input%HGAP(i1))
     enddo
@@ -9456,7 +9456,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    call json%create_array(json_list1, 'an')
+    call json%create_array(json_list1, 'AN')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9464,7 +9464,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%BN)) then
-    call json%create_array(json_list1, 'bn')
+    call json%create_array(json_list1, 'BN')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9472,7 +9472,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%MATX)) then
-    call json%create_array(json_list2, 'matx')
+    call json%create_array(json_list2, 'MATX')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX, 1), ubound(input%MATX, 1)
@@ -9485,7 +9485,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY)) then
-    call json%create_array(json_list2, 'maty')
+    call json%create_array(json_list2, 'MATY')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY, 1), ubound(input%MATY, 1)
@@ -9498,7 +9498,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATX2)) then
-    call json%create_array(json_list2, 'matx2')
+    call json%create_array(json_list2, 'MATX2')
     do i2 = lbound(input%MATX2, 2), ubound(input%MATX2, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATX2, 1), ubound(input%MATX2, 1)
@@ -9511,7 +9511,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%MATY2)) then
-    call json%create_array(json_list2, 'maty2')
+    call json%create_array(json_list2, 'MATY2')
     do i2 = lbound(input%MATY2, 2), ubound(input%MATY2, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%MATY2, 1), ubound(input%MATY2, 1)
@@ -9532,7 +9532,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%RMATX)) then
-    call json%create_array(json_list2, 'rmatx')
+    call json%create_array(json_list2, 'RMATX')
     do i2 = lbound(input%RMATX, 2), ubound(input%RMATX, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%RMATX, 1), ubound(input%RMATX, 1)
@@ -9545,7 +9545,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%RMATY)) then
-    call json%create_array(json_list2, 'rmaty')
+    call json%create_array(json_list2, 'RMATY')
     do i2 = lbound(input%RMATY, 2), ubound(input%RMATY, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%RMATY, 1), ubound(input%RMATY, 1)
@@ -9558,7 +9558,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%Rlx)) then
-    call json%create_array(json_list1, 'rlx')
+    call json%create_array(json_list1, 'Rlx')
     do i1 = lbound(input%Rlx, 1), ubound(input%Rlx, 1)
       call REAL_8_to_json(input%Rlx(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9566,7 +9566,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FINT)) then
-    call json%create_array(json_list1, 'fint')
+    call json%create_array(json_list1, 'FINT')
     do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
       call REAL_8_to_json(input%FINT(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9574,7 +9574,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%HGAP)) then
-    call json%create_array(json_list1, 'hgap')
+    call json%create_array(json_list1, 'HGAP')
     do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
       call REAL_8_to_json(input%HGAP(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9717,7 +9717,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%CC)) then
-    call json%create_array(json_list1, 'cc')
+    call json%create_array(json_list1, 'CC')
     do i1 = lbound(input%CC, 1), ubound(input%CC, 1)
       call json%add(json_list1, '', input%CC(i1))
     enddo
@@ -9745,14 +9745,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%JL)) then
-    call json%create_array(json_list1, 'jl')
+    call json%create_array(json_list1, 'JL')
     do i1 = lbound(input%JL, 1), ubound(input%JL, 1)
       call json%add(json_list1, '', int(input%JL(i1)))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%JV)) then
-    call json%create_array(json_list1, 'jv')
+    call json%create_array(json_list1, 'JV')
     do i1 = lbound(input%JV, 1), ubound(input%JV, 1)
       call json%add(json_list1, '', int(input%JV(i1)))
     enddo
@@ -9832,7 +9832,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%K)) then
-    call json%create_array(json_list2, 'k')
+    call json%create_array(json_list2, 'K')
     do i2 = lbound(input%K, 2), ubound(input%K, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%K, 1), ubound(input%K, 1)
@@ -9845,7 +9845,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call REAL_8_to_json(input%A(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9853,7 +9853,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%F)) then
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call REAL_8_to_json(input%F(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9877,7 +9877,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%KE)) then
-    call json%create_array(json_list2, 'ke')
+    call json%create_array(json_list2, 'KE')
     do i2 = lbound(input%KE, 2), ubound(input%KE, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%KE, 1), ubound(input%KE, 1)
@@ -9890,7 +9890,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%AE)) then
-    call json%create_array(json_list1, 'ae')
+    call json%create_array(json_list1, 'AE')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call REAL_8_to_json(input%AE(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9898,7 +9898,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FE)) then
-    call json%create_array(json_list1, 'fe')
+    call json%create_array(json_list1, 'FE')
     do i1 = lbound(input%FE, 1), ubound(input%FE, 1)
       call REAL_8_to_json(input%FE(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9906,7 +9906,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%x0E)) then
-    call json%create_array(json_list1, 'x0e')
+    call json%create_array(json_list1, 'x0E')
     do i1 = lbound(input%x0E, 1), ubound(input%x0E, 1)
       call REAL_8_to_json(input%x0E(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9914,7 +9914,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%y0E)) then
-    call json%create_array(json_list1, 'y0e')
+    call json%create_array(json_list1, 'y0E')
     do i1 = lbound(input%y0E, 1), ubound(input%y0E, 1)
       call REAL_8_to_json(input%y0E(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -9947,14 +9947,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'ne', int(input%ne))
   endif
   if (associated(input%FORM)) then
-    call json%create_array(json_list1, 'form')
+    call json%create_array(json_list1, 'FORM')
     do i1 = lbound(input%FORM, 1), ubound(input%FORM, 1)
       call json%add(json_list1, '', int(input%FORM(i1)))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FORME)) then
-    call json%create_array(json_list1, 'forme')
+    call json%create_array(json_list1, 'FORME')
     do i1 = lbound(input%FORME, 1), ubound(input%FORME, 1)
       call json%add(json_list1, '', int(input%FORME(i1)))
     enddo
@@ -9983,7 +9983,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (associated(input%K)) then
-    call json%create_array(json_list2, 'k')
+    call json%create_array(json_list2, 'K')
     do i2 = lbound(input%K, 2), ubound(input%K, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%K, 1), ubound(input%K, 1)
@@ -9995,14 +9995,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%A)) then
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%F)) then
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call json%add(json_list1, '', input%F(i1))
     enddo
@@ -10023,7 +10023,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list1)
   endif
   if (associated(input%KE)) then
-    call json%create_array(json_list2, 'ke')
+    call json%create_array(json_list2, 'KE')
     do i2 = lbound(input%KE, 2), ubound(input%KE, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%KE, 1), ubound(input%KE, 1)
@@ -10035,28 +10035,28 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (associated(input%AE)) then
-    call json%create_array(json_list1, 'ae')
+    call json%create_array(json_list1, 'AE')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call json%add(json_list1, '', input%AE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FE)) then
-    call json%create_array(json_list1, 'fe')
+    call json%create_array(json_list1, 'FE')
     do i1 = lbound(input%FE, 1), ubound(input%FE, 1)
       call json%add(json_list1, '', input%FE(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%x0E)) then
-    call json%create_array(json_list1, 'x0e')
+    call json%create_array(json_list1, 'x0E')
     do i1 = lbound(input%x0E, 1), ubound(input%x0E, 1)
       call json%add(json_list1, '', input%x0E(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%y0E)) then
-    call json%create_array(json_list1, 'y0e')
+    call json%create_array(json_list1, 'y0E')
     do i1 = lbound(input%y0E, 1), ubound(input%y0E, 1)
       call json%add(json_list1, '', input%y0E(i1))
     enddo
@@ -10086,14 +10086,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'ne', int(input%ne))
   endif
   if (associated(input%FORM)) then
-    call json%create_array(json_list1, 'form')
+    call json%create_array(json_list1, 'FORM')
     do i1 = lbound(input%FORM, 1), ubound(input%FORM, 1)
       call json%add(json_list1, '', int(input%FORM(i1)))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%FORME)) then
-    call json%create_array(json_list1, 'forme')
+    call json%create_array(json_list1, 'FORME')
     do i1 = lbound(input%FORME, 1), ubound(input%FORME, 1)
       call json%add(json_list1, '', int(input%FORME(i1)))
     enddo
@@ -10128,14 +10128,14 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'nv', int(input%NV))
   endif
   if (associated(input%C)) then
-    call json%create_array(json_list1, 'c')
+    call json%create_array(json_list1, 'C')
     do i1 = lbound(input%C, 1), ubound(input%C, 1)
       call json%add(json_list1, '', input%C(i1))
     enddo
     call json%add(json_root, json_list1)
   endif
   if (associated(input%J)) then
-    call json%create_array(json_list2, 'j')
+    call json%create_array(json_list2, 'J')
     do i2 = lbound(input%J, 2), ubound(input%J, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%J, 1), ubound(input%J, 1)

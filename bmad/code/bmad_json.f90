@@ -488,19 +488,19 @@ type (json_value), pointer :: json_list1
     call json%rename(json_val, 'ele_origin')
     call json%add(json_root, json_val)
   endif
-    call json%create_array(json_list1, 'm')
+    call json%create_array(json_list1, 'M')
     do i1 = lbound(input%M, 1), ubound(input%M, 1)
       call taylor_struct_to_json(input%M(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call taylor_struct_to_json(input%A(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'a_inv')
+    call json%create_array(json_list1, 'A_inv')
     do i1 = lbound(input%A_inv, 1), ubound(input%A_inv, 1)
       call taylor_struct_to_json(input%A_inv(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -512,13 +512,13 @@ type (json_value), pointer :: json_list1
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'f')
+    call json%create_array(json_list1, 'F')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call complex_taylor_struct_to_json(input%F(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'l')
+    call json%create_array(json_list1, 'L')
     do i1 = lbound(input%L, 1), ubound(input%L, 1)
       call complex_taylor_struct_to_json(input%L(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -1215,7 +1215,7 @@ type (json_value), pointer :: json_list1
       call json%add(json_list1, '', int(input%elements(i1)))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'massfractions')
+    call json%create_array(json_list1, 'massFractions')
     do i1 = lbound(input%massFractions, 1), ubound(input%massFractions, 1)
       call json%add(json_list1, '', input%massFractions(i1))
     enddo
@@ -1992,7 +1992,7 @@ type (json_value), pointer :: json_list1
     call json%add(json_root, 'i_csr', input%I_csr)
     call json%add(json_root, 'i_int_csr', input%I_int_csr)
     call json%add(json_root, 'image_kick_csr', input%image_kick_csr)
-    call json%create_array(json_list1, 'l_vec')
+    call json%create_array(json_list1, 'L_vec')
     do i1 = lbound(input%L_vec, 1), ubound(input%L_vec, 1)
       call json%add(json_list1, '', input%L_vec(i1))
     enddo
@@ -2691,17 +2691,17 @@ type (json_value), pointer :: json_list1, json_list2
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'e')
+    call json%create_array(json_list1, 'E')
     do i1 = lbound(input%E, 1), ubound(input%E, 1)
       call json%add(json_list1, '', input%E(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call json%add(json_list1, '', input%B(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list2, 'de')
+    call json%create_array(json_list2, 'dE')
     do i2 = lbound(input%dE, 2), ubound(input%dE, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%dE, 1), ubound(input%dE, 1)
@@ -2711,7 +2711,7 @@ type (json_value), pointer :: json_list1, json_list2
       nullify(json_list1)
     enddo
     call json%add(json_root, json_list2)
-    call json%create_array(json_list2, 'db')
+    call json%create_array(json_list2, 'dB')
     do i2 = lbound(input%dB, 2), ubound(input%dB, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%dB, 1), ubound(input%dB, 1)
@@ -2723,7 +2723,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
     call json%add(json_root, 'phi', input%phi)
     call json%add(json_root, 'phi_b', input%phi_B)
-    call json%create_array(json_list1, 'a')
+    call json%create_array(json_list1, 'A')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%add(json_list1, '', input%A(i1))
     enddo
@@ -3194,13 +3194,13 @@ type (json_value), pointer :: json_list1
     return
   endif
   call json%create_object(json_root, '')
-    call json%create_array(json_list1, 'e')
+    call json%create_array(json_list1, 'E')
     do i1 = lbound(input%E, 1), ubound(input%E, 1)
       call complex_to_json(input%E(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list1, 'b')
+    call json%create_array(json_list1, 'B')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call complex_to_json(input%B(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -3662,7 +3662,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, 'n_part', input%n_part)
     call json%add(json_root, 'total_length', input%total_length)
     call json%add(json_root, 'unstable_factor', input%unstable_factor)
-    call json%create_array(json_list2, 't1_with_rf')
+    call json%create_array(json_list2, 't1_with_RF')
     do i2 = lbound(input%t1_with_RF, 2), ubound(input%t1_with_RF, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%t1_with_RF, 1), ubound(input%t1_with_RF, 1)
@@ -3672,7 +3672,7 @@ type (json_value), pointer :: json_list1, json_list2
       nullify(json_list1)
     enddo
     call json%add(json_root, json_list2)
-    call json%create_array(json_list2, 't1_no_rf')
+    call json%create_array(json_list2, 't1_no_RF')
     do i2 = lbound(input%t1_no_RF, 2), ubound(input%t1_no_RF, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%t1_no_RF, 1), ubound(input%t1_no_RF, 1)
@@ -5527,7 +5527,7 @@ type (json_value), pointer :: json_list1
   call json%create_object(json_root, '')
     call json%add(json_root, 'unitsymbol', trim(input%unitSymbol))
     call json%add(json_root, 'unitsi', input%unitSI)
-    call json%create_array(json_list1, 'unitdimension')
+    call json%create_array(json_list1, 'unitDimension')
     do i1 = lbound(input%unitDimension, 1), ubound(input%unitDimension, 1)
       call json%add(json_list1, '', input%unitDimension(i1))
     enddo
@@ -6624,7 +6624,7 @@ type (json_value), pointer :: json_list1, json_list2
       call json%add(json_list1, '', input%orb0(i1))
     enddo
     call json%add(json_root, json_list1)
-    call json%create_array(json_list2, 'm_1turn')
+    call json%create_array(json_list2, 'M_1turn')
     do i2 = lbound(input%M_1turn, 2), ubound(input%M_1turn, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%M_1turn, 1), ubound(input%M_1turn, 1)
@@ -6634,7 +6634,7 @@ type (json_value), pointer :: json_list1, json_list2
       nullify(json_list1)
     enddo
     call json%add(json_root, json_list2)
-    call json%create_array(json_list2, 'm_ele')
+    call json%create_array(json_list2, 'M_ele')
     do i2 = lbound(input%M_ele, 2), ubound(input%M_ele, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%M_ele, 1), ubound(input%M_ele, 1)

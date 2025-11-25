@@ -1607,7 +1607,7 @@ type (json_value), pointer :: json_list1, json_list2
   endif
   call json%create_object(json_root, '')
   if (allocated(input%R1)) then
-    call json%create_array(json_list2, 'r1')
+    call json%create_array(json_list2, 'R1')
     do i2 = lbound(input%R1, 2), ubound(input%R1, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%R1, 1), ubound(input%R1, 1)
@@ -1619,7 +1619,7 @@ type (json_value), pointer :: json_list1, json_list2
     call json%add(json_root, json_list2)
   endif
   if (allocated(input%Q1)) then
-    call json%create_array(json_list2, 'q1')
+    call json%create_array(json_list2, 'Q1')
     do i2 = lbound(input%Q1, 2), ubound(input%Q1, 2)
       call json%create_array(json_list1, '')
       do i1 = lbound(input%Q1, 1), ubound(input%Q1, 1)
