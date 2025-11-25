@@ -13,6 +13,7 @@ dependencies:
   - gnuconfig # [unix]
   - gsl
   - hdf5
+  - json-fortran >=9
   - lapack95
   - libblas * *openblas
   - libcblas

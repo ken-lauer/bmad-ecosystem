@@ -1,0 +1,49 @@
+name: Code generation check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Code generation check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          use-mamba: true
+          activate-environment: bmad-build
+          channels: conda-forge
+          environment-file: .github/bmad-build-env.yaml
+          python-version: 3.12
+          conda-remove-defaults: true
+
+      - name: Setup ACC_ROOT_DIR
+        shell: bash -l {0}
+        run: echo "ACC_ROOT_DIR=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+      - name: Regenerate structures and JSON code
+        shell: bash -eo pipefail -l {0}
+        working-directory: ./structs
+        run: bash regenerate.sh
+
+      - name: Summarize any differences
+        shell: bash -l {0}
+        run: git diff --stat
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: structs-json
+          path: ./structs/json
+
+      - name: Error if the source code differs
+        shell: bash -eo pipefail -l {0}
+        run: git diff --exit-code --ignore-all-space
