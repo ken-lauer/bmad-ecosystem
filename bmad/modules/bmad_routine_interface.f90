@@ -556,6 +556,7 @@ function bend_shift (position1, g, delta_s, w_mat, ref_tilt) result(position2)
   real(rp), optional :: w_mat(3,3), ref_tilt
 end function bend_shift
 
+! NOTE: this is in a file not normally compiled: bmad_and_xsif_parser.f90.old
 subroutine bmad_and_xsif_parser (lat_file, lat, make_mats6, digested_read_ok, use_line, err_flag)
   import
   implicit none
@@ -797,7 +798,7 @@ subroutine choose_quads_for_set_tune (branch, dk1, eles, mask, err_flag)
   logical, optional :: err_flag
 end subroutine
 
-subroutine chrom_calc (lat, delta_e, chrom_x, chrom_y, err_flag, &
+subroutine chrom_calc (lat, delta_e, chrom_a, chrom_b, err_flag, &
                        pz, low_E_lat, high_E_lat, low_E_orb, high_E_orb, ix_branch, orb0)
   import
   implicit none
@@ -806,8 +807,8 @@ subroutine chrom_calc (lat, delta_e, chrom_x, chrom_y, err_flag, &
   type (coord_struct), allocatable, optional, target :: low_E_orb(:), high_E_orb(:)
   type (coord_struct), optional :: orb0
   real(rp) delta_e
-  real(rp) chrom_x
-  real(rp) chrom_y
+  real(rp) chrom_a
+  real(rp) chrom_b
   real(rp), optional :: pz
   logical, optional, intent(out) :: err_flag
   integer, optional :: ix_branch
@@ -2408,13 +2409,14 @@ subroutine reverse_lat (lat_in, lat_rev, track_antiparticle)
   logical, optional :: track_antiparticle
 end subroutine
 
-function rf_clock_setup (branch, n_rf_included, n_rf_excluded) result (ok)
-  import
-  implicit none
-  type (branch_struct), target :: branch
-  integer n_rf_included, n_rf_excluded
-  logical ok
-end function
+! No longer in the codebase
+! function rf_clock_setup (branch, n_rf_included, n_rf_excluded) result (ok)
+!   import
+!   implicit none
+!   type (branch_struct), target :: branch
+!   integer n_rf_included, n_rf_excluded
+!   logical ok
+! end function
 
 subroutine rf_coupler_kick (ele, param, particle_at, phase, orbit, mat6, make_matrix)
   import
@@ -2618,14 +2620,15 @@ subroutine set_orbit_to_zero (orbit, n1, n2, ix_noset)
   integer, optional :: ix_noset
 end subroutine
 
-subroutine set_particle_from_rf_time (rf_time, ele, reference_active_edge, orbit)
-  import
-  implicit none
-  type (ele_struct), target :: ele
-  type (coord_struct) orbit
-  real(rp) rf_time
-  logical reference_active_edge
-end subroutine
+! TODO this no longer exists
+! subroutine set_particle_from_rf_time (rf_time, ele, reference_active_edge, orbit)
+!   import
+!   implicit none
+!   type (ele_struct), target :: ele
+!   type (coord_struct) orbit
+!   real(rp) rf_time
+!   logical reference_active_edge
+! end subroutine
 
 subroutine set_ptc (e_tot, particle, taylor_order, integ_order, n_step, no_cavity, force_init) 
   import
@@ -2667,7 +2670,7 @@ subroutine set_z_tune (branch, z_tune, ok, print_err)
   logical, optional :: ok, print_err
 end subroutine
 
-! TODO this no longer exists?
+! TODO this no longer exists
 ! subroutine set_on (key, lat, on_switch, orb)
 !   import
 !   implicit none
@@ -3287,13 +3290,14 @@ subroutine track1_spin_integration (start_orb, ele, param, end_orb)
   type (coord_struct) :: end_orb
 end subroutine
 
-subroutine track1_spin_magnus (start_orb, ele, param, end_orb)
-  import
-  implicit none
-  type (coord_struct) :: start_orb, end_orb
-  type (ele_struct) ele
-  type (lat_param_struct) :: param
-end subroutine
+! TODO this no longer exists
+! subroutine track1_spin_magnus (start_orb, ele, param, end_orb)
+!   import
+!   implicit none
+!   type (coord_struct) :: start_orb, end_orb
+!   type (ele_struct) ele
+!   type (lat_param_struct) :: param
+! end subroutine
 
 subroutine track1_spin_taylor (start_orb, ele, param, end_orb)
   import
@@ -3413,12 +3417,12 @@ subroutine transfer_lat_parameters (lat_in, lat_out)
   type (lat_struct) :: lat_out
 end subroutine
 
-subroutine transfer_map_calc (lat, t_map, err_flag, ix1, ix2, ref_orb, ix_branch, one_turn, &
-                                                       unit_start, concat_if_possible, spin_map)
+subroutine transfer_map_calc (lat, orb_map, err_flag, ix1, ix2, ref_orb, ix_branch, one_turn, &
+                                                           unit_start, concat_if_possible, spin_map)
   import
   implicit none
   type (lat_struct), target :: lat
-  type (taylor_struct) :: t_map(:)
+  type (taylor_struct) :: orb_map(:)
   type (taylor_struct), optional :: spin_map(:)
   type (coord_struct), optional :: ref_orb
   integer, intent(in), optional :: ix1, ix2, ix_branch
@@ -3823,6 +3827,7 @@ subroutine write_lattice_in_scibmad (scibmad_file, lat, err_flag)
   logical, optional :: err_flag
 end subroutine
 
+! NOTE: this is in a file not normally compiled
 subroutine xsif_parser (xsif_file, lat, make_mats6, digested_read_ok, use_line, err_flag)
   import
   implicit none
