@@ -20,9 +20,9 @@ runs:
       uses: actions/checkout@v4
       with:
         # repository: "bmad-sim/bmad-external-packages"
-        # ref: ${{ inputs.external-packages-version }}
+        # ref: "${{ inputs.external-packages-version }}"
         repository: "ken-lauer/bmad-external-packages"
-        ref: "${{ inputs.external-packages-version }}"
+        ref: "add-json-fortran"
         path: "external_packages"
         fetch-depth: 1
 
