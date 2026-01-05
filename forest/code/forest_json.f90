@@ -1275,6 +1275,11 @@ type (json_value), pointer :: json_list1, json_list2
     call c_damap_to_json(input%As, json_val, depth=depth + 1, max_depth=max_depth)
     call json%rename(json_val, 'as')
     call json%add(json_root, json_val)
+    call json%create_array(json_list1, 'unstable')
+    do i1 = lbound(input%unstable, 1), ubound(input%unstable, 1)
+      call json%add(json_list1, '', input%unstable(i1))
+    enddo
+    call json%add(json_root, json_list1)
 end subroutine c_normal_form_to_json
 subroutine c_quaternion_to_json (input, json_root, depth, max_depth)
   use definition, only: c_quaternion

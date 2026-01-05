@@ -2932,6 +2932,16 @@
           "type": "type",
           "kind": "c_damap"
         }
+      },
+      "unstable": {
+        "definition": "logical :: unstable(NDIM2t/2)",
+        "name": "unstable",
+        "comment": ",hyperbolic",
+        "default": null,
+        "type_info": {
+          "type": "logical",
+          "dimension": "NDIM2t/2"
+        }
       }
     }
   },

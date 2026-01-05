@@ -1238,7 +1238,7 @@
       "auto_bookkeeper": {
         "definition": "logical :: auto_bookkeeper = .true.",
         "name": "auto_bookkeeper",
-        "comment": "Automatic bookkeeping?",
+        "comment": "Deprecated and no longer used.",
         "default": ".true.",
         "type_info": {
           "type": "logical"
