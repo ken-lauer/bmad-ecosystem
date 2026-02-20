@@ -153,7 +153,6 @@ if (present(old_slice) .and. .not. rad_map_stale .and. .not. include_upstream_en
   end select
 else
   if (associated(sliced_ele%rad_map)) then
-    print *, "other scenario; slice rad map stale=true, was", sliced_ele%rad_map%stale
     sliced_ele%rad_map%stale = .true.
   endif
 endif
