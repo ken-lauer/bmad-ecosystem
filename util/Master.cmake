@@ -319,11 +319,42 @@ IF ($ENV{ACC_ENABLE_SHARED})
    SET (BASE_Fortran_FLAGS "${BASE_Fortran_FLAGS} -fPIC")
 ENDIF ()
 
+#------------------------------------------
+# AddressSanitizer and
+# UndefinedBehaviorSanitizer (Linux + gfortran only)
+#------------------------------------------
+IF ($ENV{ACC_ENABLE_SANITIZERS})
+  IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND FORTRAN_COMPILER MATCHES "gfortran")
+    SET (ACC_SANITIZER_FLAGS "")
+    string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=address")                      # heap/stack/global buffer overflows, use-after-free
+    string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=leak")                         # memory leaks (automatically enabled by address on Linux, but explicit here)
+    string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=undefined")                    # UB: invalid casts, null deref, misaligned pointers, etc.
+    string(APPEND ACC_SANITIZER_FLAGS " -fno-sanitize=signed-integer-overflow")   # integer overflow is used intentionally for djb hash calculation, for example
+    string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=bounds-strict")                # strengthened array-bounds checks beyond -fsanitize=bounds (gfortran-specific)
+    string(APPEND ACC_SANITIZER_FLAGS " -fno-omit-frame-pointer")                 # preserve frame pointers for accurate sanitizer stack traces
+    string(APPEND ACC_SANITIZER_FLAGS " -fno-trampolines")                        # avoid stack trampolines (internal procs as args) with asan
+    #   string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=thread")                   # data-race detection; mutually exclusive with -fsanitize=address
+    #   string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=signed-integer-overflow")  # explicit signed-overflow subset of -fsanitize=undefined
+    #   string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=pointer-compare")          # pointer comparison issues; requires -fsanitize=address
+    #   string(APPEND ACC_SANITIZER_FLAGS " -fsanitize=pointer-subtract")         # pointer subtraction issues; requires -fsanitize=address
+    SET (BASE_Fortran_FLAGS "${BASE_Fortran_FLAGS} ${ACC_SANITIZER_FLAGS}")
+    SET (BASE_C_FLAGS "${BASE_C_FLAGS} ${ACC_SANITIZER_FLAGS}")
+    SET (BASE_CXX_FLAGS "${BASE_CXX_FLAGS} ${ACC_SANITIZER_FLAGS}")
+  ENDIF ()
+ENDIF ()
+
     SET (ACC_LINK_FLAGS ${ACC_LINK_FLAGS} ${MPI_LINK_FLAGS} ${PLOT_LINK_FLAGS} ${STDCXX_LINK_FLAGS})
 
 if (FORTRAN_COMPILER MATCHES "gfortran")
  list (APPEND ACC_LINK_FLAGS "-ldl")
 endif()
+
+IF ($ENV{ACC_ENABLE_SANITIZERS})
+  IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND FORTRAN_COMPILER MATCHES "gfortran")
+    separate_arguments(ACC_SANITIZER_FLAGS_LIST UNIX_COMMAND "${ACC_SANITIZER_FLAGS}")
+    LIST (APPEND ACC_LINK_FLAGS ${ACC_SANITIZER_FLAGS_LIST})
+  ENDIF ()
+ENDIF ()
 
 IF (${MSYS})
     SET (ACC_LINK_FLAGS)

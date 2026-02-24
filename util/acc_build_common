@@ -192,8 +192,27 @@ func_set_fpic_flags () {
 
 }
 
+# Function to set ACC_SANITIZER_FLAGS (Linux + gfortran only).
+func_set_sanitizer_flags () {
+
+    if [ "${ACC_ENABLE_SANITIZERS}" ] && [ "$(uname -s)" == "Linux" ] && [ "${FC}" == "gfortran" ] ; then
+        # -fsanitize=address:        heap/stack/global buffer overflows, use-after-free
+        # -fsanitize=leak:           memory leaks
+        # -fsanitize=undefined:      UB: invalid casts, null deref, misaligned pointers, etc.
+        # -fno-sanitize=signed-integer-overflow: integer overflow is common in Fortran; remove to re-enable
+        # -fsanitize=bounds-strict:  strengthened array-bounds checks (GCC-specific)
+        # -fno-omit-frame-pointer:   accurate sanitizer stack traces
+        # -fno-trampolines:          avoid stack trampolines (internal procs passed as args) with asan
+        # Other options: -fsanitize=thread (data races; incompatible with address),
+        #   -fsanitize=signed-integer-overflow, -fsanitize=pointer-compare
+        export ACC_SANITIZER_FLAGS="-fsanitize=address -fsanitize=leak -fsanitize=undefined -fno-sanitize=signed-integer-overflow -fsanitize=bounds-strict -fno-omit-frame-pointer -fno-trampolines"
+    fi
+
+}
+
+
 #-----------------------------------------------------------------
-# Function to check for Fortran. If gfortran or ifort is 
+# Function to check for Fortran. If gfortran or ifort is
 # requested, check for the specified minimum version
 #-----------------------------------------------------------------
 
@@ -601,6 +620,8 @@ func_set_c_flags () {
     else
       export CFLAGS="-O2 -w ${CFLAGS}"
     fi
+
+    export CFLAGS="${CFLAGS} ${ACC_SANITIZER_FLAGS}"
 }
 
 
@@ -634,6 +655,11 @@ func_set_fortran_flags () {
       else
           export FCFLAGS="-O2 -fltconsistency ${BASE_OPTS} ${FCFLAGS}"
       fi
+    fi
+    # Remove -Bstatic if sanitizers are active: ASan/LSan require dynamic linking.
+    if [ "${ACC_SANITIZER_FLAGS}" ] ; then
+        export FCFLAGS="${FCFLAGS//-Bstatic/} ${ACC_SANITIZER_FLAGS}"
+        export LDFLAGS="${LDFLAGS} ${ACC_SANITIZER_FLAGS}"
     fi
     export FFLAGS=${FCFLAGS}
 }
@@ -685,6 +711,7 @@ func_cleanup_variables () {
     unset FFLAGS
     unset LDFLAGS
     unset BASE_OPTS
+    unset ACC_SANITIZER_FLAGS
     unset OUTPUT_DIR
     unset WORK_DIR
     unset BUILD_TYPE
@@ -747,6 +774,7 @@ if ( [ "${1}" == "-debug" ] || [ "${1}" == "-production" ] ) ; then
       func_set_openmp_flags
       func_set_fpic_flags
       func_check_fortran_version
+      func_set_sanitizer_flags
       func_set_c_flags
         func_set_fortran_flags
       [ "${PROJ_DIR_NAME}" == "LAPACK95" ] || func_make_build_directory
