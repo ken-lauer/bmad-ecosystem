@@ -1,0 +1,212 @@
+name: envelope_ibs dep probe
+
+# Pins different subsets of the conda env back to the last known-passing build IDs,
+# and (separately) varies the runner image. Each matrix entry reports PASS/FAIL plus
+# the bit value of init-emit, so we can spot which group flips the result.
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash -eo pipefail -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # 0. Reproduce the current failure with no pins.
+          - name: baseline-current
+            runner: ubuntu-latest
+            pins: ""
+
+          # 1. Pin everything from master-passing. If this passes, the env is the cause.
+          - name: full-master-pin
+            runner: ubuntu-latest
+            pins: |
+              openblas=0.3.32=pthreads_h6ec200e_0
+              libopenblas=0.3.32=pthreads_h94d23a6_0
+              libblas=3.11.0=6_h4a7cf45_openblas
+              libcblas=3.11.0=6_h0358290_openblas
+              liblapack=3.11.0=6_h47877c9_openblas
+              libgfortran5=15.2.0=h68bc16d_18
+              libgfortran=15.2.0=h69a702a_18
+              libgfortran-ng=15.2.0=h69a702a_18
+              libgcc=15.2.0=he0feb66_18
+              libgcc-ng=15.2.0=h69a702a_18
+              libstdcxx=15.2.0=h934c35e_18
+              libgomp=15.2.0=he0feb66_18
+              gfortran_impl_linux-64=14.3.0=h1a219da_18
+              gcc_impl_linux-64=14.3.0=hbdf3cc3_18
+              gxx_impl_linux-64=14.3.0=h2185e75_18
+              libsanitizer=14.3.0=h8f1669f_18
+              libgcc-devel_linux-64=14.3.0=hf649bbc_118
+              libstdcxx-devel_linux-64=14.3.0=h9f08a49_118
+              libglib=2.88.1=h0d30a3d_1
+              rdma-core=62.0=h192683f_0
+
+          # 2. BLAS/LAPACK group only (openblas 0.3.33 -> 0.3.32 + the shim rebuilds).
+          - name: pin-blas
+            runner: ubuntu-latest
+            pins: |
+              openblas=0.3.32=pthreads_h6ec200e_0
+              libopenblas=0.3.32=pthreads_h94d23a6_0
+              libblas=3.11.0=6_h4a7cf45_openblas
+              libcblas=3.11.0=6_h0358290_openblas
+              liblapack=3.11.0=6_h47877c9_openblas
+
+          # 3. gfortran runtime libraries only (libgfortran5 is where I/O & MATMUL live).
+          - name: pin-gcc-runtime
+            runner: ubuntu-latest
+            pins: |
+              libgfortran5=15.2.0=h68bc16d_18
+              libgfortran=15.2.0=h69a702a_18
+              libgfortran-ng=15.2.0=h69a702a_18
+              libgcc=15.2.0=he0feb66_18
+              libgcc-ng=15.2.0=h69a702a_18
+              libstdcxx=15.2.0=h934c35e_18
+              libgomp=15.2.0=he0feb66_18
+
+          # 4. Compiler binaries only (codegen path; runtime libs left at current).
+          - name: pin-gcc-compiler
+            runner: ubuntu-latest
+            pins: |
+              gfortran_impl_linux-64=14.3.0=h1a219da_18
+              gcc_impl_linux-64=14.3.0=hbdf3cc3_18
+              gxx_impl_linux-64=14.3.0=h2185e75_18
+              libsanitizer=14.3.0=h8f1669f_18
+              libgcc-devel_linux-64=14.3.0=hf649bbc_118
+              libstdcxx-devel_linux-64=14.3.0=h9f08a49_118
+
+          # 5. Other deps that diffed (rdma-core, libglib). Long shot but cheap to test.
+          - name: pin-misc
+            runner: ubuntu-latest
+            pins: |
+              libglib=2.88.1=h0d30a3d_1
+              rdma-core=62.0=h192683f_0
+
+          # 6-7. Runner image variants (probes system glibc/libm/kernel).
+          - name: runner-22-04
+            runner: ubuntu-22.04
+            pins: ""
+
+          - name: runner-24-04
+            runner: ubuntu-24.04
+            pins: ""
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Add Linux-only deps to env file
+        run: |
+          echo '  - libacl' >> .github/bmad-build-env.yaml
+          echo '  - libgomp' >> .github/bmad-build-env.yaml
+
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          use-mamba: true
+          activate-environment: bmad-build
+          channels: conda-forge
+          environment-file: .github/bmad-build-env.yaml
+          python-version: 3.12
+          conda-remove-defaults: true
+
+      - name: Apply pins
+        if: matrix.pins != ''
+        run: |
+          specs=$(echo "${{ matrix.pins }}" | tr '\n' ' ' | xargs)
+          echo "Pinning: $specs"
+          # --force-reinstall in case the target build is already installed at a different hash;
+          # we want the solver to honor the exact build string.
+          mamba install -y --force-reinstall $specs
+
+      - name: Show resolved env (full)
+        run: |
+          conda list | tee /tmp/conda-list.txt
+
+      - name: Build bmad
+        env:
+          USE_MPI: "N"
+          SHARED: "Y"
+          USE_CONDA: 1
+        run: .github/scripts/install_bmad.sh
+
+      - name: Install pytest deps
+        run: pip install -r regression_tests/requirements.txt
+
+      - name: Run envelope_ibs test
+        id: run
+        run: |
+          # Don't let -e abort before we've recorded the outcome.
+          set +e
+          status=ERROR
+          val="?"
+
+          source ./util/dist_source_me
+          rm -f regression_tests/envelope_ibs_test/output.now
+
+          (cd regression_tests && python -m pytest -v -k envelope_ibs_test)
+          rc=$?
+          if [[ $rc -eq 0 ]]; then
+            status=PASS
+          else
+            status=FAIL
+          fi
+
+          if [[ -f regression_tests/envelope_ibs_test/output.now ]]; then
+            v=$(awk '/^"init-emit"/ {print $4}' regression_tests/envelope_ibs_test/output.now)
+            [[ -n $v ]] && val=$v
+          fi
+
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "a_emit=$val"   >> "$GITHUB_OUTPUT"
+          echo "result: status=$status a_emit=$val"
+
+          # Fail the step (and therefore the matrix entry) so it shows red in the UI.
+          [[ $status == PASS ]] && exit 0 || exit 1
+
+      - name: Record result
+        if: always()
+        run: |
+          {
+            echo "## ${{ matrix.name }} on ${{ matrix.runner }}"
+            echo ""
+            echo "- status: **${{ steps.run.outputs.status }}**"
+            echo "- a_emit: \`${{ steps.run.outputs.a_emit }}\`"
+            echo ""
+            echo "Reference: \`3.71196247E-07\`"
+            echo ""
+            echo "<details><summary>Resolved conda env</summary>"
+            echo ""
+            echo '```'
+            cat /tmp/conda-list.txt 2>/dev/null || echo "(conda list not captured)"
+            echo '```'
+            echo ""
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record result
+        run: |
+          {
+            echo "## ${{ matrix.name }} on ${{ matrix.runner }}"
+            echo ""
+            echo "- status: **${{ steps.run.outputs.status }}**"
+            echo "- a_emit: \`${{ steps.run.outputs.a_emit }}\`"
+            echo ""
+            echo "Reference: \`3.71196247E-07\`"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload output.now
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-now-${{ matrix.name }}
+          path: regression_tests/envelope_ibs_test/output.now
+          if-no-files-found: ignore
