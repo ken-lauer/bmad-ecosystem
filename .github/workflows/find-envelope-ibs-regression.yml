@@ -1,0 +1,134 @@
+name: Find envelope_ibs regression
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      max-iterations:
+        description: "Max commits to walk back before giving up"
+        type: number
+        default: 30
+      starting-ref:
+        description: "Starting ref (branch/tag/SHA). Defaults to the branch this workflow is run on."
+        type: string
+        required: false
+
+jobs:
+  walk-back:
+    name: walk-back-envelope-ibs
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    defaults:
+      run:
+        shell: bash -eo pipefail -l {0}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.starting-ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Add Linux-only deps to env file
+        run: |
+          echo '  - libacl' >> .github/bmad-build-env.yaml
+          echo '  - libgomp' >> .github/bmad-build-env.yaml
+
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          use-mamba: true
+          activate-environment: bmad-build
+          channels: conda-forge
+          environment-file: .github/bmad-build-env.yaml
+          python-version: 3.12
+          conda-remove-defaults: true
+
+      - name: Record conda env
+        run: conda list
+
+      - name: Install pytest deps
+        run: pip install -r regression_tests/requirements.txt
+
+      - name: Walk back until envelope_ibs passes
+        env:
+          USE_MPI: "N"
+          SHARED: "Y"
+          USE_CONDA: 1
+          MAX_ITER: ${{ inputs.max-iterations || 30 }}
+        run: |
+          set +e
+          declare -a log_lines=("iter | sha | status | a_emit | subject")
+          prev_sha=""
+          first_pass=""
+          suspect=""
+
+          for ((i=0; i<MAX_ITER; i++)); do
+            sha=$(git rev-parse --short HEAD)
+            subject=$(git log -1 --format=%s | tr '|' ' ')
+            echo "::group::iter $i — $sha — $subject"
+
+            # install_bmad.sh appends to util/dist_prefs; checkout resets it next iter,
+            # so we let the script reconfigure prefs and run an incremental build each time.
+            if .github/scripts/install_bmad.sh; then
+              build=OK
+            else
+              build=BUILD-FAIL
+            fi
+
+            status="$build"
+            val="-"
+            if [[ $build == OK ]]; then
+              source ./util/dist_source_me
+              rm -f regression_tests/envelope_ibs_test/output.now
+              if (cd regression_tests && python -m pytest -v -k envelope_ibs_test); then
+                status=PASS
+              else
+                status=FAIL
+              fi
+              val=$(awk '/^"init-emit"/ {print $4}' regression_tests/envelope_ibs_test/output.now 2>/dev/null)
+              [[ -z $val ]] && val="?"
+            fi
+
+            log_lines+=("$i | $sha | $status | $val | $subject")
+            echo "::endgroup::"
+            echo "result: iter=$i sha=$sha status=$status a_emit=$val"
+
+            if [[ $status == PASS ]]; then
+              first_pass="$sha"
+              suspect="$prev_sha"
+              break
+            fi
+
+            prev_sha="$sha"
+            if ! git checkout --force --quiet HEAD~1; then
+              echo "::warning::Ran out of history at iter $i"
+              break
+            fi
+          done
+
+          {
+            echo "## envelope_ibs walk-back results"
+            echo ""
+            echo "| ${log_lines[0]} |"
+            echo "|---|---|---|---|---|"
+            for line in "${log_lines[@]:1}"; do
+              echo "| $line |"
+            done
+            echo ""
+            if [[ -n $first_pass ]]; then
+              echo "**First passing commit:** \`$first_pass\`"
+              if [[ -n $suspect ]]; then
+                echo ""
+                echo "**Suspect (first failing commit walking forward):** \`$suspect\`"
+                echo ""
+                echo "Inspect: \`git show $suspect\`"
+              fi
+            else
+              echo "**No passing commit found in $MAX_ITER iterations.**"
+              echo "Either the regression predates this window, or it's not in the source — could be conda env or runner image."
+            fi
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+          # Exit success regardless — the report itself is the artifact.
+          exit 0
