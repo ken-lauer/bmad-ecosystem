@@ -3435,27 +3435,28 @@ case ('ele:multipoles')
     return
   endif
 
+  call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
+
   if (ele%key == multipole$) then
-    call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
     call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
   else
-    call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
     call multipole_ele_to_ab (ele, .true.,  ix_pole_max, a2, b2)
     call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
   endif
 
   do i = 0, ix_pole_max
-    if (a_orig(i) == 0 .and. b_orig(i) == 0) cycle
-
     if (ele%key == multipole$) then
+      if (a(i) == 0 .and. b(i) == 0 .and. tn(i) == 0) cycle
       nl=incr(nl); write (li(nl), '(i0, 6(a, es22.14))') i, ';', &
                       ele%a_pole(i), ';', ele%b_pole(i), ';', knl(i), ';', tn(i), ';', a(i), ';', b(i)
 
     elseif (ele%key == ab_multipole$) then
+      if (a(i) == 0 .and. b(i) == 0) cycle
       nl=incr(nl); write (li(nl), '(i0, 6(a, es22.14))') i, ';', &
                       ele%a_pole(i), ';', ele%b_pole(i), ';', a2(i), ';', b2(i), ';', knl(i), ';', tn(i)
 
     else
+      if (a_orig(i) == 0 .and. b_orig(i) == 0 .and. a(i) == 0 .and. b(i) == 0) cycle
       nl=incr(nl); write (li(nl), '(i0, 8(a, es22.14))') i, ';', &
                       a_orig(i), ';', b_orig(i), ';', a(i), ';', b(i), ';', a2(i), ';', b2(i), ';', knl(i), ';', tn(i)
     endif
