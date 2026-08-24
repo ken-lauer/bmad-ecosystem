@@ -291,7 +291,7 @@ a = 0; b = 0; a2 = 0; b2 = 0; knl = 0; tn = 0
 call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
 
 if (associated(branch)) param = branch%param
-call multipole_ele_to_ab (ele, .false.,  ix_pole_max, a_orig, b_orig)
+call multipole_ele_to_ab (ele, .false.,  ix_pole_max, a_orig, b_orig, original = .true.)
 
 if (ele%key == multipole$) then
   call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
