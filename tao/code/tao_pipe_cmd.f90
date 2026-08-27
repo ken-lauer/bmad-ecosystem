@@ -5820,8 +5820,8 @@ case ('plot_histogram')
 ! 
 ! Parameters
 ! ----------
-! ix_uni: 1
-! ix_branch: 0
+! ix_uni : optional
+! ix_branch : optional
 !
 ! Returns
 ! -------
