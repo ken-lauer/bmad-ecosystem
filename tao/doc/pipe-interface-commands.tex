@@ -114,10 +114,11 @@ Example:
 Outputs bunch parameters at the exit end of a given lattice element.
 
 \begin{example}
-   pipe bunch_params \{ele_id\}|\{which\}
+   pipe bunch_params \{ix_uni\}@\{ele_id\}|\{which\}
 \end{example}
 \begin{verbatim}
 Where:
+  {ix_uni} is a universe index. Defaults to s%global%default_universe.
   {ele_id} is an element name or index.
   {which} is one of: "model", "base" or "design"
 
@@ -134,10 +135,11 @@ Example:
 Outputs Bunch parameters at the exit end of a given lattice element.
 
 \begin{example}
-   pipe bunch1 \{ele_id\}|\{which\} \{ix_bunch\} \{coordinate\}
+   pipe bunch1 \{ix_uni\}@\{ele_id\}|\{which\} \{ix_bunch\} \{coordinate\}
 \end{example}
 \begin{verbatim}
 Where:
+  {ix_uni} is a universe index. Defaults to s%global%default_universe.
   {ele_id} is an element name or index.
   {which} is one of: "model", "base" or "design"
   {ix_bunch} is the bunch index.
@@ -356,11 +358,12 @@ Example:
 Output list of d1 arrays for a given data_d2.
 
 \begin{example}
-   pipe data_d1_array \{d2_datum\}
+   pipe data_d1_array \{ix_uni\}@\{d2_datum\}
 \end{example}
 \begin{verbatim}
-{d2_datum} should be of the form
-  {ix_uni}@{d2_datum_name}
+Where:
+  {ix_uni} is a universe index. Defaults to s%global%default_universe.
+  {d2_datum} is the name of the d2_data structure.
 \end{verbatim}
 
 %% pipe data_d2 ------------------------------------
@@ -1334,10 +1337,14 @@ Where:
   -track_only  - If present, lord elements will not be matched to.
   -index_order - If present, order elements by element index instead of the 
                -   standard s-position.
-  -array_out   - If present, the output will be available in the 
-    tao_c_interface_com%c_real or tao_c_interface_com%c_integer arrays. 
+  -array_out   - If present, the output will be available in the
+    tao_c_interface_com%c_real or tao_c_interface_com%c_integer arrays.
     See the code below for when %c_real vs %c_integer is used.
     Note: Only a single {who} item permitted when -array_out is present.
+    Note: A "real:" prefix on {who} (old style) also selects array output.
+    Note: The integer_array condition below lists the common integer {who}
+      values but is not exhaustive: any {who} that resolves to an integer
+      element attribute fills the integer buffer instead of the real buffer.
 
   {which} is one of: "model", "base" or "design"
 
@@ -1347,10 +1354,12 @@ Where:
     orbit.vec.1, orbit.vec.2, orbit.vec.3, orbit.vec.4, orbit.vec.5, orbit.vec.6,
     orbit.t, orbit.beta,
     orbit.state,     ! Note: state is an integer. alive$ = 1, anything else is lost.
-    orbit.energy, orbit.pc,
+    orbit.energy, orbit.pc,    ! Note: orbit.e_tot is an old style synonym for orbit.energy.
     ele.name, ele.key, ele.ix_ele, ele.ix_branch
     ele.a.beta, ele.a.alpha, ele.a.eta, ele.a.etap, ele.a.gamma, ele.a.phi,
+    ele.a.deta_ds, ele.a.dbeta_dpz, ele.a.dalpha_dpz, ele.a.deta_dpz, ele.a.detap_dpz,
     ele.b.beta, ele.b.alpha, ele.b.eta, ele.b.etap, ele.b.gamma, ele.b.phi,
+    ele.b.deta_ds, ele.b.dbeta_dpz, ele.b.dalpha_dpz, ele.b.deta_dpz, ele.b.detap_dpz,
     ele.x.eta, ele.x.etap,
     ele.y.eta, ele.y.etap,
     ele.ref_time, ele.ref_time_start
@@ -1360,11 +1369,8 @@ Where:
     ele.vec0        ! Output: vec0(1); ... vec0(6)
     ele.c_mat       ! Output: c_mat11; c_mat12; c_mat21; c_mat22.
     ele.gamma_c     ! Parameter associated with coupling c-matrix.
-    ele.XXX         ! Where XXX is a Bmad syntax element attribute. 
+    ele.XXX         ! Where XXX is a Bmad syntax element attribute.
                     !   EG: ele.beta_a, ele.k1, etc.
-    multipass_lord  ! Outpu: ix_pass; ix_multipass_lord 
-                    !   where ix_pass is the multipass index with zero indicating not in a multipass region.
-                    !   And ix_multipass_lord is the lord element index (Note: lords are always in branch 0).
 
   {elements} is a string to match element names to.
     Use "*" to match to all elements.
@@ -1576,10 +1582,10 @@ Note: The returned list of element positions is not ordered in increasing
 Output list of plot templates or plot regions.
 
 \begin{example}
-   pipe plot_list \{r_or_g\}
+   pipe plot_list \{r_or_t\}
 \end{example}
 \begin{verbatim}
-where "{r/g}" is:
+where "{r_or_t}" is:
   "r"      ! list regions of the form ix;region_name;plot_name;visible;x1;x2;y1;y2
   "t"      ! list template plots of the form ix;name
 \end{verbatim}
