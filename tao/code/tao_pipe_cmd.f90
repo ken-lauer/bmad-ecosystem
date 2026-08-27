@@ -4870,10 +4870,6 @@ case ('inum')
 ! -----
 ! Command syntax:
 !   pipe lat_calc_done
-! 
-! Parameters
-! ----------
-! branch_name
 !
 ! Returns
 ! -------
@@ -4884,7 +4880,6 @@ case ('inum')
 ! Example: 1
 !  init: -init $ACC_ROOT_DIR/regression_tests/pipe_test/cesr/tao.init
 !  args:
-!    branch_name: 1@0
 
 case ('lat_calc_done')
 
