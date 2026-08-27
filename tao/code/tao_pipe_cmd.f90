@@ -5043,10 +5043,12 @@ case ('lat_branch_list')  ! lat_general is deprecated.
 !     orbit.vec.1, orbit.vec.2, orbit.vec.3, orbit.vec.4, orbit.vec.5, orbit.vec.6,
 !     orbit.t, orbit.beta,
 !     orbit.state,     ! Note: state is an integer. alive$ = 1, anything else is lost.
-!     orbit.energy, orbit.pc,
+!     orbit.energy, orbit.pc,    ! Note: orbit.e_tot is an old style synonym for orbit.energy.
 !     ele.name, ele.key, ele.ix_ele, ele.ix_branch
 !     ele.a.beta, ele.a.alpha, ele.a.eta, ele.a.etap, ele.a.gamma, ele.a.phi,
+!     ele.a.deta_ds, ele.a.dbeta_dpz, ele.a.dalpha_dpz, ele.a.deta_dpz, ele.a.detap_dpz,
 !     ele.b.beta, ele.b.alpha, ele.b.eta, ele.b.etap, ele.b.gamma, ele.b.phi,
+!     ele.b.deta_ds, ele.b.dbeta_dpz, ele.b.dalpha_dpz, ele.b.deta_dpz, ele.b.detap_dpz,
 !     ele.x.eta, ele.x.etap,
 !     ele.y.eta, ele.y.etap,
 !     ele.ref_time, ele.ref_time_start
@@ -5056,12 +5058,9 @@ case ('lat_branch_list')  ! lat_general is deprecated.
 !     ele.vec0        ! Output: vec0(1); ... vec0(6)
 !     ele.c_mat       ! Output: c_mat11; c_mat12; c_mat21; c_mat22.
 !     ele.gamma_c     ! Parameter associated with coupling c-matrix.
-!     ele.XXX         ! Where XXX is a Bmad syntax element attribute. 
+!     ele.XXX         ! Where XXX is a Bmad syntax element attribute.
 !                     !   EG: ele.beta_a, ele.k1, etc.
-!     multipass_lord  ! Outpu: ix_pass; ix_multipass_lord 
-!                     !   where ix_pass is the multipass index with zero indicating not in a multipass region.
-!                     !   And ix_multipass_lord is the lord element index (Note: lords are always in branch 0).
-! 
+!
 !   {elements} is a string to match element names to.
 !     Use "*" to match to all elements.
 !
