@@ -5026,10 +5026,14 @@ case ('lat_branch_list')  ! lat_general is deprecated.
 !   -track_only  - If present, lord elements will not be matched to.
 !   -index_order - If present, order elements by element index instead of the 
 !                -   standard s-position.
-!   -array_out   - If present, the output will be available in the 
-!     tao_c_interface_com%c_real or tao_c_interface_com%c_integer arrays. 
+!   -array_out   - If present, the output will be available in the
+!     tao_c_interface_com%c_real or tao_c_interface_com%c_integer arrays.
 !     See the code below for when %c_real vs %c_integer is used.
 !     Note: Only a single {who} item permitted when -array_out is present.
+!     Note: A "real:" prefix on {who} (old style) also selects array output.
+!     Note: The integer_array condition below lists the common integer {who}
+!       values but is not exhaustive: any {who} that resolves to an integer
+!       element attribute fills the integer buffer instead of the real buffer.
 !
 !   {which} is one of: "model", "base" or "design"
 ! 
@@ -5079,11 +5083,11 @@ case ('lat_branch_list')  ! lat_general is deprecated.
 ! Returns
 ! -------
 ! string_list
-!   if ('-array_out' not in flags) or (who in ['ele.name', 'ele.key'])
+!   if ('-array_out' not in flags and 'real:' not in who) or (who in ['ele.name', 'ele.key'])
 ! integer_array
-!    if '-array_out' in flags and who in ['orbit.state', 'ele.ix_ele']
+!   if ('-array_out' in flags or 'real:' in who) and (who in ['orbit.state', 'ele.ix_ele'])
 ! real_array
-!    if ('-array_out' in flags) or ('real:' in who) 
+!   if ('-array_out' in flags or 'real:' in who) and (who not in ['orbit.state', 'ele.ix_ele'])
 !
 ! Examples
 ! --------
