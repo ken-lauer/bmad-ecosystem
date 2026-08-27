@@ -774,9 +774,10 @@ case ('bunch_comb')
 ! Notes
 ! -----
 ! Command syntax:
-!   pipe bunch_params {ele_id}|{which}
+!   pipe bunch_params {ix_uni}@{ele_id}|{which}
 !
 ! Where:
+!   {ix_uni} is a universe index. Defaults to s%global%default_universe.
 !   {ele_id} is an element name or index.
 !   {which} is one of: "model", "base" or "design"
 !
@@ -786,11 +787,12 @@ case ('bunch_comb')
 ! Parameters
 ! ----------
 ! ele_id
+! ix_uni : optional
 ! which : default=model
 !
 ! Returns
 ! -------
-! string_list 
+! string_list
 !
 ! Examples
 ! --------
@@ -822,9 +824,10 @@ case ('bunch_params')
 ! Notes
 ! -----
 ! Command syntax:
-!   pipe bunch1 {ele_id}|{which} {ix_bunch} {coordinate}
+!   pipe bunch1 {ix_uni}@{ele_id}|{which} {ix_bunch} {coordinate}
 !
 ! Where:
+!   {ix_uni} is a universe index. Defaults to s%global%default_universe.
 !   {ele_id} is an element name or index.
 !   {which} is one of: "model", "base" or "design"
 !   {ix_bunch} is the bunch index.
@@ -839,6 +842,7 @@ case ('bunch_params')
 ! ----------
 ! ele_id
 ! coordinate
+! ix_uni : optional
 ! which : default=model
 ! ix_bunch : default=1
 !
