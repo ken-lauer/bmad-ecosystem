@@ -5895,15 +5895,15 @@ case ('plot_lat_layout')
 ! Notes
 ! -----
 ! Command syntax:
-!   pipe plot_list {r_or_g}
+!   pipe plot_list {r_or_t}
 !
-! where "{r/g}" is:
+! where "{r_or_t}" is:
 !   "r"      ! list regions of the form ix;region_name;plot_name;visible;x1;x2;y1;y2
 !   "t"      ! list template plots of the form ix;name
-! 
+!
 ! Parameters
 ! ----------
-! r_or_g
+! r_or_t
 !
 ! Returns
 ! -------
@@ -5914,7 +5914,7 @@ case ('plot_lat_layout')
 ! Example: 1
 !  init: -init $ACC_ROOT_DIR/regression_tests/pipe_test/cesr/tao.init
 !  args:
-!    r_or_g: r
+!    r_or_t: r
 
 
 case ('plot_list')
