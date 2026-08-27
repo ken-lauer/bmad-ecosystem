@@ -7583,9 +7583,9 @@ case ('super_universe')
 ! 
 ! Parameters
 ! ----------
-! ele1_id 
-! ele2_id 
-! order : default=1
+! ele1_id
+! ele2_id
+! order : optional
 !
 ! Returns
 ! -------
