@@ -314,7 +314,7 @@ select case (command)
 ! Parameters
 ! ----------
 ! ix_uni : optional
-! ix_branch : ""
+! ix_branch : optional
 !
 ! Returns
 ! -------
@@ -367,7 +367,7 @@ case ('beam')
 ! Parameters
 ! ----------
 ! ix_uni : optional
-! ix_branch : ""
+! ix_branch : optional
 !
 ! Returns
 ! -------
@@ -520,8 +520,8 @@ case ('bmad_com')
 !
 ! Parameters
 ! ----------
-! ix_uni : ""
-! ix_branch : ""
+! ix_uni : optional
+! ix_branch : optional
 ! 
 ! Returns
 ! -------
@@ -6299,7 +6299,7 @@ endif
 ! region_name
 ! graph_name
 ! curve_name
-! x_or_y
+! x_or_y : optional
 !
 ! Returns
 ! -------
@@ -6393,7 +6393,7 @@ case ('plot_symbol')
 ! Parameters
 ! ----------
 ! from_plot
-! to_plot
+! to_plot : optional
 !
 ! Returns
 ! -------
@@ -8190,8 +8190,8 @@ case ('var_v1_destroy')
 !
 ! Parameters
 ! ----------
-! ix_uni : ""
-! ix_branch : ""
+! ix_uni : optional
+! ix_branch : optional
 ! s_position
 ! angle
 !
