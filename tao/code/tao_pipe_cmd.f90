@@ -5527,10 +5527,10 @@ case ('orbit_at_s')
 ! -----
 ! Command syntax:
 !   pipe place_buffer
-! 
+!
 ! Returns
 ! -------
-! None
+! string_list
 !
 ! Examples
 ! --------
@@ -6717,7 +6717,7 @@ case ('shape_list')
 !
 ! Returns
 ! -------
-! string_list
+! None
 !
 ! Examples
 ! --------
