@@ -1503,11 +1503,12 @@ case ('data_d_array')
 ! Notes
 ! -----
 ! Command syntax:
-!   pipe data_d1_array {d2_datum}
+!   pipe data_d1_array {ix_uni}@{d2_datum}
 !
-! {d2_datum} should be of the form
-!   {ix_uni}@{d2_datum_name}
-! 
+! Where:
+!   {ix_uni} is a universe index. Defaults to s%global%default_universe.
+!   {d2_datum} is the name of the d2_data structure.
+!
 ! Parameters
 ! ----------
 ! d2_datum
