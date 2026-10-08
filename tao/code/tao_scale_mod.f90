@@ -322,7 +322,7 @@ type (tao_building_wall_point_struct) pt
 real(rp), optional :: y_range(2), y2_range(2)
 real(rp) y_min, y_max, this_min, this_max, this_min2, this_max2, del, y1, y2
 
-integer i, j, k, ix, ib, p1, p2, iu
+integer i, j, k, ix, ib, p1, p2, iu, ix_shape_min
 logical, optional :: include_wall
 logical found_data, found_data2
 
@@ -396,7 +396,12 @@ if (graph%type == 'floor_plan') then
         this_max = max(this_max, end%r(2))
         found_data = .true.
         ! For a linac, the shape can extend past the plot. So take into account the shape size.
-        call tao_ele_shape_info (iu, ele, s%plot_page%floor_plan%ele_shape, shape, label_name, y1, y2)
+        ix_shape_min = 1
+        do
+          call tao_ele_shape_info (iu, ele, s%plot_page%floor_plan%ele_shape, shape, label_name, y1, y2, ix_shape_min)
+          if (.not. associated(shape)) exit
+          if (shape%draw) exit
+        enddo
         if (associated(shape)) then
           y1 = 1.1 * y1 * s%plot_page%floor_plan_shape_scale
           y2 = 1.1 * y2 * s%plot_page%floor_plan_shape_scale

@@ -1,16 +1,16 @@
 !+
-! Function tao_pointer_to_ele_shape (ix_uni, ele, ele_shape, dat_var_name, dat_var_value, ix_shape_min, include_undrawn) result (e_shape)
+! Function tao_pointer_to_ele_shape (ix_uni, ele, ele_shape, dat_var_name, dat_var_value, ix_shape_min) result (e_shape)
 !
 ! Routine to return the shape associated with a lattice element.
 !
 ! Note: building_wall shapes are handled by the tao_pointer_to_building_wall_shape routine.
+! Note: Shapes with %draw = False are not skipped. It is up to the caller to check %draw.
 !
 ! Input:
 !   ix_uni        -- integer: Universe index.
 !   ele           -- ele_struct: Lattice element.
 !   ele_shape(:)  -- tao_ele_shape_struct: Array of shapes to search.
 !   ix_shape_min  -- integer, optional: Index of minimum ele_shape(:) index to start search from. Default is 1.
-!   include_undrawn -- logical, optional: If True, shapes with %draw = False are also considered. Default is False.
 !
 ! Output:
 !   e_shape       -- tao_ele_shape_struct, pointer: Associated shape. 
@@ -22,7 +22,7 @@
 !   ix_shape_min  -- integer, optional: Ele_shape(:) index to start next search if multiple shapes are associated with ele.
 !-
 
-function tao_pointer_to_ele_shape (ix_uni, ele, ele_shape, dat_var_name, dat_var_value, ix_shape_min, include_undrawn) result (e_shape)
+function tao_pointer_to_ele_shape (ix_uni, ele, ele_shape, dat_var_name, dat_var_value, ix_shape_min) result (e_shape)
 
 use tao_interface, dummy => tao_pointer_to_ele_shape
 
@@ -42,7 +42,6 @@ type (tao_real_pointer_struct), allocatable :: re_array(:)
 real(rp), optional :: dat_var_value
 
 integer, optional :: ix_shape_min
-logical, optional :: include_undrawn
 integer ix, ix_uni, ixu
 integer j, j2, k, ie, is, n_ele_track
 
@@ -77,7 +76,6 @@ do k = integer_option(1, ix_shape_min), size(ele_shape)
   up_name = upcase(name)
 
   if (present(ix_shape_min)) ix_shape_min = k + 1
-  if (.not. es%draw .and. .not. logic_option(.false., include_undrawn)) cycle
 
   ! Data
 

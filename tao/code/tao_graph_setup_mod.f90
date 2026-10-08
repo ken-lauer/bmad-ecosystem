@@ -1265,7 +1265,7 @@ real(rp), allocatable :: value_arr(:), x_arr(:), y_arr(:)
 
 
 integer ii, k, m, n, n_dat, n2_dat, ib, ie, jj, iv, ic
-integer ix, ir, jg, i, j, ix_this, ix_uni, ix1, ix2, n_curve_pts, ix_slave
+integer ix, ir, jg, i, j, ix_this, ix_uni, ix1, ix2, n_curve_pts, ix_slave, ix_shape_min
 integer, allocatable :: xx_arr(:)
 
 logical err, err_flag, smooth_curve, found, zero_average_phase, ok
@@ -1785,9 +1785,13 @@ case ('lat', 'beam')
     ! Mark all eles in branch if they match a shape.
     do i = 0, branch%n_ele_track
       ele => branch%ele(i)
-      ele_shape => tao_pointer_to_ele_shape (u%ix_uni, ele, s%plot_page%lat_layout%ele_shape)
+      ix_shape_min = 1
+      do
+        ele_shape => tao_pointer_to_ele_shape (u%ix_uni, ele, s%plot_page%lat_layout%ele_shape, ix_shape_min = ix_shape_min)
+        if (.not. associated(ele_shape)) exit
+        if (ele_shape%draw) exit
+      enddo
       if (.not. associated(ele_shape)) cycle
-      if (.not. ele_shape%draw) cycle
       call find_element_ends (ele, ele1, ele2)
       ele1%logic = .true.
       ele2%logic = .true.
@@ -1796,9 +1800,13 @@ case ('lat', 'beam')
     ! Mark slaves of lord elements that match a shape.
     do i = model_lat%n_ele_track+1, model_lat%n_ele_max
       ele => model_lat%ele(i)
-      ele_shape => tao_pointer_to_ele_shape (u%ix_uni, ele, s%plot_page%lat_layout%ele_shape)
+      ix_shape_min = 1
+      do
+        ele_shape => tao_pointer_to_ele_shape (u%ix_uni, ele, s%plot_page%lat_layout%ele_shape, ix_shape_min = ix_shape_min)
+        if (.not. associated(ele_shape)) exit
+        if (ele_shape%draw) exit
+      enddo
       if (.not. associated(ele_shape)) cycle
-      if (.not. ele_shape%draw) cycle
       if (ele%lord_status == multipass_lord$) then
         do j = 1, ele%n_slave
           slave => pointer_to_slave (ele, j)

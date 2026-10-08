@@ -3726,7 +3726,7 @@ case ('ele:shape')
 
   ix_shape_min = 1
   do
-    call tao_ele_shape_info (u%ix_uni, ele, shapes, shape, label_name, y1, y2, ix_shape_min, include_undrawn = .true.)
+    call tao_ele_shape_info (u%ix_uni, ele, shapes, shape, label_name, y1, y2, ix_shape_min)
     if (.not. associated(shape)) exit
     nl=incr(nl); write (li(nl), '(i0, 5a, i0, 2(a, es14.6), 3a, l1, a, l1)') ix_shape_min - 1, ';', &
               trim(shape%shape), ';', trim(shape%color), ';', shape%line_width, ';', y1, ';', y2, ';', &
@@ -9721,7 +9721,7 @@ type (branch_struct), pointer :: branch
 type (ele_struct), pointer :: ele, slave
 
 real(rp) y1, y2
-integer iu, n, i, j, ix_shape_min, ix_pass, n_links
+integer iu, n, i, j, ix_shape_min, ix_shape2, ix_pass, n_links
 character(40) label_name
 
 !
@@ -9738,6 +9738,9 @@ do n = 0, ubound(lat%branch, 1)
     ix_shape_min = 1
     do
       call tao_ele_shape_info(iu, ele, s%plot_page%floor_plan%ele_shape, ele_shape, label_name, y1, y2, ix_shape_min)
+      if (associated(ele_shape)) then
+        if (.not. ele_shape%draw) cycle
+      endif
       if (.not. associated(ele_shape) .and. (ele%key == overlay$ .or. &
                                              ele%key == group$ .or. ele%key == girder$)) exit   ! Nothing to draw
 
@@ -9750,7 +9753,12 @@ do n = 0, ubound(lat%branch, 1)
         do j = 1, ele%n_slave
           if (graph%floor_plan%draw_only_first_pass .and. j > 1) exit
           slave => pointer_to_slave(ele, j)
-          ele_shape2 => tao_pointer_to_ele_shape (iu, slave, s%plot_page%floor_plan%ele_shape)
+          ix_shape2 = 1
+          do
+            ele_shape2 => tao_pointer_to_ele_shape (iu, slave, s%plot_page%floor_plan%ele_shape, ix_shape_min = ix_shape2)
+            if (.not. associated(ele_shape2)) exit
+            if (ele_shape2%draw) exit
+          enddo
           if (associated(ele_shape2)) cycle ! Already drawn. Do not draw twice
           call this_floor_plan2 (graph, slave, ele_shape, label_name, y1, y2)
         enddo

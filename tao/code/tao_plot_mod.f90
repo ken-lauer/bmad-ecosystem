@@ -468,7 +468,7 @@ real(rp) x_min, x_max, y_min, y_max, y1, y2
 real(rp) theta, v_vec(3), theta1, dtheta, dat_var_value
 real(rp) x_bend(0:400), y_bend(0:400)
 
-integer i, j, k, n, is, ix, n_bend, isu, ic, ib, ix_shape_min
+integer i, j, k, n, is, ix, n_bend, isu, ic, ib, ix_shape_min, ix_shape2
 integer ix_pass, n_links, iwidth
 logical err
 
@@ -502,6 +502,9 @@ do n = 0, ubound(lat%branch, 1)
     ix_shape_min = 1
     do
       call tao_ele_shape_info (isu, ele, s%plot_page%floor_plan%ele_shape, ele_shape, label_name, y1, y2, ix_shape_min)
+      if (associated(ele_shape)) then
+        if (.not. ele_shape%draw) cycle
+      endif
       if (.not. associated(ele_shape) .and. (ele%key == overlay$ .or. &
                                              ele%key == group$ .or. ele%key == girder$)) exit   ! Nothing to draw
 
@@ -514,7 +517,12 @@ do n = 0, ubound(lat%branch, 1)
         do j = 1, ele%n_slave
           if (graph%floor_plan%draw_only_first_pass .and. j > 1) exit
           slave => pointer_to_slave(ele, j)
-          ele_shape2 => tao_pointer_to_ele_shape (isu, slave, s%plot_page%floor_plan%ele_shape)
+          ix_shape2 = 1
+          do
+            ele_shape2 => tao_pointer_to_ele_shape (isu, slave, s%plot_page%floor_plan%ele_shape, ix_shape_min = ix_shape2)
+            if (.not. associated(ele_shape2)) exit
+            if (ele_shape2%draw) exit
+          enddo
           if (associated(ele_shape2)) cycle ! Already drawn. Do not draw twice
           call tao_draw_ele_for_floor_plan (plot, graph, tao_lat, slave, ele_shape, label_name, y1, y2)
         enddo
@@ -1367,7 +1375,7 @@ do
   call tao_ele_shape_info (graph%ix_universe, ele, s%plot_page%lat_layout%ele_shape, ele_shape, label_name, y1, y2, ix_shape_min)
 
   if (.not. associated(ele_shape)) return
-  if (.not. ele_shape%draw) return
+  if (.not. ele_shape%draw) cycle
 
   call find_element_ends (ele, ele1, ele2)
   if (.not. associated(ele1)) return
