@@ -102,6 +102,8 @@ end subroutine track_beam
 
 subroutine track_bunch (lat, bunch, ele1, ele2, err, centroid, direction, bunch_track)
 
+use csr_and_space_charge_mod, only: csr_eleinfo_cache_reset
+
 implicit none
 
 type (lat_struct), target :: lat
@@ -126,7 +128,10 @@ if (present(ele2)) e2 => ele2
 
 branch => lat%branch(e1%ix_branch)
 
-! 
+! The lattice or centroid may have changed since the last bunch.
+call csr_eleinfo_cache_reset()
+
+!
 
 if (integer_option(1, direction) == -1) then
   if (e1%ix_ele > e2%ix_ele) then

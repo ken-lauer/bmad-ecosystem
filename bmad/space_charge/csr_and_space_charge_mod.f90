@@ -107,13 +107,20 @@ real(rp), pointer, private :: csr_dr_match_ptr(:)
 !$OMP THREADPRIVATE(csr_kick1_ptr, csr_csr_ptr, csr_einfo_s_ptr, csr_dr_match_ptr)
 
 ! Tables for evaluating, in ddz_calc_csr, the summed dspline_len of all elements between the
-! source and kick elements without looping over them. See csr_dl_setup.
+! source and kick elements without looping over them. See csr_dl_extend.
 !   csr_dl_theta(i)    -- Chord angle of element i unwrapped modulo pi (neighbors differ by <= pi/2).
 !   csr_dl_mom(:,i)    -- Moments summed from the start of i's block through i.
 !   csr_dl_blk_min/max -- Min/max of csr_dl_theta over each block.
 integer, parameter, private :: csr_dl_block = 32
 real(rp), allocatable, private :: csr_dl_theta(:), csr_dl_mom(:,:), csr_dl_blk_min(:), csr_dl_blk_max(:)
 !$OMP THREADPRIVATE(csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
+
+! Cache of csr%eleinfo between track1_bunch_csr calls. See csr_eleinfo_get.
+! Entries 0 through csr_eleinfo_n are valid; -1 means the cache is empty.
+type (csr_ele_info_struct), allocatable, private :: csr_eleinfo_cache(:)
+type (branch_struct), pointer, private :: csr_eleinfo_branch => null()
+integer, private :: csr_eleinfo_n = -1
+!$OMP THREADPRIVATE(csr_eleinfo_cache, csr_eleinfo_branch, csr_eleinfo_n)
 
 contains
 
@@ -238,68 +245,12 @@ n_step = max (1, nint(ele%value(l$) / csr%ds_track_step))
 csr%ds_track_step = ele%value(l$) / n_step
 
 ! Calculate beam centroid info at element edges, etc.
+! This only depends on the lattice geometry and the centroid orbit so it is cached between calls.
+! csr_eleinfo_put must be called before returning to give the info back to the cache.
 
 n = min(ele%ix_ele+10, branch%n_ele_track)
-allocate (csr%eleinfo(0:n))
-
-do i = 0, n
-  eleinfo => csr%eleinfo(i)
-  eleinfo%ele => branch%ele(i)  ! Pointer to the P' element
-  s_ele => eleinfo%ele
-  eleinfo%ref_floor1 = branch%ele(i)%floor
-  eleinfo%ref_floor1%r(2) = 0  ! Make sure in horizontal plane
-
-  eleinfo%orbit1 = centroid(i)
-  vec = eleinfo%orbit1%vec
-  floor%r = [vec(1), vec(3), s_ele%value(l$)]
-  eleinfo%floor1 = coords_local_curvilinear_to_floor (floor, s_ele)
-  eleinfo%floor1%r(2) = 0  ! Make sure in horizontal plane
-  ! The 1d-14 is inserted to avoid 0/0 error at the beginning of an e_gun.
-  eleinfo%floor1%theta = s_ele%floor%theta + asin(vec(2) / (1.0_rp + 1d-14 + vec(6)))
-
-  if (i == 0) then
-    eleinfo%ref_floor0 = csr%eleinfo(i)%ref_floor1
-    eleinfo%floor0   = csr%eleinfo(i)%floor1
-    eleinfo%orbit0   = csr%eleinfo(i)%orbit1
-  else
-    eleinfo%ref_floor0 = csr%eleinfo(i-1)%ref_floor1
-    eleinfo%floor0   = csr%eleinfo(i-1)%floor1
-    eleinfo%orbit0   = csr%eleinfo(i-1)%orbit1
-  endif
-
-  vec0 = eleinfo%orbit0%vec
-  vec = eleinfo%orbit1%vec
-  theta_chord = atan2(eleinfo%floor1%r(1)-eleinfo%floor0%r(1), eleinfo%floor1%r(3)-eleinfo%floor0%r(3))
-  eleinfo%theta_chord = theta_chord
-
-  ! An element with a negative step length (EG off-center beam in a patch which just has an x-pitch), can
-  ! have floor%theta and theta_chord 180 degress off. Hence, restrict theta0 & theta1 to be within [-pi/2,pi/2]
-  theta0 = modulo2(eleinfo%floor0%theta - theta_chord, pi/2)
-  theta1 = modulo2(eleinfo%floor1%theta - theta_chord, pi/2)
-  eleinfo%L_chord = sqrt((eleinfo%floor1%r(1)-eleinfo%floor0%r(1))**2 + (eleinfo%floor1%r(3)-eleinfo%floor0%r(3))**2)
-  if (abs(eleinfo%L_chord) < 1d-8) then   ! 1d-8 is rather arbitrary.
-    eleinfo%spline = spline_struct()
-    eleinfo%dL_s = 0
-    cycle
-  endif
-
-  if (s_ele%key == match$) cycle  ! Match elements offsets are ignored so essentially they are like markers.
-
-  ! With a negative step length, %L_chord is negative
-  parallel0 = (abs(modulo2(eleinfo%floor0%theta - theta_chord, pi)) < pi/2)
-  parallel1 = (abs(modulo2(eleinfo%floor1%theta - theta_chord, pi)) < pi/2)
-  if (parallel0 .neqv. parallel1) then
-    call out_io (s_fatal$, r_name, 'VERY CONFUSED CSR CALCULATION! PLEASE SEEK HELP ' // ele%name)
-    if (global_com%exit_on_error) call err_exit
-    return
-  endif
-  if (.not. parallel0) eleinfo%L_chord = -eleinfo%L_chord
-
-  eleinfo%spline = create_a_spline ([0.0_rp, 0.0_rp], [eleinfo%L_chord, 0.0_rp], theta0, theta1)
-  eleinfo%dL_s = dspline_len(0.0_rp, eleinfo%L_chord, eleinfo%spline)
-enddo
-
-call csr_dl_setup (csr%eleinfo)
+call csr_eleinfo_get (csr, ele, branch, centroid, n, err_flag)
+if (err_flag) return
 
 !
 
@@ -333,6 +284,7 @@ do i_step = 0, n_step
                           'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
                           'AT ELEMENT: ' // trim(ele%name) // '  [# \i0\] ', &
                           i_array = [n_live, ele%ix_ele ])
+    call csr_eleinfo_put (csr)
     return
   endif
 
@@ -344,7 +296,11 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
-  call csr_bin_particles (ele, bunch%particle, csr, err_flag); if (err_flag) return
+  call csr_bin_particles (ele, bunch%particle, csr, err_flag)
+  if (err_flag) then
+    call csr_eleinfo_put (csr)
+    return
+  endif
 
   csr%s_kick = s0_step
   csr%s_chord_kick = s_ref_to_s_chord (s0_step, csr%eleinfo(ele%ix_ele))
@@ -370,7 +326,10 @@ do i_step = 0, n_step
       csr%y_source = ns * space_charge_com%beam_chamber_height
 
       call csr_bin_kicks (ele, s0_step, csr, err_flag)
-      if (err_flag) return
+      if (err_flag) then
+        call csr_eleinfo_put (csr)
+        return
+      endif
     enddo
   endif
 
@@ -410,9 +369,234 @@ do i_step = 0, n_step
 
 enddo
 
+call csr_eleinfo_put (csr)
 err = .false.
 
 end subroutine track1_bunch_csr
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_eleinfo_cache_reset ()
+!
+! Routine to invalidate the cached centroid element info used by track1_bunch_csr.
+! Must be called whenever the lattice or the centroid orbit may have changed. track_bunch does this
+! at the start of every bunch.
+!-
+
+subroutine csr_eleinfo_cache_reset ()
+
+implicit none
+
+csr_eleinfo_n = -1
+
+end subroutine csr_eleinfo_cache_reset
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_eleinfo_get (csr, ele, branch, centroid, n, err)
+!
+! Routine to set csr%eleinfo(0:n) (and the csr_dl tables) from the cache, extending the cache
+! as needed. csr%eleinfo may be larger than n. Call csr_eleinfo_put to return it to the cache.
+!
+! The cache is dropped if the branch differs, or if the cached centroid or reference position at the
+! element being tracked does not match. This catches most changes even without a call to
+! csr_eleinfo_cache_reset.
+!
+! Input:
+!   csr           -- csr_struct:
+!   ele           -- ele_struct: Element being tracked through.
+!   branch        -- branch_struct: Branch containing ele.
+!   centroid(0:)  -- coord_struct: Beam centroid orbit.
+!   n             -- integer: Info is needed for elements 0 through n.
+!
+! Output:
+!   csr           -- csr_struct: csr%eleinfo set.
+!   err           -- logical: Set True if there is an error. csr%eleinfo is then not set.
+!-
+
+subroutine csr_eleinfo_get (csr, ele, branch, centroid, n, err)
+
+implicit none
+
+type (csr_struct) csr
+type (ele_struct) ele
+type (branch_struct), target :: branch
+type (coord_struct) centroid(0:)
+type (csr_ele_info_struct), allocatable :: tmp(:)
+
+integer n, i, ix, n_old
+logical err
+
+!
+
+err = .false.
+
+if (.not. allocated(csr_eleinfo_cache)) csr_eleinfo_n = -1
+
+if (csr_eleinfo_n >= 0) then
+  ix = min(ele%ix_ele, csr_eleinfo_n)
+  if (.not. associated(csr_eleinfo_branch, branch)) then
+    csr_eleinfo_n = -1
+  elseif (any(csr_eleinfo_cache(ix)%orbit1%vec /= centroid(ix)%vec) .or. &
+          csr_eleinfo_cache(ix)%ref_floor1%r(1) /= branch%ele(ix)%floor%r(1) .or. &
+          csr_eleinfo_cache(ix)%ref_floor1%r(3) /= branch%ele(ix)%floor%r(3)) then
+    csr_eleinfo_n = -1
+  endif
+endif
+
+if (csr_eleinfo_n < 0) csr_eleinfo_branch => branch
+
+if (n > csr_eleinfo_n) then
+  ! Grow geometrically so that extending one element at a time is not quadratic.
+  if (.not. allocated(csr_eleinfo_cache)) then
+    allocate (csr_eleinfo_cache(0:n))
+  elseif (ubound(csr_eleinfo_cache, 1) < n) then
+    allocate (tmp(0:min(max(n, 2*ubound(csr_eleinfo_cache, 1)), branch%n_ele_track)))
+    if (csr_eleinfo_n >= 0) tmp(0:csr_eleinfo_n) = csr_eleinfo_cache(0:csr_eleinfo_n)
+    call move_alloc (tmp, csr_eleinfo_cache)
+  endif
+
+  n_old = csr_eleinfo_n
+  do i = n_old+1, n
+    call csr_eleinfo_fill (csr_eleinfo_cache, i, branch, centroid, ele, err)
+    if (err) exit
+    csr_eleinfo_n = i
+  enddo
+
+  if (csr_eleinfo_n > n_old) call csr_dl_extend (csr_eleinfo_cache, n_old+1, csr_eleinfo_n)
+  if (err) return
+endif
+
+call move_alloc (csr_eleinfo_cache, csr%eleinfo)
+
+end subroutine csr_eleinfo_get
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_eleinfo_put (csr)
+!
+! Routine to return csr%eleinfo, set by csr_eleinfo_get, to the cache.
+!-
+
+subroutine csr_eleinfo_put (csr)
+
+implicit none
+
+type (csr_struct) csr
+
+if (allocated(csr%eleinfo)) call move_alloc (csr%eleinfo, csr_eleinfo_cache)
+
+end subroutine csr_eleinfo_put
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_eleinfo_fill (eleinfo, i, branch, centroid, ele, err)
+!
+! Routine to compute the centroid chord and spline info for element i. Entry i-1 must already be set.
+!
+! Input:
+!   eleinfo(0:)   -- csr_ele_info_struct: Info array.
+!   i             -- integer: Element index.
+!   branch        -- branch_struct: Lattice branch.
+!   centroid(0:)  -- coord_struct: Beam centroid orbit.
+!   ele           -- ele_struct: Element being tracked through. Used for error messages.
+!
+! Output:
+!   eleinfo(i)    -- csr_ele_info_struct: Element info.
+!   err           -- logical: Set True if there is an error.
+!-
+
+subroutine csr_eleinfo_fill (eleinfo, i, branch, centroid, ele, err)
+
+implicit none
+
+type (csr_ele_info_struct), target :: eleinfo(0:)
+type (csr_ele_info_struct), pointer :: ei
+type (branch_struct), target :: branch
+type (coord_struct) centroid(0:)
+type (ele_struct) ele
+type (ele_struct), pointer :: s_ele
+type (floor_position_struct) floor
+
+real(rp) vec(6), theta_chord, theta0, theta1
+integer i
+logical err, parallel0, parallel1
+
+character(*), parameter :: r_name = 'track1_bunch_csr'
+
+!
+
+err = .false.
+
+ei => eleinfo(i)
+ei%ele => branch%ele(i)  ! Pointer to the P' element
+s_ele => ei%ele
+ei%ref_floor1 = branch%ele(i)%floor
+ei%ref_floor1%r(2) = 0  ! Make sure in horizontal plane
+
+ei%orbit1 = centroid(i)
+vec = ei%orbit1%vec
+floor%r = [vec(1), vec(3), s_ele%value(l$)]
+ei%floor1 = coords_local_curvilinear_to_floor (floor, s_ele)
+ei%floor1%r(2) = 0  ! Make sure in horizontal plane
+! The 1d-14 is inserted to avoid 0/0 error at the beginning of an e_gun.
+ei%floor1%theta = s_ele%floor%theta + asin(vec(2) / (1.0_rp + 1d-14 + vec(6)))
+
+if (i == 0) then
+  ei%ref_floor0 = ei%ref_floor1
+  ei%floor0   = ei%floor1
+  ei%orbit0   = ei%orbit1
+else
+  ei%ref_floor0 = eleinfo(i-1)%ref_floor1
+  ei%floor0   = eleinfo(i-1)%floor1
+  ei%orbit0   = eleinfo(i-1)%orbit1
+endif
+
+theta_chord = atan2(ei%floor1%r(1)-ei%floor0%r(1), ei%floor1%r(3)-ei%floor0%r(3))
+ei%theta_chord = theta_chord
+
+! An element with a negative step length (EG off-center beam in a patch which just has an x-pitch), can
+! have floor%theta and theta_chord 180 degress off. Hence, restrict theta0 & theta1 to be within [-pi/2,pi/2]
+theta0 = modulo2(ei%floor0%theta - theta_chord, pi/2)
+theta1 = modulo2(ei%floor1%theta - theta_chord, pi/2)
+ei%L_chord = sqrt((ei%floor1%r(1)-ei%floor0%r(1))**2 + (ei%floor1%r(3)-ei%floor0%r(3))**2)
+if (abs(ei%L_chord) < 1d-8) then   ! 1d-8 is rather arbitrary.
+  ei%spline = spline_struct()
+  ei%dL_s = 0
+  return
+endif
+
+! Match elements offsets are ignored so essentially they are like markers.
+! Reset explicitly since cache entries are reused.
+if (s_ele%key == match$) then
+  ei%spline = spline_struct()
+  ei%dL_s = 0
+  return
+endif
+
+! With a negative step length, %L_chord is negative
+parallel0 = (abs(modulo2(ei%floor0%theta - theta_chord, pi)) < pi/2)
+parallel1 = (abs(modulo2(ei%floor1%theta - theta_chord, pi)) < pi/2)
+if (parallel0 .neqv. parallel1) then
+  call out_io (s_fatal$, r_name, 'VERY CONFUSED CSR CALCULATION! PLEASE SEEK HELP ' // ele%name)
+  if (global_com%exit_on_error) call err_exit
+  err = .true.
+  return
+endif
+if (.not. parallel0) ei%L_chord = -ei%L_chord
+
+ei%spline = create_a_spline ([0.0_rp, 0.0_rp], [ei%L_chord, 0.0_rp], theta0, theta1)
+ei%dL_s = dspline_len(0.0_rp, ei%L_chord, ei%spline)
+
+end subroutine csr_eleinfo_fill
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -1766,9 +1950,10 @@ end subroutine apply_fft_3d_kicks
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine csr_dl_setup (eleinfo)
+! Subroutine csr_dl_extend (eleinfo, i_from, i_to)
 !
-! Routine to build the tables used by csr_dl_interior_sum.
+! Routine to fill entries i_from through i_to of the tables used by csr_dl_interior_sum.
+! Entries before i_from must already be set.
 !
 ! For a whole element with reference-line offset delta, dspline_len(0, L, spline, delta) is
 ! quadratic in u = c1 - delta (c = spline%coef):
@@ -1785,10 +1970,12 @@ end subroutine apply_fft_3d_kicks
 ! Match elements contribute nothing, as in ddz_calc_csr.
 !
 ! Input:
-!   eleinfo(0:)  -- csr_ele_info_struct: Element info with chords and splines set.
+!   eleinfo(0:)  -- csr_ele_info_struct: Element info with chords and splines set through i_to.
+!                     The tables are sized to match.
+!   i_from, i_to -- integer: Range of entries to fill.
 !-
 
-subroutine csr_dl_setup (eleinfo)
+subroutine csr_dl_extend (eleinfo, i_from, i_to)
 
 implicit none
 
@@ -1796,17 +1983,29 @@ type (csr_ele_info_struct), target :: eleinfo(0:)
 type (csr_ele_info_struct), pointer :: ei
 
 real(rp) c(0:3), L, P, K, B, C2, e
-integer i, n, ib, n_blk
+integer i_from, i_to, i, i0, n, ib, n_blk
 
 !
 
 n = ubound(eleinfo, 1)
 n_blk = n / csr_dl_block
+i0 = i_from
 
-if (allocated(csr_dl_theta)) deallocate (csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
-allocate (csr_dl_theta(0:n), csr_dl_mom(6,0:n), csr_dl_blk_min(0:n_blk), csr_dl_blk_max(0:n_blk))
+! Growing the tables is rare (the eleinfo cache grows geometrically) so just refill from the start.
 
-do i = 0, n
+if (allocated(csr_dl_theta)) then
+  if (ubound(csr_dl_theta, 1) < n) then
+    deallocate (csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
+    i0 = 0
+  endif
+endif
+
+if (.not. allocated(csr_dl_theta)) then
+  allocate (csr_dl_theta(0:n), csr_dl_mom(6,0:n), csr_dl_blk_min(0:n_blk), csr_dl_blk_max(0:n_blk))
+  i0 = 0
+endif
+
+do i = i0, i_to
   ei => eleinfo(i)
   ib = i / csr_dl_block
 
@@ -1839,7 +2038,7 @@ do i = 0, n
   csr_dl_mom(:,i) = csr_dl_mom(:,i) + [C2 * c(1)**2 + P * c(1) + K, B * e, B, C2 * e**2, C2 * e, C2]
 enddo
 
-end subroutine csr_dl_setup
+end subroutine csr_dl_extend
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -1848,7 +2047,7 @@ end subroutine csr_dl_setup
 ! Function csr_dl_interior_sum (i0, i1, theta_L, dl_sum) result (ok)
 !
 ! Routine to sum dspline_len(0, L_chord, spline, modulo2(theta_L - theta_chord, pi/2)) over
-! elements i0 through i1 (skipping match elements) using the tables from csr_dl_setup.
+! elements i0 through i1 (skipping match elements) using the tables from csr_dl_extend.
 ! Cost is proportional to the number of blocks spanned rather than the number of elements.
 !
 ! Input:
