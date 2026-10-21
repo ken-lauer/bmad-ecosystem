@@ -744,11 +744,14 @@ real(dp), intent(in) :: gamma, delta(3)
 real(dp), optional, intent(out), dimension(:,:,:,:) :: efield
 real(dp), optional, intent(out), dimension(:,:,:) :: phi
 real(dp), intent(in), optional :: offset(3)
+! The density, Green functions, and fields are all real so real-to-complex FFTs are used, which
+! only store the non-redundant half (nh = nx2/2+1) of each spectrum along x.
 ! Persistent scratch arrays — only reallocated when doubled mesh size changes
-complex(dp), allocatable, save, dimension(:,:,:) :: crho, cgrn
+real(dp), allocatable, save, dimension(:,:,:) :: rbuf      ! (nx2, ny2, nz2): padded rho, Green function, field
+complex(dp), allocatable, save, dimension(:,:,:) :: crho, cprod  ! (nh, ny2, nz2)
 integer, save :: alloc_nx2 = 0, alloc_ny2 = 0, alloc_nz2 = 0
 ! Green function FFT cache — avoids recomputing when (delta, gamma, offset, mesh size) unchanged
-complex(dp), allocatable, save, dimension(:,:,:,:) :: grn_fft_cache  ! (nx2, ny2, nz2, 0:3)
+complex(dp), allocatable, save, dimension(:,:,:,:) :: grn_fft_cache  ! (nh, ny2, nz2, 0:3)
 real(dp), save :: grn_cache_delta(3) = 0
 real(dp), save :: grn_cache_gamma = -1
 real(dp), save :: grn_cache_offset(3) = 0
@@ -758,22 +761,21 @@ real(dp) :: factr, offset_eff(3)
 real(dp), parameter :: clight=299792458.0
 real(dp), parameter :: fpei=299792458.0**2*1.00000000055d-7  ! this is 1/(4 pi eps0) after the 2019 SI changes
 
-integer :: nx, ny, nz, nx2, ny2, nz2
+integer :: nx, ny, nz, nx2, ny2, nz2, nh
 integer :: icomp, ishift, jshift, kshift
 logical :: cache_hit
 
 ! Sizes
 nx = size(rho, 1); ny = size(rho, 2); nz = size(rho, 3)
 nx2 = 2*nx; ny2 = 2*ny; nz2 = 2*nz; 
+nh = nx2/2 + 1
 
-! Allocate complex scratch arrays only when size changes.
+! Allocate scratch arrays only when size changes.
 ! Thread safety: guard with OMP CRITICAL in case this is ever called from a parallel region.
 !$OMP CRITICAL (solver2_scratch_lock)
 if (nx2 /= alloc_nx2 .or. ny2 /= alloc_ny2 .or. nz2 /= alloc_nz2) then
-  if (allocated(crho)) deallocate(crho)
-  if (allocated(cgrn)) deallocate(cgrn)
-  allocate(crho(nx2, ny2, nz2))
-  allocate(cgrn(nx2, ny2, nz2))
+  if (allocated(rbuf)) deallocate(rbuf, crho, cprod)
+  allocate(rbuf(nx2, ny2, nz2), crho(nh, ny2, nz2), cprod(nh, ny2, nz2))
   alloc_nx2 = nx2; alloc_ny2 = ny2; alloc_nz2 = nz2
 endif
 !$OMP END CRITICAL (solver2_scratch_lock)
@@ -796,43 +798,39 @@ if (.not. cache_hit) then
   grn_cache_offset = offset_eff
   grn_cache_nx2 = nx2; grn_cache_ny2 = ny2; grn_cache_nz2 = nz2
   if (allocated(grn_fft_cache)) then
-    if (size(grn_fft_cache, 1) /= nx2 .or. size(grn_fft_cache, 2) /= ny2 .or. &
+    if (size(grn_fft_cache, 1) /= nh .or. size(grn_fft_cache, 2) /= ny2 .or. &
         size(grn_fft_cache, 3) /= nz2) then
       deallocate(grn_fft_cache)
-      allocate(grn_fft_cache(nx2, ny2, nz2, 0:3))
+      allocate(grn_fft_cache(nh, ny2, nz2, 0:3))
     endif
   else
-    allocate(grn_fft_cache(nx2, ny2, nz2, 0:3))
+    allocate(grn_fft_cache(nh, ny2, nz2, 0:3))
   endif
 endif
 
-! rho -> crho -> FFT(crho)
+! rho -> rbuf -> FFT -> crho
 ! Zero only the padding region (octants beyond 1:nx, 1:ny, 1:nz), then fill the data octant.
-crho(1:nx, 1:ny, 1:nz) = rho
-crho(nx+1:nx2, :, :) = 0
-crho(1:nx, ny+1:ny2, :) = 0
-crho(1:nx, 1:ny, nz+1:nz2) = 0
-call ccfft3d(crho, crho, [1,1,1], nx2, ny2, nz2, 0) 
+rbuf(1:nx, 1:ny, 1:nz) = rho
+rbuf(nx+1:nx2, :, :) = 0
+rbuf(1:nx, ny+1:ny2, :) = 0
+rbuf(1:nx, 1:ny, nz+1:nz2) = 0
+call rcfft3d(rbuf, crho, nx2, ny2, nz2)
 
 ! Loop over phi, Ex, Ey, Ez
 do icomp=0, 3
   if ((icomp == 0) .and. (.not. present(phi))) cycle
   if ((icomp == 1) .and. (.not. present(efield))) exit
 
-  if (grn_cache_valid(icomp)) then
-    ! Cache hit: multiply directly from cached FFT'd Green function
-    cgrn = crho * grn_fft_cache(:,:,:,icomp)
-  else
-    ! Cache miss: compute Green function, forward FFT, cache, multiply
-    call osc_get_cgrn_freespace(cgrn, delta, gamma, icomp, offset=offset_eff)
-    call ccfft3d(cgrn, cgrn, [1,1,1], nx2, ny2, nz2, 0)
-    grn_fft_cache(:,:,:,icomp) = cgrn
+  if (.not. grn_cache_valid(icomp)) then
+    ! Cache miss: compute Green function, forward FFT into the cache
+    call osc_get_rgrn_freespace(rbuf, delta, gamma, icomp, offset=offset_eff)
+    call rcfft3d(rbuf, grn_fft_cache(:,:,:,icomp), nx2, ny2, nz2)
     grn_cache_valid(icomp) = .true.
-    cgrn = crho * cgrn
   endif
+  cprod = crho * grn_fft_cache(:,:,:,icomp)
 
   ! Inverse FFT
-  call ccfft3d(cgrn, cgrn, [-1,-1,-1], nx2, ny2, nz2, 0)  
+  call crfft3d(cprod, rbuf, nx2, ny2, nz2)
   
   ! This is where the output is shifted to
   ishift = nx-1
@@ -843,9 +841,9 @@ do icomp=0, 3
   factr = fpei/(nx2*ny2*nz2)
   
   if (icomp == 0) then
-    phi(:,:,:) = factr * real(cgrn(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift), dp)  
+    phi(:,:,:) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift)
   else
-    efield(:,:,:,icomp) = factr * real(cgrn(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift), dp)
+    efield(:,:,:,icomp) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift)
   endif
     
 enddo
@@ -855,14 +853,14 @@ end subroutine osc_freespace_solver2
 
 !------------------------------------------------------------------------
 !+
-! Subroutine osc_get_cgrn_freespace(cgrn, delta, gamma, icomp, offset)
+! Subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset)
 !
 ! Computes the free space Green function on a mesh with given spacings in the lab frame.
 ! The computation is performed in the rest fram by boosting the coordinates by gamma.
 !
 !
 ! Input:
-!   cgrn         -- COMPLEX128(:,:,:): pre-allocated array 
+!   rgrn         -- REAL64(:,:,:): pre-allocated array
 !   delta        -- REAL64(3): vector of grid spacings dx, dy, dz
 !   gamma        -- REAL64: relativistic gamma
 !   icomp        -- integer: Field component requested:
@@ -876,7 +874,7 @@ end subroutine osc_freespace_solver2
 !                        the field at z=+10 m relative to the rho_mesh center. 
 !                              
 ! Output:
-!   cgrn         -- COMPLEX128(:,:,:): Green function array
+!   rgrn         -- REAL64(:,:,:): Green function array
 !   
 !                
 ! Notes:
@@ -886,9 +884,9 @@ end subroutine osc_freespace_solver2
 !   and these points are used to evaluate the integral with array addition and subtraction. 
 !
 !-
-subroutine osc_get_cgrn_freespace(cgrn, delta, gamma, icomp, offset)
+subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset)
 
-complex(dp), intent(out), dimension(:,:,:) :: cgrn 
+real(dp), intent(out), dimension(:,:,:) :: rgrn
 real(dp), intent(in), dimension(3) :: delta
 integer, intent(in) :: icomp
 real(dp), intent(in) :: gamma
@@ -911,7 +909,7 @@ else
 endif
 
 ! Evaluate on an offset grid, for use in the indefinite integral evaluation below. 
-isize = size(cgrn,1); jsize=size(cgrn,2); ksize=size(cgrn,3)
+isize = size(rgrn,1); jsize=size(rgrn,2); ksize=size(rgrn,3)
 umin = (0.5-isize/2) *dx
 vmin = (0.5-jsize/2) *dy
 wmin = (0.5-ksize/2) *dz
@@ -925,7 +923,7 @@ endif
 
 !$OMP PARALLEL DO &
 !$OMP DEFAULT(FIRSTPRIVATE), &
-!$OMP SHARED(cgrn)
+!$OMP SHARED(rgrn)
 do k = 1, ksize
   w = (k-1)*dz + wmin
 
@@ -939,7 +937,7 @@ do k = 1, ksize
      if(icomp == 1) gval=xlafun2(u,v,w)*factor
      if(icomp == 2) gval=xlafun2(v,w,u)*factor
      if(icomp == 3) gval=xlafun2(w,u,v)*factor
-     cgrn(i,j,k)= cmplx(gval, 0, dp)
+     rgrn(i,j,k) = gval
      
     enddo
   enddo
@@ -947,19 +945,19 @@ enddo
 !$OMP END PARALLEL DO
 
 ! Evaluate the indefinite integral over the cube     
-!cgrn = cgrn(1:,1:,1:) - cgrn(:-1,1:,1:) - cgrn(1:,:-1,1:) - cgrn(1:,1:,:-1) - cgrn(:-1,:-1,:-1) + cgrn(:-1,:-1,1:) + cgrn(:-1,1:,:-1)  + cgrn(1:,:-1,:-1)
+!rgrn = rgrn(1:,1:,1:) - rgrn(:-1,1:,1:) - rgrn(1:,:-1,1:) - rgrn(1:,1:,:-1) - rgrn(:-1,:-1,:-1) + rgrn(:-1,:-1,1:) + rgrn(:-1,1:,:-1)  + rgrn(1:,:-1,:-1)
 !       (x2,y2,z2) -      (x1,y2,z2) -     (x2,y1,z2) -    (x2,y2,z1) -    (x1,y1,z1)   +    (x1,y1,z2)   +    (x1,y2,z1)  +    (x2,y1,z1)
-cgrn(1:isize-1, 1:jsize-1, 1:ksize-1) = &
-    + cgrn(2:isize,   2:jsize,   2:ksize) &
-    - cgrn(1:isize-1, 2:jsize,   2:ksize) &
-    - cgrn(2:isize,   1:jsize-1, 2:ksize) &
-    - cgrn(2:isize,   2:jsize,   1:ksize-1) &
-    - cgrn(1:isize-1, 1:jsize-1, 1:ksize-1) &
-    + cgrn(1:isize-1, 1:jsize-1, 2:ksize) &
-    + cgrn(1:isize-1, 2:jsize,   1:ksize-1)  &
-    + cgrn(2:isize,   1:jsize-1, 1:ksize-1)
+rgrn(1:isize-1, 1:jsize-1, 1:ksize-1) = &
+    + rgrn(2:isize,   2:jsize,   2:ksize) &
+    - rgrn(1:isize-1, 2:jsize,   2:ksize) &
+    - rgrn(2:isize,   1:jsize-1, 2:ksize) &
+    - rgrn(2:isize,   2:jsize,   1:ksize-1) &
+    - rgrn(1:isize-1, 1:jsize-1, 1:ksize-1) &
+    + rgrn(1:isize-1, 1:jsize-1, 2:ksize) &
+    + rgrn(1:isize-1, 2:jsize,   1:ksize-1)  &
+    + rgrn(2:isize,   1:jsize-1, 1:ksize-1)
 
-end subroutine osc_get_cgrn_freespace
+end subroutine osc_get_rgrn_freespace
 
 
 !------------------------------------------------------------------------

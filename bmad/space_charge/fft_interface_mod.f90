@@ -81,6 +81,55 @@ enddo
 
 end
 
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+
+! Subroutine rcfft3d (a, b, n1, n2, n3)
+!
+! Real-to-complex 3D FFT of a(n1,n2,n3) into the non-redundant half spectrum b(n1/2+1,n2,n3).
+! Pair with crfft3d, which uses the opposite sign. See the FFTW version for details.
+!-
+subroutine rcfft3d(a, b, n1, n2, n3)
+implicit none
+real(dp), dimension(:,:,:) :: a
+complex(dp), dimension(:,:,:) :: b
+complex(dp), allocatable :: c(:,:,:)
+integer :: n1, n2, n3
+
+allocate(c(n1,n2,n3))
+c = a
+call ccfft3d(c, c, [-1,-1,-1], n1, n2, n3, 0)
+b = c(1:n1/2+1, :, :)
+end subroutine
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+
+! Subroutine crfft3d (a, b, n1, n2, n3)
+!
+! Complex-to-real 3D FFT of the half spectrum a(n1/2+1,n2,n3) into b(n1,n2,n3), using
+! Hermitian symmetry for the other half. Unnormalized. See the FFTW version for details.
+!-
+subroutine crfft3d(a, b, n1, n2, n3)
+implicit none
+complex(dp), dimension(:,:,:) :: a
+real(dp), dimension(:,:,:) :: b
+complex(dp), allocatable :: c(:,:,:)
+integer :: n1, n2, n3, i, j, k
+
+allocate(c(n1,n2,n3))
+c(1:n1/2+1, :, :) = a
+do k = 1, n3
+  do j = 1, n2
+    do i = n1/2+2, n1
+      c(i,j,k) = conjg(a(n1-i+2, modulo(n2-j+1, n2)+1, modulo(n3-k+1, n3)+1))
+    enddo
+  enddo
+enddo
+call ccfft3d(c, c, [1,1,1], n1, n2, n3, 0)
+b = real(c, dp)
+end subroutine
+
 
 
 
@@ -168,6 +217,89 @@ if (fdir == FFTW_FORWARD) then
 else
   call fftw_execute_dft(plan_bwd, a, b)
 endif
+
+end subroutine
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+
+! Subroutine rcfft3d (a, b, n1, n2, n3)
+!
+! Real-to-complex 3D FFT (FFTW forward sign, unnormalized) of a(n1,n2,n3) into the
+! non-redundant half spectrum b(n1/2+1,n2,n3). The rest follows from Hermitian symmetry.
+! This does about half the work of a complex FFT of the same real data.
+!
+! Pair with crfft3d for convolutions: crfft3d(rcfft3d(f) * rcfft3d(g)) = n1*n2*n3 * (f circularly convolved with g).
+!
+! Plans are cached (made with FFTW_MEASURE on internal buffers) and reused for any arrays of
+! the same size, which, like ccfft3d, assumes a and b have the alignment of normal allocations.
+!-
+
+subroutine rcfft3d(a, b, n1, n2, n3)
+use, intrinsic :: iso_c_binding
+implicit none
+include 'fftw3.f03'
+
+real(C_DOUBLE), dimension(:,:,:) :: a
+complex(C_DOUBLE_COMPLEX), dimension(:,:,:) :: b
+integer :: n1, n2, n3
+
+type(C_PTR), save :: plan = C_NULL_PTR
+integer, save :: cached_n1 = 0, cached_n2 = 0, cached_n3 = 0
+real(C_DOUBLE), allocatable :: rbuf(:,:,:)
+complex(C_DOUBLE_COMPLEX), allocatable :: cbuf(:,:,:)
+
+call fft_cache_init()
+
+!$OMP CRITICAL (fft_plan_cache_lock)
+if (n1 /= cached_n1 .or. n2 /= cached_n2 .or. n3 /= cached_n3) then
+  if (C_ASSOCIATED(plan)) call fftw_destroy_plan(plan)
+  allocate(rbuf(n1, n2, n3), cbuf(n1/2+1, n2, n3))
+  plan = fftw_plan_dft_r2c_3d(n3, n2, n1, rbuf, cbuf, FFTW_MEASURE)
+  cached_n1 = n1; cached_n2 = n2; cached_n3 = n3
+endif
+!$OMP END CRITICAL (fft_plan_cache_lock)
+
+call fftw_execute_dft_r2c(plan, a, b)
+
+end subroutine
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+
+! Subroutine crfft3d (a, b, n1, n2, n3)
+!
+! Complex-to-real 3D FFT (FFTW backward sign, unnormalized) of the half spectrum
+! a(n1/2+1,n2,n3) into b(n1,n2,n3). The inverse of rcfft3d up to a factor n1*n2*n3.
+! a is overwritten.
+!-
+
+subroutine crfft3d(a, b, n1, n2, n3)
+use, intrinsic :: iso_c_binding
+implicit none
+include 'fftw3.f03'
+
+complex(C_DOUBLE_COMPLEX), dimension(:,:,:) :: a
+real(C_DOUBLE), dimension(:,:,:) :: b
+integer :: n1, n2, n3
+
+type(C_PTR), save :: plan = C_NULL_PTR
+integer, save :: cached_n1 = 0, cached_n2 = 0, cached_n3 = 0
+real(C_DOUBLE), allocatable :: rbuf(:,:,:)
+complex(C_DOUBLE_COMPLEX), allocatable :: cbuf(:,:,:)
+
+call fft_cache_init()
+
+!$OMP CRITICAL (fft_plan_cache_lock)
+if (n1 /= cached_n1 .or. n2 /= cached_n2 .or. n3 /= cached_n3) then
+  if (C_ASSOCIATED(plan)) call fftw_destroy_plan(plan)
+  allocate(rbuf(n1, n2, n3), cbuf(n1/2+1, n2, n3))
+  plan = fftw_plan_dft_c2r_3d(n3, n2, n1, cbuf, rbuf, FFTW_MEASURE)
+  cached_n1 = n1; cached_n2 = n2; cached_n3 = n3
+endif
+!$OMP END CRITICAL (fft_plan_cache_lock)
+
+call fftw_execute_dft_c2r(plan, a, b)
 
 end subroutine
 
