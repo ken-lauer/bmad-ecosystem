@@ -106,6 +106,15 @@ type (csr_ele_info_struct), pointer, private :: csr_einfo_s_ptr
 real(rp), pointer, private :: csr_dr_match_ptr(:)
 !$OMP THREADPRIVATE(csr_kick1_ptr, csr_csr_ptr, csr_einfo_s_ptr, csr_dr_match_ptr)
 
+! Tables for evaluating, in ddz_calc_csr, the summed dspline_len of all elements between the
+! source and kick elements without looping over them. See csr_dl_setup.
+!   csr_dl_theta(i)    -- Chord angle of element i unwrapped modulo pi (neighbors differ by <= pi/2).
+!   csr_dl_mom(:,i)    -- Moments summed from the start of i's block through i.
+!   csr_dl_blk_min/max -- Min/max of csr_dl_theta over each block.
+integer, parameter, private :: csr_dl_block = 32
+real(rp), allocatable, private :: csr_dl_theta(:), csr_dl_mom(:,:), csr_dl_blk_min(:), csr_dl_blk_max(:)
+!$OMP THREADPRIVATE(csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
+
 contains
 
 !----------------------------------------------------------------------------
@@ -289,6 +298,8 @@ do i = 0, n
   eleinfo%spline = create_a_spline ([0.0_rp, 0.0_rp], [eleinfo%L_chord, 0.0_rp], theta0, theta1)
   eleinfo%dL_s = dspline_len(0.0_rp, eleinfo%L_chord, eleinfo%spline)
 enddo
+
+call csr_dl_setup (csr%eleinfo)
 
 !
 
@@ -1027,7 +1038,7 @@ implicit none
 type (csr_ele_info_struct), pointer :: ce
 real(rp), intent(in) :: s_chord_source
 real(rp) ddz_this, x, z, c, s, dtheta_L
-real(rp) s0, s1, ds, theta_L, dL
+real(rp) s0, s1, ds, theta_L, dL, dL_mid
 
 integer status
 integer i
@@ -1063,11 +1074,15 @@ else
   ! other angles. This is why pi/2 is used with modulo2 to make sure angles are in the range [-pi/2, pi/2]
   theta_L = csr_kick1_ptr%theta_L
   dL = dspline_len(s0, csr_einfo_s_ptr%L_chord, csr_einfo_s_ptr%spline, modulo2(theta_L-csr_einfo_s_ptr%theta_chord, pi/2))
-  do i = csr_kick1_ptr%ix_ele_source+1, csr_csr_ptr%ix_ele_kick-1
-    ce => csr_csr_ptr%eleinfo(i)
-    if (ce%ele%key == match$) cycle  ! Match elements are adjusted to give zero displacement.
-    dL = dL + dspline_len(0.0_rp, ce%L_chord, ce%spline, modulo2(theta_L-ce%theta_chord, pi/2))
-  enddo
+  if (csr_dl_interior_sum(csr_kick1_ptr%ix_ele_source+1, csr_csr_ptr%ix_ele_kick-1, theta_L, dL_mid)) then
+    dL = dL + dL_mid
+  else
+    do i = csr_kick1_ptr%ix_ele_source+1, csr_csr_ptr%ix_ele_kick-1
+      ce => csr_csr_ptr%eleinfo(i)
+      if (ce%ele%key == match$) cycle  ! Match elements are adjusted to give zero displacement.
+      dL = dL + dspline_len(0.0_rp, ce%L_chord, ce%spline, modulo2(theta_L-ce%theta_chord, pi/2))
+    enddo
+  endif
   ce => csr_csr_ptr%eleinfo(csr_csr_ptr%ix_ele_kick)
   dL = dL + dspline_len(0.0_rp, s1, ce%spline, modulo2(theta_L-ce%theta_chord, pi/2))
   csr_kick1_ptr%theta_sl = modulo2((spline1(csr_einfo_s_ptr%spline, s0, 1) + csr_einfo_s_ptr%theta_chord) - theta_L, pi/2)
@@ -1746,6 +1761,158 @@ endif
 deallocate(x_interp, y_interp, z_interp, interp_idx, E_batch)
 
 end subroutine apply_fft_3d_kicks
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_dl_setup (eleinfo)
+!
+! Routine to build the tables used by csr_dl_interior_sum.
+!
+! For a whole element with reference-line offset delta, dspline_len(0, L, spline, delta) is
+! quadratic in u = c1 - delta (c = spline%coef):
+!   dlen = (L/2) u^2 + P u + K,   P = L^2 c2 + L^3 c3,   K = (L/2) (4/3 L^2 c2^2 + 3 L^3 c2 c3 + 9 L^4 c3^2)
+! ddz_calc_csr uses delta = modulo2(theta_L - theta_chord, pi/2). With theta_u the chord angle unwrapped
+! modulo pi and theta_L' the matching branch of theta_L, delta = theta_L' - theta_u when no wrap
+! occurs, so u = c1 + e + x with e = theta_u - theta_b and x = theta_b - theta_L' for any anchor
+! angle theta_b. Expanding in x, a sum over elements needs only six moments:
+!   sum(dlen) = m1 + m2 + x m3 + m4 + 2 x m5 + x^2 m6
+!   m1 = sum((L/2) c1^2 + P c1 + K),  m2 = sum(B e),  m3 = sum(B),  m4 = sum(C e^2),  m5 = sum(C e),  m6 = sum(C)
+!   B = L c1 + P,  C = L/2
+! Moments are accumulated within blocks anchored at the block's first element so that the
+! terms stay small (a single global prefix sum would lose precision to cancellation).
+! Match elements contribute nothing, as in ddz_calc_csr.
+!
+! Input:
+!   eleinfo(0:)  -- csr_ele_info_struct: Element info with chords and splines set.
+!-
+
+subroutine csr_dl_setup (eleinfo)
+
+implicit none
+
+type (csr_ele_info_struct), target :: eleinfo(0:)
+type (csr_ele_info_struct), pointer :: ei
+
+real(rp) c(0:3), L, P, K, B, C2, e
+integer i, n, ib, n_blk
+
+!
+
+n = ubound(eleinfo, 1)
+n_blk = n / csr_dl_block
+
+if (allocated(csr_dl_theta)) deallocate (csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
+allocate (csr_dl_theta(0:n), csr_dl_mom(6,0:n), csr_dl_blk_min(0:n_blk), csr_dl_blk_max(0:n_blk))
+
+do i = 0, n
+  ei => eleinfo(i)
+  ib = i / csr_dl_block
+
+  if (i == 0) then
+    csr_dl_theta(i) = ei%theta_chord
+  else
+    csr_dl_theta(i) = csr_dl_theta(i-1) + modulo2(ei%theta_chord - csr_dl_theta(i-1), pi/2)
+  endif
+
+  if (modulo(i, csr_dl_block) == 0) then
+    csr_dl_mom(:,i) = 0
+    csr_dl_blk_min(ib) = csr_dl_theta(i)
+    csr_dl_blk_max(ib) = csr_dl_theta(i)
+  else
+    csr_dl_mom(:,i) = csr_dl_mom(:,i-1)
+    csr_dl_blk_min(ib) = min(csr_dl_blk_min(ib), csr_dl_theta(i))
+    csr_dl_blk_max(ib) = max(csr_dl_blk_max(ib), csr_dl_theta(i))
+  endif
+
+  if (ei%ele%key == match$) cycle
+
+  c = ei%spline%coef
+  L = ei%L_chord
+  P = L**2 * c(2) + L**3 * c(3)
+  K = (L/2) * (4 * L**2 * c(2)**2 / 3 + 3 * L**3 * c(2) * c(3) + 9 * L**4 * c(3)**2)
+  B = L * c(1) + P
+  C2 = L / 2
+  e = csr_dl_theta(i) - csr_dl_theta(ib * csr_dl_block)
+
+  csr_dl_mom(:,i) = csr_dl_mom(:,i) + [C2 * c(1)**2 + P * c(1) + K, B * e, B, C2 * e**2, C2 * e, C2]
+enddo
+
+end subroutine csr_dl_setup
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Function csr_dl_interior_sum (i0, i1, theta_L, dl_sum) result (ok)
+!
+! Routine to sum dspline_len(0, L_chord, spline, modulo2(theta_L - theta_chord, pi/2)) over
+! elements i0 through i1 (skipping match elements) using the tables from csr_dl_setup.
+! Cost is proportional to the number of blocks spanned rather than the number of elements.
+!
+! Input:
+!   i0, i1    -- integer: Element index range. An empty range gives dl_sum = 0.
+!   theta_L   -- real(rp): Angle of the source to kick line.
+!
+! Output:
+!   dl_sum    -- real(rp): Sum.
+!   ok        -- logical: False if the tables do not apply (some element in the range has
+!                  theta_L - theta_chord on the modulo2 branch cut). dl_sum is then not set.
+!-
+
+function csr_dl_interior_sum (i0, i1, theta_L, dl_sum) result (ok)
+
+implicit none
+
+integer i0, i1
+real(rp) theta_L, dl_sum
+logical ok
+
+real(rp) m(6), thl, x, lim
+integer j, j0, jb0, jb1, ib
+
+!
+
+ok = .false.
+if (i1 < i0) then
+  dl_sum = 0
+  ok = .true.
+  return
+endif
+if (.not. allocated(csr_dl_theta)) return
+if (i0 < 0 .or. i1 > ubound(csr_dl_theta, 1)) return
+
+! Small margin keeps away from the branch cut where modulo2 could round differently.
+lim = pi/2 - 1e-9_rp
+thl = csr_dl_theta(i1) + modulo2(theta_L - csr_dl_theta(i1), pi/2)
+dl_sum = 0
+j0 = i0
+
+do while (j0 <= i1)
+  ib = j0 / csr_dl_block
+  jb0 = ib * csr_dl_block
+  jb1 = min(jb0 + csr_dl_block - 1, i1)
+
+  if (j0 == jb0 .and. jb1 == jb0 + csr_dl_block - 1) then
+    if (csr_dl_blk_min(ib) - thl <= -lim .or. csr_dl_blk_max(ib) - thl >= lim) return
+  else
+    do j = j0, jb1
+      if (abs(csr_dl_theta(j) - thl) >= lim) return
+    enddo
+  endif
+
+  m = csr_dl_mom(:,jb1)
+  if (j0 > jb0) m = m - csr_dl_mom(:,j0-1)
+  x = csr_dl_theta(jb0) - thl
+  dl_sum = dl_sum + m(1) + m(2) + x * m(3) + m(4) + 2 * x * m(5) + x**2 * m(6)
+
+  j0 = jb1 + 1
+enddo
+
+ok = .true.
+
+end function csr_dl_interior_sum
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
