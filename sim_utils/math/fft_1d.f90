@@ -3,8 +3,12 @@
 !
 ! 1D discrete FFT of a complex array.
 !   fft(k) = sum(j = 0, N-1): A(j) * Exp(isign * 2 * pi * j * k * i_imag / N)
-! Where N is the number of data points. 
+! Where N is the number of data points.
 ! The algorithm will be most efficient when N is a power of 2.
+!
+! FFTW plans are cached by size and direction since planning (even with FFTW_ESTIMATE) costs
+! much more than a small transform. Plans are made with FFTW_UNALIGNED so that a cached plan
+! may be executed on any array of the same size.
 !
 ! Input:
 !   arr(:)    -- complex(rp): Input array.
@@ -22,18 +26,28 @@ use, intrinsic :: iso_c_binding
 implicit none
 include 'fftw3.f03'
 
+integer, parameter :: n_cache = 16
+
 complex(rp) arr(:)
+complex(rp), allocatable :: tmp(:)
 integer isign
+integer i, n, dir, ix
 integer(8) plan
+
+! Plans are never destroyed: another thread may be executing one. When the cache is full,
+! fall back to a plan per call.
+integer, save :: cache_size(n_cache) = 0, cache_dir(n_cache) = 0, n_cached = 0
+integer(8), save :: cache_plan(n_cache) = 0
+
 character(*), parameter :: r_name = 'fft_1d'
 
 !
 
 select case (isign)
 case (1)
-  call dfftw_plan_dft_1d(plan, size(arr), arr, arr, FFTW_BACKWARD, FFTW_ESTIMATE)
+  dir = FFTW_BACKWARD
 case (-1)
-  call dfftw_plan_dft_1d(plan, size(arr), arr, arr, FFTW_FORWARD, FFTW_ESTIMATE)
+  dir = FFTW_FORWARD
 case default
   call out_io(s_error$, r_name, 'BAD ISIGN ARGUMENT.')
   if (global_com%exit_on_error) call err_exit
@@ -41,7 +55,36 @@ case default
   return
 end select
 
+n = size(arr)
+plan = 0
+
+! FFTW planning is not thread safe; executing a plan is.
+!$OMP CRITICAL (fft_1d_plan)
+ix = 0
+do i = 1, n_cached
+  if (cache_size(i) == n .and. cache_dir(i) == dir) then
+    ix = i
+    exit
+  endif
+enddo
+
+if (ix == 0 .and. n_cached < n_cache) then
+  allocate (tmp(n))
+  n_cached = n_cached + 1
+  call dfftw_plan_dft_1d(cache_plan(n_cached), n, tmp, tmp, dir, FFTW_ESTIMATE + FFTW_UNALIGNED)
+  cache_size(n_cached) = n
+  cache_dir(n_cached) = dir
+  ix = n_cached
+endif
+
+if (ix == 0) then
+  call dfftw_plan_dft_1d(plan, n, arr, arr, dir, FFTW_ESTIMATE)
+else
+  plan = cache_plan(ix)
+endif
+!$OMP END CRITICAL (fft_1d_plan)
+
 call dfftw_execute_dft(plan, arr, arr)
-call dfftw_destroy_plan(plan)
+if (ix == 0) call dfftw_destroy_plan(plan)
 
 end subroutine
