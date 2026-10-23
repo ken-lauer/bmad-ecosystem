@@ -44,7 +44,7 @@ case (em_field$, solenoid$, sol_quad$, wiggler$, rfcavity$, lcavity$, crab_cavit
                                                                  elseparator$, e_gun$, sad_mult$, custom$)
   fringe_info%has_fringe = .true.
 case default
-  if (attribute_name(ele, fringe_at$) /= 'FRINGE_AT') then
+  if (.not. has_fringe_at_attribute(ele%key)) then
     fringe_info%has_fringe = .false.
   elseif ((nint(ele%value(fringe_type$)) == none$ .or. nint(ele%value(fringe_at$)) == no_end$) .and. &
                                                                         .not. associated(ele%a_pole_elec)) then

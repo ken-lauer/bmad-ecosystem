@@ -42,6 +42,7 @@ integer, private, save :: attrib_num(n_key$)
 integer, private, save :: attrib_ix(n_key$, num_ele_attrib_extended$)
 logical, private, save :: attribute_array_init_needed = .true.
 logical, private, save :: has_orientation_attributes_key(n_key$)
+logical, private, save :: has_fringe_at_attribute_key(n_key$)  ! See has_fringe_at_attribute
 private init_short_attrib_array
 
 !--------------------------------------------------------------------------
@@ -475,6 +476,37 @@ else
 endif
 
 end function attribute_name2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function has_fringe_at_attribute (key) result (has)
+!
+! Routine to tell if elements of a given type have a (non-private) fringe_at attribute.
+! Equivalent to attribute_name(ele, fringe_at$) == 'FRINGE_AT' but without the string comparison,
+! which matters since it is used for every particle in every tracking step.
+!
+! Input:
+!   key   -- integer: Element key.
+!
+! Output:
+!   has   -- logical: True if the attribute exists.
+!-
+
+function has_fringe_at_attribute (key) result (has)
+
+integer key
+logical has
+
+!
+
+if (attribute_array_init_needed) call init_attribute_name_array()
+has = .false.
+if (key <= 0 .or. key > n_key$) return
+has = has_fringe_at_attribute_key(key)
+
+end function has_fringe_at_attribute
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1878,6 +1910,8 @@ do i = 1, n_key$
   if (attrib_array(i, x_offset$)%name == 'X_OFFSET') has_orientation_attributes_key(i) = .true.
   if (attrib_array(i, kick$)%name     == 'KICK')  has_kick_attributes(i) = .true.
   if (attrib_array(i, hkick$)%name    == 'HKICK') has_hkick_attributes(i) = .true.
+  has_fringe_at_attribute_key(i) = (attrib_array(i, fringe_at$)%name == 'FRINGE_AT' .and. &
+                                    attrib_array(i, fringe_at$)%state /= private$)
 
   call init_short_attrib_array(i)
 enddo
