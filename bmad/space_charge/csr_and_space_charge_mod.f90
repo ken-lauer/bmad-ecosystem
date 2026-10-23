@@ -117,10 +117,13 @@ real(rp), allocatable, private :: csr_dl_theta(:), csr_dl_mom(:,:), csr_dl_blk_m
 
 ! Cache of csr%eleinfo between track1_bunch_csr calls. See csr_eleinfo_get.
 ! Entries 0 through csr_eleinfo_n are valid; -1 means the cache is empty.
+! The cache is only used between csr_eleinfo_cache_begin and _end (called by track_bunch) in the same
+! thread; csr_eleinfo_depth counts nested begin calls. Elsewhere the info is rebuilt for every call.
 type (csr_ele_info_struct), allocatable, private :: csr_eleinfo_cache(:)
 type (branch_struct), pointer, private :: csr_eleinfo_branch => null()
 integer, private :: csr_eleinfo_n = -1
-!$OMP THREADPRIVATE(csr_eleinfo_cache, csr_eleinfo_branch, csr_eleinfo_n)
+integer, private :: csr_eleinfo_depth = 0
+!$OMP THREADPRIVATE(csr_eleinfo_cache, csr_eleinfo_branch, csr_eleinfo_n, csr_eleinfo_depth)
 
 contains
 
@@ -378,20 +381,40 @@ end subroutine track1_bunch_csr
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine csr_eleinfo_cache_reset ()
+! Subroutine csr_eleinfo_cache_begin ()
 !
-! Routine to invalidate the cached centroid element info used by track1_bunch_csr.
-! Must be called whenever the lattice or the centroid orbit may have changed. track_bunch does this
-! at the start of every bunch.
+! Routine to start caching the centroid element info used by track1_bunch_csr, in the calling thread,
+! until the matching csr_eleinfo_cache_end. The lattice and centroid orbit must not change in between.
+! track_bunch brackets its element loop with these. Nested calls are allowed. The cache is cleared at
+! every begin and end so an inner bracket never leaves stale info for an outer one.
 !-
 
-subroutine csr_eleinfo_cache_reset ()
+subroutine csr_eleinfo_cache_begin ()
 
 implicit none
 
+csr_eleinfo_depth = csr_eleinfo_depth + 1
 csr_eleinfo_n = -1
 
-end subroutine csr_eleinfo_cache_reset
+end subroutine csr_eleinfo_cache_begin
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_eleinfo_cache_end ()
+!
+! Routine to end a csr_eleinfo_cache_begin bracket.
+!-
+
+subroutine csr_eleinfo_cache_end ()
+
+implicit none
+
+csr_eleinfo_depth = max(csr_eleinfo_depth - 1, 0)
+csr_eleinfo_n = -1
+
+end subroutine csr_eleinfo_cache_end
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -402,9 +425,9 @@ end subroutine csr_eleinfo_cache_reset
 ! Routine to set csr%eleinfo(0:n) (and the csr_dl tables) from the cache, extending the cache
 ! as needed. csr%eleinfo may be larger than n. Call csr_eleinfo_put to return it to the cache.
 !
-! The cache is dropped if the branch differs, or if the cached centroid or reference position at the
-! element being tracked does not match. This catches most changes even without a call to
-! csr_eleinfo_cache_reset.
+! Outside a csr_eleinfo_cache_begin/_end bracket the info is rebuilt every call. Inside one, the cache is
+! also dropped if the branch differs, or if the cached centroid or reference position at the element
+! being tracked does not match.
 !
 ! Input:
 !   csr           -- csr_struct:
@@ -435,7 +458,7 @@ logical err
 
 err = .false.
 
-if (.not. allocated(csr_eleinfo_cache)) csr_eleinfo_n = -1
+if (.not. allocated(csr_eleinfo_cache) .or. csr_eleinfo_depth == 0) csr_eleinfo_n = -1
 
 if (csr_eleinfo_n >= 0) then
   ix = min(ele%ix_ele, csr_eleinfo_n)
@@ -1869,29 +1892,51 @@ end subroutine csr_and_sc_apply_kicks
 
 subroutine apply_fft_3d_kicks (csr, particle)
 
+!$ use omp_lib, only: omp_in_parallel
 implicit none
 
 type (csr_struct), target :: csr
 type (coord_struct), target :: particle(:)
-type (coord_struct), pointer :: p
-
-real(rp) :: dct_ave, factor, pz0, ef, dpz, new_beta
-integer :: i, n, n_interp
 
 ! Alive-particle data packed contiguously. Kept between calls (grow only) since this runs every
-! tracking step and the arrays are as large as the bunch.
+! tracking step and the arrays are as large as the bunch. The saved arrays are shared, so when called
+! from within a parallel region (bunches tracked concurrently) per-call arrays are used instead.
 real(rp), allocatable, save :: x_pk(:), y_pk(:), z_pk(:), q_pk(:), beta_pk(:), E_batch(:,:)
 integer, allocatable, save :: idx_pk(:)
+real(rp), allocatable :: x_l(:), y_l(:), z_l(:), q_l(:), beta_l(:), E_l(:,:)
+integer, allocatable :: idx_l(:)
+integer :: n
+logical :: nested
 
 !
 
+n = size(particle)
+nested = .false.
+!$ nested = omp_in_parallel()
+
+if (nested) then
+  allocate(x_l(n), y_l(n), z_l(n), q_l(n), beta_l(n), E_l(3,n), idx_l(n))
+  call kick_particles (x_l, y_l, z_l, q_l, beta_l, E_l, idx_l)
+  return
+endif
+
 if (allocated(x_pk)) then
-  if (size(x_pk) < size(particle)) deallocate(x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
+  if (size(x_pk) < n) deallocate(x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
 endif
-if (.not. allocated(x_pk)) then
-  n = size(particle)
-  allocate(x_pk(n), y_pk(n), z_pk(n), q_pk(n), beta_pk(n), E_batch(3,n), idx_pk(n))
-endif
+if (.not. allocated(x_pk)) allocate(x_pk(n), y_pk(n), z_pk(n), q_pk(n), beta_pk(n), E_batch(3,n), idx_pk(n))
+
+call kick_particles (x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
+
+!------------------------------------------------------------------------
+contains
+
+subroutine kick_particles (x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
+
+real(rp) :: x_pk(:), y_pk(:), z_pk(:), q_pk(:), beta_pk(:), E_batch(:,:)
+integer :: idx_pk(:)
+type (coord_struct), pointer :: p
+real(rp) :: dct_ave, factor, pz0, ef, dpz, new_beta
+integer :: i, n, n_interp
 
 call pack_alive_particles (particle, x_pk, y_pk, z_pk, q_pk, beta_pk, idx_pk, n_interp)
 if (n_interp == 0) return
@@ -1933,6 +1978,8 @@ if (n_interp > 0) then
   enddo
   !$OMP END PARALLEL DO
 endif
+
+end subroutine kick_particles
 
 end subroutine apply_fft_3d_kicks
 

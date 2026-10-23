@@ -177,7 +177,7 @@ end subroutine track1_bunch_hom
 ! For large bunches the first live particle is tracked serially while multipole_ele_to_ab results for ele
 ! are recorded (see multipole_memo_mod); the rest are then tracked in parallel reusing them. Results are
 ! the same as tracking each particle independently. The memo is not used when tracking hooks are set
-! since a hook could change the element between particles.
+! since a hook could change the element between particles, nor when called from within a parallel region.
 !
 ! Interleaved static chunks balance the load when lost or expensive particles cluster in the bunch,
 ! while keeping a fixed particle-to-thread assignment (per-thread random streams stay reproducible).
@@ -196,6 +196,7 @@ subroutine track1_bunch_particles (bunch, ele, param, thread_safe)
 
 use multipole_memo_mod
 use bunch_soa_mod, only: fast_track_enabled, fast_track1_bunch
+!$ use omp_lib, only: omp_in_parallel
 
 implicit none
 
@@ -203,16 +204,20 @@ type (bunch_struct), target :: bunch
 type (ele_struct), target :: ele
 type (lat_param_struct) param
 integer j, j0
-logical thread_safe, use_memo, tracked
+logical thread_safe, use_memo, tracked, nested
 
-!
+! The memo and the SoA kernels use shared (non thread-private) state. When this routine is itself
+! called from a parallel region (e.g. bunches tracked concurrently) they are not used.
 
-if (thread_safe .and. fast_track_enabled()) then
+nested = .false.
+!$ nested = omp_in_parallel()
+
+if (thread_safe .and. .not. nested .and. fast_track_enabled()) then
   call fast_track1_bunch (bunch, ele, param, tracked)
   if (tracked) return
 endif
 
-use_memo = (thread_safe .and. size(bunch%particle) > 1000 .and. multipole_memo_state == memo_off$ .and. &
+use_memo = (thread_safe .and. .not. nested .and. size(bunch%particle) > 1000 .and. multipole_memo_state == memo_off$ .and. &
             .not. associated(track1_preprocess_ptr) .and. .not. associated(track1_postprocess_ptr) .and. &
             .not. associated(track1_custom_ptr) .and. .not. associated(apply_element_edge_kick_hook_ptr))
 

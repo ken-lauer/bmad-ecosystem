@@ -102,7 +102,7 @@ end subroutine track_beam
 
 subroutine track_bunch (lat, bunch, ele1, ele2, err, centroid, direction, bunch_track)
 
-use csr_and_space_charge_mod, only: csr_eleinfo_cache_reset
+use csr_and_space_charge_mod, only: csr_eleinfo_cache_begin, csr_eleinfo_cache_end
 
 implicit none
 
@@ -128,10 +128,16 @@ if (present(ele2)) e2 => ele2
 
 branch => lat%branch(e1%ix_branch)
 
-! The lattice or centroid may have changed since the last bunch.
-call csr_eleinfo_cache_reset()
+! CSR element info is cached only while this routine runs, in this thread, since the lattice or
+! centroid may change between calls.
+call csr_eleinfo_cache_begin()
+call track_elements()
+call csr_eleinfo_cache_end()
 
-!
+!------------------------------------------------------------------------
+contains
+
+subroutine track_elements()
 
 if (integer_option(1, direction) == -1) then
   if (e1%ix_ele > e2%ix_ele) then
@@ -171,6 +177,8 @@ else
     enddo
   endif
 endif
+
+end subroutine track_elements
 
 end subroutine track_bunch
 
