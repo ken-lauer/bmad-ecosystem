@@ -1,0 +1,5 @@
+no_digested
+! Branch 0 (single CSR bend) of regression_tests/csr_and_space_charge_test, without the
+! e_gun branch, which Tao would otherwise try to track a beam through as well.
+call, file = ../../csr_and_space_charge_test/csr_and_space_charge_test.bmad
+use, br0
