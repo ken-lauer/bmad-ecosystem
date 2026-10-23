@@ -24,21 +24,15 @@ type (ele_struct), target :: ele
 type (coord_struct) orbit
 type (ele_struct), pointer :: lord
 type (ac_kicker_struct), pointer :: ac
-type (ele_struct), pointer :: ref_ele
-type (ele_pointer_struct), allocatable :: chain(:)
 
 real(rp), optional :: true_time
-real(rp) t, ac_amp, dt_ds0
-integer i, ix_pass, n_links
+real(rp) t, ac_amp
+integer i
 logical err_flag
 
 character(*), parameter :: r_name = 'ac_kicker_amp'
 
 !
-
-ref_ele => ele
-if (ref_ele%slave_status == super_slave$ .or. ele%slave_status == slice_slave$) &
-                                                                      ref_ele => pointer_to_super_lord (ref_ele)
 
 ac_amp = 1
 if (ele%key /= ac_kicker$) return
