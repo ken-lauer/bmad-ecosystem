@@ -171,6 +171,9 @@ end subroutine track1_bunch_hom
 !
 ! Routine to track every live particle of a bunch through an element with track1.
 !
+! If enabled (see fast_track_enabled in bunch_soa_mod) supported elements are tracked with the SoA kernels
+! of bunch_soa_mod instead.
+!
 ! For large bunches the first live particle is tracked serially while multipole_ele_to_ab results for ele
 ! are recorded (see multipole_memo_mod); the rest are then tracked in parallel reusing them. Results are
 ! the same as tracking each particle independently. The memo is not used when tracking hooks are set
@@ -192,6 +195,7 @@ end subroutine track1_bunch_hom
 subroutine track1_bunch_particles (bunch, ele, param, thread_safe)
 
 use multipole_memo_mod
+use bunch_soa_mod, only: fast_track_enabled, fast_track1_bunch
 
 implicit none
 
@@ -199,9 +203,14 @@ type (bunch_struct), target :: bunch
 type (ele_struct), target :: ele
 type (lat_param_struct) param
 integer j, j0
-logical thread_safe, use_memo
+logical thread_safe, use_memo, tracked
 
 !
+
+if (thread_safe .and. fast_track_enabled()) then
+  call fast_track1_bunch (bunch, ele, param, tracked)
+  if (tracked) return
+endif
 
 use_memo = (thread_safe .and. size(bunch%particle) > 1000 .and. multipole_memo_state == memo_off$ .and. &
             .not. associated(track1_preprocess_ptr) .and. .not. associated(track1_postprocess_ptr) .and. &
