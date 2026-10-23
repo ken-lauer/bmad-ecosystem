@@ -946,8 +946,10 @@ real(dp) :: dx,dy,dz
 real(dp) :: u,v,w, umin, vmin, wmin
 real(dp) :: gval, factor
 integer :: imin, imax, jmin, jmax, kmin, kmax
-real(dp), allocatable, save :: rdiff(:,:,:)
-integer :: i,j,k, isize, jsize, ksize
+real(dp), allocatable, save :: rdiff(:,:,:), fq(:,:,:)
+integer :: i,j,k, isize, jsize, ksize, ih, jh, kh, mi, mj, mk
+real(dp) :: si, sj, sk, px, py, pz
+logical :: use_symmetry
 
 ! Mesh spacings. dz is stretched in the rest frame.
 dx=delta(1); dy=delta(2); dz=delta(3)*gamma
@@ -972,6 +974,19 @@ if (present(offset)) then
   wmin = wmin + offset(3)*gamma ! Don't forget this!
 endif
 
+! Without an offset (and with even sizes) the evaluation grid is symmetric about zero and cell i
+! mirrors cell isize-i. The cell integrals then have the parity of the integrand: 1/r is even in all
+! coordinates, and the Ex, Ey, Ez kernels are odd in x, y, z respectively. So only the upper octant of
+! cells needs evaluating (~1/8 of the work); the rest follow by reflection.
+
+use_symmetry = (mod(isize, 2) == 0 .and. mod(jsize, 2) == 0 .and. mod(ksize, 2) == 0)
+if (present(offset)) use_symmetry = use_symmetry .and. all(offset == 0)
+
+if (use_symmetry) then
+  call rgrn_by_symmetry()
+  return
+endif
+
 !$OMP PARALLEL DO &
 !$OMP DEFAULT(FIRSTPRIVATE), &
 !$OMP SHARED(rgrn)
@@ -983,13 +998,13 @@ do k = 1, ksize
 
    do i=1, isize
      u = (i-1)*dx + umin
-     
+
      if(icomp == 0) gval=lafun2(u,v,w)*factor
      if(icomp == 1) gval=xlafun2(u,v,w)*factor
      if(icomp == 2) gval=xlafun2(v,w,u)*factor
      if(icomp == 3) gval=xlafun2(w,u,v)*factor
      rgrn(i,j,k) = gval
-     
+
     enddo
   enddo
 enddo
@@ -1023,6 +1038,114 @@ do k = 1, ksize-1
   rgrn(1:isize-1, 1:jsize-1, k) = rdiff(:, :, k)
 enddo
 !$OMP END PARALLEL DO
+
+!------------------------------------------------------------------------
+contains
+
+! Indefinite integral at grid point (u, v, w), scaled. Same expression as the full evaluation above.
+
+function grn_point(u, v, w) result (gval)
+real(dp) :: u, v, w, gval
+select case (icomp)
+case (0); gval = lafun2(u,v,w)*factor
+case (1); gval = xlafun2(u,v,w)*factor
+case (2); gval = xlafun2(v,w,u)*factor
+case default; gval = xlafun2(w,u,v)*factor
+end select
+end function grn_point
+
+!------------------------------------------------------------------------
+! Symmetric evaluation. Upper-octant cells and the undifferenced last planes are computed exactly as in
+! the full evaluation; the other cells are reflections of upper-octant cells.
+
+subroutine rgrn_by_symmetry()
+
+real(dp) :: u, v, w
+
+ih = isize / 2;  jh = jsize / 2;  kh = ksize / 2
+
+if (allocated(fq)) then
+  if (any(lbound(fq) /= [ih, jh, kh]) .or. any(ubound(fq) /= [isize, jsize, ksize])) deallocate(fq)
+endif
+if (.not. allocated(fq)) allocate(fq(ih:isize, jh:jsize, kh:ksize))
+
+!$OMP PARALLEL DO PRIVATE(i, j, u, v, w)
+do k = kh, ksize
+  w = (k-1)*dz + wmin
+  do j = jh, jsize
+    v = (j-1)*dy + vmin
+    do i = ih, isize
+      u = (i-1)*dx + umin
+      fq(i,j,k) = grn_point(u, v, w)
+    enddo
+  enddo
+enddo
+!$OMP END PARALLEL DO
+
+!$OMP PARALLEL DO
+do k = kh, ksize-1
+  rgrn(ih:isize-1, jh:jsize-1, k) = &
+    + fq(ih+1:isize,   jh+1:jsize,   k+1) &
+    - fq(ih:isize-1,   jh+1:jsize,   k+1) &
+    - fq(ih+1:isize,   jh:jsize-1,   k+1) &
+    - fq(ih+1:isize,   jh+1:jsize,   k) &
+    - fq(ih:isize-1,   jh:jsize-1,   k) &
+    + fq(ih:isize-1,   jh:jsize-1,   k+1) &
+    + fq(ih:isize-1,   jh+1:jsize,   k)  &
+    + fq(ih+1:isize,   jh:jsize-1,   k)
+enddo
+!$OMP END PARALLEL DO
+
+px = 1;  py = 1;  pz = 1
+if (icomp == 1) px = -1
+if (icomp == 2) py = -1
+if (icomp == 3) pz = -1
+
+! Cells with any index below the center. Their mirror cells are all in the upper octant, which is
+! only read here, so the loop is free of races.
+!$OMP PARALLEL DO PRIVATE(i, j, mi, mj, mk, si, sj, sk)
+do k = 1, ksize-1
+  mk = k;  sk = 1
+  if (k < kh) then
+    mk = ksize - k;  sk = pz
+  endif
+  do j = 1, jsize-1
+    mj = j;  sj = 1
+    if (j < jh) then
+      mj = jsize - j;  sj = py
+    endif
+    do i = 1, isize-1
+      if (i >= ih .and. j >= jh .and. k >= kh) cycle
+      mi = i;  si = 1
+      if (i < ih) then
+        mi = isize - i;  si = px
+      endif
+      rgrn(i,j,k) = (si * sj * sk) * rgrn(mi,mj,mk)
+    enddo
+  enddo
+enddo
+!$OMP END PARALLEL DO
+
+! The last plane in each dimension is never differenced and holds the indefinite integral itself.
+!$OMP PARALLEL DO PRIVATE(i, j, u, v, w)
+do k = 1, ksize
+  w = (k-1)*dz + wmin
+  do j = 1, jsize
+    v = (j-1)*dy + vmin
+    if (j == jsize .or. k == ksize) then
+      do i = 1, isize
+        u = (i-1)*dx + umin
+        rgrn(i,j,k) = grn_point(u, v, w)
+      enddo
+    else
+      u = (isize-1)*dx + umin
+      rgrn(isize,j,k) = grn_point(u, v, w)
+    endif
+  enddo
+enddo
+!$OMP END PARALLEL DO
+
+end subroutine rgrn_by_symmetry
 
 end subroutine osc_get_rgrn_freespace
 
