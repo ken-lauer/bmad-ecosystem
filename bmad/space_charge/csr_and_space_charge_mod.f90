@@ -1877,55 +1877,47 @@ type (coord_struct), pointer :: p
 
 real(rp) :: dct_ave, factor, pz0, ef, dpz, new_beta
 integer :: i, n, n_interp
-real(rp), allocatable :: x_interp(:), y_interp(:), z_interp(:), E_batch(:,:)
-integer, allocatable :: interp_idx(:)
+
+! Alive-particle data packed contiguously. Kept between calls (grow only) since this runs every
+! tracking step and the arrays are as large as the bunch.
+real(rp), allocatable, save :: x_pk(:), y_pk(:), z_pk(:), q_pk(:), beta_pk(:), E_batch(:,:)
+integer, allocatable, save :: idx_pk(:)
 
 !
 
-if (.not. allocated(csr%position)) allocate(csr%position(size(particle)))
-if (size(csr%position) < size(particle)) then
-  deallocate(csr%position)
-  allocate(csr%position(size(particle)))
+if (allocated(x_pk)) then
+  if (size(x_pk) < size(particle)) deallocate(x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
+endif
+if (.not. allocated(x_pk)) then
+  n = size(particle)
+  allocate(x_pk(n), y_pk(n), z_pk(n), q_pk(n), beta_pk(n), E_batch(3,n), idx_pk(n))
 endif
 
+call pack_alive_particles (particle, x_pk, y_pk, z_pk, q_pk, beta_pk, idx_pk, n_interp)
+if (n_interp == 0) return
+
 ! Do the calculation with respect to the average of (time - time_ref) so that adding a constant time offset
-! will not affect the calculation.
+! will not affect the calculation. Summed serially in particle order, as before packing, for identical results.
 
-dct_ave = sum(particle%vec(5)/particle%beta, particle%state == alive$) / count(particle%state == alive$)
+dct_ave = sum(z_pk(1:n_interp) / beta_pk(1:n_interp)) / n_interp
 
-n = 0
-do i = 1, size(particle)
-  p => particle(i)
-  if (p%state /= alive$) cycle
-  n = n + 1
-  csr%position(n)%r = [p%vec(1), p%vec(3), p%vec(5) - dct_ave * p%beta]
-  csr%position(n)%charge = p%charge
+!$OMP PARALLEL DO IF (n_interp > 10000)
+do n = 1, n_interp
+  z_pk(n) = z_pk(n) - dct_ave * beta_pk(n)
 enddo
+!$OMP END PARALLEL DO
 
-call deposit_particles (csr%position(1:n)%r(1), csr%position(1:n)%r(2), csr%position(1:n)%r(3), csr%mesh3d, qa=csr%position(1:n)%charge, &
+call deposit_particles (x_pk(1:n_interp), y_pk(1:n_interp), z_pk(1:n_interp), csr%mesh3d, qa=q_pk(1:n_interp), &
   mesh_growth_factor=space_charge_com%mesh_growth_factor, mesh_shrink_factor=space_charge_com%mesh_shrink_factor)
 call space_charge_3d(csr%mesh3d)
 
-! Gather coordinates for alive particles
-allocate(x_interp(size(particle)), y_interp(size(particle)), z_interp(size(particle)))
-allocate(interp_idx(size(particle)), E_batch(3, size(particle)))
-n_interp = 0
-do i = 1, size(particle)
-  if (particle(i)%state /= alive$) cycle
-  n_interp = n_interp + 1
-  x_interp(n_interp) = particle(i)%vec(1)
-  y_interp(n_interp) = particle(i)%vec(3)
-  z_interp(n_interp) = particle(i)%vec(5) - dct_ave * particle(i)%beta
-  interp_idx(n_interp) = i
-enddo
-
 ! Batch interpolation and kick application
 if (n_interp > 0) then
-  call interpolate_field_batch(x_interp, y_interp, z_interp, csr%mesh3d, n_interp, E=E_batch)
+  call interpolate_field_batch(x_pk, y_pk, z_pk, csr%mesh3d, n_interp, E=E_batch)
 
   !$OMP PARALLEL DO PRIVATE(n, i, p, factor, pz0, ef, dpz, new_beta)
   do n = 1, n_interp
-    i = interp_idx(n)
+    i = idx_pk(n)
     p => particle(i)
     factor = csr%actual_track_step / (p%p0c * p%beta)
     pz0 = sqrt((1.0_rp + p%vec(6))**2 - p%vec(2)**2 - p%vec(4)**2)
@@ -1942,9 +1934,86 @@ if (n_interp > 0) then
   !$OMP END PARALLEL DO
 endif
 
-deallocate(x_interp, y_interp, z_interp, interp_idx, E_batch)
-
 end subroutine apply_fft_3d_kicks
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine pack_alive_particles (particle, x, y, z, q, beta, idx, n_alive)
+!
+! Routine to copy the coordinates of the live particles into contiguous arrays, in particle order.
+! Large bunches are packed in parallel: each thread counts the live particles in its block, the
+! counts give each block's offset, then each thread fills its part.
+!
+! Input:
+!   particle(:)   -- coord_struct: Particles.
+!   x(:), ...     -- real(rp): Arrays at least as large as particle(:).
+!
+! Output:
+!   x(:), y(:), z(:)  -- real(rp): vec(1), vec(3), vec(5) of the live particles in elements 1:n_alive.
+!   q(:), beta(:)     -- real(rp): charge and beta.
+!   idx(:)            -- integer: Index in particle(:) of each packed particle.
+!   n_alive           -- integer: Number of live particles.
+!-
+
+subroutine pack_alive_particles (particle, x, y, z, q, beta, idx, n_alive)
+
+!$ use omp_lib
+implicit none
+
+type (coord_struct) particle(:)
+real(rp) x(:), y(:), z(:), q(:), beta(:)
+integer idx(:), n_alive
+integer, allocatable :: n_block(:)
+integer i, k, it, nt, lo, hi, n_tot
+
+!
+
+n_tot = size(particle)
+nt = 1
+!$ nt = omp_get_max_threads()
+allocate (n_block(0:nt))
+n_block = 0
+
+!$OMP PARALLEL PRIVATE(it, lo, hi, i, k) SHARED(nt, n_block) IF (n_tot > 10000)
+!$OMP SINGLE
+nt = 1
+!$ nt = omp_get_num_threads()
+!$OMP END SINGLE
+
+it = 0
+!$ it = omp_get_thread_num()
+lo = int(int(it, 8) * n_tot / nt) + 1
+hi = int(int(it + 1, 8) * n_tot / nt)
+
+do i = lo, hi
+  if (particle(i)%state == alive$) n_block(it+1) = n_block(it+1) + 1
+enddo
+
+!$OMP BARRIER
+!$OMP SINGLE
+do i = 1, nt
+  n_block(i) = n_block(i) + n_block(i-1)
+enddo
+!$OMP END SINGLE
+
+k = n_block(it)
+do i = lo, hi
+  if (particle(i)%state /= alive$) cycle
+  k = k + 1
+  x(k) = particle(i)%vec(1)
+  y(k) = particle(i)%vec(3)
+  z(k) = particle(i)%vec(5)
+  q(k) = particle(i)%charge
+  beta(k) = particle(i)%beta
+  idx(k) = i
+enddo
+!$OMP END PARALLEL
+
+n_alive = n_block(nt)
+
+end subroutine pack_alive_particles
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------

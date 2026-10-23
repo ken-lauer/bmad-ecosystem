@@ -191,15 +191,7 @@ shrink_factor = 0
 if (present(mesh_shrink_factor)) shrink_factor = mesh_shrink_factor
 
 if (resize) then
-  ! Fused min/max: single pass over all coordinate arrays instead of 6 separate minval/maxval calls.
-  min(1) = xa(1); max(1) = xa(1)
-  min(2) = ya(1); max(2) = ya(1)
-  min(3) = za(1); max(3) = za(1)
-  do n = 2, size(xa)
-    if (xa(n) < min(1)) then; min(1) = xa(n); else if (xa(n) > max(1)) then; max(1) = xa(n); endif
-    if (ya(n) < min(2)) then; min(2) = ya(n); else if (ya(n) > max(2)) then; max(2) = ya(n); endif
-    if (za(n) < min(3)) then; min(3) = za(n); else if (za(n) > max(3)) then; max(3) = za(n); endif
-  enddo
+  call osc_coord_bounds(xa, ya, za, min, max)
 
   if (growth_factor == 0 .and. shrink_factor == 0) then
     ! Original tight-fit behavior: compute delta, add tiny relative padding.
@@ -392,6 +384,44 @@ endif
 
 
 end subroutine deposit_particles
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_coord_bounds(xa, ya, za, lo, hi)
+!
+! Componentwise minimum and maximum of particle coordinates. Large arrays are scanned in parallel;
+! min/max reductions are exact so the result does not depend on the thread count.
+!
+! Input:
+!   xa(:), ya(:), za(:) -- real(dp): Particle coordinates. Must not be empty.
+!
+! Output:
+!   lo(3), hi(3)        -- real(dp): Minimum and maximum of (x, y, z).
+!-
+
+subroutine osc_coord_bounds(xa, ya, za, lo, hi)
+
+real(dp), intent(in) :: xa(:), ya(:), za(:)
+real(dp), intent(out) :: lo(3), hi(3)
+real(dp) :: x_lo, x_hi, y_lo, y_hi, z_lo, z_hi
+integer :: n
+
+x_lo = xa(1); x_hi = xa(1)
+y_lo = ya(1); y_hi = ya(1)
+z_lo = za(1); z_hi = za(1)
+
+!$OMP PARALLEL DO REDUCTION(min:x_lo, y_lo, z_lo) REDUCTION(max:x_hi, y_hi, z_hi) IF (size(xa) > 10000)
+do n = 2, size(xa)
+  x_lo = min(x_lo, xa(n)); x_hi = max(x_hi, xa(n))
+  y_lo = min(y_lo, ya(n)); y_hi = max(y_hi, ya(n))
+  z_lo = min(z_lo, za(n)); z_hi = max(z_hi, za(n))
+enddo
+!$OMP END PARALLEL DO
+
+lo = [x_lo, y_lo, z_lo]
+hi = [x_hi, y_hi, z_hi]
+
+end subroutine osc_coord_bounds
 
 
 
@@ -762,7 +792,7 @@ real(dp), parameter :: clight=299792458.0
 real(dp), parameter :: fpei=299792458.0**2*1.00000000055d-7  ! this is 1/(4 pi eps0) after the 2019 SI changes
 
 integer :: nx, ny, nz, nx2, ny2, nz2, nh
-integer :: icomp, ishift, jshift, kshift
+integer :: icomp, ishift, jshift, kshift, j, k
 logical :: cache_hit
 
 ! Sizes
@@ -810,10 +840,22 @@ endif
 
 ! rho -> rbuf -> FFT -> crho
 ! Zero only the padding region (octants beyond 1:nx, 1:ny, 1:nz), then fill the data octant.
-rbuf(1:nx, 1:ny, 1:nz) = rho
-rbuf(nx+1:nx2, :, :) = 0
-rbuf(1:nx, ny+1:ny2, :) = 0
-rbuf(1:nx, 1:ny, nz+1:nz2) = 0
+!$OMP PARALLEL DO PRIVATE(j)
+do k = 1, nz2
+  if (k > nz) then
+    rbuf(:, :, k) = 0
+    cycle
+  endif
+  do j = 1, ny2
+    if (j > ny) then
+      rbuf(:, j, k) = 0
+    else
+      rbuf(1:nx, j, k) = rho(:, j, k)
+      rbuf(nx+1:nx2, j, k) = 0
+    endif
+  enddo
+enddo
+!$OMP END PARALLEL DO
 call rcfft3d(rbuf, crho, nx2, ny2, nz2)
 
 ! Loop over phi, Ex, Ey, Ez
@@ -827,7 +869,11 @@ do icomp=0, 3
     call rcfft3d(rbuf, grn_fft_cache(:,:,:,icomp), nx2, ny2, nz2)
     grn_cache_valid(icomp) = .true.
   endif
-  cprod = crho * grn_fft_cache(:,:,:,icomp)
+  !$OMP PARALLEL DO
+  do k = 1, nz2
+    cprod(:, :, k) = crho(:, :, k) * grn_fft_cache(:, :, k, icomp)
+  enddo
+  !$OMP END PARALLEL DO
 
   ! Inverse FFT
   call crfft3d(cprod, rbuf, nx2, ny2, nz2)
@@ -840,11 +886,15 @@ do icomp=0, 3
   ! Extract field
   factr = fpei/(nx2*ny2*nz2)
   
-  if (icomp == 0) then
-    phi(:,:,:) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift)
-  else
-    efield(:,:,:,icomp) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, 1+kshift:nz+kshift)
-  endif
+  !$OMP PARALLEL DO
+  do k = 1, nz
+    if (icomp == 0) then
+      phi(:,:,k) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, k+kshift)
+    else
+      efield(:,:,k,icomp) = factr * rbuf(1+ishift:nx+ishift, 1+jshift:ny+jshift, k+kshift)
+    endif
+  enddo
+  !$OMP END PARALLEL DO
     
 enddo
 
@@ -896,6 +946,7 @@ real(dp) :: dx,dy,dz
 real(dp) :: u,v,w, umin, vmin, wmin
 real(dp) :: gval, factor
 integer :: imin, imax, jmin, jmax, kmin, kmax
+real(dp), allocatable, save :: rdiff(:,:,:)
 integer :: i,j,k, isize, jsize, ksize
 
 ! Mesh spacings. dz is stretched in the rest frame.
@@ -947,15 +998,31 @@ enddo
 ! Evaluate the indefinite integral over the cube     
 !rgrn = rgrn(1:,1:,1:) - rgrn(:-1,1:,1:) - rgrn(1:,:-1,1:) - rgrn(1:,1:,:-1) - rgrn(:-1,:-1,:-1) + rgrn(:-1,:-1,1:) + rgrn(:-1,1:,:-1)  + rgrn(1:,:-1,:-1)
 !       (x2,y2,z2) -      (x1,y2,z2) -     (x2,y1,z2) -    (x2,y2,z1) -    (x1,y1,z1)   +    (x1,y1,z2)   +    (x1,y2,z1)  +    (x2,y1,z1)
-rgrn(1:isize-1, 1:jsize-1, 1:ksize-1) = &
-    + rgrn(2:isize,   2:jsize,   2:ksize) &
-    - rgrn(1:isize-1, 2:jsize,   2:ksize) &
-    - rgrn(2:isize,   1:jsize-1, 2:ksize) &
-    - rgrn(2:isize,   2:jsize,   1:ksize-1) &
-    - rgrn(1:isize-1, 1:jsize-1, 1:ksize-1) &
-    + rgrn(1:isize-1, 1:jsize-1, 2:ksize) &
-    + rgrn(1:isize-1, 2:jsize,   1:ksize-1)  &
-    + rgrn(2:isize,   1:jsize-1, 1:ksize-1)
+! Computed into a scratch array (not in place) so that planes can be done in parallel.
+if (allocated(rdiff)) then
+  if (any(shape(rdiff) /= [isize-1, jsize-1, ksize-1])) deallocate(rdiff)
+endif
+if (.not. allocated(rdiff)) allocate(rdiff(isize-1, jsize-1, ksize-1))
+
+!$OMP PARALLEL DO
+do k = 1, ksize-1
+  rdiff(:, :, k) = &
+    + rgrn(2:isize,   2:jsize,   k+1) &
+    - rgrn(1:isize-1, 2:jsize,   k+1) &
+    - rgrn(2:isize,   1:jsize-1, k+1) &
+    - rgrn(2:isize,   2:jsize,   k) &
+    - rgrn(1:isize-1, 1:jsize-1, k) &
+    + rgrn(1:isize-1, 1:jsize-1, k+1) &
+    + rgrn(1:isize-1, 2:jsize,   k)  &
+    + rgrn(2:isize,   1:jsize-1, k)
+enddo
+!$OMP END PARALLEL DO
+
+!$OMP PARALLEL DO
+do k = 1, ksize-1
+  rgrn(1:isize-1, 1:jsize-1, k) = rdiff(:, :, k)
+enddo
+!$OMP END PARALLEL DO
 
 end subroutine osc_get_rgrn_freespace
 

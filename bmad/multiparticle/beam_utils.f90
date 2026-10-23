@@ -45,7 +45,7 @@ type (branch_struct), pointer :: branch
 real(rp) charge, ds_wake
 
 integer, optional :: direction
-integer i, j, n, jj
+integer i, j, n, jj, dir
 logical err_flag, finished, thread_safe, wake_here
 
 character(*), parameter :: r_name = 'track1_bunch_hom'
@@ -53,7 +53,12 @@ character(*), parameter :: r_name = 'track1_bunch_hom'
 ! Note: PTC tracking is not not thread safe.
 
 branch => pointer_to_branch(ele)
-bunch%particle%direction = integer_option(1, direction)
+dir = integer_option(1, direction)
+!$OMP parallel do if (size(bunch%particle) > 10000)
+do j = 1, size(bunch%particle)
+  bunch%particle(j)%direction = dir
+enddo
+!$OMP end parallel do
 if (ele%tracking_method == taylor$ .and. .not. associated(ele%taylor(1)%term)) call ele_to_taylor(ele)
 thread_safe = (ele%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
 
@@ -78,14 +83,14 @@ endif
 if (.not. wake_here) then
 
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(ele, err_flag)
-  !$OMP parallel do if (thread_safe)
+  !$OMP parallel do if (thread_safe) schedule(static, 64)
   do j = 1, size(bunch%particle)
     if (bunch%particle(j)%state /= alive$) cycle
     call track1 (bunch%particle(j), ele, branch%param, bunch%particle(j))
   enddo
   !$OMP end parallel do
 
-  bunch%charge_live = sum (bunch%particle(:)%charge, mask = (bunch%particle(:)%state == alive$))
+  bunch%charge_live = bunch_charge_live(bunch)
   return
 endif
 
@@ -96,7 +101,7 @@ endif
 
 if (ele%value(l$) == 0) then
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(ele, err_flag)
-  !$OMP parallel do if (thread_safe)
+  !$OMP parallel do if (thread_safe) schedule(static, 64)
   do j = 1, size(bunch%particle)
     if (bunch%particle(j)%state /= alive$) cycle
     call track1 (bunch%particle(j), ele, branch%param, bunch%particle(j))
@@ -121,7 +126,7 @@ else
   if (half_ele%tracking_method == taylor$ .and. .not. associated(half_ele%taylor(1)%term)) call ele_to_taylor(half_ele)
 
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(half_ele, err_flag)
-  !$OMP parallel do if (thread_safe)
+  !$OMP parallel do if (thread_safe) schedule(static, 64)
   do j = 1, size(bunch%particle)
     if (bunch%particle(j)%state /= alive$) cycle
     call track1 (bunch%particle(j), half_ele, branch%param, bunch%particle(j))
@@ -144,7 +149,7 @@ endif
 ! Track the last half of the cavity.
 
 if (ele%value(l$) == 0) then
-  bunch%charge_live = sum (bunch%particle(:)%charge, mask = (bunch%particle(:)%state == alive$))
+  bunch%charge_live = bunch_charge_live(bunch)
   call deallocate_ele_pointers (half_ele)
   return
 endif
@@ -157,14 +162,14 @@ endif
 
 if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(half_ele, err_flag)
 
-!$OMP parallel do if (thread_safe)
+!$OMP parallel do if (thread_safe) schedule(static, 64)
 do j = 1, size(bunch%particle)
   if (bunch%particle(j)%state /= alive$) cycle
   call track1 (bunch%particle(j), half_ele, branch%param, bunch%particle(j))
 enddo
 !$OMP end parallel do
 
-bunch%charge_live = sum (bunch%particle(:)%charge, mask = (bunch%particle(:)%state == alive$))
+bunch%charge_live = bunch_charge_live(bunch)
 if (bunch%charge_live == 0) then
   call out_io (s_info$, r_name, 'Note: Wakes are on but bunch charge is zero!')
 endif
@@ -177,6 +182,41 @@ call save_a_bunch_step (ele, bunch, bunch_track, ele%value(l$))
 call deallocate_ele_pointers (half_ele)
 
 end subroutine track1_bunch_hom
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function bunch_charge_live (bunch) result (charge)
+!
+! Routine to sum the charge of the live particles in a bunch.
+! Large bunches are summed in parallel so the last bits may differ from a serial sum.
+!
+! Input:
+!   bunch   -- bunch_struct: Bunch.
+!
+! Output:
+!   charge  -- real(rp): Total charge of particles with state alive$.
+!-
+
+function bunch_charge_live (bunch) result (charge)
+
+implicit none
+
+type (bunch_struct) bunch
+real(rp) charge
+integer j
+
+!
+
+charge = 0
+!$OMP parallel do reduction(+:charge) if (size(bunch%particle) > 10000)
+do j = 1, size(bunch%particle)
+  if (bunch%particle(j)%state == alive$) charge = charge + bunch%particle(j)%charge
+enddo
+!$OMP end parallel do
+
+end function bunch_charge_live
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
