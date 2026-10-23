@@ -83,12 +83,7 @@ endif
 if (.not. wake_here) then
 
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(ele, err_flag)
-  !$OMP parallel do if (thread_safe) schedule(static, 64)
-  do j = 1, size(bunch%particle)
-    if (bunch%particle(j)%state /= alive$) cycle
-    call track1 (bunch%particle(j), ele, branch%param, bunch%particle(j))
-  enddo
-  !$OMP end parallel do
+  call track1_bunch_particles (bunch, ele, branch%param, thread_safe)
 
   bunch%charge_live = bunch_charge_live(bunch)
   return
@@ -101,12 +96,7 @@ endif
 
 if (ele%value(l$) == 0) then
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(ele, err_flag)
-  !$OMP parallel do if (thread_safe) schedule(static, 64)
-  do j = 1, size(bunch%particle)
-    if (bunch%particle(j)%state /= alive$) cycle
-    call track1 (bunch%particle(j), ele, branch%param, bunch%particle(j))
-  enddo
-  !$OMP end parallel do
+  call track1_bunch_particles (bunch, ele, branch%param, thread_safe)
 
 else
   call transfer_ele (ele, half_ele, .true.)
@@ -126,12 +116,7 @@ else
   if (half_ele%tracking_method == taylor$ .and. .not. associated(half_ele%taylor(1)%term)) call ele_to_taylor(half_ele)
 
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(half_ele, err_flag)
-  !$OMP parallel do if (thread_safe) schedule(static, 64)
-  do j = 1, size(bunch%particle)
-    if (bunch%particle(j)%state /= alive$) cycle
-    call track1 (bunch%particle(j), half_ele, branch%param, bunch%particle(j))
-  enddo
-  !$OMP end parallel do
+  call track1_bunch_particles (bunch, half_ele, branch%param, thread_safe)
 endif
 
 ! Wakefields
@@ -162,12 +147,7 @@ endif
 
 if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(half_ele, err_flag)
 
-!$OMP parallel do if (thread_safe) schedule(static, 64)
-do j = 1, size(bunch%particle)
-  if (bunch%particle(j)%state /= alive$) cycle
-  call track1 (bunch%particle(j), half_ele, branch%param, bunch%particle(j))
-enddo
-!$OMP end parallel do
+call track1_bunch_particles (bunch, half_ele, branch%param, thread_safe)
 
 bunch%charge_live = bunch_charge_live(bunch)
 if (bunch%charge_live == 0) then
@@ -182,6 +162,77 @@ call save_a_bunch_step (ele, bunch, bunch_track, ele%value(l$))
 call deallocate_ele_pointers (half_ele)
 
 end subroutine track1_bunch_hom
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine track1_bunch_particles (bunch, ele, param, thread_safe)
+!
+! Routine to track every live particle of a bunch through an element with track1.
+!
+! For large bunches the first live particle is tracked serially while multipole_ele_to_ab results for ele
+! are recorded (see multipole_memo_mod); the rest are then tracked in parallel reusing them. Results are
+! the same as tracking each particle independently. The memo is not used when tracking hooks are set
+! since a hook could change the element between particles.
+!
+! Interleaved static chunks balance the load when lost or expensive particles cluster in the bunch,
+! while keeping a fixed particle-to-thread assignment (per-thread random streams stay reproducible).
+!
+! Input:
+!   bunch       -- bunch_struct: Bunch to track.
+!   ele         -- ele_struct: Element to track through.
+!   param       -- lat_param_struct: Branch parameters.
+!   thread_safe -- logical: If False, track serially.
+!
+! Output:
+!   bunch       -- bunch_struct: Bunch at the end of ele.
+!-
+
+subroutine track1_bunch_particles (bunch, ele, param, thread_safe)
+
+use multipole_memo_mod
+
+implicit none
+
+type (bunch_struct), target :: bunch
+type (ele_struct), target :: ele
+type (lat_param_struct) param
+integer j, j0
+logical thread_safe, use_memo
+
+!
+
+use_memo = (thread_safe .and. size(bunch%particle) > 1000 .and. multipole_memo_state == memo_off$ .and. &
+            .not. associated(track1_preprocess_ptr) .and. .not. associated(track1_postprocess_ptr) .and. &
+            .not. associated(track1_custom_ptr) .and. .not. associated(apply_element_edge_kick_hook_ptr))
+
+j0 = 0
+if (use_memo) then
+  do j = 1, size(bunch%particle)
+    if (bunch%particle(j)%state == alive$) then
+      j0 = j
+      exit
+    endif
+  enddo
+  if (j0 == 0) return
+
+  call multipole_memo_begin (ele)
+  call track1 (bunch%particle(j0), ele, param, bunch%particle(j0))
+  call multipole_memo_freeze ()
+endif
+
+!$OMP parallel do if (thread_safe) schedule(static, 64)
+do j = 1, size(bunch%particle)
+  if (j == j0) cycle
+  if (bunch%particle(j)%state /= alive$) cycle
+  call track1 (bunch%particle(j), ele, param, bunch%particle(j))
+enddo
+!$OMP end parallel do
+
+if (use_memo) call multipole_memo_end ()
+
+end subroutine track1_bunch_particles
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------

@@ -31,6 +31,73 @@
 recursive subroutine multipole_ele_to_ab (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
 
 use bmad_interface, dummy => multipole_ele_to_ab
+use multipole_memo_mod
+
+implicit none
+
+interface
+  recursive subroutine multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+    import
+    type (ele_struct), target :: ele
+    real(rp) a(0:n_pole_maxx), b(0:n_pole_maxx)
+    real(rp), optional :: b1
+    integer ix_pole_max
+    integer, optional :: pole_type, include_kicks
+    logical use_ele_tilt
+    logical, optional :: original
+  end subroutine
+end interface
+
+type (ele_struct), target :: ele
+real(rp) a(0:n_pole_maxx), b(0:n_pole_maxx)
+real(rp), optional :: b1
+real(rp) b1_val
+integer ix_pole_max
+integer, optional :: pole_type, include_kicks
+integer ix, p_type, include_kck
+logical use_ele_tilt, orig
+logical, optional :: original
+
+! See multipole_memo_mod for when results are memoized.
+
+if (multipole_memo_state /= memo_off$) then
+  if (associated(multipole_memo_ele, ele)) then
+    p_type = integer_option(magnetic$, pole_type)
+    include_kck = integer_option(no$, include_kicks)
+    orig = logic_option(.false., original)
+    ix = multipole_memo_find(use_ele_tilt, p_type, include_kck, present(b1), orig)
+    if (ix > 0) then
+      ix_pole_max = multipole_memo(ix)%ix_pole_max
+      a = multipole_memo(ix)%a
+      b = multipole_memo(ix)%b
+      if (present(b1)) b1 = multipole_memo(ix)%b1
+      return
+    endif
+
+    if (multipole_memo_state == memo_recording$) then
+      call multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+      b1_val = 0
+      if (present(b1)) b1_val = b1
+      call multipole_memo_add (use_ele_tilt, p_type, include_kck, present(b1), orig, ix_pole_max, a, b, b1_val)
+      return
+    endif
+  endif
+endif
+
+call multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+
+end subroutine multipole_ele_to_ab
+
+!-----------------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------
+! Subroutine multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+!
+! The calculation behind multipole_ele_to_ab. Same arguments.
+
+recursive subroutine multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+
+use bmad_interface
 
 implicit none
 
@@ -675,5 +742,5 @@ ix_pole_max = max_nonzero(0, a(0:1), b(0:1))
 
 end function pull_this_b1
 
-end subroutine multipole_ele_to_ab
+end subroutine multipole_ele_to_ab_impl
 
