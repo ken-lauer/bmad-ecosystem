@@ -56,12 +56,11 @@ implicit none
 type (ele_struct), target :: ele
 type (ele_pointer_struct), allocatable, optional :: used_eles(:)
 type (ele_pointer_struct), allocatable :: used_list(:)
-type (ele_struct), pointer :: lord, ele2
 type (ele_struct), optional :: original_ele
 type (lat_param_struct) param
-type (coord_struct) :: orbit, lab_orb, lord_orb, this_orb
+type (coord_struct) :: orbit
 type (coord_struct), target :: local_orb
-type (em_field_struct) :: field, field1, field2, lord_field, l1_field, mode_field
+type (em_field_struct) :: field, mode_field
 type (cartesian_map_struct), pointer :: ct_map
 type (cartesian_map_term1_struct), pointer :: ct_term
 type (cylindrical_map_struct), pointer :: cl_map
@@ -69,12 +68,9 @@ type (cylindrical_map_term1_struct), pointer :: cl_term
 type (gen_gradients_struct), pointer :: gg_map
 type (grid_field_struct), pointer :: g_field, g_field_ptr
 type (grid_field_pt1_struct) g_pt
-type (floor_position_struct) lab_position, global_position, lord_position
-type (spline_struct) spline
-type (branch_struct), pointer :: branch
 
 real(rp), optional :: rf_time
-real(rp) :: x, y, j1, dj1, time, s_this, s_pos, s_body, s_lab, s_this2, z, ff, dk(3,3), ref_charge, f_p0c
+real(rp) :: x, y, j1, dj1, time, s_pos, s_body, z, ff, dk(3,3), ref_charge, f_p0c
 real(rp) :: c_x, s_x, c_y, s_y, c_z, s_z, ch_x, ch_y, sh_x, sh_y, coef, fd(3), Ex, Ey, amp
 real(rp) :: cos_ang, sin_ang, sgn_x, sgn_y, sgn_z, dkm(2,2), cos_ks, sin_ks, length
 real(rp) phase, gradient, r, E_r_coef, E_s, k_wave, s_eff, a_amp, inte
@@ -82,7 +78,7 @@ real(rp) k_t, k_zn, kappa2_n, kap_rho, s_active_offset, beta_start, f, f1, f2, f
 real(rp) radius, phi, t_ref, tilt, omega, freq0, freq, B_phi_coef, z_center
 real(rp) sx_over_kx, sy_over_ky, sz_over_kz, rot2(2,2)
 real(rp) a_pole(0:n_pole_maxx), b_pole(0:n_pole_maxx), pot
-real(rp) w_ele_mat(3,3), w_lord_mat(3,3), Er, Ep, Ez, Br, Bp, Bx, By, Bz
+real(rp) Er, Ep, Ez, Br, Bp, Bx, By, Bz
 real(rp) :: fld(3), dfld(3,3), fld0(3), fld1(3), dfld0(3,3), dfld1(3,3)
 real(rp) phi0_autoscale, field_autoscale, ds, beta_ref, ds_small, abs_tol
 real(rp) rho, a, b, B0, gamma, Brho, voltage, k_rf
@@ -97,7 +93,7 @@ integer i, j, m, n, ix, trig_x, trig_y, status, im, iz0, iz1, izp, ix_pole_max
 
 logical :: local_ref_frame
 logical, optional :: calc_dfield, calc_potential, err_flag, use_overlap, grid_allow_s_out_of_bounds, print_err
-logical do_df_calc, err, dfield_computed, add_kicks, stay_local
+logical do_df_calc, err, dfield_computed, add_kicks
 
 character(*), parameter :: r_name = 'em_field_calc'
 
@@ -113,92 +109,23 @@ if (present(err_flag)) err_flag = .false.
 if (.not. ele%is_on) return
 
 ! Has this element been used before? If so, nothing to be done.
+! The list of elements used is only needed when this routine calls itself (for lords and overlapping
+! fields), so without used_eles the list is only made then (see used_list_setup).
 
 if (present(used_eles)) then
-  n = size(used_eles)
-  do j = 1, n
-    if (associated(used_eles(j)%ele, ele)) return
-  enddo
-
-  allocate(used_list(n+1))
-  used_list(1:n) = used_eles
-  used_list(n)%ele => ele
-  used_eles = used_list
-
-else
-  allocate(used_list(1))
-  used_list(1)%ele => ele
+  if (allocated(used_eles)) then
+    do j = 1, size(used_eles)
+      if (associated(used_eles(j)%ele, ele)) return
+    enddo
+  endif
+  call add_used_ele (used_eles, ele)
 endif
 
 !----------------------------------------------------------------------------
 ! super_slave, multipass_slave, and slice_slave, have their field info stored in the associated lord elements.
 
 if (ele%field_calc == refer_to_lords$) then
-  ! The lords of an element may have independent misalignments.
-  ! So use an orbit that is in the lab frame and not in the slave's reference frame.
-  ! Exception: If ele has only one lord. In this case, it is imporant not to go to the lab frame since an RF
-  ! cavity with a hard edge active region will cause problems with Runge-Kutta tracking due to round-off errors.
-
-  this_orb = orbit
-
-  if (ele%slave_status == slice_slave$) then
-    ele2 => ele%lord
-  else
-    ele2 => ele
-  endif
-
-  stay_local = (((ele2%slave_status == super_slave$ .and. num_lords(ele2, super_lord$) == 1) .or. &
-                                             ele2%slave_status /= super_slave$) .and. local_ref_frame)
-
-  if (local_ref_frame .and. .not. stay_local) then
-    call offset_particle (ele, unset$, this_orb, set_hvkicks = .false., s_pos = s_pos, s_out = s_this)
-  else
-    s_this = s_pos
-  endif
-
-  !
-
-  lord_loop: do i = 1, ele%n_lord
-    lord => pointer_to_lord(ele, i)
-
-    if (lord%field_calc == no_field$) cycle   ! Group, overlay and girder elements do not have fields.
-
-    ! Multipass_lords do not have a well defined global position so take the lord position equal to the slave position.
-    ! This is justified if all the slaves have the same position as they should in a realistic lattice.
-    if (lord%lord_status == multipass_lord$) then
-      s_this2 = s_this
-      lord%floor = ele%floor  ! Needed if there is field overlap.
-    else
-      ds = ele%s_start - lord%s_start
-      if (lord%value(l$) > 0 .and. lord%s_start > lord%s) then ! Element wraps around zero
-        branch => pointer_to_branch(lord)
-        ds = modulo2(ds, 0.5_rp*branch%param%total_length)
-      endif
-      s_this2 = s_this + ds
-    endif
-
-    call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
-                            use_overlap, grid_allow_s_out_of_bounds, rf_time, used_list, print_err, ele)
-    if (present(used_eles)) used_eles = used_list
-
-    if (err) then
-      if (present(err_flag)) err_flag = .true.
-      return
-    endif
-
-    field%E = field%E + field2%E
-    field%B = field%B + field2%B
-    if (do_df_calc) then
-      field%dE = field%dE + field2%dE
-      field%dB = field%dB + field2%dB
-    endif
-
-  enddo lord_loop
-
-  if (local_ref_frame .and. .not. stay_local) then
-    call convert_field_ele_to_lab(ele, s_this, .false., field, calc_dfield, calc_potential)
-  endif
-
+  call field_from_lords()
   return
 endif
 
@@ -211,9 +138,14 @@ if (ele%field_calc == custom$) then
     orbit%state = lost$
     return
   endif
-  call em_field_custom_ptr (ele, param, s_pos, orbit, local_ref_frame, field, calc_dfield, err_flag, &
+  if (present(used_eles)) then
+    call em_field_custom_ptr (ele, param, s_pos, orbit, local_ref_frame, field, calc_dfield, err_flag, &
+                                    calc_potential, use_overlap, grid_allow_s_out_of_bounds, rf_time, used_eles)
+  else
+    call used_list_setup()
+    call em_field_custom_ptr (ele, param, s_pos, orbit, local_ref_frame, field, calc_dfield, err_flag, &
                                     calc_potential, use_overlap, grid_allow_s_out_of_bounds, rf_time, used_list)
-  if (present(used_eles)) used_eles = used_list
+  endif
   return
 end if
 
@@ -632,13 +564,7 @@ case (bmad_standard$)
   ! Add multipoles
 
   if (ele%key == sbend$ .and. nint(ele%value(exact_multipoles$)) /= off$ .and. ele%value(g$) /= 0) then
-    call bend_exact_multipole_field (ele, param, orbit, local_ref_frame, field2, do_df_calc, calc_potential)
-    field%e = field%e + field2%e
-    field%b = field%b + field2%b
-    if (do_df_calc) then
-      field%de = field2%de
-      field%db = field2%db
-    endif
+    call add_bend_exact_multipole_field()
     add_kicks = .false.  ! h/vkicks are accounted for in bend_exact_multipole_field
 
   ! Everything but exact bend multipoles
@@ -1464,48 +1390,7 @@ endif
 8000 continue
 
 if (ele%n_lord_field /= 0 .and. logic_option(.true., use_overlap)) then
-  lab_orb = orbit
-  if (local_ref_frame) then
-    call offset_particle (ele, unset$, lab_orb, set_hvkicks = .false., s_pos = s_body, s_out = s_lab)
-  else
-    s_lab = s_body
-  endif
-
-  lab_position%r = [lab_orb%vec(1), lab_orb%vec(3), s_lab]
-  global_position = coords_local_curvilinear_to_floor (lab_position, ele, w_mat = w_ele_mat, calculate_angles = .false.)
-  lord_field = em_field_struct()
-  lord_orb = lab_orb
-
-  do i = 1, ele%n_lord_field
-    lord => pointer_to_lord(ele, i, lord_type = field_lord$)
-    lord_position = coords_floor_to_local_curvilinear (global_position, lord, status, w_lord_mat)
-    lord_orb%vec(1) = lord_position%r(1)
-    lord_orb%vec(3) = lord_position%r(2)
-    ! Set use_overlap = False to prevent recursion.
-    call em_field_calc (lord, param, lord_position%r(3), lord_orb, .false., l1_field, calc_dfield, err, &
-               use_overlap = .false., grid_allow_s_out_of_bounds = .true., used_eles = used_list, print_err = print_err)
-    if (present(used_eles)) used_eles = used_list
-
-    if (err) then
-      if (present(err_flag)) err_flag = .true.
-      return
-    endif
-    ! Field in lord lab coords to field in global coords
-    call rotate_em_field (l1_field, w_lord_mat, transpose(w_lord_mat), calc_dfield)
-    lord_field = lord_field + l1_field
-  enddo
-
-  ! Field in global coords to field in lab coords
-
-  call rotate_em_field (lord_field, transpose(w_ele_mat), w_ele_mat)
-
-  if (local_ref_frame) then
-    call convert_field_ele_to_lab (ele, s_lab, .false., lord_field, calc_dfield, calc_potential)  ! lab -> ele
-  else
-    call convert_field_ele_to_lab (ele, s_body, .true., field, calc_dfield, calc_potential)
-  endif
-  field = field + lord_field
-
+  call add_overlap_fields()
   return
 endif
 
@@ -1520,6 +1405,213 @@ if (.not. local_ref_frame) call convert_field_ele_to_lab (ele, s_body, .true., f
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 contains
+
+!----------------------------------------------------------------------------
+! contains
+
+! Field of a super_slave, multipass_slave or slice_slave: the sum of the fields of its lords.
+! Kept out of the main routine so its local structures are only initialized when needed.
+
+subroutine field_from_lords()
+
+type (coord_struct) :: this_orb
+type (em_field_struct) :: field2
+type (ele_struct), pointer :: lord, ele2
+type (branch_struct), pointer :: branch
+real(rp) s_this, s_this2, ds
+integer i
+logical stay_local, err
+
+call used_list_setup()
+
+! The lords of an element may have independent misalignments.
+! So use an orbit that is in the lab frame and not in the slave's reference frame.
+! Exception: If ele has only one lord. In this case, it is imporant not to go to the lab frame since an RF
+! cavity with a hard edge active region will cause problems with Runge-Kutta tracking due to round-off errors.
+
+this_orb = orbit
+
+if (ele%slave_status == slice_slave$) then
+  ele2 => ele%lord
+else
+  ele2 => ele
+endif
+
+stay_local = (((ele2%slave_status == super_slave$ .and. num_lords(ele2, super_lord$) == 1) .or. &
+                                           ele2%slave_status /= super_slave$) .and. local_ref_frame)
+
+if (local_ref_frame .and. .not. stay_local) then
+  call offset_particle (ele, unset$, this_orb, set_hvkicks = .false., s_pos = s_pos, s_out = s_this)
+else
+  s_this = s_pos
+endif
+
+!
+
+lord_loop: do i = 1, ele%n_lord
+  lord => pointer_to_lord(ele, i)
+
+  if (lord%field_calc == no_field$) cycle   ! Group, overlay and girder elements do not have fields.
+
+  ! Multipass_lords do not have a well defined global position so take the lord position equal to the slave position.
+  ! This is justified if all the slaves have the same position as they should in a realistic lattice.
+  if (lord%lord_status == multipass_lord$) then
+    s_this2 = s_this
+    lord%floor = ele%floor  ! Needed if there is field overlap.
+  else
+    ds = ele%s_start - lord%s_start
+    if (lord%value(l$) > 0 .and. lord%s_start > lord%s) then ! Element wraps around zero
+      branch => pointer_to_branch(lord)
+      ds = modulo2(ds, 0.5_rp*branch%param%total_length)
+    endif
+    s_this2 = s_this + ds
+  endif
+
+  if (present(used_eles)) then
+    call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
+                          use_overlap, grid_allow_s_out_of_bounds, rf_time, used_eles, print_err, ele)
+  else
+    call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
+                          use_overlap, grid_allow_s_out_of_bounds, rf_time, used_list, print_err, ele)
+  endif
+
+  if (err) then
+    if (present(err_flag)) err_flag = .true.
+    return
+  endif
+
+  field%E = field%E + field2%E
+  field%B = field%B + field2%B
+  if (do_df_calc) then
+    field%dE = field%dE + field2%dE
+    field%dB = field%dB + field2%dB
+  endif
+
+enddo lord_loop
+
+if (local_ref_frame .and. .not. stay_local) then
+  call convert_field_ele_to_lab(ele, s_this, .false., field, calc_dfield, calc_potential)
+endif
+
+end subroutine field_from_lords
+
+!----------------------------------------------------------------------------
+! contains
+
+! Add the fields of elements overlapping ele (field lords).
+
+subroutine add_overlap_fields()
+
+type (coord_struct) :: lab_orb, lord_orb
+type (em_field_struct) :: lord_field, l1_field
+type (floor_position_struct) lab_position, global_position, lord_position
+type (ele_struct), pointer :: lord
+real(rp) w_ele_mat(3,3), w_lord_mat(3,3), s_lab
+integer i, status
+logical err
+
+call used_list_setup()
+
+lab_orb = orbit
+if (local_ref_frame) then
+  call offset_particle (ele, unset$, lab_orb, set_hvkicks = .false., s_pos = s_body, s_out = s_lab)
+else
+  s_lab = s_body
+endif
+
+lab_position%r = [lab_orb%vec(1), lab_orb%vec(3), s_lab]
+global_position = coords_local_curvilinear_to_floor (lab_position, ele, w_mat = w_ele_mat, calculate_angles = .false.)
+lord_field = em_field_struct()
+lord_orb = lab_orb
+
+do i = 1, ele%n_lord_field
+  lord => pointer_to_lord(ele, i, lord_type = field_lord$)
+  lord_position = coords_floor_to_local_curvilinear (global_position, lord, status, w_lord_mat)
+  lord_orb%vec(1) = lord_position%r(1)
+  lord_orb%vec(3) = lord_position%r(2)
+  ! Set use_overlap = False to prevent recursion.
+  if (present(used_eles)) then
+    call em_field_calc (lord, param, lord_position%r(3), lord_orb, .false., l1_field, calc_dfield, err, &
+             use_overlap = .false., grid_allow_s_out_of_bounds = .true., used_eles = used_eles, print_err = print_err)
+  else
+    call em_field_calc (lord, param, lord_position%r(3), lord_orb, .false., l1_field, calc_dfield, err, &
+             use_overlap = .false., grid_allow_s_out_of_bounds = .true., used_eles = used_list, print_err = print_err)
+  endif
+
+  if (err) then
+    if (present(err_flag)) err_flag = .true.
+    return
+  endif
+  ! Field in lord lab coords to field in global coords
+  call rotate_em_field (l1_field, w_lord_mat, transpose(w_lord_mat), calc_dfield)
+  lord_field = lord_field + l1_field
+enddo
+
+! Field in global coords to field in lab coords
+
+call rotate_em_field (lord_field, transpose(w_ele_mat), w_ele_mat)
+
+if (local_ref_frame) then
+  call convert_field_ele_to_lab (ele, s_lab, .false., lord_field, calc_dfield, calc_potential)  ! lab -> ele
+else
+  call convert_field_ele_to_lab (ele, s_body, .true., field, calc_dfield, calc_potential)
+endif
+field = field + lord_field
+
+end subroutine add_overlap_fields
+
+!----------------------------------------------------------------------------
+! contains
+
+subroutine add_bend_exact_multipole_field()
+
+type (em_field_struct) :: field2
+
+call bend_exact_multipole_field (ele, param, orbit, local_ref_frame, field2, do_df_calc, calc_potential)
+field%e = field%e + field2%e
+field%b = field%b + field2%b
+if (do_df_calc) then
+  field%de = field2%de
+  field%db = field2%db
+endif
+
+end subroutine add_bend_exact_multipole_field
+
+!----------------------------------------------------------------------------
+! contains
+
+! Without used_eles, start the list of used elements with ele before calling this routine recursively.
+
+subroutine used_list_setup()
+if (present(used_eles)) return
+if (allocated(used_list)) return
+allocate (used_list(4))
+used_list(1)%ele => ele
+end subroutine used_list_setup
+
+!----------------------------------------------------------------------------
+! contains
+
+! Add ele to list, in the first unused slot. The list is only enlarged when full.
+
+subroutine add_used_ele (list, ele)
+type (ele_pointer_struct), allocatable :: list(:), tmp(:)
+type (ele_struct), target :: ele
+integer k, n
+
+if (.not. allocated(list)) allocate (list(4))
+n = size(list)
+do k = 1, n
+  if (associated(list(k)%ele)) cycle
+  list(k)%ele => ele
+  return
+enddo
+
+allocate (tmp(2*n))
+tmp(1:n) = list
+tmp(n+1)%ele => ele
+call move_alloc (tmp, list)
+end subroutine add_used_ele
 
 ! restore_curvilinear_field(field_a, field_b)
 !
