@@ -35,7 +35,7 @@ use bmad_interface
 
 implicit none
 
-private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, ab_kick_lane
+private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane
 private :: track_block_drift, track_block_quad, track_block_thick, entrance_block, exit_block, fast_note_why
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3
@@ -44,6 +44,10 @@ integer, parameter :: fast_time_qp$ = 1, fast_time_dd$ = 2
 integer :: fast_track_time_mode = fast_time_qp$
 
 integer, parameter :: fast_block_size = 256
+
+! Max number of apertures checked at one track edge (lord_defined apertures of a super_slave
+! resolve to one per super_lord).
+integer, parameter :: fast_max_ap = 4
 
 ! Drift-like slices are not worth the bunch <-> SoA conversion when converting per slice.
 logical :: fast_track_drifts = .false.
@@ -72,6 +76,14 @@ type bunch_soa_struct
   integer, allocatable :: direction(:), time_dir(:)
   logical :: has_spin = .false.
   real(rp), allocatable :: spin(:,:)          ! (3, n). Only allocated if has_spin.
+end type
+
+! One aperture check, from check_aperture_limit for a rectangular/auto/elliptical aperture.
+
+type fast_aperture_struct
+  integer :: ap_type = 0
+  real(rp) :: x1_lim = 0, x2_lim = 0, y1_lim = 0, y2_lim = 0
+  real(rp) :: ex_w2 = 0, ex_c = 0, ey_w2 = 0, ey_c = 0   ! Elliptical widths/centers.
 end type
 
 ! Slice-invariant data. Everything a per-particle call to track1 would recompute.
@@ -103,11 +115,9 @@ type fast_slice_struct
   real(rp) :: x_off = 0, y_off = 0, z_off = 0, zc_set = 0, l_half = 0
   real(rp) :: ds_center_unset = 0, s_target_set = 0, s_target_unset = 0
   real(rp) :: w_inv(3,3) = 0, w_mat(3,3) = 0
-  ! Aperture
-  logical :: ap_first = .false., ap_second = .false.
-  integer :: ap_type = 0
-  real(rp) :: x1_lim = 0, x2_lim = 0, y1_lim = 0, y2_lim = 0
-  real(rp) :: ex_w2 = 0, ex_c = 0, ey_w2 = 0, ey_c = 0   ! Elliptical widths/centers.
+  ! Apertures checked at the first (1) and second (2) track edge, in check_aperture_limit order.
+  integer :: n_ap(2) = 0
+  type (fast_aperture_struct) :: ap(fast_max_ap, 2)
 end type
 
 contains
@@ -149,11 +159,11 @@ function fast_track_eligible (ele, param, why) result (is_eligible)
 type (ele_struct) ele
 type (lat_param_struct) param
 type (fringe_field_info_struct) fringe_info
-type (coord_struct) orb0
+type (fast_slice_struct) fs_ap
 
 real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), b1
-integer ix_mag_max, ix_elec_max, kind, physical_end
-logical is_eligible, need_ap
+integer ix_mag_max, ix_elec_max, kind
+logical is_eligible
 character(*), optional :: why
 
 !
@@ -181,42 +191,7 @@ endif
 
 ! Aperture. Mirrors check_aperture_limit for the particle_at values used by track1.
 
-if (bmad_com%aperture_limit_on) then
-  if (ele%aperture_at == lord_defined$ .or. ele%aperture_type == lord_defined$) then
-    call set_why('lord_defined aperture');  return
-  endif
-  if (ele%aperture_type == custom_aperture$) then
-    call set_why('custom aperture');  return
-  endif
-  select case (ele%aperture_at)
-  case (no_aperture$, entrance_end$, exit_end$, both_ends$, continuous$)
-  case default
-    call set_why('aperture_at not supported');  return
-  end select
-
-  orb0%direction = 1;  orb0%time_dir = 1
-  need_ap = .false.
-  physical_end = physical_ele_end(first_track_edge$, orb0, ele%orientation)
-  if (at_this_ele_end(physical_end, ele%aperture_at)) need_ap = .true.
-  physical_end = physical_ele_end(second_track_edge$, orb0, ele%orientation)
-  if (at_this_ele_end(physical_end, ele%aperture_at)) need_ap = .true.
-
-  if (need_ap) then
-    select case (ele%aperture_type)
-    case (rectangular$, auto_aperture$)
-    case (elliptical$)
-      if ((ele%value(x1_limit$) == 0 .neqv. ele%value(x2_limit$) == 0) .or. &
-          (ele%value(y1_limit$) == 0 .neqv. ele%value(y2_limit$) == 0)) then
-        call set_why('ill-formed elliptical aperture (track1 prints an error)');  return
-      endif
-    case default
-      call set_why('aperture_type not supported');  return
-    end select
-    if (ele%offset_moves_aperture) then
-      call set_why('offset_moves_aperture');  return
-    endif
-  endif
-endif
+if (.not. fast_aperture_setup(ele, fs_ap, why)) return
 
 ! Quadrupole and thick multipole specific
 
@@ -337,7 +312,7 @@ type (fast_slice_struct) fs
 type (coord_struct) orb0
 
 real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), xp, yp, ds_center_set, s_pos0
-integer ix_elec_max, n, m, physical_end
+integer ix_elec_max, n, m
 logical err_flag
 
 character(*), parameter :: r_name = 'fast_slice_prepare'
@@ -367,29 +342,11 @@ fs%delta_ref_time = ele%value(delta_ref_time$)
 fs%mass           = mass_of(param%particle)
 fs%max_ap         = bmad_com%max_aperture_limit
 
-! Aperture
-
 orb0%direction = 1
 orb0%time_dir = 1
 orb0%species = param%particle
 
-if (bmad_com%aperture_limit_on) then
-  physical_end = physical_ele_end(first_track_edge$, orb0, ele%orientation)
-  fs%ap_first  = at_this_ele_end(physical_end, ele%aperture_at)
-  physical_end = physical_ele_end(second_track_edge$, orb0, ele%orientation)
-  fs%ap_second = at_this_ele_end(physical_end, ele%aperture_at)
-endif
-
-fs%ap_type = ele%aperture_type
-fs%x1_lim = -ele%value(x1_limit$)
-fs%x2_lim =  ele%value(x2_limit$)
-fs%y1_lim = -ele%value(y1_limit$)
-fs%y2_lim =  ele%value(y2_limit$)
-
-if (fs%ap_type == elliptical$) then
-  call ellipse_setup(fs%x1_lim, fs%x2_lim, fs%ex_w2, fs%ex_c)
-  call ellipse_setup(fs%y1_lim, fs%y2_lim, fs%ey_w2, fs%ey_c)
-endif
+if (.not. fast_aperture_setup(ele, fs)) return
 
 if (fs%kind == fast_drift$) then
   err_flag = .false.
@@ -471,10 +428,168 @@ endif
 
 err_flag = .false.
 
+
+end subroutine fast_slice_prepare
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function fast_aperture_setup (ele, fs, why) result (is_ok)
+!
+! Routine to resolve the aperture checks check_aperture_limit makes at the two track edges of ele
+! (particles moving forward) into fs%n_ap / fs%ap. lord_defined apertures (super_slaves and their
+! slices) are resolved to the super_lords as check_aperture_limit does: all particles at an edge have
+! the same s (ele%s_start at the first edge, ele%s at the second), so the lord selection is the same
+! for every particle.
+!
+! Input:
+!   ele     -- ele_struct: Element or slice.
+!
+! Output:
+!   fs      -- fast_slice_struct: %n_ap and %ap set.
+!   why     -- character(*), optional: Reason if an aperture is not supported.
+!   is_ok   -- logical: True if all apertures are supported by the kernels.
+!-
+
+function fast_aperture_setup (ele, fs, why) result (is_ok)
+
+type (ele_struct) ele
+type (fast_slice_struct) fs
+type (ele_struct), pointer :: lord
+type (coord_struct) orb0
+
+real(rp) s_edge
+integer ie, i, particle_at, physical_end
+logical is_ok
+character(*), optional :: why
+
+!
+
+is_ok = .false.
+fs%n_ap = 0
+if (present(why)) why = ''
+
+if (.not. bmad_com%aperture_limit_on) then
+  is_ok = .true.
+  return
+endif
+
+orb0%direction = 1
+orb0%time_dir = 1
+
+do ie = 1, 2
+  if (ie == 1) then
+    particle_at = first_track_edge$
+    s_edge = ele%s_start
+  else
+    particle_at = second_track_edge$
+    s_edge = ele%s
+  endif
+
+  if (ele%aperture_at == lord_defined$ .or. ele%aperture_type == lord_defined$) then
+    do i = 1, ele%n_lord
+      lord => pointer_to_lord(ele, i)
+      if (lord%lord_status /= super_lord$) cycle
+
+      if (s_edge == lord%s_start) then
+        select case (lord%orientation)
+        case (1);  physical_end = entrance_end$
+        case (-1); physical_end = exit_end$
+        end select
+      else if (s_edge == lord%s) then
+        select case (lord%orientation)
+        case (1);  physical_end = exit_end$
+        case (-1); physical_end = entrance_end$
+        end select
+      else
+        physical_end = in_between$
+      endif
+
+      if (.not. lord_edge_aligned (ele, physical_end, lord) .and. &
+          lord%aperture_at /= continuous$ .and. lord%aperture_at /= wall_transition$) cycle
+      if (.not. add_aperture(lord)) return
+    enddo
+
+  else
+    if (.not. add_aperture(ele)) return
+  endif
+enddo
+
+is_ok = .true.
+
 !------------------------
 contains
 
-! Copy of check_aperture_limit's elliptical_params_setup (error case excluded by eligibility).
+! check_aperture_limit for ap_ele below its lord_defined branch.
+
+function add_aperture (ap_ele) result (ok)
+
+type (ele_struct) ap_ele
+logical ok
+
+ok = .false.
+
+if (ap_ele%aperture_at == lord_defined$ .or. ap_ele%aperture_type == lord_defined$) then
+  call set_why('lord_defined aperture in a lord');  return
+endif
+if (ap_ele%aperture_type == custom_aperture$) then
+  call set_why('custom aperture');  return
+endif
+select case (ap_ele%aperture_at)
+case (no_aperture$, entrance_end$, exit_end$, both_ends$, continuous$)
+case default
+  call set_why('aperture_at not supported');  return
+end select
+
+physical_end = physical_ele_end(particle_at, orb0, ap_ele%orientation)
+if (.not. at_this_ele_end(physical_end, ap_ele%aperture_at)) then
+  ok = .true.
+  return
+endif
+
+select case (ap_ele%key)
+case (ecollimator$, rcollimator$, crystal$, mirror$, multilayer_mirror$)
+  call set_why('collimator or photon element aperture');  return
+end select
+
+if (ap_ele%offset_moves_aperture) then
+  call set_why('offset_moves_aperture');  return
+endif
+
+select case (ap_ele%aperture_type)
+case (rectangular$, auto_aperture$)
+case (elliptical$)
+  if ((ap_ele%value(x1_limit$) == 0 .neqv. ap_ele%value(x2_limit$) == 0) .or. &
+      (ap_ele%value(y1_limit$) == 0 .neqv. ap_ele%value(y2_limit$) == 0)) then
+    call set_why('ill-formed elliptical aperture (track1 prints an error)');  return
+  endif
+case default
+  call set_why('aperture_type not supported');  return
+end select
+
+if (fs%n_ap(ie) == fast_max_ap) then
+  call set_why('too many apertures at one edge');  return
+endif
+
+fs%n_ap(ie) = fs%n_ap(ie) + 1
+associate (ap => fs%ap(fs%n_ap(ie), ie))
+ap%ap_type = ap_ele%aperture_type
+ap%x1_lim = -ap_ele%value(x1_limit$)
+ap%x2_lim =  ap_ele%value(x2_limit$)
+ap%y1_lim = -ap_ele%value(y1_limit$)
+ap%y2_lim =  ap_ele%value(y2_limit$)
+if (ap%ap_type == elliptical$) then
+  call ellipse_setup(ap%x1_lim, ap%x2_lim, ap%ex_w2, ap%ex_c)
+  call ellipse_setup(ap%y1_lim, ap%y2_lim, ap%ey_w2, ap%ey_c)
+endif
+end associate
+ok = .true.
+
+end function add_aperture
+
+! Copy of check_aperture_limit's elliptical_params_setup (error case excluded above).
+
 subroutine ellipse_setup (lim1, lim2, width2, center)
 real(rp) lim1, lim2, width2, center
 width2 = (lim2 - lim1) / 2
@@ -483,7 +598,12 @@ if (width2 == 0) width2 = bmad_com%max_aperture_limit
 width2 = max(width2, 0.0_rp)
 end subroutine ellipse_setup
 
-end subroutine fast_slice_prepare
+subroutine set_why(str)
+character(*) str
+if (present(why)) why = str
+end subroutine set_why
+
+end function fast_aperture_setup
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1126,7 +1246,7 @@ do i = i0, i1
   soa%ix_ele(i)    = fs%ix_ele
   soa%ix_branch(i) = fs%ix_branch
   call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
-  if (.not. too_large .and. fs%ap_first) call aperture_lane (soa%x(i), soa%y(i), fs, soa%state(i))
+  if (.not. too_large) call apertures_lane (soa%x(i), soa%y(i), fs, 1, soa%state(i))
   go(i) = (soa%state(i) == alive$)
 enddo
 
@@ -1155,7 +1275,7 @@ do i = i0, i1
   soa%location(i) = downstream_end$
 
   ! check_aperture_limit(second_track_edge$) starts with orbit_too_large which already passed.
-  if (fs%ap_second) call aperture_lane (soa%x(i), soa%y(i), fs, soa%state(i))
+  call apertures_lane (soa%x(i), soa%y(i), fs, 2, soa%state(i))
 enddo
 
 end subroutine exit_block
@@ -1737,9 +1857,24 @@ end subroutine orbit_too_large_lane
 ! check_aperture_limit after the orbit_too_large test, for rectangular/auto/elliptical apertures,
 ! non-collimator keys, offset_moves_aperture = False, aperture_at /= wall_transition$.
 
-subroutine aperture_lane (x, y, fs, state)
+subroutine apertures_lane (x, y, fs, ie, state)
 
 type (fast_slice_struct) fs
+real(rp) x, y
+integer ie, state, k
+
+do k = 1, fs%n_ap(ie)
+  call aperture_lane (x, y, fs%ap(k, ie), state)
+  if (state /= alive$) return
+enddo
+
+end subroutine apertures_lane
+
+!--------------------------------------------------------------------------
+
+subroutine aperture_lane (x, y, fs, state)
+
+type (fast_aperture_struct) fs
 real(rp) x, y, xp, yp, r, f, unstable_factor
 integer state
 
