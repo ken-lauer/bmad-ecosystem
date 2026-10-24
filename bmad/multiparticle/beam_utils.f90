@@ -46,7 +46,7 @@ real(rp) charge, ds_wake
 
 integer, optional :: direction
 integer i, j, n, jj, dir
-logical err_flag, finished, thread_safe, wake_here
+logical err_flag, finished, thread_safe
 
 character(*), parameter :: r_name = 'track1_bunch_hom'
 
@@ -72,15 +72,7 @@ call save_a_bunch_step (ele, bunch, bunch_track, 0.0_rp)
 
 wake_ele => pointer_to_wake_ele(ele, ds_wake)
 
-wake_here = .false.
-if (associated(wake_ele)) then
-  if (bmad_com%sr_wakes_on .and. (size(wake_ele%wake%sr%long) /= 0 .or. size(wake_ele%wake%sr%trans) /= 0 .or. &
-                                  size(wake_ele%wake%sr%z_long%w) /= 0)) wake_here = .true.
-  if (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0) wake_here = .true.
-  if (associated(track1_wake_hook_ptr) .and. (bmad_com%sr_wakes_on .or. bmad_com%lr_wakes_on)) wake_here = .true.
-endif
-
-if (.not. wake_here) then
+if (.not. bunch_wake_here(ele)) then
 
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(ele, err_flag)
   call track1_bunch_particles (bunch, ele, branch%param, thread_safe)
@@ -162,6 +154,45 @@ call save_a_bunch_step (ele, bunch, bunch_track, ele%value(l$))
 call deallocate_ele_pointers (half_ele)
 
 end subroutine track1_bunch_hom
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function bunch_wake_here (ele) result (wake_here)
+!
+! Routine to tell if track1_bunch_hom applies wakefield kicks when tracking through ele.
+! An element may have a wake struct but still not apply any wake. This happens if the relevant
+! global on/off switch is set to False or if the wake has no active modes.
+!
+! Input:
+!   ele       -- ele_struct: Element.
+!
+! Output:
+!   wake_here -- logical: True if wakes are applied.
+!-
+
+function bunch_wake_here (ele) result (wake_here)
+
+implicit none
+
+type (ele_struct) ele
+type (ele_struct), pointer :: wake_ele
+real(rp) ds_wake
+logical wake_here
+
+!
+
+wake_here = .false.
+wake_ele => pointer_to_wake_ele(ele, ds_wake)
+if (.not. associated(wake_ele)) return
+
+if (bmad_com%sr_wakes_on .and. (size(wake_ele%wake%sr%long) /= 0 .or. size(wake_ele%wake%sr%trans) /= 0 .or. &
+                                size(wake_ele%wake%sr%z_long%w) /= 0)) wake_here = .true.
+if (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0) wake_here = .true.
+if (associated(track1_wake_hook_ptr) .and. (bmad_com%sr_wakes_on .or. bmad_com%lr_wakes_on)) wake_here = .true.
+
+end function bunch_wake_here
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------

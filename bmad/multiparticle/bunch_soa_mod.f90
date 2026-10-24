@@ -36,7 +36,7 @@ use bmad_interface
 implicit none
 
 private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, ab_kick_lane
-private :: track_block_drift, track_block_quad, track_block_thick, entrance_block, exit_block
+private :: track_block_drift, track_block_quad, track_block_thick, entrance_block, exit_block, fast_note_why
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3
 
@@ -551,7 +551,7 @@ end function fast_bunch_compatible
 ! Function fast_soa_compatible (soa, ele, fs, why) result (is_ok)
 !
 ! Same checks as fast_bunch_compatible but on a SoA bunch (cheaper: contiguous arrays, and the
-! p0c test is only evaluated when p0c changes from one particle to the next).
+! p0c test is only evaluated when p0c changes from one particle to the next in a thread's block).
 !
 ! Input:
 !   soa     -- bunch_soa_struct: Bunch to track.
@@ -582,6 +582,7 @@ n_bad = 0
 have_p0c = .false.
 p0c_ok = 0
 
+!$OMP parallel do reduction(+:n_bad) firstprivate(have_p0c, p0c_ok) if (soa%n > 10000)
 do i = 1, soa%n
   if (soa%state(i) /= alive$) cycle
   if (soa%direction(i) /= 1 .or. soa%time_dir(i) /= 1 .or. soa%species(i) /= fs%species .or. soa%species(i) == photon$) then
@@ -595,6 +596,7 @@ do i = 1, soa%n
     endif
   endif
 enddo
+!$OMP end parallel do
 
 if (n_bad > 0) then
   if (present(why)) why = 'particles with direction/time_dir/species/p0c not supported'
@@ -859,42 +861,146 @@ type (lat_param_struct) param
 type (fast_slice_struct) fs
 type (bunch_soa_struct), save :: soa
 
-logical tracked, err
+logical tracked
 character(*), optional :: why
 character(100) reason
 
 !
 
 tracked = .false.
-reason = ''
-if (.not. fast_track_eligible(ele, param, reason)) then
-  call note_why (reason)
-  return
-endif
-call fast_slice_prepare (ele, param, fs, err)
-if (err) then
-  call note_why ('fast_slice_prepare failed')
-  return
-endif
+if (.not. fast_slice_setup(ele, param, fs, why)) return
 if (fs%kind == fast_drift$ .and. .not. fast_track_drifts) then
-  call note_why ('drift-like slices disabled (fast_track_drifts)')
+  call fast_note_why (ele, 'drift-like slices disabled (fast_track_drifts)', why)
   return
 endif
 call bunch_to_soa (bunch, soa)
 if (.not. fast_soa_compatible(soa, ele, fs, reason)) then
-  call note_why (reason)
+  call fast_note_why (ele, reason, why)
   return
 endif
 call fast_track_soa (soa, fs)
 call soa_to_bunch (soa, bunch)
 tracked = .true.
 
-!---------------------------------
-contains
+end subroutine fast_track1_bunch
 
-subroutine note_why (str)
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine fast_track1_soa (soa, ele, param, tracked, why)
+!
+! Routine to track a SoA bunch through an element or slice with the fast kernels, if they support it.
+! Same as fast_track1_bunch but without the bunch <-> SoA conversion, so a SoA bunch can be kept
+! across many slices. Drift-like slices are always tracked (fast_track_drifts is not used).
+! If ele or the bunch is not supported nothing is done and tracked = False so the caller must fall back.
+!
+! Input:
+!   soa       -- bunch_soa_struct: Starting bunch.
+!   ele       -- ele_struct: Element or slice.
+!   param     -- lat_param_struct: Branch parameters.
+!
+! Output:
+!   soa       -- bunch_soa_struct: Ending bunch if tracked = True.
+!   tracked   -- logical: True if the fast kernels were used.
+!   why       -- character(*), optional: Reason if not tracked.
+!-
+
+subroutine fast_track1_soa (soa, ele, param, tracked, why)
+
+type (bunch_soa_struct) soa
+type (ele_struct) ele
+type (lat_param_struct) param
+type (fast_slice_struct) fs
+
+logical tracked
+character(*), optional :: why
+character(100) reason
+
+!
+
+tracked = .false.
+if (.not. fast_slice_setup(ele, param, fs, why)) return
+if (.not. fast_soa_compatible(soa, ele, fs, reason)) then
+  call fast_note_why (ele, reason, why)
+  return
+endif
+call fast_track_soa (soa, fs)
+tracked = .true.
+
+end subroutine fast_track1_soa
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function fast_slice_setup (ele, param, fs, why) result (is_ok)
+!
+! Routine to check element eligibility and prepare the slice data for the fast kernels.
+!
+! Input:
+!   ele       -- ele_struct: Element or slice.
+!   param     -- lat_param_struct: Branch parameters.
+!
+! Output:
+!   fs        -- fast_slice_struct: Prepared slice if is_ok = True.
+!   why       -- character(*), optional: Reason if not.
+!   is_ok     -- logical: True if ele can be tracked with the fast kernels.
+!-
+
+function fast_slice_setup (ele, param, fs, why) result (is_ok)
+
+type (ele_struct) ele
+type (lat_param_struct) param
+type (fast_slice_struct) fs
+
+logical is_ok, err
+character(*), optional :: why
+character(100) reason
+
+!
+
+is_ok = .false.
+reason = ''
+if (.not. fast_track_eligible(ele, param, reason)) then
+  call fast_note_why (ele, reason, why)
+  return
+endif
+call fast_slice_prepare (ele, param, fs, err)
+if (err) then
+  call fast_note_why (ele, 'fast_slice_prepare failed', why)
+  return
+endif
+is_ok = .true.
+
+end function fast_slice_setup
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine fast_note_why (ele, str, why)
+!
+! Routine to record why the fast kernels were not used. With BMAD_FAST_TRACK=verbose, each
+! distinct reason is printed once.
+!
+! Input:
+!   ele   -- ele_struct: Element not tracked with the kernels.
+!   str   -- character(*): Reason.
+!
+! Output:
+!   why   -- character(*), optional: Set to str.
+!-
+
+subroutine fast_note_why (ele, str, why)
+
+type (ele_struct) ele
 character(*) str
+character(*), optional :: why
 integer i
+
+!
+
 if (present(why)) why = str
 if (.not. fast_track_verbose) return
 !$OMP CRITICAL (fast_track_why_lock)
@@ -908,9 +1014,8 @@ if (i > n_why_seen .and. n_why_seen < n_why_max) then
                                              ' (e.g. ' // trim(ele%name) // '): ' // trim(str))
 endif
 !$OMP END CRITICAL (fast_track_why_lock)
-end subroutine note_why
 
-end subroutine fast_track1_bunch
+end subroutine fast_note_why
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------

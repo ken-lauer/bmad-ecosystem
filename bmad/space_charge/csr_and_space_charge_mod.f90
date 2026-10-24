@@ -14,6 +14,7 @@ use spline_mod
 use super_recipes_mod, only: super_zbrent
 use open_spacecharge_mod
 use csr3d_mod, only: csr3d_steady_state_solver
+use bunch_soa_mod
 
 ! csr_ele_info_struct holds info for a particular lattice element
 ! The centroid "chord" is the line from the centroid position at the element entrance to
@@ -75,6 +76,17 @@ type csr_particle_position_struct
   real(rp) :: charge     ! particle charge
 end type
 
+! Per-particle quantities used by the CSR and space charge binning and kicks. Points either into
+! bunch%particle(:) (strided, see csr_view_particles) or into a bunch_soa_struct (contiguous, see
+! csr_view_soa) so the same routines serve both bunch layouts.
+
+type csr_particle_view_struct
+  real(rp), pointer :: x(:) => null(), px(:) => null(), y(:) => null(), py(:) => null()
+  real(rp), pointer :: z(:) => null(), pz(:) => null()
+  real(rp), pointer :: beta(:) => null(), p0c(:) => null(), charge(:) => null()
+  integer, pointer :: state(:) => null(), species(:) => null()
+end type
+
 type csr_struct           ! Structurture for binning particle averages
   real(rp) gamma, gamma2        ! Relativistic gamma factor.
   real(rp) rel_mass             ! m_particle / m_electron
@@ -125,6 +137,11 @@ integer, private :: csr_eleinfo_n = -1
 integer, private :: csr_eleinfo_depth = 0
 !$OMP THREADPRIVATE(csr_eleinfo_cache, csr_eleinfo_branch, csr_eleinfo_n, csr_eleinfo_depth)
 
+! SoA bunch kept for the whole of a track1_bunch_csr call when the fast kernels are on.
+! Reused between calls to avoid reallocating bunch sized arrays. Shared, so only used outside
+! parallel regions.
+type (bunch_soa_struct), target, private, save :: csr_soa
+
 contains
 
 !----------------------------------------------------------------------------
@@ -168,6 +185,7 @@ type (csr_struct), target :: csr
 type (csr_ele_info_struct), pointer :: eleinfo
 type (coord_struct), target :: centroid(0:)
 type (floor_position_struct) floor
+type (csr_particle_view_struct) v
 
 real(rp), optional :: s_start, s_end
 real(rp) s0_step, vec0(6), vec(6), theta_chord, theta0, theta1, L
@@ -177,7 +195,7 @@ integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
 
 character(*), parameter :: r_name = 'track1_bunch_csr'
-logical err, err_flag, parallel0, parallel1
+logical err, err_flag, parallel0, parallel1, use_soa, bunch_stale, tracked
 
 ! Init
 
@@ -263,6 +281,24 @@ csr%actual_track_step = csr%ds_track_step * (csr%eleinfo(ele%ix_ele)%L_chord / e
 
 call save_a_bunch_step (ele, bunch, bunch_track, s_start)
 
+! With the fast kernels on, the bunch is held as a SoA bunch for the whole element. Runts the kernels
+! support are tracked in place, and bunch%particle is only brought up to date (sync_bunch) when needed:
+! for runts tracked by track1_bunch_hom, for bunch_track saves, and on return.
+
+use_soa = csr_use_soa(ele)
+bunch_stale = .false.
+if (use_soa) then
+  !$OMP parallel do if (size(bunch%particle) > 10000)
+  do j = 1, size(bunch%particle)
+    bunch%particle(j)%direction = 1   ! As track1_bunch_hom does.
+  enddo
+  !$OMP end parallel do
+  call bunch_to_soa (bunch, csr_soa)
+  call csr_view_soa (csr_soa, v)
+else
+  call csr_view_particles (bunch%particle, v)
+endif
+
 !----------------------------------------------------------------------------------------
 ! Loop over the tracking steps
 ! runt is the element that is tracked through at each step.
@@ -273,7 +309,20 @@ do i_step = 0, n_step
 
   if (i_step /= 0) then
     call element_slice_iterator (ele, branch%param, i_step, n_step, runt, s_start, s_end)
-    call track1_bunch_hom (bunch, runt)
+    if (use_soa) then
+      tracked = .false.
+      if (.not. bunch_wake_here(runt)) call fast_track1_soa (csr_soa, runt, branch%param, tracked)
+      if (tracked) then
+        bunch_stale = .true.
+      else
+        call sync_bunch()
+        call track1_bunch_hom (bunch, runt)
+        call bunch_to_soa (bunch, csr_soa)
+        call csr_view_soa (csr_soa, v)
+      endif
+    else
+      call track1_bunch_hom (bunch, runt)
+    endif
   endif
 
   s0_step = i_step * csr%ds_track_step
@@ -281,13 +330,13 @@ do i_step = 0, n_step
 
   ! Cannot do a realistic calculation if there are less particles than bins
 
-  n_live = count(bunch%particle%state == alive$)
+  n_live = count(v%state == alive$)
   if (n_live < space_charge_com%n_bin) then
     call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
                           'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
                           'AT ELEMENT: ' // trim(ele%name) // '  [# \i0\] ', &
                           i_array = [n_live, ele%ix_ele ])
-    call csr_eleinfo_put (csr)
+    call finish()
     return
   endif
 
@@ -299,9 +348,10 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
-  call csr_bin_particles (ele, bunch%particle, csr, err_flag)
+  call csr_bin_view (ele, v, csr, err_flag)
+  bunch_stale = (bunch_stale .or. (use_soa .and. err_flag))
   if (err_flag) then
-    call csr_eleinfo_put (csr)
+    call finish()
     return
   endif
 
@@ -330,7 +380,7 @@ do i_step = 0, n_step
 
       call csr_bin_kicks (ele, s0_step, csr, err_flag)
       if (err_flag) then
-        call csr_eleinfo_put (csr)
+        call finish()
         return
       endif
     enddo
@@ -338,8 +388,12 @@ do i_step = 0, n_step
 
   ! Give particles a kick
 
-  call csr_and_sc_apply_kicks (ele, csr, bunch%particle)
+  call csr_and_sc_apply_kicks_view (ele, csr, v)
 
+  if (use_soa) then
+    bunch_stale = .true.
+    if (bunch_track_save_due(s0_step)) call sync_bunch()
+  endif
   call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
 
   ! Record wake to file?
@@ -372,10 +426,142 @@ do i_step = 0, n_step
 
 enddo
 
-call csr_eleinfo_put (csr)
+call finish()
 err = .false.
 
+!------------------------------------------------------------------------
+contains
+
+! Write the SoA bunch back to bunch%particle if it has changed since the last write.
+
+subroutine sync_bunch()
+if (.not. bunch_stale) return
+call soa_to_bunch (csr_soa, bunch)
+bunch%charge_live = bunch_charge_live(bunch)
+bunch_stale = .false.
+end subroutine sync_bunch
+
+subroutine finish()
+call sync_bunch()
+call csr_eleinfo_put (csr)
+end subroutine finish
+
+! Mirrors the test in save_a_bunch_step: True if a call with s_body would save a track point.
+
+function bunch_track_save_due (s_body) result (is_due)
+real(rp) s_body
+logical is_due
+is_due = .false.
+if (.not. present(bunch_track)) return
+if (bunch_track%ds_save < 0) return
+is_due = .true.
+if (.not. allocated(bunch_track%pt)) return
+if (bunch_track%n_pt < 0) return
+is_due = (s_body + ele%s_start >= bunch_track%pt(bunch_track%n_pt)%s + bunch_track%ds_save)
+end function bunch_track_save_due
+
+
 end subroutine track1_bunch_csr
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Function csr_use_soa (ele) result (use_soa)
+!
+! Routine to decide if track1_bunch_csr keeps the bunch as a SoA bunch (bunch_soa_mod) while
+! tracking through ele. Requires the fast kernels to be enabled (see fast_track_enabled), ele to be of
+! a type the kernels support, and not being inside a parallel region (the SoA bunch is shared).
+!
+! Input:
+!   ele     -- ele_struct: Element to track through.
+!
+! Output:
+!   use_soa -- logical: True if the SoA path is to be used.
+!-
+
+function csr_use_soa (ele) result (use_soa)
+
+!$ use omp_lib, only: omp_in_parallel
+implicit none
+
+type (ele_struct) ele
+logical use_soa
+
+!
+
+use_soa = .false.
+if (.not. fast_track_enabled()) return
+!$ if (omp_in_parallel()) return
+if (.not. global_com%mp_threading_is_safe) return
+if (bmad_com%spin_tracking_on) return
+use_soa = (fast_kind(ele) /= fast_none$)
+
+end function csr_use_soa
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_view_particles (particle, v)
+!
+! Routine to point a csr_particle_view_struct at the coordinates of an array of particles.
+!
+! Input:
+!   particle(:) -- coord_struct: Particles.
+!
+! Output:
+!   v           -- csr_particle_view_struct: View of particle(:).
+!-
+
+subroutine csr_view_particles (particle, v)
+
+implicit none
+
+type (coord_struct), target :: particle(:)
+type (csr_particle_view_struct) v
+
+!
+
+v%x  => particle%vec(1);  v%px => particle%vec(2)
+v%y  => particle%vec(3);  v%py => particle%vec(4)
+v%z  => particle%vec(5);  v%pz => particle%vec(6)
+v%beta => particle%beta;  v%p0c => particle%p0c;  v%charge => particle%charge
+v%state => particle%state;  v%species => particle%species
+
+end subroutine csr_view_particles
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_view_soa (soa, v)
+!
+! Routine to point a csr_particle_view_struct at the arrays of a SoA bunch.
+!
+! Input:
+!   soa     -- bunch_soa_struct: SoA bunch.
+!
+! Output:
+!   v       -- csr_particle_view_struct: View of soa.
+!-
+
+subroutine csr_view_soa (soa, v)
+
+implicit none
+
+type (bunch_soa_struct), target :: soa
+type (csr_particle_view_struct) v
+
+!
+
+v%x  => soa%x(1:soa%n);  v%px => soa%px(1:soa%n)
+v%y  => soa%y(1:soa%n);  v%py => soa%py(1:soa%n)
+v%z  => soa%z(1:soa%n);  v%pz => soa%pz(1:soa%n)
+v%beta => soa%beta(1:soa%n);  v%p0c => soa%p0c(1:soa%n);  v%charge => soa%charge(1:soa%n)
+v%state => soa%state(1:soa%n);  v%species => soa%species(1:soa%n)
+
+end subroutine csr_view_soa
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -655,7 +841,32 @@ implicit none
 
 type (ele_struct) ele
 type (coord_struct), target :: particle(:)
-type (coord_struct), pointer :: p
+type (csr_struct), target :: csr
+type (csr_particle_view_struct) v
+logical err_flag
+
+!
+
+call csr_view_particles (particle, v)
+call csr_bin_view (ele, v, csr, err_flag)
+
+end subroutine csr_bin_particles
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_bin_view (ele, v, csr, err_flag)
+!
+! csr_bin_particles on a csr_particle_view_struct. See csr_bin_particles.
+!-
+
+subroutine csr_bin_view (ele, v, csr, err_flag)
+
+implicit none
+
+type (ele_struct) ele
+type (csr_particle_view_struct) v
 type (csr_struct), target :: csr
 type (csr_bunch_slice_struct), pointer :: slice
 
@@ -686,13 +897,13 @@ if (n_bin_eff < 1) then
   call out_io (s_abort$, r_name, 'NUMBER OF CSR BINS TOO SMALL: \i0\ ', &
               'MUST BE GREATER THAN 3 + PARTICLE_BIN_SPAN.', i_array = [space_charge_com%n_bin])
   if (global_com%exit_on_error) call err_exit
-  particle%state = lost$
+  v%state = lost$
   err_flag = .true.
   return
 endif
 
-z_maxval = maxval(particle(:)%vec(5), mask = (particle(:)%state == alive$))
-z_minval = minval(particle(:)%vec(5), mask = (particle(:)%state == alive$))
+z_maxval = maxval(v%z, mask = (v%state == alive$))
+z_minval = minval(v%z, mask = (v%state == alive$))
 dz = z_maxval - z_minval
 csr%dz_slice = dz / n_bin_eff
 csr%dz_slice = 1.0000001 * csr%dz_slice     ! to prevent round off problems
@@ -741,14 +952,14 @@ allocate(bin_n_particle(n_bin), bin_charge(n_bin), bin_x0(n_bin), bin_y0(n_bin))
 bin_n_particle = 0; bin_charge = 0; bin_x0 = 0; bin_y0 = 0
 
 !$OMP do
-do i = 1, size(particle)
-  if (particle(i)%state /= alive$) cycle
-  zp_center = particle(i)%vec(5)
+do i = 1, size(v%z)
+  if (v%state(i) /= alive$) cycle
+  zp_center = v%z(i)
   zp0 = zp_center - dz_particle / 2
   zp1 = zp_center + dz_particle / 2
-  p_charge = particle(i)%charge
-  p_x = particle(i)%vec(1)
-  p_y = particle(i)%vec(3)
+  p_charge = v%charge(i)
+  p_x = v%x(i)
+  p_y = v%y(i)
   ix0 = nint((zp0 - z_min) / csr%dz_slice)
   do j = 0, pbs+1
     ib = j + ix0
@@ -809,14 +1020,14 @@ allocate(bin_sig_x(n_bin), bin_sig_y(n_bin))
 bin_sig_x = 0; bin_sig_y = 0
 
 !$OMP do
-do i = 1, size(particle)
-  if (particle(i)%state /= alive$) cycle
-  zp_center = particle(i)%vec(5)
+do i = 1, size(v%z)
+  if (v%state(i) /= alive$) cycle
+  zp_center = v%z(i)
   zp0 = zp_center - dz_particle / 2
   zp1 = zp_center + dz_particle / 2
-  p_charge = particle(i)%charge
-  p_x = particle(i)%vec(1)
-  p_y = particle(i)%vec(3)
+  p_charge = v%charge(i)
+  p_x = v%x(i)
+  p_y = v%y(i)
   ix0 = nint((zp0 - z_min) / csr%dz_slice)
   do j = 0, pbs+1
     ib = j + ix0
@@ -893,7 +1104,7 @@ do ib = space_charge_com%n_bin/2, 1, -1
 enddo
 
 
-end subroutine csr_bin_particles
+end subroutine csr_bin_view
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -1734,14 +1945,38 @@ end subroutine image_charge_kick_calc
 
 subroutine csr_and_sc_apply_kicks (ele, csr, particle)
 
+implicit none
+
+type (ele_struct) ele
+type (csr_struct), target :: csr
+type (coord_struct), target :: particle(:)
+type (csr_particle_view_struct) v
+
+!
+
+call csr_view_particles (particle, v)
+call csr_and_sc_apply_kicks_view (ele, csr, v)
+
+end subroutine csr_and_sc_apply_kicks
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine csr_and_sc_apply_kicks_view (ele, csr, v)
+!
+! csr_and_sc_apply_kicks on a csr_particle_view_struct. See csr_and_sc_apply_kicks.
+!-
+
+subroutine csr_and_sc_apply_kicks_view (ele, csr, v)
+
 use da2_mod
 
 implicit none
 
 type (ele_struct) ele
 type (csr_struct), target :: csr
-type (coord_struct), target :: particle(:)
-type (coord_struct), pointer :: p
+type (csr_particle_view_struct) v
 type (csr_bunch_slice_struct), pointer :: slice
 
 real(rp) zp, r1, r0, dz, dpz, nk(2), dnk(2,2), f0, f, beta0, dpx, dpy, x, y, f_tot
@@ -1755,10 +1990,10 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
 
   ! CSR-only kick (no space charge): each particle reads shared slice data and updates only its own vec(6).
   if (ele%csr_method == one_dim$ .and. ele%space_charge_method /= slice$) then
-    !$OMP parallel do default(none) shared(particle, csr, space_charge_com, global_com) private(ip, zp, i0, r1, r0)
-    do ip = 1, size(particle)
-      if (particle(ip)%state /= alive$) cycle
-      zp = particle(ip)%vec(5)
+    !$OMP parallel do default(none) shared(v, csr, space_charge_com, global_com) private(ip, zp, i0, r1, r0)
+    do ip = 1, size(v%z)
+      if (v%state(ip) /= alive$) cycle
+      zp = v%z(ip)
       i0 = int((zp - csr%slice(1)%z_center) / csr%dz_slice) + 1
       r1 = (zp - csr%slice(i0)%z_center) / csr%dz_slice
       r0 = 1 - r1
@@ -1766,19 +2001,18 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
         call out_io (s_error$, 'csr_and_sc_apply_kicks', 'CSR INTERNAL ERROR!')
         if (global_com%exit_on_error) call err_exit
       endif
-      particle(ip)%vec(6) = particle(ip)%vec(6) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
+      v%pz(ip) = v%pz(ip) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
     enddo
     !$OMP end parallel do
 
   else
   ! General case with possible space charge
   !$OMP parallel do default(none) &
-  !$OMP   shared(particle, csr, ele, space_charge_com, global_com) &
-  !$OMP   private(ip, p, slice, zp, i0, r1, r0, dpz, x, y, beta0, f0, f, dpx, dpy, nk, dnk)
-  do ip = 1, size(particle)
-    p => particle(ip)
-    if (p%state /= alive$) cycle
-    zp = p%vec(5)
+  !$OMP   shared(v, csr, ele, space_charge_com, global_com) &
+  !$OMP   private(ip, slice, zp, i0, r1, r0, dpz, x, y, beta0, f0, f, dpx, dpy, nk, dnk)
+  do ip = 1, size(v%z)
+    if (v%state(ip) /= alive$) cycle
+    zp = v%z(ip)
     i0 = int((zp - csr%slice(1)%z_center) / csr%dz_slice) + 1
     r1 = (zp - csr%slice(i0)%z_center) / csr%dz_slice
     r0 = 1 - r1
@@ -1793,15 +2027,15 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
     ! We use a weighted average so that the integral varies smoothly as a function of particle%vec(5).
 
     if (ele%csr_method == one_dim$) then
-      p%vec(6) = p%vec(6) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
+      v%pz(ip) = v%pz(ip) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
     endif
 
   ! Slice space charge kick
 
   if (ele%space_charge_method == slice$) then
     if (space_charge_com%lsc_kick_transverse_dependence) then
-      x = p%vec(1)
-      y = p%vec(3)
+      x = v%x(ip)
+      y = v%y(ip)
       dpz = 0
 
       slice => csr%slice(i0)
@@ -1812,38 +2046,38 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
       if (slice%coef_lsc_plus(0,0) /= 0)  dpz = dpz + r1 / da2_evaluate(slice%coef_lsc_plus, (x-csr%x0_bunch)**2, (y-csr%y0_bunch)**2)
       if (slice%coef_lsc_minus(0,0) /= 0) dpz = dpz + r1 / da2_evaluate(slice%coef_lsc_minus, (x-csr%x0_bunch)**2, (y-csr%y0_bunch)**2)
 
-      p%vec(6) = p%vec(6) + dpz
+      v%pz(ip) = v%pz(ip) + dpz
 
     else
-      p%vec(6) = p%vec(6) + r0 * csr%slice(i0)%kick_lsc + r1 * csr%slice(i0+1)%kick_lsc
+      v%pz(ip) = v%pz(ip) + r0 * csr%slice(i0)%kick_lsc + r1 * csr%slice(i0+1)%kick_lsc
     endif
 
     ! Must update beta and z due to the energy change
 
-    beta0 = p%beta
-    call convert_pc_to ((1+p%vec(6))* p%p0c, p%species, beta = p%beta)
-    p%vec(5) = p%vec(5) * p%beta / beta0
+    beta0 = v%beta(ip)
+    call convert_pc_to ((1+v%pz(ip))* v%p0c(ip), v%species(ip), beta = v%beta(ip))
+    v%z(ip) = v%z(ip) * v%beta(ip) / beta0
 
     ! Transverse space charge. Like the beam-beam interaction but in this case the particles are going
     ! in the same direction longitudinally. In this case, the kicks due to the electric and magnetic fields
     ! tend to cancel instead of add as in the bbi case.
 
     f0 = csr%kick_factor * csr%actual_track_step * classical_radius(csr%species) / (twopi * &
-             csr%dz_slice * csr%rel_mass * e_charge * abs(charge_of(p%species)) * (1 + p%vec(6)) * csr%gamma**3)
+             csr%dz_slice * csr%rel_mass * e_charge * abs(charge_of(v%species(ip))) * (1 + v%pz(ip)) * csr%gamma**3)
 
     dpx = 0;  dpy = 0
 
     ! Interpolate between slices. If one of the slices does not have 
 
     slice => csr%slice(i0)
-    call bbi_kick (p%vec(1)-slice%x0, p%vec(3)-slice%y0, [slice%sig_x, slice%sig_y], nk, dnk)
+    call bbi_kick (v%x(ip)-slice%x0, v%y(ip)-slice%y0, [slice%sig_x, slice%sig_y], nk, dnk)
     f = f0 * r0 * slice%charge / (slice%sig_x + slice%sig_y)
     ! The kick is negative of the bbi kick. That is, the kick is outward.
     dpx = -nk(1) * f
     dpy = -nk(2) * f
 
     slice => csr%slice(i0+1)
-    call bbi_kick (p%vec(1)-slice%x0, p%vec(3)-slice%y0, [slice%sig_x, slice%sig_y], nk, dnk)
+    call bbi_kick (v%x(ip)-slice%x0, v%y(ip)-slice%y0, [slice%sig_x, slice%sig_y], nk, dnk)
     f = f0 * r1 * slice%charge / (slice%sig_x + slice%sig_y)
     ! The kick is negative of the bbi kick. That is, the kick is outward.
     dpx = dpx - nk(1) * f   
@@ -1852,11 +2086,11 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
     if (slice%sig_x == 0 .or. slice%sig_y == 0) call err_exit
 
     ! 1/2 of the kick is electric and this leads to an energy change.
-    ! The formula for p%vec(6) assumes that dpx and dpy are small so only the linear terms are kept.
+    ! The formula for v%pz(ip) assumes that dpx and dpy are small so only the linear terms are kept.
 
-    p%vec(2) = p%vec(2) + dpx
-    p%vec(4) = p%vec(4) + dpy
-    p%vec(6) = p%vec(6) + 0.5_rp * (dpx*p%vec(2) + dpy*p%vec(4))
+    v%px(ip) = v%px(ip) + dpx
+    v%py(ip) = v%py(ip) + dpy
+    v%pz(ip) = v%pz(ip) + 0.5_rp * (dpx*v%px(ip) + dpy*v%py(ip))
   endif
 
 
@@ -1868,35 +2102,35 @@ endif
 ! Mesh Space charge kick
 
 if (ele%space_charge_method == fft_3d$) then
-  call apply_fft_3d_kicks(csr, particle)
+  call apply_fft_3d_kicks(csr, v)
 endif
 
-end subroutine csr_and_sc_apply_kicks
+end subroutine csr_and_sc_apply_kicks_view
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine apply_fft_3d_kicks (csr, particle)
+! Subroutine apply_fft_3d_kicks (csr, v)
 !
 ! Routine to apply FFT-based 3D space charge kicks to particles.
 ! Deposits charge on a mesh, solves for the field, interpolates back, and applies kicks.
 !
 ! Input:
 !   csr         -- csr_struct: Contains mesh, position arrays, and tracking parameters.
-!   particle(:) -- coord_struct: Particles to kick.
+!   v           -- csr_particle_view_struct: Particles to kick.
 !
 ! Output:
-!   particle(:) -- coord_struct: Particles with kicks applied.
+!   v           -- csr_particle_view_struct: Particles with kicks applied.
 !-
 
-subroutine apply_fft_3d_kicks (csr, particle)
+subroutine apply_fft_3d_kicks (csr, v)
 
 !$ use omp_lib, only: omp_in_parallel
 implicit none
 
 type (csr_struct), target :: csr
-type (coord_struct), target :: particle(:)
+type (csr_particle_view_struct) v
 
 ! Alive-particle data packed contiguously. Kept between calls (grow only) since this runs every
 ! tracking step and the arrays are as large as the bunch. The saved arrays are shared, so when called
@@ -1910,7 +2144,7 @@ logical :: nested
 
 !
 
-n = size(particle)
+n = size(v%z)
 nested = .false.
 !$ nested = omp_in_parallel()
 
@@ -1934,11 +2168,10 @@ subroutine kick_particles (x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
 
 real(rp) :: x_pk(:), y_pk(:), z_pk(:), q_pk(:), beta_pk(:), E_batch(:,:)
 integer :: idx_pk(:)
-type (coord_struct), pointer :: p
 real(rp) :: dct_ave, factor, pz0, ef, dpz, new_beta
 integer :: i, n, n_interp
 
-call pack_alive_particles (particle, x_pk, y_pk, z_pk, q_pk, beta_pk, idx_pk, n_interp)
+call pack_alive_particles (v, x_pk, y_pk, z_pk, q_pk, beta_pk, idx_pk, n_interp)
 if (n_interp == 0) return
 
 ! Do the calculation with respect to the average of (time - time_ref) so that adding a constant time offset
@@ -1960,21 +2193,20 @@ call space_charge_3d(csr%mesh3d)
 if (n_interp > 0) then
   call interpolate_field_batch(x_pk, y_pk, z_pk, csr%mesh3d, n_interp, E=E_batch)
 
-  !$OMP PARALLEL DO PRIVATE(n, i, p, factor, pz0, ef, dpz, new_beta)
+  !$OMP PARALLEL DO PRIVATE(n, i, factor, pz0, ef, dpz, new_beta)
   do n = 1, n_interp
     i = idx_pk(n)
-    p => particle(i)
-    factor = csr%actual_track_step / (p%p0c * p%beta)
-    pz0 = sqrt((1.0_rp + p%vec(6))**2 - p%vec(2)**2 - p%vec(4)**2)
+    factor = csr%actual_track_step / (v%p0c(i) * v%beta(i))
+    pz0 = sqrt((1.0_rp + v%pz(i))**2 - v%px(i)**2 - v%py(i)**2)
     ! Considering magnetic field also, effectively reduces this force by 1/gamma^2
-    p%vec(2) = p%vec(2) + E_batch(1,n) * factor / csr%mesh3d%gamma**2
-    p%vec(4) = p%vec(4) + E_batch(2,n) * factor / csr%mesh3d%gamma**2
+    v%px(i) = v%px(i) + E_batch(1,n) * factor / csr%mesh3d%gamma**2
+    v%py(i) = v%py(i) + E_batch(2,n) * factor / csr%mesh3d%gamma**2
     ef = E_batch(3,n) * factor
-    dpz = sqrt_alpha(1 + p%vec(6), ef*ef + 2 * ef * pz0)
-    p%vec(6) = p%vec(6) + dpz
-    call convert_pc_to (p%p0c * (1 + p%vec(6)), p%species, beta = new_beta)
-    p%vec(5) = p%vec(5) * new_beta / p%beta
-    p%beta = new_beta
+    dpz = sqrt_alpha(1 + v%pz(i), ef*ef + 2 * ef * pz0)
+    v%pz(i) = v%pz(i) + dpz
+    call convert_pc_to (v%p0c(i) * (1 + v%pz(i)), v%species(i), beta = new_beta)
+    v%z(i) = v%z(i) * new_beta / v%beta(i)
+    v%beta(i) = new_beta
   enddo
   !$OMP END PARALLEL DO
 endif
@@ -1987,29 +2219,29 @@ end subroutine apply_fft_3d_kicks
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine pack_alive_particles (particle, x, y, z, q, beta, idx, n_alive)
+! Subroutine pack_alive_particles (v, x, y, z, q, beta, idx, n_alive)
 !
 ! Routine to copy the coordinates of the live particles into contiguous arrays, in particle order.
 ! Large bunches are packed in parallel: each thread counts the live particles in its block, the
 ! counts give each block's offset, then each thread fills its part.
 !
 ! Input:
-!   particle(:)   -- coord_struct: Particles.
-!   x(:), ...     -- real(rp): Arrays at least as large as particle(:).
+!   v             -- csr_particle_view_struct: Particles.
+!   x(:), ...     -- real(rp): Arrays at least as large as the number of particles.
 !
 ! Output:
-!   x(:), y(:), z(:)  -- real(rp): vec(1), vec(3), vec(5) of the live particles in elements 1:n_alive.
+!   x(:), y(:), z(:)  -- real(rp): x, y, z of the live particles in elements 1:n_alive.
 !   q(:), beta(:)     -- real(rp): charge and beta.
-!   idx(:)            -- integer: Index in particle(:) of each packed particle.
+!   idx(:)            -- integer: Particle index of each packed particle.
 !   n_alive           -- integer: Number of live particles.
 !-
 
-subroutine pack_alive_particles (particle, x, y, z, q, beta, idx, n_alive)
+subroutine pack_alive_particles (v, x, y, z, q, beta, idx, n_alive)
 
 !$ use omp_lib
 implicit none
 
-type (coord_struct) particle(:)
+type (csr_particle_view_struct) v
 real(rp) x(:), y(:), z(:), q(:), beta(:)
 integer idx(:), n_alive
 integer, allocatable :: n_block(:)
@@ -2017,7 +2249,7 @@ integer i, k, it, nt, lo, hi, n_tot
 
 !
 
-n_tot = size(particle)
+n_tot = size(v%z)
 nt = 1
 !$ nt = omp_get_max_threads()
 allocate (n_block(0:nt))
@@ -2035,7 +2267,7 @@ lo = int(int(it, 8) * n_tot / nt) + 1
 hi = int(int(it + 1, 8) * n_tot / nt)
 
 do i = lo, hi
-  if (particle(i)%state == alive$) n_block(it+1) = n_block(it+1) + 1
+  if (v%state(i) == alive$) n_block(it+1) = n_block(it+1) + 1
 enddo
 
 !$OMP BARRIER
@@ -2047,13 +2279,13 @@ enddo
 
 k = n_block(it)
 do i = lo, hi
-  if (particle(i)%state /= alive$) cycle
+  if (v%state(i) /= alive$) cycle
   k = k + 1
-  x(k) = particle(i)%vec(1)
-  y(k) = particle(i)%vec(3)
-  z(k) = particle(i)%vec(5)
-  q(k) = particle(i)%charge
-  beta(k) = particle(i)%beta
+  x(k) = v%x(i)
+  y(k) = v%y(i)
+  z(k) = v%z(i)
+  q(k) = v%charge(i)
+  beta(k) = v%beta(i)
   idx(k) = i
 enddo
 !$OMP END PARALLEL
