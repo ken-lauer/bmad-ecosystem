@@ -1008,32 +1008,40 @@ end subroutine fast_track1_bunch
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine fast_track1_soa (soa, ele, param, tracked, why)
+! Subroutine fast_track1_soa (soa, ele, param, tracked, why, p0c_checked)
 !
 ! Routine to track a SoA bunch through an element or slice with the fast kernels, if they support it.
 ! Same as fast_track1_bunch but without the bunch <-> SoA conversion, so a SoA bunch can be kept
 ! across many slices. Drift-like slices are always tracked (fast_track_drifts is not used).
 ! If ele or the bunch is not supported nothing is done and tracked = False so the caller must fall back.
 !
+! The kernels do not change what fast_soa_compatible checks (direction, time_dir, species, p0c), so a
+! caller tracking the same SoA bunch through many slices can pass p0c_checked to skip the check when
+! the slice has the p0c_start that last passed. Set p0c_checked to a negative value whenever soa is
+! changed by anything but the kernels.
+!
 ! Input:
-!   soa       -- bunch_soa_struct: Starting bunch.
-!   ele       -- ele_struct: Element or slice.
-!   param     -- lat_param_struct: Branch parameters.
+!   soa         -- bunch_soa_struct: Starting bunch.
+!   ele         -- ele_struct: Element or slice.
+!   param       -- lat_param_struct: Branch parameters.
+!   p0c_checked -- real(rp), optional: ele%value(p0c_start$) of the last slice that passed the check.
 !
 ! Output:
-!   soa       -- bunch_soa_struct: Ending bunch if tracked = True.
-!   tracked   -- logical: True if the fast kernels were used.
-!   why       -- character(*), optional: Reason if not tracked.
+!   soa         -- bunch_soa_struct: Ending bunch if tracked = True.
+!   tracked     -- logical: True if the fast kernels were used.
+!   why         -- character(*), optional: Reason if not tracked.
+!   p0c_checked -- real(rp), optional: Updated.
 !-
 
-subroutine fast_track1_soa (soa, ele, param, tracked, why)
+subroutine fast_track1_soa (soa, ele, param, tracked, why, p0c_checked)
 
 type (bunch_soa_struct) soa
 type (ele_struct) ele
 type (lat_param_struct) param
 type (fast_slice_struct) fs
 
-logical tracked
+real(rp), optional :: p0c_checked
+logical tracked, skip_check
 character(*), optional :: why
 character(100) reason
 
@@ -1041,9 +1049,14 @@ character(100) reason
 
 tracked = .false.
 if (.not. fast_slice_setup(ele, param, fs, why)) return
-if (.not. fast_soa_compatible(soa, ele, fs, reason)) then
-  call fast_note_why (ele, reason, why)
-  return
+skip_check = .false.
+if (present(p0c_checked)) skip_check = (p0c_checked >= 0 .and. p0c_checked == ele%value(p0c_start$))
+if (.not. skip_check) then
+  if (.not. fast_soa_compatible(soa, ele, fs, reason)) then
+    call fast_note_why (ele, reason, why)
+    return
+  endif
+  if (present(p0c_checked)) p0c_checked = ele%value(p0c_start$)
 endif
 call fast_track_soa (soa, fs)
 tracked = .true.

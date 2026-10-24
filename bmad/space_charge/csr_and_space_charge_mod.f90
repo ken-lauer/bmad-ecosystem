@@ -189,7 +189,7 @@ type (csr_particle_view_struct) v
 
 real(rp), optional :: s_start, s_end
 real(rp) s0_step, vec0(6), vec(6), theta_chord, theta0, theta1, L
-real(rp) e_tot, f1, x, z, ds_step, s_save_last
+real(rp) e_tot, f1, x, z, ds_step, s_save_last, p0c_checked
 
 integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
@@ -287,6 +287,7 @@ call save_a_bunch_step (ele, bunch, bunch_track, s_start)
 
 use_soa = csr_use_soa(ele)
 bunch_stale = .false.
+p0c_checked = -1
 if (use_soa) then
   !$OMP parallel do if (size(bunch%particle) > 10000)
   do j = 1, size(bunch%particle)
@@ -311,7 +312,7 @@ do i_step = 0, n_step
     call element_slice_iterator (ele, branch%param, i_step, n_step, runt, s_start, s_end)
     if (use_soa) then
       tracked = .false.
-      if (.not. bunch_wake_here(runt)) call fast_track1_soa (csr_soa, runt, branch%param, tracked)
+      if (.not. bunch_wake_here(runt)) call fast_track1_soa (csr_soa, runt, branch%param, tracked, p0c_checked = p0c_checked)
       if (tracked) then
         bunch_stale = .true.
       else
@@ -319,6 +320,7 @@ do i_step = 0, n_step
         call track1_bunch_hom (bunch, runt)
         call bunch_to_soa (bunch, csr_soa)
         call csr_view_soa (csr_soa, v)
+        p0c_checked = -1
       endif
     else
       call track1_bunch_hom (bunch, runt)
@@ -2169,15 +2171,31 @@ subroutine kick_particles (x_pk, y_pk, z_pk, q_pk, beta_pk, E_batch, idx_pk)
 real(rp) :: x_pk(:), y_pk(:), z_pk(:), q_pk(:), beta_pk(:), E_batch(:,:)
 integer :: idx_pk(:)
 real(rp) :: dct_ave, factor, pz0, ef, dpz, new_beta
-integer :: i, n, n_interp
+real(rp), allocatable :: part(:)
+integer :: i, n, n_interp, nb, ib
 
 call pack_alive_particles (v, x_pk, y_pk, z_pk, q_pk, beta_pk, idx_pk, n_interp)
 if (n_interp == 0) return
 
 ! Do the calculation with respect to the average of (time - time_ref) so that adding a constant time offset
-! will not affect the calculation. Summed serially in particle order, as before packing, for identical results.
+! will not affect the calculation. Summed in fixed blocks in particle order so the result does not depend
+! on the number of threads (and is a plain serial sum for at most 4096 particles).
 
-dct_ave = sum(z_pk(1:n_interp) / beta_pk(1:n_interp)) / n_interp
+nb = (n_interp + 4095) / 4096
+allocate (part(nb))
+!$OMP PARALLEL DO PRIVATE(n) IF (nb > 1)
+do ib = 1, nb
+  part(ib) = 0
+  do n = (ib-1)*4096+1, min(ib*4096, n_interp)
+    part(ib) = part(ib) + z_pk(n) / beta_pk(n)
+  enddo
+enddo
+!$OMP END PARALLEL DO
+dct_ave = 0
+do ib = 1, nb
+  dct_ave = dct_ave + part(ib)
+enddo
+dct_ave = dct_ave / n_interp
 
 !$OMP PARALLEL DO IF (n_interp > 10000)
 do n = 1, n_interp

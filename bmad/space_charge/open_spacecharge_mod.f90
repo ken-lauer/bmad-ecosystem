@@ -298,7 +298,7 @@ n_particles = size(xa)
 
 
 if (present(qa)) then
-    mesh3d%charge = sum(qa)
+    mesh3d%charge = osc_ordered_sum(qa)
 elseif (present(total_charge) .and. .not. present(qa)) then
     mesh3d%charge = total_charge
     charge1 = total_charge/n_particles
@@ -306,9 +306,6 @@ else
     write(*, *) 'Error, must specify qa or total_charge'
     return
 endif
-
-! Clear 
-mesh3d%rho(ilo:ihi,jlo:jhi,klo:khi) = 0
 
 ! Deposit particles onto mesh using trilinear weighting.
 if (n_particles >= 50000) then
@@ -384,6 +381,7 @@ if (n_particles >= 50000) then
 
 else
   ! Serial path for small particle counts (avoids OpenMP overhead)
+  mesh3d%rho(ilo:ihi,jlo:jhi,klo:khi) = 0
   do n = 1, n_particles
     ip = floor((xa(n)-xmin)*dxi+1)
     jp = floor((ya(n)-ymin)*dyi+1)
@@ -915,6 +913,46 @@ enddo
 
 end subroutine osc_freespace_solver2
 
+
+!------------------------------------------------------------------------
+!+
+! Function osc_ordered_sum(a) result(total)
+!
+! Sum of a(:), computed in parallel over fixed blocks of 4096 elements whose sums are then added in
+! order. The result does not depend on the number of threads, and for at most 4096 elements is the
+! same as a serial sum.
+!
+! Input:
+!   a(:)    -- real(dp): Values.
+!
+! Output:
+!   total   -- real(dp): Sum.
+!-
+
+function osc_ordered_sum(a) result(total)
+real(dp) :: a(:), total
+real(dp), allocatable :: part(:)
+integer, parameter :: blk = 4096
+integer :: n, nb, ib, i
+
+n = size(a)
+nb = (n + blk - 1) / blk
+allocate(part(nb))
+!$OMP PARALLEL DO PRIVATE(i) IF (nb > 1)
+do ib = 1, nb
+  part(ib) = 0
+  do i = (ib-1)*blk+1, min(ib*blk, n)
+    part(ib) = part(ib) + a(i)
+  enddo
+enddo
+!$OMP END PARALLEL DO
+
+total = 0
+do ib = 1, nb
+  total = total + part(ib)
+enddo
+
+end function osc_ordered_sum
 
 !------------------------------------------------------------------------
 !+
