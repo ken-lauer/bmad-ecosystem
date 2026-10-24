@@ -158,6 +158,7 @@ end subroutine
 !routine for charge deposition
 subroutine deposit_particles(xa, ya, za, mesh3d, qa, total_charge, resize_mesh, mesh_growth_factor, mesh_shrink_factor)
 
+!$ use omp_lib
 real(dp) :: xa(:),ya(:),za(:)
 type(mesh3d_struct) :: mesh3d
 real(dp), optional :: qa(:), total_charge
@@ -171,7 +172,8 @@ real(dp) :: dxi,dyi,dzi,ab,de,gh
 real(dp) :: oab  ! 1-ab
 integer :: i, ilo, jlo, klo, ihi, jhi, khi, nlo(3), nhi(3)
 integer :: n,ip,jp,kp, n_particles
-real(dp), allocatable :: rho_priv(:,:,:)
+real(dp), allocatable :: rho_all(:,:,:,:)
+integer :: it, t, k, nt, nt_team
 
 ! Saved mesh geometry for lazy resizing. Persists between calls so delta
 ! stays constant when the bunch barely changes, enabling Green function caching.
@@ -305,11 +307,21 @@ mesh3d%rho(ilo:ihi,jlo:jhi,klo:khi) = 0
 
 ! Deposit particles onto mesh using trilinear weighting.
 if (n_particles >= 50000) then
-  ! OpenMP path: each thread accumulates into a private rho copy, then sum into shared mesh.
-  !$OMP PARALLEL PRIVATE(rho_priv, n, ip, jp, kp, ab, de, gh, oab, charge1) &
-  !$OMP& SHARED(mesh3d, xa, ya, za, qa, n_particles, dxi, dyi, dzi, dx, dy, dz, xmin, ymin, zmin, ilo, ihi, jlo, jhi, klo, khi)
-  allocate(rho_priv(ilo:ihi+1, jlo:jhi+1, klo:khi+1))
-  rho_priv = 0
+  ! OpenMP path: each thread accumulates into its own copy of the mesh, then the copies are summed
+  ! plane by plane in parallel, in thread order (deterministic for a given number of threads).
+  nt = 1
+  !$ nt = omp_get_max_threads()
+  allocate(rho_all(ilo:ihi+1, jlo:jhi+1, klo:khi+1, 0:nt-1))
+
+  !$OMP PARALLEL PRIVATE(it, t, k, n, ip, jp, kp, ab, de, gh, oab, charge1) &
+  !$OMP& SHARED(nt_team, rho_all, mesh3d, xa, ya, za, qa, n_particles, dxi, dyi, dzi, dx, dy, dz, xmin, ymin, zmin, ilo, ihi, jlo, jhi, klo, khi)
+  it = 0
+  !$ it = omp_get_thread_num()
+  !$OMP SINGLE
+  nt_team = 1
+  !$ nt_team = omp_get_num_threads()
+  !$OMP END SINGLE
+  rho_all(:,:,:,it) = 0
 
   if (present(qa)) then
     !$OMP DO SCHEDULE(STATIC)
@@ -322,17 +334,18 @@ if (n_particles >= 50000) then
       gh = ((zmin-za(n))+kp*dz)*dzi
       oab = 1.0_dp - ab
       charge1 = qa(n)
-      rho_priv(ip,  jp,  kp)   = rho_priv(ip,  jp,  kp)   + ab *de     *gh     *charge1
-      rho_priv(ip,  jp+1,kp)   = rho_priv(ip,  jp+1,kp)   + ab *(1-de) *gh     *charge1
-      rho_priv(ip,  jp+1,kp+1) = rho_priv(ip,  jp+1,kp+1) + ab *(1-de) *(1-gh) *charge1
-      rho_priv(ip,  jp,  kp+1) = rho_priv(ip,  jp,  kp+1) + ab *de     *(1-gh) *charge1
-      rho_priv(ip+1,jp,  kp+1) = rho_priv(ip+1,jp,  kp+1) + oab*de     *(1-gh) *charge1
-      rho_priv(ip+1,jp+1,kp+1) = rho_priv(ip+1,jp+1,kp+1) + oab*(1-de) *(1-gh) *charge1
-      rho_priv(ip+1,jp+1,kp)   = rho_priv(ip+1,jp+1,kp)   + oab*(1-de) *gh     *charge1
-      rho_priv(ip+1,jp,  kp)   = rho_priv(ip+1,jp,  kp)   + oab*de     *gh     *charge1
+      rho_all(ip,  jp,  kp,  it) = rho_all(ip,  jp,  kp,  it) + ab *de     *gh     *charge1
+      rho_all(ip,  jp+1,kp,  it) = rho_all(ip,  jp+1,kp,  it) + ab *(1-de) *gh     *charge1
+      rho_all(ip,  jp+1,kp+1,it) = rho_all(ip,  jp+1,kp+1,it) + ab *(1-de) *(1-gh) *charge1
+      rho_all(ip,  jp,  kp+1,it) = rho_all(ip,  jp,  kp+1,it) + ab *de     *(1-gh) *charge1
+      rho_all(ip+1,jp,  kp+1,it) = rho_all(ip+1,jp,  kp+1,it) + oab*de     *(1-gh) *charge1
+      rho_all(ip+1,jp+1,kp+1,it) = rho_all(ip+1,jp+1,kp+1,it) + oab*(1-de) *(1-gh) *charge1
+      rho_all(ip+1,jp+1,kp,  it) = rho_all(ip+1,jp+1,kp,  it) + oab*(1-de) *gh     *charge1
+      rho_all(ip+1,jp,  kp,  it) = rho_all(ip+1,jp,  kp,  it) + oab*de     *gh     *charge1
     enddo
     !$OMP END DO
   else
+    charge1 = mesh3d%charge / n_particles
     !$OMP DO SCHEDULE(STATIC)
     do n = 1, n_particles
       ip = floor((xa(n)-xmin)*dxi+1)
@@ -342,22 +355,26 @@ if (n_particles >= 50000) then
       de = ((ymin-ya(n))+jp*dy)*dyi
       gh = ((zmin-za(n))+kp*dz)*dzi
       oab = 1.0_dp - ab
-      rho_priv(ip,  jp,  kp)   = rho_priv(ip,  jp,  kp)   + ab *de     *gh     *charge1
-      rho_priv(ip,  jp+1,kp)   = rho_priv(ip,  jp+1,kp)   + ab *(1-de) *gh     *charge1
-      rho_priv(ip,  jp+1,kp+1) = rho_priv(ip,  jp+1,kp+1) + ab *(1-de) *(1-gh) *charge1
-      rho_priv(ip,  jp,  kp+1) = rho_priv(ip,  jp,  kp+1) + ab *de     *(1-gh) *charge1
-      rho_priv(ip+1,jp,  kp+1) = rho_priv(ip+1,jp,  kp+1) + oab*de     *(1-gh) *charge1
-      rho_priv(ip+1,jp+1,kp+1) = rho_priv(ip+1,jp+1,kp+1) + oab*(1-de) *(1-gh) *charge1
-      rho_priv(ip+1,jp+1,kp)   = rho_priv(ip+1,jp+1,kp)   + oab*(1-de) *gh     *charge1
-      rho_priv(ip+1,jp,  kp)   = rho_priv(ip+1,jp,  kp)   + oab*de     *gh     *charge1
+      rho_all(ip,  jp,  kp,  it) = rho_all(ip,  jp,  kp,  it) + ab *de     *gh     *charge1
+      rho_all(ip,  jp+1,kp,  it) = rho_all(ip,  jp+1,kp,  it) + ab *(1-de) *gh     *charge1
+      rho_all(ip,  jp+1,kp+1,it) = rho_all(ip,  jp+1,kp+1,it) + ab *(1-de) *(1-gh) *charge1
+      rho_all(ip,  jp,  kp+1,it) = rho_all(ip,  jp,  kp+1,it) + ab *de     *(1-gh) *charge1
+      rho_all(ip+1,jp,  kp+1,it) = rho_all(ip+1,jp,  kp+1,it) + oab*de     *(1-gh) *charge1
+      rho_all(ip+1,jp+1,kp+1,it) = rho_all(ip+1,jp+1,kp+1,it) + oab*(1-de) *(1-gh) *charge1
+      rho_all(ip+1,jp+1,kp,  it) = rho_all(ip+1,jp+1,kp,  it) + oab*(1-de) *gh     *charge1
+      rho_all(ip+1,jp,  kp,  it) = rho_all(ip+1,jp,  kp,  it) + oab*de     *gh     *charge1
     enddo
     !$OMP END DO
   endif
 
-  !$OMP CRITICAL (deposit_rho_reduce)
-  mesh3d%rho(ilo:ihi,jlo:jhi,klo:khi) = mesh3d%rho(ilo:ihi,jlo:jhi,klo:khi) + rho_priv(ilo:ihi,jlo:jhi,klo:khi)
-  !$OMP END CRITICAL (deposit_rho_reduce)
-  deallocate(rho_priv)
+  !$OMP DO SCHEDULE(STATIC)
+  do k = klo, khi
+    mesh3d%rho(ilo:ihi,jlo:jhi,k) = rho_all(ilo:ihi,jlo:jhi,k,0)
+    do t = 1, nt_team-1
+      mesh3d%rho(ilo:ihi,jlo:jhi,k) = mesh3d%rho(ilo:ihi,jlo:jhi,k) + rho_all(ilo:ihi,jlo:jhi,k,t)
+    enddo
+  enddo
+  !$OMP END DO
   !$OMP END PARALLEL
 
 else
