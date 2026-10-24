@@ -669,6 +669,7 @@ call re_allocate(bunch%ix_z, n_max)
 allocate (z_key(n_max))
 
 nm = 0
+!$OMP parallel do reduction(+:nm) if (n_max > 10000)
 do ix = 1, n_max
   if (particle(ix)%state == alive$) then
     nm = nm + 1
@@ -677,11 +678,96 @@ do ix = 1, n_max
     z_key(ix) = huge(0.0_rp)
   endif
 enddo
+!$OMP end parallel do
 
-call indexer (z_key, bunch%ix_z)
+call index_sort_blocked (z_key, bunch%ix_z)
 bunch%n_live = nm
 
 end subroutine order_particles_in_z
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine index_sort_blocked (key, ix)
+!
+! Routine to compute ix such that key(ix(:)) is in ascending order, like indexer, using OpenMP for
+! large arrays: blocks of a fixed size are sorted in parallel with indexer and then merged pairwise,
+! the merges of each round running in parallel. The block size does not depend on the number of
+! threads, so neither does the result. The order of equal keys may differ from indexer's.
+!
+! Input:
+!   key(:)    -- real(rp): Sort keys.
+!
+! Output:
+!   ix(:)     -- integer: Index array. Same size as key.
+!-
+
+subroutine index_sort_blocked (key, ix)
+
+implicit none
+
+real(rp) key(:)
+integer ix(:)
+integer, allocatable :: tmp(:)
+integer, parameter :: blk = 16384
+integer n, nb, ib, i0, i1, width, s, m, e
+
+!
+
+n = size(key)
+if (n <= blk) then
+  call indexer (key, ix)
+  return
+endif
+
+nb = (n + blk - 1) / blk
+!$OMP parallel do private(i0, i1)
+do ib = 1, nb
+  i0 = (ib - 1) * blk + 1
+  i1 = min(ib * blk, n)
+  call indexer (key(i0:i1), ix(i0:i1))
+  ix(i0:i1) = ix(i0:i1) + (i0 - 1)
+enddo
+!$OMP end parallel do
+
+allocate (tmp(n))
+width = blk
+do while (width < n)
+  !$OMP parallel do private(s, m, e)
+  do ib = 1, (n + 2*width - 1) / (2*width)
+    s = (ib - 1) * 2 * width + 1
+    m = min(s + width - 1, n)
+    e = min(s + 2 * width - 1, n)
+    call merge_runs (s, m, e)
+    ix(s:e) = tmp(s:e)
+  enddo
+  !$OMP end parallel do
+  width = 2 * width
+enddo
+
+!----------------------
+contains
+
+! Merge the sorted runs ix(s:m) and ix(m+1:e) into tmp(s:e). Ties take the left run first.
+
+subroutine merge_runs (s, m, e)
+integer s, m, e, i, j, k
+i = s;  j = m + 1
+do k = s, e
+  if (j > e) then
+    tmp(k) = ix(i);  i = i + 1
+  elseif (i > m) then
+    tmp(k) = ix(j);  j = j + 1
+  elseif (key(ix(j)) < key(ix(i))) then
+    tmp(k) = ix(j);  j = j + 1
+  else
+    tmp(k) = ix(i);  i = i + 1
+  endif
+enddo
+end subroutine merge_runs
+
+end subroutine index_sort_blocked
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
