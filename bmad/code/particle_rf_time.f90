@@ -44,6 +44,10 @@ type (ele_pointer_struct), allocatable :: chain(:)
 real(rp), optional :: s_rel, rf_freq
 real(qp) time
 real(rp) s_hard_offset, beta0, freq
+! Last rf_freq and the corresponding half period, to avoid a quad precision division per call.
+real(rp), save :: rf_freq_last = 0
+real(qp), save :: half_period_last = 0
+!$OMP THREADPRIVATE(rf_freq_last, half_period_last)
 integer n, ix_pass, n_links, harmonic
 logical, optional :: reference_active_edge, time_coords, abs_time
 
@@ -114,7 +118,13 @@ if (logic_option(.false., reference_active_edge) .and. (ref_ele%key == rfcavity$
 endif
 
 if (present(rf_freq)) then
-  if (rf_freq /= 0) time = modulo2(time, 0.5_qp/rf_freq)
+  if (rf_freq /= 0) then
+    if (rf_freq /= rf_freq_last) then
+      half_period_last = 0.5_qp/rf_freq
+      rf_freq_last = rf_freq
+    endif
+    time = modulo2(time, half_period_last)
+  endif
 endif
 
 end function particle_rf_time

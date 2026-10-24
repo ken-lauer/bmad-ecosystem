@@ -1419,10 +1419,22 @@ type (em_field_struct) :: field2
 type (ele_struct), pointer :: lord, ele2
 type (branch_struct), pointer :: branch
 real(rp) s_this, s_this2, ds
-integer i
-logical stay_local, err
+integer i, n_field_lord
+logical stay_local, err, need_list
 
-call used_list_setup()
+! With a single lord with a field, no element can be reached twice, so a list of used elements is
+! only needed if the caller has one or there are several such lords.
+
+need_list = present(used_eles)
+if (.not. need_list) then
+  n_field_lord = 0
+  do i = 1, ele%n_lord
+    lord => pointer_to_lord(ele, i)
+    if (lord%field_calc /= no_field$) n_field_lord = n_field_lord + 1
+  enddo
+  need_list = (n_field_lord > 1)
+  if (need_list) call used_list_setup()
+endif
 
 ! The lords of an element may have independent misalignments.
 ! So use an orbit that is in the lab frame and not in the slave's reference frame.
@@ -1470,9 +1482,12 @@ lord_loop: do i = 1, ele%n_lord
   if (present(used_eles)) then
     call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
                           use_overlap, grid_allow_s_out_of_bounds, rf_time, used_eles, print_err, ele)
-  else
+  elseif (need_list) then
     call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
                           use_overlap, grid_allow_s_out_of_bounds, rf_time, used_list, print_err, ele)
+  else
+    call em_field_calc (lord, param, s_this2, this_orb, stay_local, field2, calc_dfield, err, calc_potential, &
+                          use_overlap, grid_allow_s_out_of_bounds, rf_time, print_err = print_err, original_ele = ele)
   endif
 
   if (err) then
