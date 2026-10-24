@@ -6,9 +6,10 @@ use open_spacecharge_core_mod
 
 implicit none
 
-! FFTW plans for the zero padded convolution in osc_freespace_solver2. See osc_padded_fft_plan.
-type (c_ptr), private, save :: pfft_r2c_x = c_null_ptr, pfft_fwd_y = c_null_ptr, pfft_fwd_z = c_null_ptr
-type (c_ptr), private, save :: pfft_bwd_z = c_null_ptr, pfft_bwd_y = c_null_ptr, pfft_c2r_x = c_null_ptr
+! FFTW plans for the convolution in osc_freespace_solver2. See osc_padded_fft_plan.
+type (c_ptr), private, save :: pfft_r2c_x = c_null_ptr, pfft_r2c_xa = c_null_ptr, pfft_c2r_x = c_null_ptr
+type (c_ptr), private, save :: pfft_fwd_y = c_null_ptr, pfft_bwd_y = c_null_ptr
+type (c_ptr), private, save :: pfft_fwd_z = c_null_ptr, pfft_bwd_z = c_null_ptr
 
 
 ! Fortran 2008
@@ -177,8 +178,11 @@ real(dp) :: dxi,dyi,dzi,ab,de,gh
 real(dp) :: oab  ! 1-ab
 integer :: i, ilo, jlo, klo, ihi, jhi, khi, nlo(3), nhi(3)
 integer :: n,ip,jp,kp, n_particles
-real(dp), allocatable :: rho_all(:,:,:,:)
-integer :: it, t, k, nt, nt_team
+real(dp), allocatable :: sw(:,:), plane(:,:)
+real(dp) :: q1
+integer, allocatable :: kp_all(:), cnt(:,:), kstart(:), sij(:,:)
+integer, parameter :: dep_block = 16384
+integer :: k, nb, ib, m, nc
 
 ! Saved mesh geometry for lazy resizing. Persists between calls so delta
 ! stays constant when the bunch barely changes, enabling Green function caching.
@@ -309,74 +313,88 @@ endif
 
 ! Deposit particles onto mesh using trilinear weighting.
 if (n_particles >= 50000) then
-  ! OpenMP path: each thread accumulates into its own copy of the mesh, then the copies are summed
-  ! plane by plane in parallel, in thread order (deterministic for a given number of threads).
-  nt = 1
-  !$ nt = omp_get_max_threads()
-  allocate(rho_all(ilo:ihi+1, jlo:jhi+1, klo:khi+1, 0:nt-1))
+  ! OpenMP path. Particles are bucketed by their lower z plane kp with a stable counting sort over
+  ! fixed blocks of particles, then each mesh plane is filled by one thread from the two buckets that
+  ! reach it, always in the same order. The result does not depend on the number of threads.
+  if (.not. present(qa)) charge1 = mesh3d%charge / n_particles
+  nb = (n_particles + dep_block - 1) / dep_block
+  allocate (kp_all(n_particles), cnt(klo:khi, nb), kstart(klo:khi+1), sw(4, n_particles), sij(2, n_particles))
 
-  !$OMP PARALLEL PRIVATE(it, t, k, n, ip, jp, kp, ab, de, gh, oab, charge1) &
-  !$OMP& SHARED(nt_team, rho_all, mesh3d, xa, ya, za, qa, n_particles, dxi, dyi, dzi, dx, dy, dz, xmin, ymin, zmin, ilo, ihi, jlo, jhi, klo, khi)
-  it = 0
-  !$ it = omp_get_thread_num()
-  !$OMP SINGLE
-  nt_team = 1
-  !$ nt_team = omp_get_num_threads()
-  !$OMP END SINGLE
-  rho_all(:,:,:,it) = 0
-
-  if (present(qa)) then
-    !$OMP DO SCHEDULE(STATIC)
-    do n = 1, n_particles
-      ip = floor((xa(n)-xmin)*dxi+1)
-      jp = floor((ya(n)-ymin)*dyi+1)
+  !$OMP PARALLEL DO PRIVATE(n, kp)
+  do ib = 1, nb
+    cnt(:, ib) = 0
+    do n = (ib-1)*dep_block+1, merge(ib*dep_block, n_particles, ib < nb)
       kp = floor((za(n)-zmin)*dzi+1)
-      ab = ((xmin-xa(n))+ip*dx)*dxi
-      de = ((ymin-ya(n))+jp*dy)*dyi
-      gh = ((zmin-za(n))+kp*dz)*dzi
-      oab = 1.0_dp - ab
-      charge1 = qa(n)
-      rho_all(ip,  jp,  kp,  it) = rho_all(ip,  jp,  kp,  it) + ab *de     *gh     *charge1
-      rho_all(ip,  jp+1,kp,  it) = rho_all(ip,  jp+1,kp,  it) + ab *(1-de) *gh     *charge1
-      rho_all(ip,  jp+1,kp+1,it) = rho_all(ip,  jp+1,kp+1,it) + ab *(1-de) *(1-gh) *charge1
-      rho_all(ip,  jp,  kp+1,it) = rho_all(ip,  jp,  kp+1,it) + ab *de     *(1-gh) *charge1
-      rho_all(ip+1,jp,  kp+1,it) = rho_all(ip+1,jp,  kp+1,it) + oab*de     *(1-gh) *charge1
-      rho_all(ip+1,jp+1,kp+1,it) = rho_all(ip+1,jp+1,kp+1,it) + oab*(1-de) *(1-gh) *charge1
-      rho_all(ip+1,jp+1,kp,  it) = rho_all(ip+1,jp+1,kp,  it) + oab*(1-de) *gh     *charge1
-      rho_all(ip+1,jp,  kp,  it) = rho_all(ip+1,jp,  kp,  it) + oab*de     *gh     *charge1
-    enddo
-    !$OMP END DO
-  else
-    charge1 = mesh3d%charge / n_particles
-    !$OMP DO SCHEDULE(STATIC)
-    do n = 1, n_particles
-      ip = floor((xa(n)-xmin)*dxi+1)
-      jp = floor((ya(n)-ymin)*dyi+1)
-      kp = floor((za(n)-zmin)*dzi+1)
-      ab = ((xmin-xa(n))+ip*dx)*dxi
-      de = ((ymin-ya(n))+jp*dy)*dyi
-      gh = ((zmin-za(n))+kp*dz)*dzi
-      oab = 1.0_dp - ab
-      rho_all(ip,  jp,  kp,  it) = rho_all(ip,  jp,  kp,  it) + ab *de     *gh     *charge1
-      rho_all(ip,  jp+1,kp,  it) = rho_all(ip,  jp+1,kp,  it) + ab *(1-de) *gh     *charge1
-      rho_all(ip,  jp+1,kp+1,it) = rho_all(ip,  jp+1,kp+1,it) + ab *(1-de) *(1-gh) *charge1
-      rho_all(ip,  jp,  kp+1,it) = rho_all(ip,  jp,  kp+1,it) + ab *de     *(1-gh) *charge1
-      rho_all(ip+1,jp,  kp+1,it) = rho_all(ip+1,jp,  kp+1,it) + oab*de     *(1-gh) *charge1
-      rho_all(ip+1,jp+1,kp+1,it) = rho_all(ip+1,jp+1,kp+1,it) + oab*(1-de) *(1-gh) *charge1
-      rho_all(ip+1,jp+1,kp,  it) = rho_all(ip+1,jp+1,kp,  it) + oab*(1-de) *gh     *charge1
-      rho_all(ip+1,jp,  kp,  it) = rho_all(ip+1,jp,  kp,  it) + oab*de     *gh     *charge1
-    enddo
-    !$OMP END DO
-  endif
-
-  !$OMP DO SCHEDULE(STATIC)
-  do k = klo, khi
-    mesh3d%rho(ilo:ihi,jlo:jhi,k) = rho_all(ilo:ihi,jlo:jhi,k,0)
-    do t = 1, nt_team-1
-      mesh3d%rho(ilo:ihi,jlo:jhi,k) = mesh3d%rho(ilo:ihi,jlo:jhi,k) + rho_all(ilo:ihi,jlo:jhi,k,t)
+      kp_all(n) = kp
+      cnt(kp, ib) = cnt(kp, ib) + 1
     enddo
   enddo
+  !$OMP END PARALLEL DO
+
+  m = 0
+  do k = klo, khi
+    kstart(k) = m + 1
+    do ib = 1, nb
+      nc = cnt(k, ib)
+      cnt(k, ib) = m
+      m = m + nc
+    enddo
+  enddo
+  kstart(khi+1) = m + 1
+
+  !$OMP PARALLEL DO PRIVATE(n, m, ip, jp, kp)
+  do ib = 1, nb
+    do n = (ib-1)*dep_block+1, merge(ib*dep_block, n_particles, ib < nb)
+      kp = kp_all(n)
+      cnt(kp, ib) = cnt(kp, ib) + 1
+      m = cnt(kp, ib)
+      ip = floor((xa(n)-xmin)*dxi+1)
+      jp = floor((ya(n)-ymin)*dyi+1)
+      sij(1, m) = ip
+      sij(2, m) = jp
+      sw(1, m) = ((xmin-xa(n))+ip*dx)*dxi
+      sw(2, m) = ((ymin-ya(n))+jp*dy)*dyi
+      sw(3, m) = ((zmin-za(n))+kp*dz)*dzi
+      if (present(qa)) then
+        sw(4, m) = qa(n)
+      else
+        sw(4, m) = charge1
+      endif
+    enddo
+  enddo
+  !$OMP END PARALLEL DO
+
+  !$OMP PARALLEL PRIVATE(plane, k, m, ip, jp, ab, de, gh, oab, q1)
+  allocate (plane(ilo:ihi+1, jlo:jhi+1))
+  !$OMP DO SCHEDULE(DYNAMIC)
+  do k = klo, khi
+    plane = 0
+    ! Particles with lower plane k-1 reach plane k with weight 1-gh.
+    if (k > klo) then
+      do m = kstart(k-1), kstart(k)-1
+        ip = sij(1, m);  jp = sij(2, m)
+        ab = sw(1, m);  de = sw(2, m);  gh = sw(3, m);  q1 = sw(4, m)
+        oab = 1.0_dp - ab
+        plane(ip,  jp+1) = plane(ip,  jp+1) + ab *(1-de) *(1-gh) *q1
+        plane(ip,  jp  ) = plane(ip,  jp  ) + ab *de     *(1-gh) *q1
+        plane(ip+1,jp  ) = plane(ip+1,jp  ) + oab*de     *(1-gh) *q1
+        plane(ip+1,jp+1) = plane(ip+1,jp+1) + oab*(1-de) *(1-gh) *q1
+      enddo
+    endif
+    ! Particles with lower plane k, weight gh.
+    do m = kstart(k), kstart(k+1)-1
+      ip = sij(1, m);  jp = sij(2, m)
+      ab = sw(1, m);  de = sw(2, m);  gh = sw(3, m);  q1 = sw(4, m)
+      oab = 1.0_dp - ab
+      plane(ip,  jp  ) = plane(ip,  jp  ) + ab *de     *gh     *q1
+      plane(ip,  jp+1) = plane(ip,  jp+1) + ab *(1-de) *gh     *q1
+      plane(ip+1,jp+1) = plane(ip+1,jp+1) + oab*(1-de) *gh     *q1
+      plane(ip+1,jp  ) = plane(ip+1,jp  ) + oab*de     *gh     *q1
+    enddo
+    mesh3d%rho(ilo:ihi, jlo:jhi, k) = plane(ilo:ihi, jlo:jhi)
+  enddo
   !$OMP END DO
+  deallocate (plane)
   !$OMP END PARALLEL
 
 else
@@ -826,7 +844,7 @@ nh = nx2/2 + 1
 if (nx2 /= alloc_nx2 .or. ny2 /= alloc_ny2 .or. nz2 /= alloc_nz2) then
   if (allocated(rbuf)) deallocate(rbuf, crho, cprod)
   allocate(rbuf(nx2, ny2, nz2), crho(nh, ny2, nz2), cprod(nh, ny2, nz2))
-  call osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
+  call osc_padded_fft_plan(nx, ny, nz)
   alloc_nx2 = nx2; alloc_ny2 = ny2; alloc_nz2 = nz2
 endif
 !$OMP END CRITICAL (solver2_scratch_lock)
@@ -879,7 +897,7 @@ do icomp=0, 3
   if (.not. grn_cache_valid(icomp)) then
     ! Cache miss: compute Green function, forward FFT into the cache
     call osc_get_rgrn_freespace(rbuf, delta, gamma, icomp, offset=offset_eff)
-    call rcfft3d(rbuf, grn_fft_cache(:,:,:,icomp), nx2, ny2, nz2)
+    call osc_full_fft_forward(rbuf, grn_fft_cache(:,:,:,icomp), nx, ny, nz)
     grn_cache_valid(icomp) = .true.
   endif
   !$OMP PARALLEL DO
@@ -956,72 +974,97 @@ end function osc_ordered_sum
 
 !------------------------------------------------------------------------
 !+
-! Subroutine osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
+! Subroutine osc_padded_fft_plan(nx, ny, nz)
 !
-! Makes the FFTW plans used by osc_padded_fft_forward and osc_padded_fft_backward on the
-! solver's own scratch arrays, which must not be moved or reallocated while the plans are in use.
-! The arrays are overwritten (FFTW_MEASURE).
+! Makes the FFTW plans used by osc_padded_fft_forward, osc_full_fft_forward and
+! osc_padded_fft_backward for a (2nx, 2ny, 2nz) mesh.
 !
-! The convolution in osc_freespace_solver2 transforms a (2nx, 2ny, 2nz) array that is zero outside
-! (1:nx, 1:ny, 1:nz), and only uses one (nx, ny, nz) octant of the inverse transform. Doing the 3D
-! transforms one dimension at a time allows skipping the 1D transforms of lines that are all zero
-! (forward) or that are not used (backward): x lines only for 1/4 of the (j, k), y lines only for 1/2
-! of the k. This is about 40% less work than full 3D transforms and gives the same result up to
-! round-off.
+! The 3D transforms are done one dimension at a time with single-threaded FFTW plans for one plane
+! (x and y) or one row of z columns (z), executed in parallel OpenMP loops. Every 1D transform is
+! therefore computed the same way whatever the number of threads, and the results do not depend on
+! it. Plans are made with FFTW_UNALIGNED so they can be executed on any plane or buffer.
+!
+! The planner is FFTW_ESTIMATE, which always gives the same plans. If the environment variable
+! BMAD_FFTW_WISDOM names a file, FFTW_MEASURE is used instead (faster transforms) with the plans
+! read from and saved to that FFTW wisdom file, so that runs using the same file get the same plans.
 !
 ! Input:
-!   rbuf(2nx, 2ny, 2nz)       -- real(dp): Real scratch array.
-!   crho(nx+1, 2ny, 2nz)      -- complex(dp): Forward transform output.
-!   cprod(nx+1, 2ny, 2nz)     -- complex(dp): Backward transform input (overwritten by the transform).
-!   nx, ny, nz                -- integer: Unpadded mesh size.
+!   nx, ny, nz    -- integer: Unpadded mesh size.
 !-
 
-subroutine osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
+subroutine osc_padded_fft_plan(nx, ny, nz)
 use, intrinsic :: iso_c_binding
 use fft_interface_mod, only: fft_cache_init
+!$ use omp_lib, only: omp_get_max_threads
 include 'fftw3.f03'
 
 integer :: nx, ny, nz
-real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
-complex(C_DOUBLE_COMPLEX) :: crho(nx+1, 2*ny, 2*nz), cprod(nx+1, 2*ny, 2*nz)
-type(fftw_iodim) :: dim(1), hm(2)
-integer(C_INT) :: n1, n2, n3, nh
+real(C_DOUBLE), allocatable :: rp1(:,:)
+complex(C_DOUBLE_COMPLEX), allocatable :: cp1(:,:), buf(:,:)
+type(fftw_iodim) :: dim(1), hm(1)
+integer(C_INT) :: n1, n2, n3, nh, flags
+integer :: ret, status
+character(1000) :: wisdom_file
+logical :: use_wisdom
 
 n1 = 2*nx; n2 = 2*ny; n3 = 2*nz; nh = nx+1
 
 call fft_cache_init()
-if (c_associated(pfft_r2c_x)) then
-  call fftw_destroy_plan(pfft_r2c_x); call fftw_destroy_plan(pfft_fwd_y); call fftw_destroy_plan(pfft_fwd_z)
-  call fftw_destroy_plan(pfft_bwd_z); call fftw_destroy_plan(pfft_bwd_y); call fftw_destroy_plan(pfft_c2r_x)
+call get_environment_variable('BMAD_FFTW_WISDOM', wisdom_file, status = status)
+use_wisdom = (status == 0 .and. wisdom_file /= '')
+if (use_wisdom) then
+  flags = FFTW_MEASURE + FFTW_UNALIGNED
+  ret = fftw_import_wisdom_from_filename(trim(wisdom_file) // c_null_char)
+else
+  flags = FFTW_ESTIMATE + FFTW_UNALIGNED
 endif
 
-! Forward: x (data lines only), y (data planes only), z (all lines).
+if (c_associated(pfft_r2c_x)) then
+  call fftw_destroy_plan(pfft_r2c_x); call fftw_destroy_plan(pfft_r2c_xa); call fftw_destroy_plan(pfft_c2r_x)
+  call fftw_destroy_plan(pfft_fwd_y); call fftw_destroy_plan(pfft_bwd_y)
+  call fftw_destroy_plan(pfft_fwd_z); call fftw_destroy_plan(pfft_bwd_z)
+endif
+
+allocate (rp1(n1, n2), cp1(nh, n2), buf(nh, n3))
+call fftw_plan_with_nthreads(1)
+
+! x: rows of one plane (ny rows with data, or all n2 rows).
 dim(1) = fftw_iodim(n1, 1, 1)
 hm(1) = fftw_iodim(ny, n1, nh)
-hm(2) = fftw_iodim(nz, n1*n2, nh*n2)
-pfft_r2c_x = fftw_plan_guru_dft_r2c(1, dim, 2, hm, rbuf, crho, FFTW_MEASURE)
-
-dim(1) = fftw_iodim(n2, nh, nh)
-hm(1) = fftw_iodim(nh, 1, 1)
-hm(2) = fftw_iodim(nz, nh*n2, nh*n2)
-pfft_fwd_y = fftw_plan_guru_dft(1, dim, 2, hm, crho, crho, FFTW_FORWARD, FFTW_MEASURE)
-
-dim(1) = fftw_iodim(n3, nh*n2, nh*n2)
-hm(1) = fftw_iodim(nh*n2, 1, 1)
-pfft_fwd_z = fftw_plan_guru_dft(1, dim, 1, hm, crho, crho, FFTW_FORWARD, FFTW_MEASURE)
-
-! Backward: z (all lines), y (output planes k = nz:2nz-1 only), x (output lines j = ny:2ny-1 only).
-pfft_bwd_z = fftw_plan_guru_dft(1, dim, 1, hm, cprod, cprod, FFTW_BACKWARD, FFTW_MEASURE)
-
-dim(1) = fftw_iodim(n2, nh, nh)
-hm(1) = fftw_iodim(nh, 1, 1)
-hm(2) = fftw_iodim(nz, nh*n2, nh*n2)
-pfft_bwd_y = fftw_plan_guru_dft(1, dim, 2, hm, cprod(1,1,nz), cprod(1,1,nz), FFTW_BACKWARD, FFTW_MEASURE)
-
-dim(1) = fftw_iodim(n1, 1, 1)
+pfft_r2c_x = fftw_plan_guru_dft_r2c(1, dim, 1, hm, rp1, cp1, flags)
+hm(1) = fftw_iodim(n2, n1, nh)
+pfft_r2c_xa = fftw_plan_guru_dft_r2c(1, dim, 1, hm, rp1, cp1, flags)
 hm(1) = fftw_iodim(ny, nh, n1)
-hm(2) = fftw_iodim(nz, nh*n2, n1*n2)
-pfft_c2r_x = fftw_plan_guru_dft_c2r(1, dim, 2, hm, cprod(1,ny,nz), rbuf(1,ny,nz), FFTW_MEASURE)
+pfft_c2r_x = fftw_plan_guru_dft_c2r(1, dim, 1, hm, cp1, rp1, flags)
+
+! y: columns of one plane.
+dim(1) = fftw_iodim(n2, nh, nh)
+hm(1) = fftw_iodim(nh, 1, 1)
+pfft_fwd_y = fftw_plan_guru_dft(1, dim, 1, hm, cp1, cp1, FFTW_FORWARD, flags)
+pfft_bwd_y = fftw_plan_guru_dft(1, dim, 1, hm, cp1, cp1, FFTW_BACKWARD, flags)
+
+! z: the z columns of one x row, copied to buf(nh, n3).
+dim(1) = fftw_iodim(n3, nh, nh)
+pfft_fwd_z = fftw_plan_guru_dft(1, dim, 1, hm, buf, buf, FFTW_FORWARD, flags)
+pfft_bwd_z = fftw_plan_guru_dft(1, dim, 1, hm, buf, buf, FFTW_BACKWARD, flags)
+
+!$ call fftw_plan_with_nthreads(omp_get_max_threads())
+
+if (use_wisdom) call save_wisdom()
+
+!------------------------
+contains
+
+! Written to a temporary file that is then renamed, so that concurrent runs do not read a partial file.
+
+subroutine save_wisdom()
+character(1100) :: tmp
+character(20) :: pid
+write (pid, '(i0)') getpid()
+tmp = trim(wisdom_file) // '.tmp' // trim(pid)
+ret = fftw_export_wisdom_to_filename(trim(tmp) // c_null_char)
+if (ret /= 0) call rename(trim(tmp), trim(wisdom_file))
+end subroutine save_wisdom
 
 end subroutine osc_padded_fft_plan
 
@@ -1030,71 +1073,138 @@ end subroutine osc_padded_fft_plan
 ! Subroutine osc_padded_fft_forward(rbuf, crho, nx, ny, nz)
 !
 ! Real-to-complex transform of rbuf into crho (see osc_padded_fft_plan). Same result as
-! rcfft3d(rbuf, crho, 2nx, 2ny, 2nz) when rbuf is zero outside (1:nx, 1:ny, 1:nz). Only the lines
-! rbuf(:, 1:ny, 1:nz) are read, and must be zero for x > nx.
+! rcfft3d(rbuf, crho, 2nx, 2ny, 2nz) up to round-off when rbuf is zero outside (1:nx, 1:ny, 1:nz).
+! Only rbuf(:, 1:ny, 1:nz) is read, and must be zero for x > nx. 1D transforms of lines that are
+! all zero are skipped.
 !
 ! Input:
-!   rbuf(2nx, 2ny, 2nz)  -- real(dp): The array the plans were made with.
-!   crho(nx+1, 2ny, 2nz) -- complex(dp): The array the plans were made with.
+!   rbuf(2nx, 2ny, 2nz)  -- real(dp): Zero padded input.
 !   nx, ny, nz           -- integer: Unpadded mesh size.
 !
 ! Output:
-!   crho                 -- complex(dp): Half spectrum.
+!   crho(nx+1, 2ny, 2nz) -- complex(dp): Half spectrum.
 !-
 
 subroutine osc_padded_fft_forward(rbuf, crho, nx, ny, nz)
 use, intrinsic :: iso_c_binding
 include 'fftw3.f03'
 
-integer :: nx, ny, nz, k
+integer :: nx, ny, nz, j, k
 real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
 complex(C_DOUBLE_COMPLEX) :: crho(nx+1, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX), allocatable :: buf(:,:)
 
-call fftw_execute_dft_r2c(pfft_r2c_x, rbuf, crho)
-
-! The y and z transforms read lines the x transform did not write. Those are zero.
 !$OMP PARALLEL DO
-do k = 1, 2*nz
-  if (k <= nz) then
-    crho(:, ny+1:2*ny, k) = 0
-  else
-    crho(:, :, k) = 0
-  endif
+do k = 1, nz
+  call fftw_execute_dft_r2c(pfft_r2c_x, rbuf(1,1,k), crho(1,1,k))
+  crho(:, ny+1:2*ny, k) = 0
+  call fftw_execute_dft(pfft_fwd_y, crho(1,1,k), crho(1,1,k))
 enddo
 !$OMP END PARALLEL DO
 
-call fftw_execute_dft(pfft_fwd_y, crho, crho)
-call fftw_execute_dft(pfft_fwd_z, crho, crho)
+!$OMP PARALLEL PRIVATE(buf)
+allocate (buf(nx+1, 2*nz))
+!$OMP DO
+do j = 1, 2*ny
+  buf(:, 1:nz) = crho(:, j, 1:nz)
+  buf(:, nz+1:2*nz) = 0
+  call fftw_execute_dft(pfft_fwd_z, buf, buf)
+  crho(:, j, :) = buf
+enddo
+!$OMP END DO
+deallocate (buf)
+!$OMP END PARALLEL
 
 end subroutine osc_padded_fft_forward
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_full_fft_forward(rbuf, cout, nx, ny, nz)
+!
+! Real-to-complex transform of all of rbuf into cout (see osc_padded_fft_plan). Same result as
+! rcfft3d(rbuf, cout, 2nx, 2ny, 2nz) up to round-off.
+!
+! Input:
+!   rbuf(2nx, 2ny, 2nz)  -- real(dp): Input.
+!   nx, ny, nz           -- integer: Half the mesh size.
+!
+! Output:
+!   cout(nx+1, 2ny, 2nz) -- complex(dp): Half spectrum.
+!-
+
+subroutine osc_full_fft_forward(rbuf, cout, nx, ny, nz)
+use, intrinsic :: iso_c_binding
+include 'fftw3.f03'
+
+integer :: nx, ny, nz, j, k
+real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX) :: cout(nx+1, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX), allocatable :: buf(:,:)
+
+!$OMP PARALLEL DO
+do k = 1, 2*nz
+  call fftw_execute_dft_r2c(pfft_r2c_xa, rbuf(1,1,k), cout(1,1,k))
+  call fftw_execute_dft(pfft_fwd_y, cout(1,1,k), cout(1,1,k))
+enddo
+!$OMP END PARALLEL DO
+
+!$OMP PARALLEL PRIVATE(buf)
+allocate (buf(nx+1, 2*nz))
+!$OMP DO
+do j = 1, 2*ny
+  buf = cout(:, j, :)
+  call fftw_execute_dft(pfft_fwd_z, buf, buf)
+  cout(:, j, :) = buf
+enddo
+!$OMP END DO
+deallocate (buf)
+!$OMP END PARALLEL
+
+end subroutine osc_full_fft_forward
 
 !------------------------------------------------------------------------
 !+
 ! Subroutine osc_padded_fft_backward(cprod, rbuf, nx, ny, nz)
 !
 ! Complex-to-real transform of cprod into rbuf (see osc_padded_fft_plan). Same as
-! crfft3d(cprod, rbuf, 2nx, 2ny, 2nz) in rbuf(:, ny:2ny-1, nz:2nz-1). The rest of rbuf is not set.
+! crfft3d(cprod, rbuf, 2nx, 2ny, 2nz) up to round-off in rbuf(:, ny:2ny-1, nz:2nz-1), which is
+! the only part computed. The rest of rbuf is not set.
 !
 ! Input:
-!   cprod(nx+1, 2ny, 2nz) -- complex(dp): The array the plans were made with. Overwritten.
-!   rbuf(2nx, 2ny, 2nz)   -- real(dp): The array the plans were made with.
+!   cprod(nx+1, 2ny, 2nz) -- complex(dp): Half spectrum. Overwritten.
 !   nx, ny, nz            -- integer: Unpadded mesh size.
 !
 ! Output:
-!   rbuf                  -- real(dp): Transform in the octant above.
+!   rbuf(2nx, 2ny, 2nz)   -- real(dp): Transform in the part above.
 !-
 
 subroutine osc_padded_fft_backward(cprod, rbuf, nx, ny, nz)
 use, intrinsic :: iso_c_binding
 include 'fftw3.f03'
 
-integer :: nx, ny, nz
+integer :: nx, ny, nz, j, k
 real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
 complex(C_DOUBLE_COMPLEX) :: cprod(nx+1, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX), allocatable :: buf(:,:)
 
-call fftw_execute_dft(pfft_bwd_z, cprod, cprod)
-call fftw_execute_dft(pfft_bwd_y, cprod(1,1,nz), cprod(1,1,nz))
-call fftw_execute_dft_c2r(pfft_c2r_x, cprod(1,ny,nz), rbuf(1,ny,nz))
+!$OMP PARALLEL PRIVATE(buf)
+allocate (buf(nx+1, 2*nz))
+!$OMP DO
+do j = 1, 2*ny
+  buf = cprod(:, j, :)
+  call fftw_execute_dft(pfft_bwd_z, buf, buf)
+  cprod(:, j, nz:2*nz-1) = buf(:, nz:2*nz-1)
+enddo
+!$OMP END DO
+deallocate (buf)
+!$OMP END PARALLEL
+
+!$OMP PARALLEL DO
+do k = nz, 2*nz-1
+  call fftw_execute_dft(pfft_bwd_y, cprod(1,1,k), cprod(1,1,k))
+  call fftw_execute_dft_c2r(pfft_c2r_x, cprod(1,ny,k), rbuf(1,ny,k))
+enddo
+!$OMP END PARALLEL DO
 
 end subroutine osc_padded_fft_backward
 
