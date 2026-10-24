@@ -877,11 +877,12 @@ real(rp) z_center, z_min, z_max, dz_particle, dz, z_maxval, z_minval, c_tot, n_t
 real(rp) zp_center, zp0, zp1, zb0, zb1, charge, overlap_fraction, charge_tot, sig_x_ave, sig_y_ave, f
 integer i, j, n, ix0, ib, ib2, ib_center, n_bin_eff, n_bin, pbs
 
-! Per-thread bin sums (added in thread order) and per-particle bin weights (reused by the width pass).
+! Per-block bin sums (added in block order) and per-particle bin weights (reused by the width pass).
 real(rp), allocatable :: acc(:,:,:), ovl(:,:), zb0s(:), zb1s(:), x0s(:), y0s(:)
 integer, allocatable :: ix0s(:)
 real(rp) :: inv_dz2
 integer :: nt, it
+integer, parameter :: bin_block = 8192
 
 logical err_flag
 
@@ -950,9 +951,11 @@ n_bin = space_charge_com%n_bin
 pbs = space_charge_com%particle_bin_span
 inv_dz2 = 1.0_rp / dz_particle**2
 
+! Bin sums are accumulated per block of bin_block particles and the blocks added in order, so the
+! result does not depend on the number of threads.
+
 n = size(v%z)
-nt = 1
-!$ nt = omp_get_max_threads()
+nt = (n + bin_block - 1) / bin_block
 allocate (acc(n_bin, 4, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
 acc = 0
 zb0s = csr%slice(1:n_bin)%z0_edge
@@ -1083,11 +1086,9 @@ subroutine bin_weights ()
 real(rp) zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge
 integer i, j, ib, ix0, it
 
-!$OMP parallel private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge)
-it = 0
-!$ it = omp_get_thread_num()
-!$OMP do schedule(static)
-do i = 1, size(v%z)
+!$OMP parallel do private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge)
+do it = 0, nt-1
+do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
   if (v%state(i) /= alive$) cycle
   zp_center = v%z(i)
   zp0 = zp_center - dz_particle / 2
@@ -1113,21 +1114,19 @@ do i = 1, size(v%z)
     acc(ib, 4, it) = acc(ib, 4, it) + v%y(i) * charge
   enddo
 enddo
-!$OMP end do
-!$OMP end parallel
+enddo
+!$OMP end parallel do
 end subroutine bin_weights
 
-! Per-thread sums of |x - x0| * charge and |y - y0| * charge in acc(:, 1:2, thread), using ovl.
+! Per-block sums of |x - x0| * charge and |y - y0| * charge in acc(:, 1:2, block), using ovl.
 
 subroutine bin_widths ()
 real(rp) charge
 integer i, j, ib, it
 
-!$OMP parallel private(it, i, j, ib, charge)
-it = 0
-!$ it = omp_get_thread_num()
-!$OMP do schedule(static)
-do i = 1, size(v%z)
+!$OMP parallel do private(it, i, j, ib, charge)
+do it = 0, nt-1
+do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
   if (v%state(i) /= alive$) cycle
   do j = 0, pbs+1
     ib = j + ix0s(i)
@@ -1136,8 +1135,8 @@ do i = 1, size(v%z)
     acc(ib, 2, it) = acc(ib, 2, it) + abs(v%y(i) - y0s(ib)) * charge
   enddo
 enddo
-!$OMP end do
-!$OMP end parallel
+enddo
+!$OMP end parallel do
 end subroutine bin_widths
 
 end subroutine csr_bin_view

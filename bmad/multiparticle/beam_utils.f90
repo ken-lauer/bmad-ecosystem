@@ -305,16 +305,29 @@ implicit none
 
 type (bunch_struct) bunch
 real(rp) charge
-integer j
+real(rp), allocatable :: part(:)
+integer j, n, nb, ib
 
-!
+! Summed in blocks of bunch_sum_block particles added in order (see calc_bunch_params), so the
+! result does not depend on the number of threads.
 
-charge = 0
-!$OMP parallel do reduction(+:charge) if (size(bunch%particle) > 10000)
-do j = 1, size(bunch%particle)
-  if (bunch%particle(j)%state == alive$) charge = charge + bunch%particle(j)%charge
+n = size(bunch%particle)
+nb = (n + bunch_sum_block - 1) / bunch_sum_block
+allocate (part(nb))
+
+!$OMP parallel do private(j) if (nb > 1)
+do ib = 1, nb
+  part(ib) = 0
+  do j = (ib - 1) * bunch_sum_block + 1, min(ib * bunch_sum_block, n)
+    if (bunch%particle(j)%state == alive$) part(ib) = part(ib) + bunch%particle(j)%charge
+  enddo
 enddo
 !$OMP end parallel do
+
+charge = 0
+do ib = 1, nb
+  charge = charge + part(ib)
+enddo
 
 end function bunch_charge_live
 
