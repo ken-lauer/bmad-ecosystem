@@ -1,9 +1,14 @@
 module open_spacecharge_mod
 
 use, intrinsic :: iso_fortran_env
+use, intrinsic :: iso_c_binding, only: c_ptr, c_null_ptr
 use open_spacecharge_core_mod
 
 implicit none
+
+! FFTW plans for the zero padded convolution in osc_freespace_solver2. See osc_padded_fft_plan.
+type (c_ptr), private, save :: pfft_r2c_x = c_null_ptr, pfft_fwd_y = c_null_ptr, pfft_fwd_z = c_null_ptr
+type (c_ptr), private, save :: pfft_bwd_z = c_null_ptr, pfft_bwd_y = c_null_ptr, pfft_c2r_x = c_null_ptr
 
 
 ! Fortran 2008
@@ -823,6 +828,7 @@ nh = nx2/2 + 1
 if (nx2 /= alloc_nx2 .or. ny2 /= alloc_ny2 .or. nz2 /= alloc_nz2) then
   if (allocated(rbuf)) deallocate(rbuf, crho, cprod)
   allocate(rbuf(nx2, ny2, nz2), crho(nh, ny2, nz2), cprod(nh, ny2, nz2))
+  call osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
   alloc_nx2 = nx2; alloc_ny2 = ny2; alloc_nz2 = nz2
 endif
 !$OMP END CRITICAL (solver2_scratch_lock)
@@ -856,24 +862,16 @@ if (.not. cache_hit) then
 endif
 
 ! rho -> rbuf -> FFT -> crho
-! Zero only the padding region (octants beyond 1:nx, 1:ny, 1:nz), then fill the data octant.
+! The padded transform only reads the x lines that hold data, so only those are filled.
 !$OMP PARALLEL DO PRIVATE(j)
-do k = 1, nz2
-  if (k > nz) then
-    rbuf(:, :, k) = 0
-    cycle
-  endif
-  do j = 1, ny2
-    if (j > ny) then
-      rbuf(:, j, k) = 0
-    else
-      rbuf(1:nx, j, k) = rho(:, j, k)
-      rbuf(nx+1:nx2, j, k) = 0
-    endif
+do k = 1, nz
+  do j = 1, ny
+    rbuf(1:nx, j, k) = rho(:, j, k)
+    rbuf(nx+1:nx2, j, k) = 0
   enddo
 enddo
 !$OMP END PARALLEL DO
-call rcfft3d(rbuf, crho, nx2, ny2, nz2)
+call osc_padded_fft_forward(rbuf, crho, nx, ny, nz)
 
 ! Loop over phi, Ex, Ey, Ez
 do icomp=0, 3
@@ -892,8 +890,8 @@ do icomp=0, 3
   enddo
   !$OMP END PARALLEL DO
 
-  ! Inverse FFT
-  call crfft3d(cprod, rbuf, nx2, ny2, nz2)
+  ! Inverse FFT. Only the octant extracted below is computed.
+  call osc_padded_fft_backward(cprod, rbuf, nx, ny, nz)
   
   ! This is where the output is shifted to
   ishift = nx-1
@@ -917,6 +915,150 @@ enddo
 
 end subroutine osc_freespace_solver2
 
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
+!
+! Makes the FFTW plans used by osc_padded_fft_forward and osc_padded_fft_backward on the
+! solver's own scratch arrays, which must not be moved or reallocated while the plans are in use.
+! The arrays are overwritten (FFTW_MEASURE).
+!
+! The convolution in osc_freespace_solver2 transforms a (2nx, 2ny, 2nz) array that is zero outside
+! (1:nx, 1:ny, 1:nz), and only uses one (nx, ny, nz) octant of the inverse transform. Doing the 3D
+! transforms one dimension at a time allows skipping the 1D transforms of lines that are all zero
+! (forward) or that are not used (backward): x lines only for 1/4 of the (j, k), y lines only for 1/2
+! of the k. This is about 40% less work than full 3D transforms and gives the same result up to
+! round-off.
+!
+! Input:
+!   rbuf(2nx, 2ny, 2nz)       -- real(dp): Real scratch array.
+!   crho(nx+1, 2ny, 2nz)      -- complex(dp): Forward transform output.
+!   cprod(nx+1, 2ny, 2nz)     -- complex(dp): Backward transform input (overwritten by the transform).
+!   nx, ny, nz                -- integer: Unpadded mesh size.
+!-
+
+subroutine osc_padded_fft_plan(rbuf, crho, cprod, nx, ny, nz)
+use, intrinsic :: iso_c_binding
+use fft_interface_mod, only: fft_cache_init
+include 'fftw3.f03'
+
+integer :: nx, ny, nz
+real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX) :: crho(nx+1, 2*ny, 2*nz), cprod(nx+1, 2*ny, 2*nz)
+type(fftw_iodim) :: dim(1), hm(2)
+integer(C_INT) :: n1, n2, n3, nh
+
+n1 = 2*nx; n2 = 2*ny; n3 = 2*nz; nh = nx+1
+
+call fft_cache_init()
+if (c_associated(pfft_r2c_x)) then
+  call fftw_destroy_plan(pfft_r2c_x); call fftw_destroy_plan(pfft_fwd_y); call fftw_destroy_plan(pfft_fwd_z)
+  call fftw_destroy_plan(pfft_bwd_z); call fftw_destroy_plan(pfft_bwd_y); call fftw_destroy_plan(pfft_c2r_x)
+endif
+
+! Forward: x (data lines only), y (data planes only), z (all lines).
+dim(1) = fftw_iodim(n1, 1, 1)
+hm(1) = fftw_iodim(ny, n1, nh)
+hm(2) = fftw_iodim(nz, n1*n2, nh*n2)
+pfft_r2c_x = fftw_plan_guru_dft_r2c(1, dim, 2, hm, rbuf, crho, FFTW_MEASURE)
+
+dim(1) = fftw_iodim(n2, nh, nh)
+hm(1) = fftw_iodim(nh, 1, 1)
+hm(2) = fftw_iodim(nz, nh*n2, nh*n2)
+pfft_fwd_y = fftw_plan_guru_dft(1, dim, 2, hm, crho, crho, FFTW_FORWARD, FFTW_MEASURE)
+
+dim(1) = fftw_iodim(n3, nh*n2, nh*n2)
+hm(1) = fftw_iodim(nh*n2, 1, 1)
+pfft_fwd_z = fftw_plan_guru_dft(1, dim, 1, hm, crho, crho, FFTW_FORWARD, FFTW_MEASURE)
+
+! Backward: z (all lines), y (output planes k = nz:2nz-1 only), x (output lines j = ny:2ny-1 only).
+pfft_bwd_z = fftw_plan_guru_dft(1, dim, 1, hm, cprod, cprod, FFTW_BACKWARD, FFTW_MEASURE)
+
+dim(1) = fftw_iodim(n2, nh, nh)
+hm(1) = fftw_iodim(nh, 1, 1)
+hm(2) = fftw_iodim(nz, nh*n2, nh*n2)
+pfft_bwd_y = fftw_plan_guru_dft(1, dim, 2, hm, cprod(1,1,nz), cprod(1,1,nz), FFTW_BACKWARD, FFTW_MEASURE)
+
+dim(1) = fftw_iodim(n1, 1, 1)
+hm(1) = fftw_iodim(ny, nh, n1)
+hm(2) = fftw_iodim(nz, nh*n2, n1*n2)
+pfft_c2r_x = fftw_plan_guru_dft_c2r(1, dim, 2, hm, cprod(1,ny,nz), rbuf(1,ny,nz), FFTW_MEASURE)
+
+end subroutine osc_padded_fft_plan
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_padded_fft_forward(rbuf, crho, nx, ny, nz)
+!
+! Real-to-complex transform of rbuf into crho (see osc_padded_fft_plan). Same result as
+! rcfft3d(rbuf, crho, 2nx, 2ny, 2nz) when rbuf is zero outside (1:nx, 1:ny, 1:nz). Only the lines
+! rbuf(:, 1:ny, 1:nz) are read, and must be zero for x > nx.
+!
+! Input:
+!   rbuf(2nx, 2ny, 2nz)  -- real(dp): The array the plans were made with.
+!   crho(nx+1, 2ny, 2nz) -- complex(dp): The array the plans were made with.
+!   nx, ny, nz           -- integer: Unpadded mesh size.
+!
+! Output:
+!   crho                 -- complex(dp): Half spectrum.
+!-
+
+subroutine osc_padded_fft_forward(rbuf, crho, nx, ny, nz)
+use, intrinsic :: iso_c_binding
+include 'fftw3.f03'
+
+integer :: nx, ny, nz, k
+real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX) :: crho(nx+1, 2*ny, 2*nz)
+
+call fftw_execute_dft_r2c(pfft_r2c_x, rbuf, crho)
+
+! The y and z transforms read lines the x transform did not write. Those are zero.
+!$OMP PARALLEL DO
+do k = 1, 2*nz
+  if (k <= nz) then
+    crho(:, ny+1:2*ny, k) = 0
+  else
+    crho(:, :, k) = 0
+  endif
+enddo
+!$OMP END PARALLEL DO
+
+call fftw_execute_dft(pfft_fwd_y, crho, crho)
+call fftw_execute_dft(pfft_fwd_z, crho, crho)
+
+end subroutine osc_padded_fft_forward
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_padded_fft_backward(cprod, rbuf, nx, ny, nz)
+!
+! Complex-to-real transform of cprod into rbuf (see osc_padded_fft_plan). Same as
+! crfft3d(cprod, rbuf, 2nx, 2ny, 2nz) in rbuf(:, ny:2ny-1, nz:2nz-1). The rest of rbuf is not set.
+!
+! Input:
+!   cprod(nx+1, 2ny, 2nz) -- complex(dp): The array the plans were made with. Overwritten.
+!   rbuf(2nx, 2ny, 2nz)   -- real(dp): The array the plans were made with.
+!   nx, ny, nz            -- integer: Unpadded mesh size.
+!
+! Output:
+!   rbuf                  -- real(dp): Transform in the octant above.
+!-
+
+subroutine osc_padded_fft_backward(cprod, rbuf, nx, ny, nz)
+use, intrinsic :: iso_c_binding
+include 'fftw3.f03'
+
+integer :: nx, ny, nz
+real(C_DOUBLE) :: rbuf(2*nx, 2*ny, 2*nz)
+complex(C_DOUBLE_COMPLEX) :: cprod(nx+1, 2*ny, 2*nz)
+
+call fftw_execute_dft(pfft_bwd_z, cprod, cprod)
+call fftw_execute_dft(pfft_bwd_y, cprod(1,1,nz), cprod(1,1,nz))
+call fftw_execute_dft_c2r(pfft_c2r_x, cprod(1,ny,nz), rbuf(1,ny,nz))
+
+end subroutine osc_padded_fft_backward
 
 !------------------------------------------------------------------------
 !+
