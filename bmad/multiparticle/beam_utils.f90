@@ -266,7 +266,7 @@ if (use_memo) then
   enddo
   if (j0 == 0) return
 
-  call multipole_memo_begin (ele)
+  call multipole_memo_begin ()
   call track1 (bunch%particle(j0), ele, param, bunch%particle(j0))
   call multipole_memo_freeze ()
 endif

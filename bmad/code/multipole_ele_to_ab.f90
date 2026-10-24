@@ -61,26 +61,24 @@ logical, optional :: original
 ! See multipole_memo_mod for when results are memoized.
 
 if (multipole_memo_state /= memo_off$) then
-  if (associated(multipole_memo_ele, ele)) then
-    p_type = integer_option(magnetic$, pole_type)
-    include_kck = integer_option(no$, include_kicks)
-    orig = logic_option(.false., original)
-    ix = multipole_memo_find(use_ele_tilt, p_type, include_kck, present(b1), orig)
-    if (ix > 0) then
-      ix_pole_max = multipole_memo(ix)%ix_pole_max
-      a = multipole_memo(ix)%a
-      b = multipole_memo(ix)%b
-      if (present(b1)) b1 = multipole_memo(ix)%b1
-      return
-    endif
+  p_type = integer_option(magnetic$, pole_type)
+  include_kck = integer_option(no$, include_kicks)
+  orig = logic_option(.false., original)
+  ix = multipole_memo_find(ele, use_ele_tilt, p_type, include_kck, present(b1), orig)
+  if (ix > 0) then
+    ix_pole_max = multipole_memo(ix)%ix_pole_max
+    a = multipole_memo(ix)%a
+    b = multipole_memo(ix)%b
+    if (present(b1)) b1 = multipole_memo(ix)%b1
+    return
+  endif
 
-    if (multipole_memo_state == memo_recording$) then
-      call multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
-      b1_val = 0
-      if (present(b1)) b1_val = b1
-      call multipole_memo_add (use_ele_tilt, p_type, include_kck, present(b1), orig, ix_pole_max, a, b, b1_val)
-      return
-    endif
+  if (multipole_memo_state == memo_recording$) then
+    call multipole_ele_to_ab_impl (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
+    b1_val = 0
+    if (present(b1)) b1_val = b1
+    call multipole_memo_add (ele, use_ele_tilt, p_type, include_kck, present(b1), orig, ix_pole_max, a, b, b1_val)
+    return
   endif
 endif
 
