@@ -32,10 +32,12 @@
 module bunch_soa_mod
 
 use bmad_interface
+use random_mod, only: ran_gauss
+use radiation_mod, only: radiation_map_setup
 
 implicit none
 
-private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane
+private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, entrance_block, exit_block, fast_note_why
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3
@@ -118,6 +120,10 @@ type fast_slice_struct
   ! Apertures checked at the first (1) and second (2) track edge, in check_aperture_limit order.
   integer :: n_ap(2) = 0
   type (fast_aperture_struct) :: ap(fast_max_ap, 2)
+  ! Radiation kicks (track1_radiation) at the entrance (1) and exit (2) from ele%rad_map rm0/rm1.
+  logical :: rad_damp = .false., rad_fluct = .false., rad_damp_vec = .false.
+  real(rp) :: rad_scale = 0
+  real(rp) :: rad_ref(6,2) = 0, rad_dmat(6,6,2) = 0, rad_dvec(6,2) = 0, rad_smat(6,6,2) = 0
 end type
 
 contains
@@ -142,8 +148,8 @@ contains
 !   apertures:    bmad_com%aperture_limit_on = False, or aperture_type rectangular$/auto_aperture$/elliptical$
 !                 with aperture_at no_aperture$/entrance_end$/exit_end$/both_ends$/continuous$ and
 !                 offset_moves_aperture = False (when an aperture is actually checked at this slice).
-!   globals:      no spin tracking, no radiation damping/fluctuations, no high energy space charge,
-!                 no track1_preprocess/postprocess hooks.
+!   globals:      no spin tracking, no high energy space charge, no track1_preprocess/postprocess hooks.
+!                 Radiation damping and fluctuations are applied as track1_radiation does.
 !
 ! Input:
 !   ele     -- ele_struct: Element (lattice element or slice "runt").
@@ -173,9 +179,6 @@ if (present(why)) why = ''
 
 if (bmad_com%spin_tracking_on) then
   call set_why('spin tracking on');  return
-endif
-if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) then
-  call set_why('radiation on');  return
 endif
 if (bmad_com%high_energy_space_charge_on) then
   call set_why('high energy space charge on');  return
@@ -347,6 +350,7 @@ orb0%time_dir = 1
 orb0%species = param%particle
 
 if (.not. fast_aperture_setup(ele, fs)) return
+if (.not. radiation_setup()) return
 
 if (fs%kind == fast_drift$) then
   err_flag = .false.
@@ -428,6 +432,39 @@ endif
 
 err_flag = .false.
 
+
+
+!------------------------
+contains
+
+! As track1 / track1_radiation: kicks at both edges for elements that radiate, with the maps from
+! radiation_map_setup (which only recomputes stale maps, as track1_bunch_hom relies on).
+
+function radiation_setup() result (ok)
+logical ok, rad_err
+ok = .true.
+fs%rad_damp = .false.;  fs%rad_fluct = .false.
+if (.not. bmad_com%radiation_damping_on .and. .not. bmad_com%radiation_fluctuations_on) return
+if (.not. ele%is_on .or. ele%value(l$) == 0) return
+select case (ele%key)
+case (drift$, pipe$, taylor$, multipole$, ab_multipole$, mask$, marker$, patch$, fixer$, fiducial$);  return
+end select
+
+call radiation_map_setup(ele, rad_err)
+if (rad_err .or. .not. associated(ele%rad_map)) then
+  ok = .false.   ! track1_radiation marks the particle lost; leave that to track1.
+  return
+endif
+
+fs%rad_damp = bmad_com%radiation_damping_on
+fs%rad_fluct = bmad_com%radiation_fluctuations_on
+fs%rad_damp_vec = .not. bmad_com%radiation_zero_average
+fs%rad_scale = bmad_com%synch_rad_scale
+fs%rad_ref(:,1) = ele%rad_map%rm0%ref_orb;      fs%rad_ref(:,2) = ele%rad_map%rm1%ref_orb
+fs%rad_dmat(:,:,1) = ele%rad_map%rm0%damp_dmat; fs%rad_dmat(:,:,2) = ele%rad_map%rm1%damp_dmat
+fs%rad_dvec(:,1) = ele%rad_map%rm0%xfer_damp_vec; fs%rad_dvec(:,2) = ele%rad_map%rm1%xfer_damp_vec
+fs%rad_smat(:,:,1) = ele%rad_map%rm0%stoc_mat;  fs%rad_smat(:,:,2) = ele%rad_map%rm1%stoc_mat
+end function radiation_setup
 
 end subroutine fast_slice_prepare
 
@@ -1260,6 +1297,8 @@ do i = i0, i1
   soa%ix_branch(i) = fs%ix_branch
   call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
   if (.not. too_large) call apertures_lane (soa%x(i), soa%y(i), fs, 1, soa%state(i))
+  ! track1 applies the entrance radiation kick before checking the state.
+  if (fs%rad_damp .or. fs%rad_fluct) call radiation_lane (soa, fs, i, 1)
   go(i) = (soa%state(i) == alive$)
 enddo
 
@@ -1287,11 +1326,63 @@ do i = i0, i1
   endif
   soa%location(i) = downstream_end$
 
-  ! check_aperture_limit(second_track_edge$) starts with orbit_too_large which already passed.
+  ! check_aperture_limit(second_track_edge$) starts with orbit_too_large, which already passed unless
+  ! the radiation kick changed the orbit.
+  if (fs%rad_damp .or. fs%rad_fluct) then
+    call radiation_lane (soa, fs, i, 2)
+    call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
+    if (too_large) cycle
+  endif
   call apertures_lane (soa%x(i), soa%y(i), fs, 2, soa%state(i))
 enddo
 
 end subroutine exit_block
+
+!--------------------------------------------------------------------------
+! track1_radiation for edge ie (1 = start_edge$, 2 = end_edge$), with time_dir = 1.
+! matmul is written out with the same summation order as gfortran's inline matmul.
+
+subroutine radiation_lane (soa, fs, i, ie)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+integer i, ie, j, k
+real(rp) v(6), w(6), dv(6), ran6(6), rr
+
+v = [soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i)]
+
+if (fs%rad_damp) then
+  rr = fs%rad_scale
+  w = v - fs%rad_ref(:,ie)
+  do j = 1, 6
+    dv(j) = 0
+    do k = 1, 6
+      dv(j) = dv(j) + fs%rad_dmat(j,k,ie) * w(k)
+    enddo
+  enddo
+  v = v + rr * dv
+  if (fs%rad_damp_vec) v = v + rr * fs%rad_dvec(:,ie)
+endif
+
+if (fs%rad_fluct) then
+  call ran_gauss (ran6)
+  do j = 1, 6
+    dv(j) = 0
+    do k = 1, 6
+      dv(j) = dv(j) + fs%rad_smat(j,k,ie) * ran6(k)
+    enddo
+  enddo
+  v = v + fs%rad_scale * dv
+endif
+
+soa%x(i) = v(1);  soa%px(i) = v(2);  soa%y(i) = v(3);  soa%py(i) = v(4);  soa%z(i) = v(5);  soa%pz(i) = v(6)
+
+if (v(6) < -1.0_rp) then
+  call out_io (s_warn$, 'track1_radiation', 'Particle is kaput due to radiation loss!')
+  soa%state(i) = lost_pz$
+endif
+
+end subroutine radiation_lane
 
 !--------------------------------------------------------------------------
 ! track1_bmad drift$ branch: track_a_drift (orbit, ele%value(l$)*orbit%time_dir)
