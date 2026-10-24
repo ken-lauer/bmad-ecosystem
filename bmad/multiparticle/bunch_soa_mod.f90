@@ -23,7 +23,7 @@
 !     with FMA (aarch64, x86-64 with -march=haswell+), and may contract differently in an inlined kernel
 !     than in the original routine. Build both with -ffp-contract=off to verify bit-identity.
 !   * fast_track_time_mode = fast_time_qp$ (default). fast_time_dd$ accumulates time deltas in
-!     double-double and is NOT bit-identical (error ~ 2^-106 relative). See PHASE3_SOA_KERNELS.md.
+!     double-double and is NOT bit-identical (error ~ 2^-106 relative).
 !   * param%unstable_factor is NOT updated by the kernels (in track1_bunch_hom it is a shared,
 !     racy write already).
 ! Places where exactness is believed but not proven are marked "UNVERIFIED".
