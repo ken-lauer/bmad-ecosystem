@@ -3,6 +3,10 @@ module beam_utils
 use beam_file_io
 use wake_mod
 
+! Block size for the parallel bunch sums in calc_bunch_params. Block sums are added in order, so
+! results do not depend on the number of threads.
+integer, parameter, private :: bunch_sum_block = 4096
+
 private init_random_distribution, init_grid_distribution
 private init_ellipse_distribution, init_kv_distribution
 private combine_bunch_distributions, bunch_init_end_calc
@@ -1477,10 +1481,13 @@ type (ele_struct), optional :: ele
 real(rp), optional :: n_mat(6,6)
 real(rp) eta, etap
 real(rp) :: sigma(6,6) = 0.0
-real(rp) :: charge_live, average_pc
-real(rp), allocatable :: charge(:)
+real(rp) :: charge_live, average_pc, sum_s
+real(rp), allocatable :: charge(:), part(:,:)
+real(qp) sum_t, sum_t2
+real(qp), allocatable :: part_qp(:,:)
 
-integer i, j, species
+integer i, j, species, n, nb, ib, i0, i1, n_live
+integer, allocatable :: n_live_b(:)
 
 logical, optional :: print_err, is_time_coords
 logical error
@@ -1497,42 +1504,74 @@ call re_allocate (charge, size(bunch%particle))
 
 species = bunch%particle(1)%species
 
-! Get s-position from first live particle
+! Get s-position from the last live particle (the loop used to run over all particles and keep the last one).
 
-do i = 1, size(bunch%particle)
+do i = size(bunch%particle), 1, -1
   if (bunch%particle(i)%state /= alive$) cycle
   bunch_params%ix_ele = bunch%particle(i)%ix_ele
   bunch_params%location = bunch%particle(i)%location
   bunch_params%centroid = bunch%particle(i)  ! Note: centroid%vec gets set by calc_bunch_sigma_matrix
+  exit
 enddo
 
-! n_particle and centroid
+! n_particle and centroid.
+! Sums are accumulated over blocks of bunch_sum_block particles in parallel and the block sums are then
+! added in order, so the result does not depend on the number of threads (and for a bunch of at most
+! bunch_sum_block particles is the same as a plain serial sum).
+
+n = size(bunch%particle)
+nb = (n + bunch_sum_block - 1) / bunch_sum_block
+allocate (part(6, nb), n_live_b(nb), part_qp(2, nb))
+
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(:, ib) = 0
+  n_live_b(ib) = 0
+  do i = i0, i1
+    associate (p => bunch%particle(i))
+    part(2, ib) = part(2, ib) + p%charge
+    if (species == photon$) then
+      charge(i) = p%field(1)**2 + p%field(2)**2
+    else
+      charge(i) = p%charge
+    endif
+    if (p%state /= alive$) cycle
+    n_live_b(ib) = n_live_b(ib) + 1
+    part(1, ib) = part(1, ib) + p%charge
+    part(3, ib) = part(3, ib) + p%field(1)
+    part(4, ib) = part(4, ib) + p%field(2)
+    part(5, ib) = part(5, ib) + charge(i)
+    end associate
+  enddo
+enddo
+!$OMP end parallel do
+
+n_live = 0
+do ib = 1, nb
+  n_live = n_live + n_live_b(ib)
+enddo
 
 bunch_params%n_good_steps = bunch%n_good
 bunch_params%n_bad_steps = bunch%n_bad
 
-bunch_params%n_particle_tot = size(bunch%particle)
-bunch_params%n_particle_live = count(bunch%particle%state == alive$)
-bunch_params%charge_live = sum(bunch%particle%charge, mask = (bunch%particle%state == alive$))
-bunch_params%charge_tot = sum(bunch%particle%charge)
+bunch_params%n_particle_tot = n
+bunch_params%n_particle_live = n_live
+bunch_params%charge_live = block_total(1)
+bunch_params%charge_tot = block_total(2)
 bunch%charge_tot  = bunch_params%charge_tot
 bunch%charge_live = bunch_params%charge_live
 
-bunch_params%centroid%field(1) = sum(bunch%particle%field(1), mask = (bunch%particle%state == alive$))
-bunch_params%centroid%field(2) = sum(bunch%particle%field(2), mask = (bunch%particle%state == alive$))
+bunch_params%centroid%field(1) = block_total(3)
+bunch_params%centroid%field(2) = block_total(4)
 
 if (bunch%charge_tot == 0) then
   if (logic_option(.true., print_err)) call out_io (s_error$, r_name, 'CHARGE OF PARTICLES IN BUNCH NOT SET. CALCULATION CANNOT BE DONE.')
   return
 endif
 
-if (species == photon$) then
-  charge = bunch%particle%field(1)**2 + bunch%particle%field(2)**2
-else
-  charge = bunch%particle%charge
-endif
-
-charge_live = sum(charge, mask = (bunch%particle%state == alive$))
+charge_live = block_total(5)
 bunch_params%centroid%charge = charge_live
 
 !
@@ -1544,11 +1583,35 @@ if (charge_live == 0) then
   charge_live = bunch_params%n_particle_live
 endif
 
-bunch_params%centroid%s = sum(bunch%particle%s * charge, mask = (bunch%particle%state == alive$)) / charge_live
-bunch_params%centroid%t = sum(bunch%particle%t * charge, mask = (bunch%particle%state == alive$)) / charge_live
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(6, ib) = 0
+  part_qp(:, ib) = 0
+  do i = i0, i1
+    associate (p => bunch%particle(i))
+    if (p%state /= alive$) cycle
+    part(6, ib) = part(6, ib) + p%s * charge(i)
+    part_qp(1, ib) = part_qp(1, ib) + p%t * charge(i)
+    part_qp(2, ib) = part_qp(2, ib) + p%t**2 * charge(i)
+    end associate
+  enddo
+enddo
+!$OMP end parallel do
+
+sum_s = 0;  sum_t = 0;  sum_t2 = 0
+do ib = 1, nb
+  sum_s = sum_s + part(6, ib)
+  sum_t = sum_t + part_qp(1, ib)
+  sum_t2 = sum_t2 + part_qp(2, ib)
+enddo
+
+bunch_params%centroid%s = sum_s / charge_live
+bunch_params%centroid%t = sum_t / charge_live
 bunch_params%s = bunch_params%centroid%s
 bunch_params%t = bunch_params%centroid%t
-bunch_params%sigma_t = sum(bunch%particle%t**2 * charge, mask = (bunch%particle%state == alive$)) / charge_live
+bunch_params%sigma_t = sum_t2 / charge_live
 bunch_params%sigma_t = sqrt(max(0.0_rp, bunch_params%sigma_t - bunch_params%t**2))
 
 if (bmad_com%spin_tracking_on) call calc_spin_params (bunch, bunch_params)
@@ -1570,6 +1633,18 @@ call calc_emittances_and_twiss_from_sigma_matrix (bunch_params%sigma, bunch_para
 if (error .and. logic_option(.true., print_err)) then
   if (present(ele)) call out_io(s_blank$, r_name, 'This at element: ' // ele_full_name(ele))
 endif
+
+!------------------------
+contains
+
+function block_total (k) result (total)
+integer k
+real(rp) total
+total = 0
+do ib = 1, nb
+  total = total + part(k, ib)
+enddo
+end function block_total
 
 end subroutine calc_bunch_params
 
@@ -1908,8 +1983,9 @@ type (ele_struct), optional :: ele
 real(rp) charge_live, p0c_avg, vec(7)
 real(rp) charge(:)
 real(rp) :: avg(7)
+real(rp), allocatable :: part(:,:), sig_b(:,:,:), avg_b(:,:), max_b(:,:), min_b(:,:)
 
-integer i, j2
+integer i, j2, n, nb, ib, i0, i1
 logical, optional :: is_time_coords
 logical is_time
 
@@ -1917,7 +1993,31 @@ character(*), parameter :: r_name = 'calc_bunch_sigma_matrix'
 
 !
 
-charge_live = sum(charge, mask = (particle%state == alive$))
+! Sums are accumulated in blocks as in calc_bunch_params.
+
+n = size(particle)
+nb = (n + bunch_sum_block - 1) / bunch_sum_block
+allocate (part(2, nb), sig_b(6, 6, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
+
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(:, ib) = 0
+  do i = i0, i1
+    if (particle(i)%state /= alive$) cycle
+    part(1, ib) = part(1, ib) + charge(i)
+    part(2, ib) = part(2, ib) + particle(i)%p0c*charge(i)
+  enddo
+enddo
+!$OMP end parallel do
+
+charge_live = 0
+p0c_avg = 0
+do ib = 1, nb
+  charge_live = charge_live + part(1, ib)
+  p0c_avg = p0c_avg + part(2, ib)
+enddo
 
 if (charge_live == 0) then
   call out_io (s_error$, r_name, 'Charge of live particle in bunch is zero! Aborting calculation.')
@@ -1925,7 +2025,7 @@ if (charge_live == 0) then
 endif
 
 is_time = logic_option(.false., is_time_coords)
-p0c_avg = sum(particle%p0c*charge, mask = (particle%state == alive$)) / charge_live
+p0c_avg = p0c_avg / charge_live
 if (is_time) bunch_params%centroid%p0c = p0c_avg  ! Round-off error is problematic with track1 code if not time coords.
 
 avg = 0
@@ -1936,23 +2036,48 @@ bunch_params%rel_min =  1e30_rp
 ! It is important to use sigma = <r-r_ave>^2 rather than sigma = <r>^2 - r_ave^2 since the latter
 ! has round-off issues when r_ave is large.
 
-do i = 1, size(particle)
-  if (particle(i)%state /= alive$) cycle
-  vec = to_basis_coords(particle(i), ele, is_time)
-  avg = avg + vec * charge(i)
-  bunch_params%rel_max = max(bunch_params%rel_max, vec)
-  bunch_params%rel_min = min(bunch_params%rel_min, vec)
+!$OMP parallel do private(i0, i1, i, vec) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  avg_b(:, ib) = 0
+  max_b(:, ib) = -1e30_rp
+  min_b(:, ib) =  1e30_rp
+  do i = i0, i1
+    if (particle(i)%state /= alive$) cycle
+    vec = to_basis_coords(particle(i), ele, is_time)
+    avg_b(:, ib) = avg_b(:, ib) + vec * charge(i)
+    max_b(:, ib) = max(max_b(:, ib), vec)
+    min_b(:, ib) = min(min_b(:, ib), vec)
+  enddo
+enddo
+!$OMP end parallel do
+
+do ib = 1, nb
+  avg = avg + avg_b(:, ib)
+  bunch_params%rel_max = max(bunch_params%rel_max, max_b(:, ib))
+  bunch_params%rel_min = min(bunch_params%rel_min, min_b(:, ib))
 enddo
 
 avg = avg / charge_live
 
-do i = 1, size(particle)
-  if (particle(i)%state /= alive$) cycle
-  vec = to_basis_coords(particle(i), ele, is_time) - avg
-  
-  forall (j2 = 1:6)
-    bunch_params%sigma(:,j2) = bunch_params%sigma(:,j2) + vec(1:6)*vec(j2)*charge(i)
-  end forall
+!$OMP parallel do private(i0, i1, i, j2, vec) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  sig_b(:, :, ib) = 0
+  do i = i0, i1
+    if (particle(i)%state /= alive$) cycle
+    vec = to_basis_coords(particle(i), ele, is_time) - avg
+    do j2 = 1, 6
+      sig_b(:, j2, ib) = sig_b(:, j2, ib) + vec(1:6)*vec(j2)*charge(i)
+    enddo
+  enddo
+enddo
+!$OMP end parallel do
+
+do ib = 1, nb
+  bunch_params%sigma = bunch_params%sigma + sig_b(:, :, ib)
 enddo
 
 bunch_params%sigma        = bunch_params%sigma / charge_live
