@@ -865,6 +865,7 @@ end subroutine csr_bin_particles
 
 subroutine csr_bin_view (ele, v, csr, err_flag)
 
+!$ use omp_lib
 implicit none
 
 type (ele_struct) ele
@@ -876,10 +877,11 @@ real(rp) z_center, z_min, z_max, dz_particle, dz, z_maxval, z_minval, c_tot, n_t
 real(rp) zp_center, zp0, zp1, zb0, zb1, charge, overlap_fraction, charge_tot, sig_x_ave, sig_y_ave, f
 integer i, j, n, ix0, ib, ib2, ib_center, n_bin_eff, n_bin, pbs
 
-! Thread-private accumulation arrays for OpenMP binning
-real(rp), allocatable :: bin_n_particle(:), bin_charge(:), bin_x0(:), bin_y0(:)
-real(rp), allocatable :: bin_sig_x(:), bin_sig_y(:)
-real(rp) :: z1_over, z2_over, overlap, p_charge, p_x, p_y, inv_dz2
+! Per-thread bin sums (added in thread order) and per-particle bin weights (reused by the width pass).
+real(rp), allocatable :: acc(:,:,:), ovl(:,:), zb0s(:), zb1s(:), x0s(:), y0s(:)
+integer, allocatable :: ix0s(:)
+real(rp) :: inv_dz2
+integer :: nt, it
 
 logical err_flag
 
@@ -904,8 +906,7 @@ if (n_bin_eff < 1) then
   return
 endif
 
-z_maxval = maxval(v%z, mask = (v%state == alive$))
-z_minval = minval(v%z, mask = (v%state == alive$))
+call z_range (z_minval, z_maxval)
 dz = z_maxval - z_minval
 csr%dz_slice = dz / n_bin_eff
 csr%dz_slice = 1.0000001 * csr%dz_slice     ! to prevent round off problems
@@ -949,51 +950,24 @@ n_bin = space_charge_com%n_bin
 pbs = space_charge_com%particle_bin_span
 inv_dz2 = 1.0_rp / dz_particle**2
 
-!$OMP parallel private(bin_n_particle, bin_charge, bin_x0, bin_y0, zp_center, zp0, zp1, ix0, j, ib, zb0, zb1, z1_over, z2_over, overlap, charge, p_charge, p_x, p_y)
-allocate(bin_n_particle(n_bin), bin_charge(n_bin), bin_x0(n_bin), bin_y0(n_bin))
-bin_n_particle = 0; bin_charge = 0; bin_x0 = 0; bin_y0 = 0
+n = size(v%z)
+nt = 1
+!$ nt = omp_get_max_threads()
+allocate (acc(n_bin, 4, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
+acc = 0
+zb0s = csr%slice(1:n_bin)%z0_edge
+zb1s = csr%slice(1:n_bin)%z1_edge
 
-!$OMP do
-do i = 1, size(v%z)
-  if (v%state(i) /= alive$) cycle
-  zp_center = v%z(i)
-  zp0 = zp_center - dz_particle / 2
-  zp1 = zp_center + dz_particle / 2
-  p_charge = v%charge(i)
-  p_x = v%x(i)
-  p_y = v%y(i)
-  ix0 = nint((zp0 - z_min) / csr%dz_slice)
-  do j = 0, pbs+1
-    ib = j + ix0
-    zb0 = csr%slice(ib)%z0_edge
-    zb1 = csr%slice(ib)%z1_edge
-    ! Inline particle_overlap_in_bin for thread safety (avoids host-scope variable sharing)
-    overlap = 0
-    z1_over = max(zp0, zb0)
-    z2_over = min(zp_center, zb1)
-    if (z2_over > z1_over) overlap = 2 * real(((z2_over - zp0)**2 - (z1_over - zp0)**2), rp) * inv_dz2
-    z1_over = max(zp_center, zb0)
-    z2_over = min(zp1, zb1)
-    if (z2_over > z1_over) overlap = overlap + 2 * real(((z1_over - zp1)**2 - (z2_over - zp1)**2), rp) * inv_dz2
-    bin_n_particle(ib) = bin_n_particle(ib) + overlap
-    charge = overlap * p_charge
-    bin_charge(ib) = bin_charge(ib) + charge
-    bin_x0(ib) = bin_x0(ib) + p_x * charge
-    bin_y0(ib) = bin_y0(ib) + p_y * charge
+call bin_weights ()
+
+do it = 0, nt-1
+  do ib = 1, n_bin
+    csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(ib, 1, it)
+    csr%slice(ib)%charge = csr%slice(ib)%charge + acc(ib, 2, it)
+    csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(ib, 3, it)
+    csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(ib, 4, it)
   enddo
 enddo
-!$OMP end do
-
-!$OMP critical
-do ib = 1, n_bin
-  csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + bin_n_particle(ib)
-  csr%slice(ib)%charge = csr%slice(ib)%charge + bin_charge(ib)
-  csr%slice(ib)%x0 = csr%slice(ib)%x0 + bin_x0(ib)
-  csr%slice(ib)%y0 = csr%slice(ib)%y0 + bin_y0(ib)
-enddo
-!$OMP end critical
-deallocate(bin_n_particle, bin_charge, bin_x0, bin_y0)
-!$OMP end parallel
 
 do ib = 1, space_charge_com%n_bin
   if (ib /= 1) csr%slice(ib)%edge_dcharge_density_dz = (csr%slice(ib)%charge - csr%slice(ib-1)%charge) / csr%dz_slice**2
@@ -1017,47 +991,19 @@ csr%y0_bunch = sum(csr%slice%y0 * csr%slice%charge) / sum(csr%slice%charge)
 ! Abs(x-x0) is used instead of the usual formula involving (x-x0)^2 to lessen the effect
 ! of non-Gaussian tails.
 
-!$OMP parallel private(bin_sig_x, bin_sig_y, zp_center, zp0, zp1, ix0, j, ib, zb0, zb1, z1_over, z2_over, overlap, charge, p_charge, p_x, p_y)
-allocate(bin_sig_x(n_bin), bin_sig_y(n_bin))
-bin_sig_x = 0; bin_sig_y = 0
+allocate (x0s(n_bin), y0s(n_bin))
+x0s = csr%slice(1:n_bin)%x0
+y0s = csr%slice(1:n_bin)%y0
+acc(:, 1:2, :) = 0
 
-!$OMP do
-do i = 1, size(v%z)
-  if (v%state(i) /= alive$) cycle
-  zp_center = v%z(i)
-  zp0 = zp_center - dz_particle / 2
-  zp1 = zp_center + dz_particle / 2
-  p_charge = v%charge(i)
-  p_x = v%x(i)
-  p_y = v%y(i)
-  ix0 = nint((zp0 - z_min) / csr%dz_slice)
-  do j = 0, pbs+1
-    ib = j + ix0
-    zb0 = csr%slice(ib)%z0_edge
-    zb1 = csr%slice(ib)%z1_edge
-    ! Inline particle_overlap_in_bin
-    overlap = 0
-    z1_over = max(zp0, zb0)
-    z2_over = min(zp_center, zb1)
-    if (z2_over > z1_over) overlap = 2 * real(((z2_over - zp0)**2 - (z1_over - zp0)**2), rp) * inv_dz2
-    z1_over = max(zp_center, zb0)
-    z2_over = min(zp1, zb1)
-    if (z2_over > z1_over) overlap = overlap + 2 * real(((z1_over - zp1)**2 - (z2_over - zp1)**2), rp) * inv_dz2
-    charge = overlap * p_charge
-    bin_sig_x(ib) = bin_sig_x(ib) + abs(p_x - csr%slice(ib)%x0) * charge
-    bin_sig_y(ib) = bin_sig_y(ib) + abs(p_y - csr%slice(ib)%y0) * charge
+call bin_widths ()
+
+do it = 0, nt-1
+  do ib = 1, n_bin
+    csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(ib, 1, it)
+    csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(ib, 2, it)
   enddo
 enddo
-!$OMP end do
-
-!$OMP critical
-do ib = 1, n_bin
-  csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + bin_sig_x(ib)
-  csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + bin_sig_y(ib)
-enddo
-!$OMP end critical
-deallocate(bin_sig_x, bin_sig_y)
-!$OMP end parallel
 
 charge_tot = 0;  sig_x_ave = 0;  sig_y_ave = 0
 f = sqrt(pi/2)  ! This corrects for the fact that |x - x0| is used instead of (x - x0)^2 to compute the sigma.
@@ -1105,6 +1051,94 @@ do ib = space_charge_com%n_bin/2, 1, -1
   endif
 enddo
 
+
+
+!------------------------------------------------------------------------
+contains
+
+! Note: The view's arrays are used through v rather than passed as array arguments: for a view of
+! bunch%particle(:) they are pointers to a component of a derived type array, which gfortran does not
+! pass correctly to assumed-shape dummies (elements are read contiguously instead of with the
+! derived type stride).
+
+! Min and max of z over live particles (as maxval/minval with a mask).
+
+subroutine z_range (z_lo, z_hi)
+real(rp) z_lo, z_hi
+integer i
+z_lo = huge(z_lo);  z_hi = -huge(z_hi)
+!$OMP parallel do reduction(min:z_lo) reduction(max:z_hi) if (size(v%z) > 10000)
+do i = 1, size(v%z)
+  if (v%state(i) /= alive$) cycle
+  z_lo = min(z_lo, v%z(i))
+  z_hi = max(z_hi, v%z(i))
+enddo
+!$OMP end parallel do
+end subroutine z_range
+
+! Overlap of each particle's triangular distribution with bins ix0s(i)+j, j = 0..pbs+1, stored in
+! ovl(j, i), and the per-thread sums of overlap, charge, x*charge and y*charge in acc(:, 1:4, thread).
+
+subroutine bin_weights ()
+real(rp) zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge
+integer i, j, ib, ix0, it
+
+!$OMP parallel private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge)
+it = 0
+!$ it = omp_get_thread_num()
+!$OMP do schedule(static)
+do i = 1, size(v%z)
+  if (v%state(i) /= alive$) cycle
+  zp_center = v%z(i)
+  zp0 = zp_center - dz_particle / 2
+  zp1 = zp_center + dz_particle / 2
+  ix0 = nint((zp0 - z_min) / csr%dz_slice)
+  ix0s(i) = ix0
+  do j = 0, pbs+1
+    ib = j + ix0
+    zb0 = zb0s(ib)
+    zb1 = zb1s(ib)
+    overlap = 0
+    z1_over = max(zp0, zb0)
+    z2_over = min(zp_center, zb1)
+    if (z2_over > z1_over) overlap = 2 * real(((z2_over - zp0)**2 - (z1_over - zp0)**2), rp) * inv_dz2
+    z1_over = max(zp_center, zb0)
+    z2_over = min(zp1, zb1)
+    if (z2_over > z1_over) overlap = overlap + 2 * real(((z1_over - zp1)**2 - (z2_over - zp1)**2), rp) * inv_dz2
+    ovl(j, i) = overlap
+    acc(ib, 1, it) = acc(ib, 1, it) + overlap
+    charge = overlap * v%charge(i)
+    acc(ib, 2, it) = acc(ib, 2, it) + charge
+    acc(ib, 3, it) = acc(ib, 3, it) + v%x(i) * charge
+    acc(ib, 4, it) = acc(ib, 4, it) + v%y(i) * charge
+  enddo
+enddo
+!$OMP end do
+!$OMP end parallel
+end subroutine bin_weights
+
+! Per-thread sums of |x - x0| * charge and |y - y0| * charge in acc(:, 1:2, thread), using ovl.
+
+subroutine bin_widths ()
+real(rp) charge
+integer i, j, ib, it
+
+!$OMP parallel private(it, i, j, ib, charge)
+it = 0
+!$ it = omp_get_thread_num()
+!$OMP do schedule(static)
+do i = 1, size(v%z)
+  if (v%state(i) /= alive$) cycle
+  do j = 0, pbs+1
+    ib = j + ix0s(i)
+    charge = ovl(j, i) * v%charge(i)
+    acc(ib, 1, it) = acc(ib, 1, it) + abs(v%x(i) - x0s(ib)) * charge
+    acc(ib, 2, it) = acc(ib, 2, it) + abs(v%y(i) - y0s(ib)) * charge
+  enddo
+enddo
+!$OMP end do
+!$OMP end parallel
+end subroutine bin_widths
 
 end subroutine csr_bin_view
 
