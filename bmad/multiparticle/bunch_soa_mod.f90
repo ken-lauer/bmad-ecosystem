@@ -125,6 +125,9 @@ type fast_slice_struct
   real(rp) :: sinc_a = 0, cos_a = 0, sin_a = 0, cosc_a = 0, sincc_a = 0
   ! Radiation kicks (track1_radiation) at the entrance (1) and exit (2) from ele%rad_map rm0/rm1.
   logical :: rad_damp = .false., rad_fluct = .false., rad_damp_vec = .false.
+  ! Per edge: whether the damping / stochastic kick is nonzero. track1_radiation also applies (and draws
+  ! random numbers for) all-zero kicks, which do not change the orbit; those are skipped here.
+  logical :: rad_on_edge(2) = .false., rad_damp_edge(2) = .false., rad_fluct_edge(2) = .false.
   real(rp) :: rad_scale = 0
   real(rp) :: rad_ref(6,2) = 0, rad_dmat(6,6,2) = 0, rad_dvec(6,2) = 0, rad_smat(6,6,2) = 0
 end type
@@ -580,6 +583,7 @@ contains
 
 function radiation_setup() result (ok)
 logical ok, rad_err
+integer ie
 ok = .true.
 fs%rad_damp = .false.;  fs%rad_fluct = .false.
 if (.not. bmad_com%radiation_damping_on .and. .not. bmad_com%radiation_fluctuations_on) return
@@ -602,6 +606,12 @@ fs%rad_ref(:,1) = ele%rad_map%rm0%ref_orb;      fs%rad_ref(:,2) = ele%rad_map%rm
 fs%rad_dmat(:,:,1) = ele%rad_map%rm0%damp_dmat; fs%rad_dmat(:,:,2) = ele%rad_map%rm1%damp_dmat
 fs%rad_dvec(:,1) = ele%rad_map%rm0%xfer_damp_vec; fs%rad_dvec(:,2) = ele%rad_map%rm1%xfer_damp_vec
 fs%rad_smat(:,:,1) = ele%rad_map%rm0%stoc_mat;  fs%rad_smat(:,:,2) = ele%rad_map%rm1%stoc_mat
+do ie = 1, 2
+  fs%rad_damp_edge(ie) = fs%rad_damp .and. (any(fs%rad_dmat(:,:,ie) /= 0) .or. &
+                                            (fs%rad_damp_vec .and. any(fs%rad_dvec(:,ie) /= 0)))
+  fs%rad_fluct_edge(ie) = fs%rad_fluct .and. any(fs%rad_smat(:,:,ie) /= 0)
+  fs%rad_on_edge(ie) = fs%rad_damp_edge(ie) .or. fs%rad_fluct_edge(ie)
+enddo
 end function radiation_setup
 
 end subroutine fast_slice_prepare
@@ -1438,7 +1448,7 @@ do i = i0, i1
   call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
   if (.not. too_large) call apertures_lane (soa%x(i), soa%y(i), fs, 1, soa%state(i))
   ! track1 applies the entrance radiation kick before checking the state.
-  if (fs%rad_damp .or. fs%rad_fluct) call radiation_lane (soa, fs, i, 1)
+  if (fs%rad_on_edge(1)) call radiation_lane (soa, fs, i, 1)
   go(i) = (soa%state(i) == alive$)
 enddo
 
@@ -1468,7 +1478,7 @@ do i = i0, i1
 
   ! check_aperture_limit(second_track_edge$) starts with orbit_too_large, which already passed unless
   ! the radiation kick changed the orbit.
-  if (fs%rad_damp .or. fs%rad_fluct) then
+  if (fs%rad_on_edge(2)) then
     call radiation_lane (soa, fs, i, 2)
     call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
     if (too_large) cycle
@@ -1491,7 +1501,7 @@ real(rp) v(6), w(6), dv(6), ran6(6), rr
 
 v = [soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i)]
 
-if (fs%rad_damp) then
+if (fs%rad_damp_edge(ie)) then
   rr = fs%rad_scale
   w = v - fs%rad_ref(:,ie)
   do j = 1, 6
@@ -1504,7 +1514,7 @@ if (fs%rad_damp) then
   if (fs%rad_damp_vec) v = v + rr * fs%rad_dvec(:,ie)
 endif
 
-if (fs%rad_fluct) then
+if (fs%rad_fluct_edge(ie)) then
   call ran_gauss (ran6)
   do j = 1, 6
     dv(j) = 0

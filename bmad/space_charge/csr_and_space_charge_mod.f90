@@ -963,7 +963,7 @@ inv_dz2 = 1.0_rp / dz_particle**2
 
 n = size(v%z)
 nt = (n + bin_block - 1) / bin_block
-allocate (acc(n_bin, 4, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
+allocate (acc(4, n_bin, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
 zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
@@ -972,10 +972,10 @@ call bin_weights ()
 !$OMP parallel do private(it) if (n_bin * nt > 100000)
 do ib = 1, n_bin
   do it = 0, nt-1
-    csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(ib, 1, it)
-    csr%slice(ib)%charge = csr%slice(ib)%charge + acc(ib, 2, it)
-    csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(ib, 3, it)
-    csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(ib, 4, it)
+    csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(1, ib, it)
+    csr%slice(ib)%charge = csr%slice(ib)%charge + acc(2, ib, it)
+    csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(3, ib, it)
+    csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(4, ib, it)
   enddo
 enddo
 !$OMP end parallel do
@@ -1010,8 +1010,8 @@ call bin_widths ()
 !$OMP parallel do private(it) if (n_bin * nt > 100000)
 do ib = 1, n_bin
   do it = 0, nt-1
-    csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(ib, 1, it)
-    csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(ib, 2, it)
+    csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(1, ib, it)
+    csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(2, ib, it)
   enddo
 enddo
 !$OMP end parallel do
@@ -1088,7 +1088,7 @@ enddo
 end subroutine z_range
 
 ! Overlap of each particle's triangular distribution with bins ix0s(i)+j, j = 0..pbs+1, stored in
-! ovl(j, i), and the per-thread sums of overlap, charge, x*charge and y*charge in acc(:, 1:4, thread).
+! ovl(j, i), and the per-thread sums of overlap, charge, x*charge and y*charge in acc(1:4, :, block).
 
 subroutine bin_weights ()
 real(rp) zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge
@@ -1116,18 +1116,18 @@ do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
     z2_over = min(zp1, zb1)
     if (z2_over > z1_over) overlap = overlap + 2 * real(((z1_over - zp1)**2 - (z2_over - zp1)**2), rp) * inv_dz2
     ovl(j, i) = overlap
-    acc(ib, 1, it) = acc(ib, 1, it) + overlap
+    acc(1, ib, it) = acc(1, ib, it) + overlap
     charge = overlap * v%charge(i)
-    acc(ib, 2, it) = acc(ib, 2, it) + charge
-    acc(ib, 3, it) = acc(ib, 3, it) + v%x(i) * charge
-    acc(ib, 4, it) = acc(ib, 4, it) + v%y(i) * charge
+    acc(2, ib, it) = acc(2, ib, it) + charge
+    acc(3, ib, it) = acc(3, ib, it) + v%x(i) * charge
+    acc(4, ib, it) = acc(4, ib, it) + v%y(i) * charge
   enddo
 enddo
 enddo
 !$OMP end parallel do
 end subroutine bin_weights
 
-! Per-block sums of |x - x0| * charge and |y - y0| * charge in acc(:, 1:2, block), using ovl.
+! Per-block sums of |x - x0| * charge and |y - y0| * charge in acc(1:2, :, block), using ovl.
 
 subroutine bin_widths ()
 real(rp) charge
@@ -1135,14 +1135,14 @@ integer i, j, ib, it
 
 !$OMP parallel do private(it, i, j, ib, charge)
 do it = 0, nt-1
-acc(:, 1:2, it) = 0
+acc(1:2, :, it) = 0
 do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
   if (v%state(i) /= alive$) cycle
   do j = 0, pbs+1
     ib = j + ix0s(i)
     charge = ovl(j, i) * v%charge(i)
-    acc(ib, 1, it) = acc(ib, 1, it) + abs(v%x(i) - x0s(ib)) * charge
-    acc(ib, 2, it) = acc(ib, 2, it) + abs(v%y(i) - y0s(ib)) * charge
+    acc(1, ib, it) = acc(1, ib, it) + abs(v%x(i) - x0s(ib)) * charge
+    acc(2, ib, it) = acc(2, ib, it) + abs(v%y(i) - y0s(ib)) * charge
   enddo
 enddo
 enddo
