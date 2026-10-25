@@ -3,6 +3,10 @@ module wake_mod
 use multipole_mod
 use random_mod
 
+
+! Particles per chunk in sr_longitudinal_wake_bunch / sr_transverse_wake_bunch (bounds their scratch memory).
+integer, parameter, private :: sr_wake_chunk = 65536
+
 contains
 
 !--------------------------------------------------------------------------
@@ -391,10 +395,12 @@ end subroutine sr_longitudinal_wake_particle
 ! Subroutine sr_longitudinal_wake_bunch (ele, bunch, n_live)
 !
 ! Same as calling sr_longitudinal_wake_particle for particles bunch%particle(bunch%ix_z(1:n_live)) in
-! order. The wake sums are a sequential recurrence over the particles, but the exponential and
-! trigonometric factors only depend on each particle's z and that of the particle before it, so
-! they are computed for all particles in parallel first. The recurrence is then evaluated serially
-! with the same expressions in the same order.
+! order. The wake sums are a sequential recurrence over the particles, but the recurrence only depends
+! on each particle's z, x, y and charge, which the kicks do not change. So for each chunk of particles:
+!   1. (parallel) the particle data and the exponential/trigonometric factors are gathered,
+!   2. (serial)   the recurrence is evaluated on these contiguous arrays, saving each particle's wake,
+!   3. (parallel) the kicks are applied.
+! The same expressions are evaluated in the same order as in sr_longitudinal_wake_particle.
 !
 ! Input:
 !   ele       -- ele_struct: Element with wakes.
@@ -413,9 +419,9 @@ type (bunch_struct), target :: bunch
 type (wake_sr_mode_struct), pointer :: mode
 type (coord_struct), pointer :: orbit
 
-real(rp), allocatable :: ef(:,:), cs(:,:,:)
-real(rp) arg, f0, ff, dz, w_norm, z_prev
-integer n_live, i, j, nm
+real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:)
+real(rp) arg, f0, ff, dz, z_prev
+integer n_live, i, j, jj, nm, j0, j1, nc
 
 !
 
@@ -423,81 +429,226 @@ if (ele%wake%sr%amp_scale == 0) return
 nm = size(ele%wake%sr%long)
 if (n_live == 0) return
 
-allocate (ef(nm, n_live), cs(4, nm, n_live))
+nc = min(n_live, sr_wake_chunk)
+allocate (ef(nm, nc), cs(4, nm, nc), pd(4, nc), w(nm, nc))
 
-!$OMP parallel do private(orbit, z_prev, dz, i, arg) if (n_live > 10000)
-do j = 1, n_live
-  orbit => bunch%particle(bunch%ix_z(j))
-  if (j == 1) then
-    z_prev = ele%wake%sr%z_ref_long
-  else
-    z_prev = bunch%particle(bunch%ix_z(j-1))%vec(5)
-  endif
-  dz = ele%wake%sr%z_scale * (orbit%vec(5) - z_prev) ! Should be negative
-  do i = 1, nm
-    ef(i, j) = exp(dz * ele%wake%sr%long(i)%damp)
-    arg = ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
-    cs(1, i, j) = cos (arg)
-    cs(2, i, j) = sin (arg)
-    arg = twopi * ele%wake%sr%long(i)%phi - ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
-    cs(3, i, j) = cos (arg)
-    cs(4, i, j) = sin (arg)
+do j0 = 1, n_live, sr_wake_chunk
+  j1 = min(j0 + sr_wake_chunk - 1, n_live)
+
+  ! Gather: pd = (z, x, y, |charge|) and the per-mode factors.
+
+  !$OMP parallel do private(jj, orbit, z_prev, dz, i, arg) if (j1 - j0 > 10000)
+  do j = j0, j1
+    jj = j - j0 + 1
+    orbit => bunch%particle(bunch%ix_z(j))
+    if (j == 1) then
+      z_prev = ele%wake%sr%z_ref_long
+    else
+      z_prev = bunch%particle(bunch%ix_z(j-1))%vec(5)
+    endif
+    pd(:, jj) = [orbit%vec(5), orbit%vec(1), orbit%vec(3), abs(orbit%charge)]
+    dz = ele%wake%sr%z_scale * (orbit%vec(5) - z_prev) ! Should be negative
+    do i = 1, nm
+      ef(i, jj) = exp(dz * ele%wake%sr%long(i)%damp)
+      arg = ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
+      cs(1, i, jj) = cos (arg)
+      cs(2, i, jj) = sin (arg)
+      arg = twopi * ele%wake%sr%long(i)%phi - ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
+      cs(3, i, jj) = cos (arg)
+      cs(4, i, jj) = sin (arg)
+    enddo
   enddo
-enddo
-!$OMP end parallel do
+  !$OMP end parallel do
 
-do j = 1, n_live
-  orbit => bunch%particle(bunch%ix_z(j))
-  ele%wake%sr%z_ref_long = orbit%vec(5)
+  ! Recurrence.
 
-  f0 = ele%wake%sr%amp_scale * abs(orbit%charge) / ele%value(p0c$)
-  if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
+  do jj = 1, j1 - j0 + 1
+    ele%wake%sr%z_ref_long = pd(1, jj)
+    f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
+    if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
 
-  do i = 1, nm
-    mode => ele%wake%sr%long(i)
-    ff = f0 * mode%amp
+    do i = 1, nm
+      mode => ele%wake%sr%long(i)
+      ff = f0 * mode%amp
+      w(i, jj) = mode%b_sin * ef(i, jj) * cs(2, i, jj) + mode%b_cos * ef(i, jj) * cs(1, i, jj)
 
-    ! Kick particle from existing wake
+      ! Add to wake. The monopole wake does not have any skew components.
 
-    w_norm = mode%b_sin * ef(i, j) * cs(2, i, j) + mode%b_cos * ef(i, j) * cs(1, i, j)
-
-    select case (mode%position_dependence)
-    case (none$, x_leading$, y_leading$)
-      orbit%vec(6) = orbit%vec(6) - w_norm
-    case (x_trailing$)
-      orbit%vec(6) = orbit%vec(6) - w_norm * orbit%vec(1)
-    case (y_trailing$)
-      orbit%vec(6) = orbit%vec(6) - w_norm * orbit%vec(3)
-    end select
-
-    ! Self kick
-
-    select case (mode%position_dependence)
-    case (none$)
-      orbit%vec(6) = orbit%vec(6) - ff * sin(twopi * mode%phi) / 2
-    case (x_leading$, x_trailing$)
-      orbit%vec(6) = orbit%vec(6) - orbit%vec(1) * ff * sin(twopi * mode%phi) / 2
-    case (y_leading$, y_trailing$)
-      orbit%vec(6) = orbit%vec(6) - orbit%vec(3) * ff * sin(twopi * mode%phi) / 2
-    end select
-
-    ! Add to wake. The monopole wake does not have any skew components.
-
-    select case (mode%position_dependence)
-    case (none$, x_trailing$, y_trailing$)
-      mode%b_sin = mode%b_sin * ef(i, j) + ff * cs(3, i, j)
-      mode%b_cos = mode%b_cos * ef(i, j) + ff * cs(4, i, j)
-    case (x_leading$)
-      mode%b_sin = mode%b_sin * ef(i, j) + orbit%vec(1) * ff * cs(3, i, j)
-      mode%b_cos = mode%b_cos * ef(i, j) + orbit%vec(1) * ff * cs(4, i, j)
-    case (y_leading$)
-      mode%b_sin = mode%b_sin * ef(i, j) + orbit%vec(3) * ff * cs(3, i, j)
-      mode%b_cos = mode%b_cos * ef(i, j) + orbit%vec(3) * ff * cs(4, i, j)
-    end select
+      select case (mode%position_dependence)
+      case (none$, x_trailing$, y_trailing$)
+        mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj)
+        mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj)
+      case (x_leading$)
+        mode%b_sin = mode%b_sin * ef(i, jj) + pd(2, jj) * ff * cs(3, i, jj)
+        mode%b_cos = mode%b_cos * ef(i, jj) + pd(2, jj) * ff * cs(4, i, jj)
+      case (y_leading$)
+        mode%b_sin = mode%b_sin * ef(i, jj) + pd(3, jj) * ff * cs(3, i, jj)
+        mode%b_cos = mode%b_cos * ef(i, jj) + pd(3, jj) * ff * cs(4, i, jj)
+      end select
+    enddo
   enddo
+
+  ! Kicks: existing wake, then self kick, mode by mode.
+
+  !$OMP parallel do private(jj, orbit, f0, i, mode, ff) if (j1 - j0 > 10000)
+  do j = j0, j1
+    jj = j - j0 + 1
+    orbit => bunch%particle(bunch%ix_z(j))
+    f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
+    if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
+    do i = 1, nm
+      mode => ele%wake%sr%long(i)
+      ff = f0 * mode%amp
+
+      select case (mode%position_dependence)
+      case (none$, x_leading$, y_leading$)
+        orbit%vec(6) = orbit%vec(6) - w(i, jj)
+      case (x_trailing$)
+        orbit%vec(6) = orbit%vec(6) - w(i, jj) * orbit%vec(1)
+      case (y_trailing$)
+        orbit%vec(6) = orbit%vec(6) - w(i, jj) * orbit%vec(3)
+      end select
+
+      select case (mode%position_dependence)
+      case (none$)
+        orbit%vec(6) = orbit%vec(6) - ff * sin(twopi * mode%phi) / 2
+      case (x_leading$, x_trailing$)
+        orbit%vec(6) = orbit%vec(6) - orbit%vec(1) * ff * sin(twopi * mode%phi) / 2
+      case (y_leading$, y_trailing$)
+        orbit%vec(6) = orbit%vec(6) - orbit%vec(3) * ff * sin(twopi * mode%phi) / 2
+      end select
+    enddo
+  enddo
+  !$OMP end parallel do
 enddo
 
 end subroutine sr_longitudinal_wake_bunch
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine sr_transverse_wake_bunch (ele, bunch, n_live)
+!
+! Same as calling sr_transverse_wake_particle for particles bunch%particle(bunch%ix_z(1:n_live)) in
+! order, done in the three steps described in sr_longitudinal_wake_bunch. The recurrence only depends
+! on z, x, y and the charge, and the kicks only change px and py.
+!
+! Input:
+!   ele       -- ele_struct: Element with wakes.
+!   bunch     -- bunch_struct: Bunch with bunch%ix_z set by order_particles_in_z.
+!   n_live    -- integer: Number of live particles.
+!
+! Output:
+!   ele       -- ele_struct: Mode wake sums and %wake%sr%z_ref_trans updated.
+!   bunch     -- bunch_struct: Particles kicked.
+!-
+
+subroutine sr_transverse_wake_bunch (ele, bunch, n_live)
+
+type (ele_struct), target :: ele
+type (bunch_struct), target :: bunch
+type (wake_sr_mode_struct), pointer :: mode
+type (coord_struct), pointer :: orbit
+
+real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:,:)
+real(rp) arg, f0, ff, dz, z_prev
+integer n_live, i, j, jj, nm, j0, j1, nc
+
+!
+
+if (ele%wake%sr%amp_scale == 0) return
+nm = size(ele%wake%sr%trans)
+if (n_live == 0) return
+
+nc = min(n_live, sr_wake_chunk)
+allocate (ef(nm, nc), cs(4, nm, nc), pd(4, nc), w(2, nm, nc))
+
+do j0 = 1, n_live, sr_wake_chunk
+  j1 = min(j0 + sr_wake_chunk - 1, n_live)
+
+  !$OMP parallel do private(jj, orbit, z_prev, dz, i, arg) if (j1 - j0 > 10000)
+  do j = j0, j1
+    jj = j - j0 + 1
+    orbit => bunch%particle(bunch%ix_z(j))
+    if (j == 1) then
+      z_prev = ele%wake%sr%z_ref_trans
+    else
+      z_prev = bunch%particle(bunch%ix_z(j-1))%vec(5)
+    endif
+    pd(:, jj) = [orbit%vec(5), orbit%vec(1), orbit%vec(3), abs(orbit%charge)]
+    dz = ele%wake%sr%z_scale * (orbit%vec(5) - z_prev) ! Should be negative
+    do i = 1, nm
+      ef(i, jj) = exp(dz * ele%wake%sr%trans(i)%damp)
+      arg = ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%trans(i)%k
+      cs(1, i, jj) = cos (arg)
+      cs(2, i, jj) = sin (arg)
+      arg = twopi * ele%wake%sr%trans(i)%phi - ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%trans(i)%k
+      cs(3, i, jj) = cos (arg)
+      cs(4, i, jj) = sin (arg)
+    enddo
+  enddo
+  !$OMP end parallel do
+
+  do jj = 1, j1 - j0 + 1
+    ele%wake%sr%z_ref_trans = pd(1, jj)
+    f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
+    if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
+
+    do i = 1, nm
+      mode => ele%wake%sr%trans(i)
+      ff = f0 * mode%amp
+      w(1, i, jj) = mode%b_sin * ef(i, jj) * cs(2, i, jj) + mode%b_cos * ef(i, jj) * cs(1, i, jj)
+      w(2, i, jj) = mode%a_sin * ef(i, jj) * cs(2, i, jj) + mode%a_cos * ef(i, jj) * cs(1, i, jj)
+
+      if (mode%polarization /= y_polarization$) then
+        if (mode%position_dependence == leading$) then
+          mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(2, jj)
+          mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(2, jj)
+        else
+          mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj)
+          mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj)
+        endif
+      endif
+
+      if (mode%polarization /= x_polarization$) then
+        if (mode%position_dependence == leading$) then
+          mode%a_sin = mode%a_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(3, jj)
+          mode%a_cos = mode%a_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(3, jj)
+        else
+          mode%a_sin = mode%a_sin * ef(i, jj) + ff * cs(3, i, jj)
+          mode%a_cos = mode%a_cos * ef(i, jj) + ff * cs(4, i, jj)
+        endif
+      endif
+    enddo
+  enddo
+
+  !$OMP parallel do private(jj, orbit, i, mode) if (j1 - j0 > 10000)
+  do j = j0, j1
+    jj = j - j0 + 1
+    orbit => bunch%particle(bunch%ix_z(j))
+    do i = 1, nm
+      mode => ele%wake%sr%trans(i)
+      if (mode%polarization /= y_polarization$) then
+        if (mode%position_dependence == trailing$) then
+          orbit%vec(2) = orbit%vec(2) - w(1, i, jj) * orbit%vec(1)
+        else
+          orbit%vec(2) = orbit%vec(2) - w(1, i, jj)
+        endif
+      endif
+      if (mode%polarization /= x_polarization$) then
+        if (mode%position_dependence == trailing$) then
+          orbit%vec(4) = orbit%vec(4) - w(2, i, jj) * orbit%vec(3)
+        else
+          orbit%vec(4) = orbit%vec(4) - w(2, i, jj)
+        endif
+      endif
+    enddo
+  enddo
+  !$OMP end parallel do
+enddo
+
+end subroutine sr_transverse_wake_bunch
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -959,11 +1110,7 @@ call sr_z_long_wake(ele, bunch, p((i1+i2)/2)%vec(5))
 ! and the kicks change different coordinates), so they are done in separate loops.
 
 call sr_longitudinal_wake_bunch (ele, bunch, n_live)
-
-do j = 1, n_live
-  particle => p(bunch%ix_z(j))  ! Particle to kick
-  call sr_transverse_wake_particle (ele, particle)
-enddo
+call sr_transverse_wake_bunch (ele, bunch, n_live)
 
 end subroutine track1_sr_wake
 

@@ -124,6 +124,9 @@ real(rp), pointer, private :: csr_dr_match_ptr(:)
 !   csr_dl_mom(:,i)    -- Moments summed from the start of i's block through i.
 !   csr_dl_blk_min/max -- Min/max of csr_dl_theta over each block.
 integer, parameter, private :: csr_dl_block = 32
+
+! Bins per chunk of the parallel CSR source point search (see csr_bin_kicks).
+integer, parameter, private :: csr_kick_chunk = 64
 real(rp), allocatable, private :: csr_dl_theta(:), csr_dl_mom(:,:), csr_dl_blk_min(:), csr_dl_blk_max(:)
 !$OMP THREADPRIVATE(csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max)
 
@@ -957,20 +960,21 @@ inv_dz2 = 1.0_rp / dz_particle**2
 n = size(v%z)
 nt = (n + bin_block - 1) / bin_block
 allocate (acc(n_bin, 4, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
-acc = 0
 zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
 call bin_weights ()
 
-do it = 0, nt-1
-  do ib = 1, n_bin
+!$OMP parallel do private(it) if (n_bin * nt > 100000)
+do ib = 1, n_bin
+  do it = 0, nt-1
     csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(ib, 1, it)
     csr%slice(ib)%charge = csr%slice(ib)%charge + acc(ib, 2, it)
     csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(ib, 3, it)
     csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(ib, 4, it)
   enddo
 enddo
+!$OMP end parallel do
 
 do ib = 1, space_charge_com%n_bin
   if (ib /= 1) csr%slice(ib)%edge_dcharge_density_dz = (csr%slice(ib)%charge - csr%slice(ib-1)%charge) / csr%dz_slice**2
@@ -997,16 +1001,16 @@ csr%y0_bunch = sum(csr%slice%y0 * csr%slice%charge) / sum(csr%slice%charge)
 allocate (x0s(n_bin), y0s(n_bin))
 x0s = csr%slice(1:n_bin)%x0
 y0s = csr%slice(1:n_bin)%y0
-acc(:, 1:2, :) = 0
-
 call bin_widths ()
 
-do it = 0, nt-1
-  do ib = 1, n_bin
+!$OMP parallel do private(it) if (n_bin * nt > 100000)
+do ib = 1, n_bin
+  do it = 0, nt-1
     csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(ib, 1, it)
     csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(ib, 2, it)
   enddo
 enddo
+!$OMP end parallel do
 
 charge_tot = 0;  sig_x_ave = 0;  sig_y_ave = 0
 f = sqrt(pi/2)  ! This corrects for the fact that |x - x0| is used instead of (x - x0)^2 to compute the sigma.
@@ -1088,6 +1092,7 @@ integer i, j, ib, ix0, it
 
 !$OMP parallel do private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge)
 do it = 0, nt-1
+acc(:, :, it) = 0
 do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
   if (v%state(i) /= alive$) cycle
   zp_center = v%z(i)
@@ -1126,6 +1131,7 @@ integer i, j, ib, it
 
 !$OMP parallel do private(it, i, j, ib, charge)
 do it = 0, nt-1
+acc(:, 1:2, it) = 0
 do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
   if (v%state(i) /= alive$) cycle
   do j = 0, pbs+1
@@ -1169,9 +1175,8 @@ implicit none
 type (ele_struct) ele
 type (csr_struct), target :: csr
 type (branch_struct), pointer :: branch
-type (csr_kick1_struct), pointer :: kick1
 
-real(rp) ds_kick_pt, coef, dr_match(3)
+real(rp) ds_kick_pt, coef
 
 integer i, n_bin, m_fft
 logical err_flag
@@ -1191,41 +1196,26 @@ character(16) :: r_name = 'csr_bin_kicks'
 
 err_flag = .false.
 
+! The source point of each bin is searched for starting from the source element of the previous bin.
+! The bins are split into chunks of csr_kick_chunk that are done in parallel, each starting its
+! search at the kick element. The chunks do not depend on the number of threads. I_csr needs the
+! previous bin's I_csr so it is evaluated afterwards.
+
 if (csr%y_source == 0) then
   ! CSR only: skip negative bins since I_csr = 0 for dz_particles <= 0
+  call source_points (1, ubound(csr%kick1, 1));  if (err_flag) return
   do i = 1, ubound(csr%kick1, 1)
-    kick1 => csr%kick1(i)
-    kick1%dz_particles = i * csr%dz_slice
-
-    if (i == 1) then
-      kick1%ix_ele_source = csr%ix_ele_kick
-      dr_match = 0
-    else
-      kick1%ix_ele_source = csr%kick1(i-1)%ix_ele_source
-    endif
-
-    kick1%s_chord_source = s_source_calc(kick1, csr, err_flag, dr_match)
-    if (err_flag) return
-    call I_csr (kick1, i, csr)
+    call I_csr (csr%kick1(i), i, csr)
   enddo
 
 else
   ! Image charges: need full range for both positive and negative separations
+  call source_points (lbound(csr%kick1, 1), ubound(csr%kick1, 1));  if (err_flag) return
+  !$OMP parallel do if (size(csr%kick1) > 2 * csr_kick_chunk)
   do i = lbound(csr%kick1, 1), ubound(csr%kick1, 1)
-    kick1 => csr%kick1(i)
-    kick1%dz_particles = i * csr%dz_slice
-
-    if (i == lbound(csr%kick1, 1)) then
-      kick1%ix_ele_source = csr%ix_ele_kick
-      dr_match = 0
-    else
-      kick1%ix_ele_source = csr%kick1(i-1)%ix_ele_source
-    endif
-
-    kick1%s_chord_source = s_source_calc(kick1, csr, err_flag, dr_match)
-    if (err_flag) return
-    call image_charge_kick_calc (kick1, csr)
+    call image_charge_kick_calc (csr%kick1(i), csr)
   enddo
+  !$OMP end parallel do
 endif
 
 !
@@ -1295,6 +1285,42 @@ endif
 if (ele%space_charge_method == slice$ .and. csr%y_source == 0) then
   call lsc_kick_params_calc (ele, csr)
 endif
+
+!------------------------------------------------------------------------
+contains
+
+subroutine source_points (i_lo, i_hi)
+
+integer i_lo, i_hi, ic, i0, i1, ii
+real(rp) dr_m(3)
+logical err_any, err1
+
+err_any = .false.
+!$OMP parallel do private(ic, i0, i1, ii, dr_m, err1) reduction(.or.:err_any) schedule(dynamic) &
+!$OMP   copyin(csr_dl_theta, csr_dl_mom, csr_dl_blk_min, csr_dl_blk_max) if (i_hi - i_lo + 1 > 2 * csr_kick_chunk)
+do ic = 0, (i_hi - i_lo) / csr_kick_chunk
+  i0 = i_lo + ic * csr_kick_chunk
+  i1 = min(i0 + csr_kick_chunk - 1, i_hi)
+  do ii = i0, i1
+    csr%kick1(ii)%dz_particles = ii * csr%dz_slice
+    if (ii == i0) then
+      csr%kick1(ii)%ix_ele_source = csr%ix_ele_kick
+      dr_m = 0
+    else
+      csr%kick1(ii)%ix_ele_source = csr%kick1(ii-1)%ix_ele_source
+    endif
+    err1 = .false.
+    csr%kick1(ii)%s_chord_source = s_source_calc(csr%kick1(ii), csr, err1, dr_m)
+    if (err1) then
+      err_any = .true.
+      exit
+    endif
+  enddo
+enddo
+!$OMP end parallel do
+err_flag = err_any
+
+end subroutine source_points
 
 end subroutine csr_bin_kicks
   
