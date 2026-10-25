@@ -1252,6 +1252,110 @@ end subroutine fast_track1_soa
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
+! Subroutine fast_track1_soa_fallback (soa, bunch, ele, param, thread_safe)
+!
+! Routine to track the live particles of a SoA bunch through ele with track1 (for elements the kernels
+! do not support) without converting the whole bunch. Each particle's coord_struct in bunch%particle(i)
+! is loaded with the SoA values, tracked with track1, and stored back in both bunch%particle(i) and soa.
+!
+! Results are identical to soa_to_bunch + track1_bunch_hom (without wakes) + bunch_to_soa: the same
+! track1 calls are made in the same order and thread assignment as track1_bunch_particles (first live
+! particle serially while the multipole memo records, then a parallel loop with schedule(static, 64)),
+! so even random numbers (radiation) are drawn identically. As in track1_bunch_hom, the caller must set
+! up radiation maps (radiation_map_setup) and must not use this for elements with wakes or for Taylor
+! tracking (which may need ele_to_taylor).
+!
+! Input:
+!   soa         -- bunch_soa_struct: Bunch, authoritative for the SoA components.
+!   bunch       -- bunch_struct: Same bunch, authoritative for the other coord_struct components.
+!   ele         -- ele_struct: Element or slice.
+!   param       -- lat_param_struct: Branch parameters.
+!   thread_safe -- logical: False to track serially.
+!
+! Output:
+!   soa, bunch  -- Tracked particles updated in both.
+!-
+
+subroutine fast_track1_soa_fallback (soa, bunch, ele, param, thread_safe)
+
+use multipole_memo_mod
+
+type (bunch_soa_struct) soa
+type (bunch_struct), target :: bunch
+type (ele_struct), target :: ele
+type (lat_param_struct) param
+
+integer j, j0
+logical thread_safe, use_memo
+
+!
+
+call soa_flush_time (soa)
+
+use_memo = (thread_safe .and. soa%n > 1000 .and. multipole_memo_state == memo_off$ .and. &
+            .not. associated(track1_preprocess_ptr) .and. .not. associated(track1_postprocess_ptr) .and. &
+            .not. associated(track1_custom_ptr) .and. .not. associated(apply_element_edge_kick_hook_ptr))
+
+j0 = 0
+if (use_memo) then
+  do j = 1, soa%n
+    if (soa%state(j) == alive$) then
+      j0 = j
+      exit
+    endif
+  enddo
+  if (j0 == 0) return
+
+  call multipole_memo_begin ()
+  call track1_one (j0)
+  call multipole_memo_freeze ()
+endif
+
+!$OMP parallel do if (thread_safe) schedule(static, 64)
+do j = 1, soa%n
+  if (j == j0) cycle
+  if (soa%state(j) /= alive$) cycle
+  call track1_one (j)
+enddo
+!$OMP end parallel do
+
+if (use_memo) call multipole_memo_end ()
+
+!------------------------
+contains
+
+subroutine track1_one (i)
+
+type (coord_struct) orb
+integer i
+
+orb = bunch%particle(i)
+orb%vec = [soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i)]
+orb%s = soa%s(i);  orb%t = soa%t(i);  orb%p0c = soa%p0c(i);  orb%beta = soa%beta(i)
+orb%state = soa%state(i);  orb%location = soa%location(i)
+orb%ix_ele = soa%ix_ele(i);  orb%ix_branch = soa%ix_branch(i)
+if (soa%has_spin) orb%spin = soa%spin(:, i)
+
+call track1 (orb, ele, param, orb)
+
+bunch%particle(i) = orb
+soa%x(i) = orb%vec(1);  soa%px(i) = orb%vec(2);  soa%y(i) = orb%vec(3);  soa%py(i) = orb%vec(4)
+soa%z(i) = orb%vec(5);  soa%pz(i) = orb%vec(6)
+soa%s(i) = orb%s;  soa%t(i) = orb%t;  soa%p0c(i) = orb%p0c;  soa%beta(i) = orb%beta
+soa%state(i) = orb%state;  soa%location(i) = orb%location
+soa%ix_ele(i) = orb%ix_ele;  soa%ix_branch(i) = orb%ix_branch
+soa%charge(i) = orb%charge;  soa%species(i) = orb%species
+soa%direction(i) = orb%direction;  soa%time_dir(i) = orb%time_dir
+if (soa%has_spin) soa%spin(:, i) = orb%spin
+
+end subroutine track1_one
+
+end subroutine fast_track1_soa_fallback
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
 ! Function fast_slice_setup (ele, param, fs, why) result (is_ok)
 !
 ! Routine to check element eligibility and prepare the slice data for the fast kernels.

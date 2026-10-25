@@ -15,6 +15,7 @@ use super_recipes_mod, only: super_zbrent
 use open_spacecharge_mod
 use csr3d_mod, only: csr3d_steady_state_solver
 use bunch_soa_mod
+use radiation_mod, only: radiation_map_setup
 
 ! csr_ele_info_struct holds info for a particular lattice element
 ! The centroid "chord" is the line from the centroid position at the element entrance to
@@ -198,7 +199,7 @@ integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
 
 character(*), parameter :: r_name = 'track1_bunch_csr'
-logical err, err_flag, parallel0, parallel1, use_soa, bunch_stale, tracked
+logical err, err_flag, parallel0, parallel1, use_soa, bunch_stale, tracked, rad_err
 
 ! Init
 
@@ -318,6 +319,13 @@ do i_step = 0, n_step
       if (.not. bunch_wake_here(runt)) call fast_track1_soa (csr_soa, runt, branch%param, tracked, p0c_checked = p0c_checked)
       if (tracked) then
         bunch_stale = .true.
+      elseif (.not. bunch_wake_here(runt) .and. runt%tracking_method /= taylor$) then
+        ! Unsupported slice: track1 one particle at a time in place, as track1_bunch_hom would.
+        if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(runt, rad_err)
+        call fast_track1_soa_fallback (csr_soa, bunch, runt, branch%param, &
+                         runt%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
+        bunch_stale = .true.
+        p0c_checked = -1
       else
         call sync_bunch()
         call track1_bunch_hom (bunch, runt)
