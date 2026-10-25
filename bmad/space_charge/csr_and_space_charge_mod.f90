@@ -288,7 +288,7 @@ call save_a_bunch_step (ele, bunch, bunch_track, s_start)
 ! support are tracked in place, and bunch%particle is only brought up to date (sync_bunch) when needed:
 ! for runts tracked by track1_bunch_hom, for bunch_track saves, and on return.
 
-use_soa = csr_use_soa(ele)
+use_soa = csr_use_soa(ele, branch%param)
 bunch_stale = .false.
 p0c_checked = -1
 if (use_soa) then
@@ -472,25 +472,28 @@ end subroutine track1_bunch_csr
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Function csr_use_soa (ele) result (use_soa)
+! Function csr_use_soa (ele, param) result (use_soa)
 !
 ! Routine to decide if track1_bunch_csr keeps the bunch as a SoA bunch (bunch_soa_mod) while
 ! tracking through ele. Requires the fast kernels to be enabled (see fast_track_enabled), ele to be of
-! a type the kernels support, and not being inside a parallel region (the SoA bunch is shared).
+! a type the kernels support (for a bend: its interior slices), and not being inside a parallel
+! region (the SoA bunch is shared).
 !
 ! Input:
 !   ele     -- ele_struct: Element to track through.
+!   param   -- lat_param_struct: Branch parameters.
 !
 ! Output:
 !   use_soa -- logical: True if the SoA path is to be used.
 !-
 
-function csr_use_soa (ele) result (use_soa)
+function csr_use_soa (ele, param) result (use_soa)
 
 !$ use omp_lib, only: omp_in_parallel
 implicit none
 
 type (ele_struct) ele
+type (lat_param_struct) param
 logical use_soa
 
 !
@@ -501,6 +504,7 @@ if (.not. fast_track_enabled()) return
 if (.not. global_com%mp_threading_is_safe) return
 if (bmad_com%spin_tracking_on) return
 use_soa = (fast_kind(ele) /= fast_none$)
+if (use_soa .and. fast_kind(ele) == fast_bend$) use_soa = bend_supported(ele, param, check_fringe = .false.)
 
 end function csr_use_soa
 

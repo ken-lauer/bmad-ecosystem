@@ -38,9 +38,9 @@ use radiation_mod, only: radiation_map_setup
 implicit none
 
 private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
-private :: track_block_drift, track_block_quad, track_block_thick, entrance_block, exit_block, fast_note_why
+private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
 
-integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3
+integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4
 
 integer, parameter :: fast_time_qp$ = 1, fast_time_dd$ = 2
 integer :: fast_track_time_mode = fast_time_qp$
@@ -120,6 +120,9 @@ type fast_slice_struct
   ! Apertures checked at the first (1) and second (2) track edge, in check_aperture_limit order.
   integer :: n_ap(2) = 0
   type (fast_aperture_struct) :: ap(fast_max_ap, 2)
+  ! Bend (track_a_bend body without fringe, k1, multipole kicks or misalignment).
+  real(rp) :: g = 0, dg = 0, g_tot = 0, angle = 0, beta_ref = 0
+  real(rp) :: sinc_a = 0, cos_a = 0, sin_a = 0, cosc_a = 0, sincc_a = 0
   ! Radiation kicks (track1_radiation) at the entrance (1) and exit (2) from ele%rad_map rm0/rm1.
   logical :: rad_damp = .false., rad_fluct = .false., rad_damp_vec = .false.
   real(rp) :: rad_scale = 0
@@ -229,6 +232,10 @@ if (kind == fast_quad$ .or. kind == fast_thick$) then
   endif
 endif
 
+if (kind == fast_bend$) then
+  if (.not. bend_supported(ele, param, why)) return
+endif
+
 is_eligible = .true.
 
 !------------------------
@@ -245,6 +252,107 @@ end function fast_track_eligible
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
+! Function bend_supported (ele, param, why, check_fringe) result (is_ok)
+!
+! Routine to decide if the bend kernel reproduces track_a_bend for ele. Supported: bmad_standard sbend
+! with nonzero length and g + dg, orientation = +1, no fringe at this slice (interior slices of a bend,
+! or fringe_type = none), no misalignment, no electric multipoles, no k1 (sbend_body_with_k1_map) and
+! no magnetic multipoles or kicks apart from the dipole error folded into dg.
+!
+! Input:
+!   ele          -- ele_struct: Element or slice.
+!   param        -- lat_param_struct: Branch parameters.
+!   check_fringe -- logical, optional: Default True. False skips the fringe test, to ask whether the
+!                     interior slices of ele are supported.
+!
+! Output:
+!   why     -- character(*), optional: Reason if not.
+!   is_ok   -- logical: True if supported.
+!-
+
+function bend_supported (ele, param, why, check_fringe) result (is_ok)
+
+type (ele_struct) ele
+type (lat_param_struct) param
+type (fringe_field_info_struct) fringe_info
+type (coord_struct) orb0
+
+real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), b1, dg, rel_charge_dir
+integer ix_mag_max, ix_elec_max
+logical is_ok
+logical, optional :: check_fringe
+character(*), optional :: why
+
+!
+
+is_ok = .false.
+if (ele%orientation /= 1) then
+  call set_why('reversed bend');  return
+endif
+if (ele%value(l$) == 0) then
+  call set_why('zero length bend');  return
+endif
+if (associated(apply_element_edge_kick_hook_ptr)) then
+  call set_why('edge kick hook set');  return
+endif
+if (logic_option(.true., check_fringe)) then
+  call init_fringe_info (fringe_info, ele)
+  if (fringe_info%has_fringe) then
+    call set_why('bend fringe at this slice');  return
+  endif
+endif
+if (ele%bookkeeping_state%has_misalign) then
+  call set_why('misaligned bend');  return
+endif
+
+orb0%direction = 1;  orb0%time_dir = 1;  orb0%species = param%particle
+rel_charge_dir = ele%orientation * rel_tracking_charge_to_mass(orb0, param%particle)
+b1 = 0
+if (nint(ele%value(exact_multipoles$)) /= off$) then
+  call multipole_ele_to_ab(ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$)
+else
+  call multipole_ele_to_ab(ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$, b1)
+  b1 = b1 * rel_charge_dir
+  if (abs(b1) < 1d-10) then
+    bn(1) = b1
+    b1 = 0
+  endif
+endif
+if (b1 /= 0) then
+  call set_why('bend with k1');  return
+endif
+dg = bn(0) / ele%value(l$)
+bn(0) = 0
+if (any(an /= 0) .or. any(bn /= 0)) then
+  call set_why('bend multipoles or kicks');  return
+endif
+call multipole_ele_to_ab(ele, .false., ix_elec_max, an, bn, electric$)
+if (ix_elec_max > -1) then
+  call set_why('bend electric multipoles');  return
+endif
+if (ix_mag_max > -1 .and. ele%value(ds_step$) <= 0) then
+  call set_why('ds_step <= 0');  return
+endif
+if (ele%value(g$) == 0 .and. dg == 0) then
+  call set_why('bend with g = 0');  return
+endif
+
+is_ok = .true.
+
+!------------------------
+contains
+
+subroutine set_why(str)
+character(*) str
+if (present(why)) why = str
+end subroutine set_why
+
+end function bend_supported
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
 ! Function fast_kind (ele) result (kind)
 !
 ! Routine to map an element onto the fast kernel that reproduces its track1_bmad branch.
@@ -253,7 +361,7 @@ end function fast_track_eligible
 !   ele   -- ele_struct: Element.
 !
 ! Output:
-!   kind  -- integer: fast_drift$, fast_quad$, fast_thick$ or fast_none$.
+!   kind  -- integer: fast_drift$, fast_quad$, fast_thick$, fast_bend$ or fast_none$.
 !-
 
 function fast_kind (ele) result (kind)
@@ -279,6 +387,7 @@ endif
 select case (ele%key)
 case (drift$);       kind = fast_drift$
 case (quadrupole$);  kind = fast_quad$
+case (sbend$);       kind = fast_bend$
 ! track_a_thick_multipole keys, minus elseparator (electric kick), ac_kicker (time dependent amplitude)
 ! and collimators (momentum apertures in check_aperture_limit).
 case (pipe$, monitor$, instrument$, kicker$, hkicker$, vkicker$, sextupole$, octupole$, thick_multipole$)
@@ -353,6 +462,35 @@ if (.not. fast_aperture_setup(ele, fs)) return
 if (.not. radiation_setup()) return
 
 if (fs%kind == fast_drift$) then
+  err_flag = .false.
+  return
+endif
+
+!------------------------------------------
+! Bend. The values set here are what track_a_bend computes per particle (bend_supported has excluded
+! everything else: fringe at this slice, k1, multipole kicks, electric multipoles, misalignment).
+
+if (fs%kind == fast_bend$) then
+  fs%charge_dir = ele%orientation * orb0%direction * rel_tracking_charge_to_mass(orb0, param%particle)
+  if (nint(ele%value(exact_multipoles$)) /= off$) then
+    call multipole_ele_to_ab(ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$)
+  else
+    call multipole_ele_to_ab(ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$, fs%b1)
+  endif
+  call multipole_ele_to_ab(ele, .false., ix_elec_max, an, bn, electric$)
+  fs%g = ele%value(g$)
+  fs%dg = fs%bn(0) / ele%value(l$)
+  fs%g_tot = (fs%g + fs%dg) * fs%charge_dir
+  fs%n_step = 1
+  if (fs%ix_mag_max > -1 .or. ix_elec_max > -1) fs%n_step = max(nint(abs(fs%length) / ele%value(ds_step$)), 1)
+  fs%step_len = fs%length / fs%n_step
+  fs%angle = fs%g * fs%step_len
+  fs%beta_ref = ele%value(p0c$) / ele%value(E_tot$)
+  fs%sinc_a = sinc(fs%angle)
+  fs%cos_a = cos(fs%angle)
+  fs%sin_a = sin(fs%angle)
+  fs%cosc_a = cosc(fs%angle)
+  fs%sincc_a = sincc(fs%angle)
   err_flag = .false.
   return
 endif
@@ -1262,6 +1400,8 @@ do ib = 1, n_block
     call track_block_quad (soa, fs, i0, i1)
   case (fast_thick$)
     call track_block_thick (soa, fs, i0, i1)
+  case (fast_bend$)
+    call track_block_bend (soa, fs, i0, i1)
   end select
 enddo
 !$OMP end parallel do
@@ -1383,6 +1523,126 @@ if (v(6) < -1.0_rp) then
 endif
 
 end subroutine radiation_lane
+
+!--------------------------------------------------------------------------
+! track1_bmad sbend$ branch: track_a_bend for the cases bend_supported accepts. The entrance and exit
+! edge kicks do nothing (no fringe at this slice), there is no offset_particle, and the multipole
+! kicks are absent or have all-zero fields (so they do not change the orbit).
+
+subroutine track_block_bend (soa, fs, i0, i1)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+
+real(rp) z0
+integer i0, i1, i, n
+logical go(i0:i1), lost, too_large
+
+!
+
+call entrance_block (soa, fs, i0, i1, go)
+
+do i = i0, i1
+  if (.not. go(i)) cycle
+  z0 = soa%z(i)
+  ! track_a_bend's orbit_too_large check after the entrance edge kick passes: the orbit has not
+  ! changed since track1's check.
+  lost = .false.
+  do n = 1, fs%n_step
+    call bend_body_lane (soa, fs, i, lost)
+    if (lost) exit
+  enddo
+  if (lost) cycle
+  call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
+  if (too_large) cycle
+  call add_time2 (soa, i, fs%delta_ref_time, (z0 - soa%z(i)) / (soa%beta(i) * c_light))
+enddo
+
+call exit_block (soa, fs, i0, i1, go)
+
+end subroutine track_block_bend
+
+!--------------------------------------------------------------------------
+! One step of the track_a_bend body (b1 = 0, g or dg nonzero). lost = True if track_a_bend returns
+! from inside the body (the particle state is set).
+
+subroutine bend_body_lane (soa, fs, i, lost)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+integer i
+logical lost
+
+real(rp) x, px, y, py, z, pz, rel_p, rel_p2, ll, gam2, m56, g, angle, step_len
+real(rp) pt, g_p, phi_1, cos_plus, sin_plus, alpha, r, rad, denom, xi, L_u, L_v, L_c, angle_p, L_p
+
+g = fs%g;  angle = fs%angle;  step_len = fs%step_len
+x  = soa%x(i);  px = soa%px(i);  y = soa%y(i);  py = soa%py(i);  z = soa%z(i);  pz = soa%pz(i)
+rel_p  = 1 + pz
+rel_p2 = rel_p**2
+
+! Use semi-linear map if near zero orbit.
+
+if (fs%dg == 0 .and. abs(x * g) < 1d-9 .and. abs(px) < 1d-9 .and. abs(py) < 1d-9 .and. abs(pz) < 1d-9) then
+  ll = step_len
+  gam2 = fs%mass**2 / ((rel_p * soa%p0c(i))**2 + fs%mass**2)  ! 1/gamma^2
+  m56 = ll * (gam2 - (g*ll)**2 * fs%sincc_a)
+  soa%x(i) = fs%cos_a * x      + ll * fs%sinc_a * px + g * ll**2 * fs%cosc_a * pz
+  soa%px(i) = -g * fs%sin_a * x + fs%cos_a * px       + g * ll * fs%sinc_a * pz
+  soa%y(i) = y + ll * py
+  soa%z(i) = -g * ll * fs%sinc_a * x - g * ll**2 * fs%cosc_a * px + z + m56 * pz
+  return
+endif
+
+! General case
+
+pt = sqrt(rel_p2 - py**2)
+if (abs(px) > pt) then
+  soa%state(i) = lost_pz$
+  lost = .true.
+  return
+endif
+
+g_p = fs%g_tot / pt
+phi_1  = asin(px / pt)
+cos_plus = cos(angle + phi_1)
+sin_plus = sin(angle + phi_1)
+alpha = 2 * (1 + g*x) * sin_plus * step_len * fs%sinc_a - g_p * ((1 + g*x) * step_len * fs%sinc_a)**2
+r = cos_plus**2 + g_p*alpha
+if (r < 0 .or. (abs(g_p) < 1d-5 .and. abs(cos_plus) < 1d-5)) then  ! Particle does not intersect exit face.
+  soa%state(i) = lost$
+  soa%x(i) = 2 * fs%max_ap
+  lost = .true.
+  return
+endif
+
+rad = sqrt(r)
+if (cos_plus > 0) then
+  denom = rad + cos_plus
+  xi = alpha / denom
+else
+  denom = rad - cos_plus
+  xi = denom / g_p
+endif
+
+soa%x(i) = x * fs%cos_a - step_len**2 * g * fs%cosc_a + xi
+if (abs(soa%x(i)) > fs%max_ap) then
+  soa%state(i) = lost$
+  lost = .true.
+  return
+endif
+
+L_u = xi
+L_v = -(step_len * fs%sinc_a + x * fs%sin_a)
+L_c = sqrt(L_v**2 + L_u**2)
+angle_p = 2 * (angle + phi_1 - atan2(L_u, -L_v))
+L_p = L_c / sinc(angle_p/2)
+
+soa%px(i) = pt * sin(phi_1 + angle - angle_p)
+soa%y(i) = y + py * L_p / pt
+soa%z(i) = z + soa%beta(i) * step_len / fs%beta_ref - rel_p * L_p / pt 
+
+end subroutine bend_body_lane
 
 !--------------------------------------------------------------------------
 ! track1_bmad drift$ branch: track_a_drift (orbit, ele%value(l$)*orbit%time_dir)
