@@ -859,7 +859,7 @@ end subroutine csr_eleinfo_fill
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine csr_bin_particles (ele, particle, csr)
+! Subroutine csr_bin_view (ele, v, csr, err_flag)
 !
 ! Routine to bin the particles longitudinally in s. 
 !
@@ -870,7 +870,7 @@ end subroutine csr_eleinfo_fill
 !
 ! Input:
 !   ele                  -- ele_struct: Element being tracked through.
-!   particle(:)          -- coord_struct: Array of particles
+!   v                    -- csr_particle_view_struct: View of the particles (csr_view_particles or csr_view_soa).
 !
 ! Other:
 !   space_charge_com     -- space_charge_common_struct: Space charge/CSR common block
@@ -881,32 +881,7 @@ end subroutine csr_eleinfo_fill
 !   csr                  -- csr_struct: The bin structure.
 !     %dz_slice             -- Bin longitudinal length
 !     %slice(1:)            -- Array of bins.
-!-
-
-subroutine csr_bin_particles (ele, particle, csr, err_flag)
-
-implicit none
-
-type (ele_struct) ele
-type (coord_struct), target :: particle(:)
-type (csr_struct), target :: csr
-type (csr_particle_view_struct) v
-logical err_flag
-
-!
-
-call csr_view_particles (particle, v)
-call csr_bin_view (ele, v, csr, err_flag)
-
-end subroutine csr_bin_particles
-
-!----------------------------------------------------------------------------
-!----------------------------------------------------------------------------
-!----------------------------------------------------------------------------
-!+
-! Subroutine csr_bin_view (ele, v, csr, err_flag)
-!
-! csr_bin_particles on a csr_particle_view_struct. See csr_bin_particles.
+!   err_flag             -- logical: Set True if there is an error.
 !-
 
 subroutine csr_bin_view (ele, v, csr, err_flag)
@@ -935,7 +910,7 @@ integer, parameter :: bin_block = 8192
 
 logical err_flag
 
-character(*), parameter :: r_name = 'csr_bin_particles'
+character(*), parameter :: r_name = 'csr_bin_view'
 
 ! Init bins...
 ! The left edge of csr%slice(1) is at z_min
@@ -2052,42 +2027,17 @@ end subroutine image_charge_kick_calc
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine csr_and_sc_apply_kicks (ele, csr, particle)
+! Subroutine csr_and_sc_apply_kicks_view (ele, csr, v)
 !
 ! Routine to calculate the longitudinal coherent synchrotron radiation kick.
 !
 ! Input:
 !   ele         -- ele_struct: Element being tracked through.
 !   csr         -- csr_struct: 
-!   particle(:) -- coord_struct: Particles to kick.
+!   v           -- csr_particle_view_struct: View of the particles to kick (csr_view_particles or csr_view_soa).
 !
 ! Output:
-!   particle(:) -- Coord_struct: Particles with kick applied.
-!-
-
-subroutine csr_and_sc_apply_kicks (ele, csr, particle)
-
-implicit none
-
-type (ele_struct) ele
-type (csr_struct), target :: csr
-type (coord_struct), target :: particle(:)
-type (csr_particle_view_struct) v
-
-!
-
-call csr_view_particles (particle, v)
-call csr_and_sc_apply_kicks_view (ele, csr, v)
-
-end subroutine csr_and_sc_apply_kicks
-
-!----------------------------------------------------------------------------
-!----------------------------------------------------------------------------
-!----------------------------------------------------------------------------
-!+
-! Subroutine csr_and_sc_apply_kicks_view (ele, csr, v)
-!
-! csr_and_sc_apply_kicks on a csr_particle_view_struct. See csr_and_sc_apply_kicks.
+!   v           -- csr_particle_view_struct: Particles with kick applied.
 !-
 
 subroutine csr_and_sc_apply_kicks_view (ele, csr, v)
@@ -2120,7 +2070,7 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
       r1 = (zp - csr%slice(i0)%z_center) / csr%dz_slice
       r0 = 1 - r1
       if (r1 < -0.01_rp .or. r1 > 1.01_rp .or. i0 < 1 .or. i0 >= space_charge_com%n_bin) then
-        call out_io (s_error$, 'csr_and_sc_apply_kicks', 'CSR INTERNAL ERROR!')
+        call out_io (s_error$, 'csr_and_sc_apply_kicks_view', 'CSR INTERNAL ERROR!')
         if (global_com%exit_on_error) call err_exit
       endif
       v%pz(ip) = v%pz(ip) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
@@ -2141,7 +2091,7 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
 
     ! r1 should be in [0,1] but allow for some round-off error
     if (r1 < -0.01_rp .or. r1 > 1.01_rp .or. i0 < 1 .or. i0 >= space_charge_com%n_bin) then
-      call out_io (s_error$, 'csr_and_sc_apply_kicks', 'CSR INTERNAL ERROR!')
+      call out_io (s_error$, 'csr_and_sc_apply_kicks_view', 'CSR INTERNAL ERROR!')
       if (global_com%exit_on_error) call err_exit
     endif
 

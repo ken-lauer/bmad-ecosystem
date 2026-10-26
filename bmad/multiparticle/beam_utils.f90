@@ -1711,7 +1711,6 @@ end subroutine bunch_track_add_pt
 ! for bunch after soa_to_bunch (soa, bunch), without writing soa to bunch%particle: the sums are taken over
 ! the SoA arrays, in the same blocks and order, so the results are identical. Only the components of
 ! bunch_params%centroid that are not computed (spin, phase, etc.) are taken from bunch%particle.
-! Time is folded into soa%t first, as soa_to_bunch does.
 !
 ! Not for photons or with spin tracking on (use soa_to_bunch and calc_bunch_params).
 !
@@ -1721,7 +1720,6 @@ end subroutine bunch_track_add_pt
 !   ele           -- ele_struct, optional: Element being tracked through. Used in error messages.
 !
 ! Output:
-!   soa           -- bunch_soa_struct: Time folded into %t.
 !   bunch         -- bunch_struct: %charge_tot and %charge_live set as calc_bunch_params does.
 !   bunch_params  -- bunch_params_struct: Bunch parameters.
 !   error         -- logical: Set True if there is an error.
@@ -1729,7 +1727,7 @@ end subroutine bunch_track_add_pt
 
 subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
 
-use bunch_soa_mod, only: bunch_soa_struct, soa_flush_time
+use bunch_soa_mod, only: bunch_soa_struct
 
 implicit none
 
@@ -1753,8 +1751,6 @@ logical error
 character(*), parameter :: r_name = "calc_bunch_params"
 
 ! Init
-
-call soa_flush_time (soa)
 
 bunch_params = bunch_params_struct()
 bunch_params%twiss_valid = .false.  ! Assume the worst

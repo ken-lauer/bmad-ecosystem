@@ -22,8 +22,6 @@
 !   * Same FMA contraction decisions. GCC contracts a*b+c by default (-ffp-contract=fast) on targets
 !     with FMA (aarch64, x86-64 with -march=haswell+), and may contract differently in an inlined kernel
 !     than in the original routine. Build both with -ffp-contract=off to verify bit-identity.
-!   * fast_track_time_mode = fast_time_qp$ (default). fast_time_dd$ accumulates time deltas in
-!     double-double and is NOT bit-identical (error ~ 2^-106 relative).
 !   * param%unstable_factor is NOT updated by the kernels (in track1_bunch_hom it is a shared,
 !     racy write already).
 ! Places where exactness is believed but not proven are marked "UNVERIFIED".
@@ -38,13 +36,10 @@ use, intrinsic :: iso_fortran_env, only: int64
 
 implicit none
 
-private :: two_sum, dd_add, qp_add_dp, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
+private :: qp_add_dp, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4
-
-integer, parameter :: fast_time_qp$ = 1, fast_time_dd$ = 2
-integer :: fast_track_time_mode = fast_time_qp$
 
 integer, parameter :: fast_block_size = 256
 
@@ -63,17 +58,13 @@ character(100), private, save :: why_seen(n_why_max) = ''
 integer, private, save :: n_why_seen = 0
 
 ! Structure-of-arrays bunch.
-! Time: t(:) holds the coord_struct%t value (quad precision) as loaded. In fast_time_dd$ mode the
-! kernels never touch t(:); they accumulate the change in time in the double-double pair
-! (dt_hi, dt_lo) which is folded into t(:) by soa_flush_time / soa_to_bunch. This keeps the
-! conversion coord -> soa -> coord lossless while removing quad precision ops from the hot loops.
+! Time: t(:) holds the coord_struct%t value (quad precision). The kernels update it with qp_add_dp.
 
 type bunch_soa_struct
   integer :: n = 0
   real(rp), allocatable :: x(:), px(:), y(:), py(:), z(:), pz(:)
   real(rp), allocatable :: s(:)
   real(qp), allocatable :: t(:)
-  real(rp), allocatable :: dt_hi(:), dt_lo(:)
   real(rp), allocatable :: charge(:), p0c(:), beta(:)
   real(rp), allocatable :: field(:,:)          ! (2, n). Not changed by the kernels; for bunch statistics.
   integer, allocatable :: state(:), species(:), location(:), ix_ele(:), ix_branch(:)
@@ -144,7 +135,7 @@ contains
 ! Function fast_track_eligible (ele, param, why) result (is_eligible)
 !
 ! Routine to decide if ele may be tracked with the SoA kernels instead of per-particle track1.
-! This checks everything that does not depend on the bunch. See also fast_bunch_compatible.
+! This checks everything that does not depend on the bunch. See also fast_soa_compatible.
 ! Anything not listed here as supported must fall back to track1.
 !
 ! Supported:
@@ -801,69 +792,13 @@ end function fast_aperture_setup
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Function fast_bunch_compatible (bunch, ele, fs, why) result (is_ok)
+! Function fast_soa_compatible (soa, ele, fs, why) result (is_ok)
 !
 ! Bunch dependent eligibility checks. All live particles must:
 !   have direction = +1 and time_dir = +1,
 !   be of species fs%species (= param%particle), not photons,
 !   have p0c consistent with the element (else track1 prints an error and skips the particle).
-!
-! Input:
-!   bunch   -- bunch_struct: Bunch to track.
-!   ele     -- ele_struct: Element.
-!   fs      -- fast_slice_struct: Prepared slice.
-!
-! Output:
-!   is_ok   -- logical: True if the bunch can be tracked with the fast kernels.
-!   why     -- character(*), optional: Reason if not.
-!-
-
-function fast_bunch_compatible (bunch, ele, fs, why) result (is_ok)
-
-type (bunch_struct) bunch
-type (ele_struct) ele
-type (fast_slice_struct) fs
-
-integer i, n_bad
-logical is_ok
-character(*), optional :: why
-
-!
-
-is_ok = .false.
-if (present(why)) why = ''
-n_bad = 0
-
-!$OMP parallel do reduction(+:n_bad)
-do i = 1, size(bunch%particle)
-  associate (p => bunch%particle(i))
-  if (p%state /= alive$) cycle
-  if (p%direction /= 1 .or. p%time_dir /= 1 .or. p%species /= fs%species .or. p%species == photon$) then
-    n_bad = n_bad + 1
-  elseif (significant_difference(ele%value(p0c_start$), p%p0c, rel_tol = small_rel_change$)) then
-    n_bad = n_bad + 1
-  endif
-  end associate
-enddo
-!$OMP end parallel do
-
-if (n_bad > 0) then
-  if (present(why)) why = 'particles with direction/time_dir/species/p0c not supported'
-  return
-endif
-
-is_ok = .true.
-
-end function fast_bunch_compatible
-
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Function fast_soa_compatible (soa, ele, fs, why) result (is_ok)
-!
-! Same checks as fast_bunch_compatible but on a SoA bunch (cheaper: contiguous arrays, and the
-! p0c test is only evaluated when p0c changes from one particle to the next in a thread's block).
+! The p0c test is only evaluated when p0c changes from one particle to the next in a thread's block.
 !
 ! Input:
 !   soa     -- bunch_soa_struct: Bunch to track.
@@ -935,7 +870,7 @@ end function fast_soa_compatible
 !   with_spin -- logical, optional: Copy spin? Default is False.
 !
 ! Output:
-!   soa       -- bunch_soa_struct: SoA bunch. Reallocated as needed. dt_hi/dt_lo are zeroed.
+!   soa       -- bunch_soa_struct: SoA bunch. Reallocated as needed.
 !-
 
 subroutine bunch_to_soa (bunch, soa, with_spin)
@@ -959,7 +894,6 @@ do i = 1, n
   soa%z(i)  = p%vec(5);  soa%pz(i) = p%vec(6)
   soa%s(i)  = p%s
   soa%t(i)  = p%t
-  soa%dt_hi(i) = 0;  soa%dt_lo(i) = 0
   soa%charge(i)    = p%charge
   soa%field(:, i)  = p%field
   soa%p0c(i)       = p%p0c
@@ -984,8 +918,7 @@ end subroutine bunch_to_soa
 !+
 ! Subroutine soa_to_bunch (soa, bunch)
 !
-! Routine to store a SoA bunch back into bunch%particle(:). Time deltas accumulated in
-! double-double (fast_time_dd$ mode) are folded into %t first.
+! Routine to store a SoA bunch back into bunch%particle(:).
 ! Only components that the kernels may change are written.
 !
 ! Input:
@@ -993,7 +926,6 @@ end subroutine bunch_to_soa
 !
 ! Output:
 !   bunch     -- bunch_struct: bunch%particle(:) updated.
-!   soa       -- bunch_soa_struct: dt_hi/dt_lo zeroed, t updated.
 !-
 
 subroutine soa_to_bunch (soa, bunch)
@@ -1013,8 +945,6 @@ if (size(bunch%particle) /= soa%n) then
   return
 endif
 
-call soa_flush_time (soa)
-
 !$OMP parallel do
 do i = 1, soa%n
   associate (p => bunch%particle(i))
@@ -1033,39 +963,6 @@ enddo
 !$OMP end parallel do
 
 end subroutine soa_to_bunch
-
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine soa_flush_time (soa)
-!
-! Routine to fold the double-double time accumulator into soa%t (quad precision).
-! The (hi, lo) pair is renormalized so hi + lo is exact in quad precision; only the final
-! addition to %t rounds.
-!
-! Input:
-!   soa   -- bunch_soa_struct.
-!
-! Output:
-!   soa   -- bunch_soa_struct: %t updated, %dt_hi and %dt_lo zeroed.
-!-
-
-subroutine soa_flush_time (soa)
-
-type (bunch_soa_struct) soa
-integer i
-
-!$OMP parallel do
-do i = 1, soa%n
-  if (soa%dt_hi(i) == 0 .and. soa%dt_lo(i) == 0) cycle
-  soa%t(i) = soa%t(i) + (real(soa%dt_hi(i), qp) + real(soa%dt_lo(i), qp))
-  soa%dt_hi(i) = 0
-  soa%dt_lo(i) = 0
-enddo
-!$OMP end parallel do
-
-end subroutine soa_flush_time
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1097,7 +994,7 @@ endif
 
 if (.not. allocated(soa%x)) then
   allocate (soa%x(n), soa%px(n), soa%y(n), soa%py(n), soa%z(n), soa%pz(n), soa%s(n), soa%t(n), &
-            soa%dt_hi(n), soa%dt_lo(n), soa%charge(n), soa%p0c(n), soa%beta(n), soa%state(n), &
+            soa%charge(n), soa%p0c(n), soa%beta(n), soa%state(n), &
             soa%species(n), soa%location(n), soa%ix_ele(n), soa%ix_branch(n), soa%direction(n), soa%time_dir(n), &
             soa%field(2, n))
 endif
@@ -1135,7 +1032,7 @@ subroutine soa_deallocate (soa)
 type (bunch_soa_struct) soa
 
 if (allocated(soa%x)) deallocate (soa%x, soa%px, soa%y, soa%py, soa%z, soa%pz, soa%s, soa%t, &
-            soa%dt_hi, soa%dt_lo, soa%charge, soa%p0c, soa%beta, soa%state, &
+            soa%charge, soa%p0c, soa%beta, soa%state, &
             soa%species, soa%location, soa%ix_ele, soa%ix_branch, soa%direction, soa%time_dir, soa%field)
 if (allocated(soa%spin)) deallocate (soa%spin)
 soa%n = 0
@@ -1299,8 +1196,6 @@ integer j, j0
 logical thread_safe, use_memo
 
 !
-
-call soa_flush_time (soa)
 
 use_memo = (thread_safe .and. soa%n > 1000 .and. multipole_memo_state == memo_off$ .and. &
             .not. associated(track1_preprocess_ptr) .and. .not. associated(track1_postprocess_ptr) .and. &
@@ -2422,9 +2317,7 @@ end select
 end subroutine aperture_lane
 
 !--------------------------------------------------------------------------
-! Time updates.
-! fast_time_qp$: identical to Bmad: t = t + dt  (drift)  and  t = (t + a) + b  (quadrupole).
-! fast_time_dd$: accumulate in (dt_hi, dt_lo). Not bit-identical.
+! Time updates, identical to Bmad: t = t + dt  (drift)  and  t = (t + a) + b  (quadrupole).
 
 subroutine add_time (soa, i, dt)
 
@@ -2432,11 +2325,7 @@ type (bunch_soa_struct) soa
 real(rp) dt
 integer i
 
-if (fast_track_time_mode == fast_time_qp$) then
-  soa%t(i) = qp_add_dp(soa%t(i), dt)
-else
-  call dd_add (soa%dt_hi(i), soa%dt_lo(i), dt)
-endif
+soa%t(i) = qp_add_dp(soa%t(i), dt)
 
 end subroutine add_time
 
@@ -2446,12 +2335,7 @@ type (bunch_soa_struct) soa
 real(rp) a, b
 integer i
 
-if (fast_track_time_mode == fast_time_qp$) then
-  soa%t(i) = qp_add_dp(qp_add_dp(soa%t(i), a), b)
-else
-  call dd_add (soa%dt_hi(i), soa%dt_lo(i), a)
-  call dd_add (soa%dt_hi(i), soa%dt_lo(i), b)
-endif
+soa%t(i) = qp_add_dp(qp_add_dp(soa%t(i), a), b)
 
 end subroutine add_time2
 
@@ -2537,36 +2421,5 @@ if (bt < 0) x = ior(x, shiftl(one, 127))
 r = transfer(x, r)
 
 end function qp_add_dp
-
-!--------------------------------------------------------------------------
-! Knuth two-sum: s + e = a + b exactly. Must not be compiled with -ffast-math / -fassociative-math.
-
-elemental subroutine two_sum (a, b, s, e)
-
-real(rp), intent(in) :: a, b
-real(rp), intent(out) :: s, e
-real(rp) bb
-
-s = a + b
-bb = s - a
-e = (a - (s - bb)) + (b - bb)
-
-end subroutine two_sum
-
-!--------------------------------------------------------------------------
-! (hi, lo) += d, renormalized so |lo| <= ulp(hi)/2.
-
-elemental subroutine dd_add (hi, lo, d)
-
-real(rp), intent(inout) :: hi, lo
-real(rp), intent(in) :: d
-real(rp) s, e
-
-call two_sum (hi, d, s, e)
-e = e + lo
-hi = s + e
-lo = e - (hi - s)
-
-end subroutine dd_add
 
 end module bunch_soa_mod
