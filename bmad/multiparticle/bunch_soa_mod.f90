@@ -10,8 +10,8 @@
 !   quadrupole  (bmad_standard, magnetic multipoles + hkick/vkick allowed, no fringe, no electric multipoles)
 !
 ! Usage pattern (see fast_track1_bunch):
-!   if (fast_track_eligible(ele, param, why)) then
-!     call fast_slice_prepare(ele, param, fs, err)        ! Once per element/slice. Serial.
+!   call fast_slice_prepare(ele, param, fs, err, why)    ! Once per element/slice. Serial.
+!   if (.not. err) then
 !     call bunch_to_soa(bunch, soa)                       ! Or keep soa alive across many slices.
 !     call fast_track_soa(soa, fs)                        ! OpenMP over particle blocks.
 !     call soa_to_bunch(soa, bunch)
@@ -135,7 +135,8 @@ contains
 ! Function fast_track_eligible (ele, param, why) result (is_eligible)
 !
 ! Routine to decide if ele may be tracked with the SoA kernels instead of per-particle track1.
-! This checks everything that does not depend on the bunch. See also fast_soa_compatible.
+! This checks everything that does not depend on the bunch (see also fast_soa_compatible) by running
+! fast_slice_prepare, which callers that go on to track should use directly.
 ! Anything not listed here as supported must fall back to track1.
 !
 ! Supported:
@@ -164,84 +165,15 @@ function fast_track_eligible (ele, param, why) result (is_eligible)
 
 type (ele_struct) ele
 type (lat_param_struct) param
-type (fringe_field_info_struct) fringe_info
-type (fast_slice_struct) fs_ap
+type (fast_slice_struct) fs
 
-real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), b1
-integer ix_mag_max, ix_elec_max, kind
-logical is_eligible
+logical is_eligible, err
 character(*), optional :: why
 
 !
 
-is_eligible = .false.
-if (present(why)) why = ''
-
-if (bmad_com%spin_tracking_on) then
-  call set_why('spin tracking on');  return
-endif
-if (bmad_com%high_energy_space_charge_on) then
-  call set_why('high energy space charge on');  return
-endif
-if (associated(track1_preprocess_ptr) .or. associated(track1_postprocess_ptr)) then
-  call set_why('track1 hooks set');  return
-endif
-
-kind = fast_kind(ele)
-if (kind == fast_none$) then
-  call set_why('element type / tracking method not supported');  return
-endif
-
-! Aperture. Mirrors check_aperture_limit for the particle_at values used by track1.
-
-if (.not. fast_aperture_setup(ele, fs_ap, why)) return
-
-! Quadrupole and thick multipole specific
-
-if (kind == fast_quad$ .or. kind == fast_thick$) then
-  if (ele%orientation /= 1) then
-    call set_why('reversed element');  return
-  endif
-  if (kind == fast_quad$ .and. ele%value(l$) == 0) then
-    call set_why('zero length quadrupole');  return
-  endif
-
-  call init_fringe_info (fringe_info, ele)
-  if (fringe_info%has_fringe) then
-    call set_why('fringe fields');  return
-  endif
-
-  if (kind == fast_quad$) then
-    call multipole_ele_to_ab (ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$, b1)
-  else
-    call multipole_ele_to_ab (ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$)
-  endif
-  call multipole_ele_to_ab (ele, .false., ix_elec_max, an, bn, electric$)
-  if (ix_elec_max > -1) then
-    call set_why('electric multipoles');  return
-  endif
-  if (ix_mag_max > -1 .and. ele%value(ds_step$) <= 0) then
-    call set_why('ds_step <= 0');  return
-  endif
-
-  if (ele%bookkeeping_state%has_misalign .and. .not. has_orientation_attributes(ele)) then
-    call set_why('misaligned without orientation attributes');  return
-  endif
-endif
-
-if (kind == fast_bend$) then
-  if (.not. bend_supported(ele, param, why)) return
-endif
-
-is_eligible = .true.
-
-!------------------------
-contains
-
-subroutine set_why(str)
-character(*) str
-if (present(why)) why = str
-end subroutine set_why
+call fast_slice_prepare (ele, param, fs, err, why)
+is_eligible = .not. err
 
 end function fast_track_eligible
 
@@ -249,7 +181,7 @@ end function fast_track_eligible
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Function bend_supported (ele, param, why, check_fringe) result (is_ok)
+! Function bend_supported (ele, param, why, check_fringe, fs) result (is_ok)
 !
 ! Routine to decide if the bend kernel reproduces track_a_bend for ele. Supported: bmad_standard sbend
 ! with nonzero length and g + dg, orientation = +1, no fringe at this slice (interior slices of a bend,
@@ -261,16 +193,19 @@ end function fast_track_eligible
 !   param        -- lat_param_struct: Branch parameters.
 !   check_fringe -- logical, optional: Default True. False skips the fringe test, to ask whether the
 !                     interior slices of ele are supported.
+!   fs           -- fast_slice_struct, optional: Slice being prepared, with %length set.
 !
 ! Output:
 !   why     -- character(*), optional: Reason if not.
 !   is_ok   -- logical: True if supported.
+!   fs      -- fast_slice_struct, optional: If supported, the bend quantities are filled in.
 !-
 
-function bend_supported (ele, param, why, check_fringe) result (is_ok)
+function bend_supported (ele, param, why, check_fringe, fs) result (is_ok)
 
 type (ele_struct) ele
 type (lat_param_struct) param
+type (fast_slice_struct), optional :: fs
 type (fringe_field_info_struct) fringe_info
 type (coord_struct) orb0
 
@@ -339,6 +274,25 @@ if (ele%value(g$) == 0 .and. dg == 0) then
 endif
 
 is_ok = .true.
+if (.not. present(fs)) return
+
+! The values track_a_bend computes per particle.
+
+fs%charge_dir = rel_charge_dir
+fs%ix_mag_max = ix_mag_max
+fs%g = ele%value(g$)
+fs%dg = dg
+fs%g_tot = (fs%g + fs%dg) * fs%charge_dir
+fs%n_step = 1
+if (ix_mag_max > -1) fs%n_step = max(nint(abs(fs%length) / ele%value(ds_step$)), 1)
+fs%step_len = fs%length / fs%n_step
+fs%angle = fs%g * fs%step_len
+fs%beta_ref = ele%value(p0c$) / ele%value(E_tot$)
+fs%sinc_a = sinc(fs%angle)
+fs%cos_a = cos(fs%angle)
+fs%sin_a = sin(fs%angle)
+fs%cosc_a = cosc(fs%angle)
+fs%sincc_a = sincc(fs%angle)
 
 !------------------------
 contains
@@ -401,12 +355,12 @@ end function fast_kind
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine fast_slice_prepare (ele, param, fs, err_flag)
+! Subroutine fast_slice_prepare (ele, param, fs, err_flag, why)
 !
-! Routine to compute all slice-invariant quantities used by the fast kernels.
+! Routine to check that ele is supported by the fast kernels (fast_track_eligible lists what is
+! supported) and to compute all slice-invariant quantities used by them.
 ! Must be called serially (outside any OpenMP parallel region) since it calls Bmad routines
 ! that initialize SAVEd tables (c_multi) and may allocate ele%multipole_cache.
-! fast_track_eligible(ele, param) must be True.
 !
 ! Input:
 !   ele       -- ele_struct: Element or slice to track through.
@@ -415,27 +369,44 @@ end function fast_kind
 ! Output:
 !   fs        -- fast_slice_struct: Prepared data.
 !   err_flag  -- logical: Set True if ele is not supported.
+!   why       -- character(*), optional: Reason if ele is not supported. Blank if supported.
 !-
 
-subroutine fast_slice_prepare (ele, param, fs, err_flag)
+subroutine fast_slice_prepare (ele, param, fs, err_flag, why)
 
 type (ele_struct) ele
 type (lat_param_struct) param
 type (fast_slice_struct) fs
 type (coord_struct) orb0
+type (fringe_field_info_struct) fringe_info
 
 real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), xp, yp, ds_center_set, s_pos0
 integer ix_elec_max, n, m
 logical err_flag
+character(*), optional :: why
 
 character(*), parameter :: r_name = 'fast_slice_prepare'
 
 !
 
 err_flag = .true.
+if (present(why)) why = ''
 fs = fast_slice_struct()
+
+if (bmad_com%spin_tracking_on) then
+  call set_why('spin tracking on');  return
+endif
+if (bmad_com%high_energy_space_charge_on) then
+  call set_why('high energy space charge on');  return
+endif
+if (associated(track1_preprocess_ptr) .or. associated(track1_postprocess_ptr)) then
+  call set_why('track1 hooks set');  return
+endif
+
 fs%kind = fast_kind(ele)
-if (fs%kind == fast_none$) return
+if (fs%kind == fast_none$) then
+  call set_why('element type / tracking method not supported');  return
+endif
 
 if (ele%slave_status == slice_slave$) then
   fs%ix_ele    = ele%lord%ix_ele
@@ -459,7 +430,7 @@ orb0%direction = 1
 orb0%time_dir = 1
 orb0%species = param%particle
 
-if (.not. fast_aperture_setup(ele, fs)) return
+if (.not. fast_aperture_setup(ele, fs, why)) return
 if (.not. radiation_setup()) return
 
 if (fs%kind == fast_drift$) then
@@ -468,30 +439,10 @@ if (fs%kind == fast_drift$) then
 endif
 
 !------------------------------------------
-! Bend. The values set here are what track_a_bend computes per particle (bend_supported has excluded
-! everything else: fringe at this slice, k1, multipole kicks, electric multipoles, misalignment).
+! Bend
 
 if (fs%kind == fast_bend$) then
-  fs%charge_dir = ele%orientation * orb0%direction * rel_tracking_charge_to_mass(orb0, param%particle)
-  if (nint(ele%value(exact_multipoles$)) /= off$) then
-    call multipole_ele_to_ab(ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$)
-  else
-    call multipole_ele_to_ab(ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$, fs%b1)
-  endif
-  call multipole_ele_to_ab(ele, .false., ix_elec_max, an, bn, electric$)
-  fs%g = ele%value(g$)
-  fs%dg = fs%bn(0) / ele%value(l$)
-  fs%g_tot = (fs%g + fs%dg) * fs%charge_dir
-  fs%n_step = 1
-  if (fs%ix_mag_max > -1 .or. ix_elec_max > -1) fs%n_step = max(nint(abs(fs%length) / ele%value(ds_step$)), 1)
-  fs%step_len = fs%length / fs%n_step
-  fs%angle = fs%g * fs%step_len
-  fs%beta_ref = ele%value(p0c$) / ele%value(E_tot$)
-  fs%sinc_a = sinc(fs%angle)
-  fs%cos_a = cos(fs%angle)
-  fs%sin_a = sin(fs%angle)
-  fs%cosc_a = cosc(fs%angle)
-  fs%sincc_a = sincc(fs%angle)
+  if (.not. bend_supported(ele, param, why, fs = fs)) return
   err_flag = .false.
   return
 endif
@@ -499,25 +450,42 @@ endif
 !------------------------------------------
 ! Quadrupole / thick multipole
 
+if (ele%orientation /= 1) then
+  call set_why('reversed element');  return
+endif
+if (fs%kind == fast_quad$ .and. ele%value(l$) == 0) then
+  call set_why('zero length quadrupole');  return
+endif
+call init_fringe_info (fringe_info, ele)
+if (fringe_info%has_fringe) then
+  call set_why('fringe fields');  return
+endif
+if (ele%bookkeeping_state%has_misalign .and. .not. has_orientation_attributes(ele)) then
+  call set_why('misaligned without orientation attributes');  return
+endif
+
 if (fs%kind == fast_quad$) then
   fs%charge_dir = rel_tracking_charge_to_mass(orb0, param%particle) * (ele%orientation * orb0%direction * orb0%time_dir)
-
   call multipole_ele_to_ab (ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$, fs%b1)
-  call multipole_ele_to_ab (ele, .false., ix_elec_max, an, bn, electric$)
-  if (ix_elec_max > -1) return
+else
+  call multipole_ele_to_ab (ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$)
+endif
+call multipole_ele_to_ab (ele, .false., ix_elec_max, an, bn, electric$)
+if (ix_elec_max > -1) then
+  call set_why('electric multipoles');  return
+endif
+if (fs%ix_mag_max > -1 .and. ele%value(ds_step$) <= 0) then
+  call set_why('ds_step <= 0');  return
+endif
 
+if (fs%kind == fast_quad$) then
   fs%n_step = 1
   if (fs%ix_mag_max > -1) fs%n_step = max(nint(abs(fs%length) / ele%value(ds_step$)), 1)
   fs%r_step = real(orb0%time_dir, rp) / fs%n_step
   fs%step_len = ele%value(l$) * fs%r_step
   if (fs%length == 0) fs%n_step = 0
-
 else
   ! track_a_thick_multipole. Note the different n_step and step_len expressions from track_a_quadrupole.
-  call multipole_ele_to_ab (ele, .false., fs%ix_mag_max, fs%an, fs%bn, magnetic$, include_kicks$)
-  call multipole_ele_to_ab (ele, .false., ix_elec_max, an, bn, electric$)
-  if (ix_elec_max > -1) return
-
   if (fs%ix_mag_max == -1) then
     fs%n_step = 1
   else
@@ -576,6 +544,12 @@ err_flag = .false.
 !------------------------
 contains
 
+subroutine set_why(str)
+character(*) str
+if (present(why)) why = str
+end subroutine set_why
+
+!------------------------
 ! As track1 / track1_radiation: kicks at both edges for elements that radiate, with the maps from
 ! radiation_map_setup (which only recomputes stale maps, as track1_bunch_hom relies on).
 
@@ -593,6 +567,7 @@ end select
 call radiation_map_setup(ele, rad_err)
 if (rad_err .or. .not. associated(ele%rad_map)) then
   ok = .false.   ! track1_radiation marks the particle lost; leave that to track1.
+  call set_why('radiation map error')
   return
 endif
 
@@ -1288,14 +1263,9 @@ character(100) reason
 !
 
 is_ok = .false.
-reason = ''
-if (.not. fast_track_eligible(ele, param, reason)) then
-  call fast_note_why (ele, reason, why)
-  return
-endif
-call fast_slice_prepare (ele, param, fs, err)
+call fast_slice_prepare (ele, param, fs, err, reason)
 if (err) then
-  call fast_note_why (ele, 'fast_slice_prepare failed', why)
+  call fast_note_why (ele, reason, why)
   return
 endif
 is_ok = .true.

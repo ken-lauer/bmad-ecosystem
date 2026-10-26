@@ -7,6 +7,21 @@ use wake_mod
 ! results do not depend on the number of threads.
 integer, parameter, private :: bunch_sum_block = 4096
 
+! View of the particle coordinates of a bunch stored as an array of coord_structs (bunch_view_particles)
+! or as a bunch_soa_struct (bunch_view_soa), so that calc_bunch_params serves both layouts with one set
+! of sums. %particle is only associated for the coord_struct layout (needed with time coordinates).
+
+type bunch_view_struct
+  real(rp), pointer :: x(:) => null(), px(:) => null(), y(:) => null(), py(:) => null()
+  real(rp), pointer :: z(:) => null(), pz(:) => null(), s(:) => null(), p0c(:) => null()
+  real(rp), pointer :: charge(:) => null(), field1(:) => null(), field2(:) => null()
+  real(qp), pointer :: t(:) => null()
+  integer, pointer :: state(:) => null()
+  type (coord_struct), pointer :: particle(:) => null()
+end type
+
+private calc_bunch_params_view
+
 private init_random_distribution, init_grid_distribution
 private init_ellipse_distribution, init_kv_distribution
 private combine_bunch_distributions, bunch_init_end_calc
@@ -1487,35 +1502,21 @@ subroutine calc_bunch_params (bunch, bunch_params, error, print_err, n_mat, is_t
 
 implicit none
 
-type (bunch_struct) :: bunch
+type (bunch_struct), target :: bunch
 type (bunch_params_struct) bunch_params
+type (bunch_view_struct) v
 type (ele_struct), optional :: ele
 
 real(rp), optional :: n_mat(6,6)
-real(rp) eta, etap
-real(rp) :: sigma(6,6) = 0.0
-real(rp) :: charge_live, average_pc, sum_s
-real(rp), allocatable :: charge(:), part(:,:)
-real(qp) sum_t, sum_t2
-real(qp), allocatable :: part_qp(:,:)
-
-integer i, j, species, n, nb, ib, i0, i1, n_live
-integer, allocatable :: n_live_b(:)
-
+integer i
 logical, optional :: print_err, is_time_coords
 logical error
-
-character(*), parameter :: r_name = "calc_bunch_params"
 
 ! Init
 
 bunch_params = bunch_params_struct()
 bunch_params%twiss_valid = .false.  ! Assume the worst
 error = .true.
-
-call re_allocate (charge, size(bunch%particle))
-
-species = bunch%particle(1)%species
 
 ! Get s-position from the last live particle (the loop used to run over all particles and keep the last one).
 
@@ -1527,12 +1528,66 @@ do i = size(bunch%particle), 1, -1
   exit
 enddo
 
-! n_particle and centroid.
+call bunch_view_particles (bunch%particle, v)
+call calc_bunch_params_view (v, bunch, bunch_params, error, print_err, n_mat, is_time_coords, ele)
+
+end subroutine calc_bunch_params
+
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!+
+! Subroutine calc_bunch_params_view (v, bunch, bunch_params, error, print_err, n_mat, is_time_coords, ele)
+!
+! The sums of calc_bunch_params, over a view of the particle coordinates so that both bunch layouts
+! (bunch%particle(:) and a bunch_soa_struct) are served by the same code. See calc_bunch_params.
 ! Sums are accumulated over blocks of bunch_sum_block particles in parallel and the block sums are then
 ! added in order, so the result does not depend on the number of threads (and for a bunch of at most
 ! bunch_sum_block particles is the same as a plain serial sum).
+!
+! Input:
+!   v               -- bunch_view_struct: View of the particles (bunch_view_particles or bunch_view_soa).
+!   bunch           -- bunch_struct: Bunch that v views. Only %particle(1)%species, %n_good, %n_bad and,
+!                        with spin tracking on, %particle(:)%spin are read.
+!   bunch_params    -- bunch_params_struct: Initialized by the caller, with %centroid, %ix_ele and
+!                        %location from the last live particle.
+!   print_err, n_mat, is_time_coords, ele -- As in calc_bunch_params.
+!
+! Output:
+!   bunch           -- bunch_struct: %charge_tot and %charge_live set.
+!   bunch_params    -- bunch_params_struct: Bunch parameters.
+!   error           -- Logical: Set True if there is an error.
+!-
 
-n = size(bunch%particle)
+subroutine calc_bunch_params_view (v, bunch, bunch_params, error, print_err, n_mat, is_time_coords, ele)
+
+implicit none
+
+type (bunch_view_struct) v
+type (bunch_struct) :: bunch
+type (bunch_params_struct) bunch_params
+type (ele_struct), optional :: ele
+
+real(rp), optional :: n_mat(6,6)
+real(rp) :: charge_live, average_pc, sum_s
+real(rp), allocatable :: charge(:), part(:,:)
+real(qp) sum_t, sum_t2
+real(qp), allocatable :: part_qp(:,:)
+
+integer i, species, n, nb, ib, i0, i1, n_live
+integer, allocatable :: n_live_b(:)
+
+logical, optional :: print_err, is_time_coords
+logical error
+
+character(*), parameter :: r_name = "calc_bunch_params"
+
+! n_particle and centroid.
+
+n = size(v%state)
+allocate (charge(n))
+species = bunch%particle(1)%species
+
 nb = (n + bunch_sum_block - 1) / bunch_sum_block
 allocate (part(6, nb), n_live_b(nb), part_qp(2, nb))
 
@@ -1543,20 +1598,18 @@ do ib = 1, nb
   part(:, ib) = 0
   n_live_b(ib) = 0
   do i = i0, i1
-    associate (p => bunch%particle(i))
-    part(2, ib) = part(2, ib) + p%charge
+    part(2, ib) = part(2, ib) + v%charge(i)
     if (species == photon$) then
-      charge(i) = p%field(1)**2 + p%field(2)**2
+      charge(i) = v%field1(i)**2 + v%field2(i)**2
     else
-      charge(i) = p%charge
+      charge(i) = v%charge(i)
     endif
-    if (p%state /= alive$) cycle
+    if (v%state(i) /= alive$) cycle
     n_live_b(ib) = n_live_b(ib) + 1
-    part(1, ib) = part(1, ib) + p%charge
-    part(3, ib) = part(3, ib) + p%field(1)
-    part(4, ib) = part(4, ib) + p%field(2)
+    part(1, ib) = part(1, ib) + v%charge(i)
+    part(3, ib) = part(3, ib) + v%field1(i)
+    part(4, ib) = part(4, ib) + v%field2(i)
     part(5, ib) = part(5, ib) + charge(i)
-    end associate
   enddo
 enddo
 !$OMP end parallel do
@@ -1603,12 +1656,10 @@ do ib = 1, nb
   part(6, ib) = 0
   part_qp(:, ib) = 0
   do i = i0, i1
-    associate (p => bunch%particle(i))
-    if (p%state /= alive$) cycle
-    part(6, ib) = part(6, ib) + p%s * charge(i)
-    part_qp(1, ib) = part_qp(1, ib) + p%t * charge(i)
-    part_qp(2, ib) = part_qp(2, ib) + p%t**2 * charge(i)
-    end associate
+    if (v%state(i) /= alive$) cycle
+    part(6, ib) = part(6, ib) + v%s(i) * charge(i)
+    part_qp(1, ib) = part_qp(1, ib) + v%t(i) * charge(i)
+    part_qp(2, ib) = part_qp(2, ib) + v%t(i)**2 * charge(i)
   enddo
 enddo
 !$OMP end parallel do
@@ -1631,7 +1682,7 @@ if (bmad_com%spin_tracking_on) call calc_spin_params (bunch, bunch_params)
   
 ! Sigma matrix calc
 
-call calc_bunch_sigma_matrix_etc (bunch%particle, charge, bunch_params, is_time_coords, ele)
+call calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
 
 if (species == photon$) return
 
@@ -1659,7 +1710,7 @@ do ib = 1, nb
 enddo
 end function block_total
 
-end subroutine calc_bunch_params
+end subroutine calc_bunch_params_view
 
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
@@ -1708,11 +1759,11 @@ end subroutine bunch_track_add_pt
 ! Subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
 !
 ! Routine to compute what calc_bunch_params (with print_err, n_mat and is_time_coords not present) computes
-! for bunch after soa_to_bunch (soa, bunch), without writing soa to bunch%particle: the sums are taken over
-! the SoA arrays, in the same blocks and order, so the results are identical. Only the components of
-! bunch_params%centroid that are not computed (spin, phase, etc.) are taken from bunch%particle.
+! for bunch after soa_to_bunch (soa, bunch), without writing soa to bunch%particle: the same sums
+! (calc_bunch_params_view) are taken over the SoA arrays. Only the components of bunch_params%centroid
+! that are not computed (spin, phase, etc.) are taken from bunch%particle.
 !
-! Not for photons or with spin tracking on (use soa_to_bunch and calc_bunch_params).
+! Not with spin tracking on (calc_spin_params reads bunch%particle): use soa_to_bunch and calc_bunch_params.
 !
 ! Input:
 !   soa           -- bunch_soa_struct: Particle positions. bunch%particle(:) may be out of date.
@@ -1734,21 +1785,11 @@ implicit none
 type (bunch_soa_struct), target :: soa
 type (bunch_struct) :: bunch
 type (bunch_params_struct) bunch_params
+type (bunch_view_struct) v
 type (ele_struct), optional :: ele
 
-real(rp) :: charge_live, average_pc, sum_s, p0c_avg, vec(7), avg(7)
-real(rp), allocatable :: part(:,:), sig_b(:,:,:), avg_b(:,:), max_b(:,:), min_b(:,:)
-real(rp), allocatable, target :: unit(:)
-real(rp), pointer :: charge(:)
-real(qp) sum_t, sum_t2
-real(qp), allocatable :: part_qp(:,:)
-
-integer i, j2, species, n, nb, ib, i0, i1, n_live
-integer, allocatable :: n_live_b(:)
-
+integer i
 logical error
-
-character(*), parameter :: r_name = "calc_bunch_params"
 
 ! Init
 
@@ -1756,10 +1797,7 @@ bunch_params = bunch_params_struct()
 bunch_params%twiss_valid = .false.  ! Assume the worst
 error = .true.
 
-species = soa%species(1)
-n = soa%n
-
-do i = n, 1, -1
+do i = soa%n, 1, -1
   if (soa%state(i) /= alive$) cycle
   bunch_params%ix_ele = soa%ix_ele(i)
   bunch_params%location = soa%location(i)
@@ -1777,213 +1815,82 @@ do i = n, 1, -1
   exit
 enddo
 
-! n_particle and centroid. Same blocks and order as calc_bunch_params.
+call bunch_view_soa (soa, v)
+call calc_bunch_params_view (v, bunch, bunch_params, error, ele = ele)
 
-nb = (n + bunch_sum_block - 1) / bunch_sum_block
-allocate (part(6, nb), n_live_b(nb), part_qp(2, nb))
+end subroutine calc_bunch_params_soa
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
-do ib = 1, nb
-  i0 = (ib - 1) * bunch_sum_block + 1
-  i1 = min(ib * bunch_sum_block, n)
-  part(:, ib) = 0
-  n_live_b(ib) = 0
-  do i = i0, i1
-    part(2, ib) = part(2, ib) + soa%charge(i)
-    if (soa%state(i) /= alive$) cycle
-    n_live_b(ib) = n_live_b(ib) + 1
-    part(1, ib) = part(1, ib) + soa%charge(i)
-    part(3, ib) = part(3, ib) + soa%field(1, i)
-    part(4, ib) = part(4, ib) + soa%field(2, i)
-    part(5, ib) = part(5, ib) + soa%charge(i)
-  enddo
-enddo
-!$OMP end parallel do
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!+
+! Subroutine bunch_view_particles (particle, v)
+!
+! Routine to point a bunch_view_struct at the coordinates of an array of particles.
+!
+! Input:
+!   particle(:) -- coord_struct: Particles. The actual argument must have the target attribute.
+!
+! Output:
+!   v           -- bunch_view_struct: View of particle(:).
+!-
 
-n_live = 0
-do ib = 1, nb
-  n_live = n_live + n_live_b(ib)
-enddo
+subroutine bunch_view_particles (particle, v)
 
-bunch_params%n_good_steps = bunch%n_good
-bunch_params%n_bad_steps = bunch%n_bad
+implicit none
 
-bunch_params%n_particle_tot = n
-bunch_params%n_particle_live = n_live
-bunch_params%charge_live = block_total(1)
-bunch_params%charge_tot = block_total(2)
-bunch%charge_tot  = bunch_params%charge_tot
-bunch%charge_live = bunch_params%charge_live
-
-bunch_params%centroid%field(1) = block_total(3)
-bunch_params%centroid%field(2) = block_total(4)
-
-if (bunch%charge_tot == 0) then
-  call out_io (s_error$, r_name, 'CHARGE OF PARTICLES IN BUNCH NOT SET. CALCULATION CANNOT BE DONE.')
-  return
-endif
-
-charge_live = block_total(5)
-bunch_params%centroid%charge = charge_live
+type (coord_struct), target :: particle(:)
+type (bunch_view_struct) v
 
 !
 
-if (bunch_params%n_particle_live == 0) return
+v%x  => particle%vec(1);  v%px => particle%vec(2)
+v%y  => particle%vec(3);  v%py => particle%vec(4)
+v%z  => particle%vec(5);  v%pz => particle%vec(6)
+v%s => particle%s;  v%t => particle%t;  v%p0c => particle%p0c;  v%charge => particle%charge
+v%field1 => particle%field(1);  v%field2 => particle%field(2)
+v%state => particle%state
+v%particle => particle
 
-! The expressions below are kept the same as in calc_bunch_params (an indexed charge(i)), since that
-! decides how the compiler contracts them into fused multiply-adds.
+end subroutine bunch_view_particles
 
-charge => soa%charge(1:n)
-if (charge_live == 0) then
-  allocate (unit(n))
-  unit = 1
-  charge => unit
-  charge_live = bunch_params%n_particle_live
-endif
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!+
+! Subroutine bunch_view_soa (soa, v)
+!
+! Routine to point a bunch_view_struct at the arrays of a SoA bunch.
+!
+! Input:
+!   soa     -- bunch_soa_struct: SoA bunch.
+!
+! Output:
+!   v       -- bunch_view_struct: View of soa. %particle is null.
+!-
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
-do ib = 1, nb
-  i0 = (ib - 1) * bunch_sum_block + 1
-  i1 = min(ib * bunch_sum_block, n)
-  part(6, ib) = 0
-  part_qp(:, ib) = 0
-  do i = i0, i1
-    if (soa%state(i) /= alive$) cycle
-    part(6, ib) = part(6, ib) + soa%s(i) * charge(i)
-    part_qp(1, ib) = part_qp(1, ib) + soa%t(i) * charge(i)
-    part_qp(2, ib) = part_qp(2, ib) + soa%t(i)**2 * charge(i)
-  enddo
-enddo
-!$OMP end parallel do
+subroutine bunch_view_soa (soa, v)
 
-sum_s = 0;  sum_t = 0;  sum_t2 = 0
-do ib = 1, nb
-  sum_s = sum_s + part(6, ib)
-  sum_t = sum_t + part_qp(1, ib)
-  sum_t2 = sum_t2 + part_qp(2, ib)
-enddo
+use bunch_soa_mod, only: bunch_soa_struct
 
-bunch_params%centroid%s = sum_s / charge_live
-bunch_params%centroid%t = sum_t / charge_live
-bunch_params%s = bunch_params%centroid%s
-bunch_params%t = bunch_params%centroid%t
-bunch_params%sigma_t = sum_t2 / charge_live
-bunch_params%sigma_t = sqrt(max(0.0_rp, bunch_params%sigma_t - bunch_params%t**2))
+implicit none
 
-! Sigma matrix calc. As calc_bunch_sigma_matrix_etc with is_time_coords = False.
+type (bunch_soa_struct), target :: soa
+type (bunch_view_struct) v
+integer n
 
-deallocate (part)
-allocate (part(2, nb), sig_b(6, 6, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
+!
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
-do ib = 1, nb
-  i0 = (ib - 1) * bunch_sum_block + 1
-  i1 = min(ib * bunch_sum_block, n)
-  part(:, ib) = 0
-  do i = i0, i1
-    if (soa%state(i) /= alive$) cycle
-    part(1, ib) = part(1, ib) + charge(i)
-    part(2, ib) = part(2, ib) + soa%p0c(i)*charge(i)
-  enddo
-enddo
-!$OMP end parallel do
+n = soa%n
+v%x  => soa%x(1:n);  v%px => soa%px(1:n)
+v%y  => soa%y(1:n);  v%py => soa%py(1:n)
+v%z  => soa%z(1:n);  v%pz => soa%pz(1:n)
+v%s => soa%s(1:n);  v%t => soa%t(1:n);  v%p0c => soa%p0c(1:n);  v%charge => soa%charge(1:n)
+v%field1 => soa%field(1, 1:n);  v%field2 => soa%field(2, 1:n)
+v%state => soa%state(1:n)
+v%particle => null()
 
-charge_live = 0
-p0c_avg = 0
-do ib = 1, nb
-  charge_live = charge_live + part(1, ib)
-  p0c_avg = p0c_avg + part(2, ib)
-enddo
-
-if (charge_live == 0) then
-  call out_io (s_error$, 'calc_bunch_sigma_matrix', 'Charge of live particle in bunch is zero! Aborting calculation.')
-else
-  avg = 0
-  bunch_params%sigma = 0
-  bunch_params%rel_max = -1e30_rp
-  bunch_params%rel_min =  1e30_rp
-
-  !$OMP parallel do private(i0, i1, i, vec) if (nb > 1)
-  do ib = 1, nb
-    i0 = (ib - 1) * bunch_sum_block + 1
-    i1 = min(ib * bunch_sum_block, n)
-    avg_b(:, ib) = 0
-    max_b(:, ib) = -1e30_rp
-    min_b(:, ib) =  1e30_rp
-    do i = i0, i1
-      if (soa%state(i) /= alive$) cycle
-      vec = basis_vec(i)
-      avg_b(:, ib) = avg_b(:, ib) + vec * charge(i)
-      max_b(:, ib) = max(max_b(:, ib), vec)
-      min_b(:, ib) = min(min_b(:, ib), vec)
-    enddo
-  enddo
-  !$OMP end parallel do
-
-  do ib = 1, nb
-    avg = avg + avg_b(:, ib)
-    bunch_params%rel_max = max(bunch_params%rel_max, max_b(:, ib))
-    bunch_params%rel_min = min(bunch_params%rel_min, min_b(:, ib))
-  enddo
-
-  avg = avg / charge_live
-
-  !$OMP parallel do private(i0, i1, i, j2, vec) if (nb > 1)
-  do ib = 1, nb
-    i0 = (ib - 1) * bunch_sum_block + 1
-    i1 = min(ib * bunch_sum_block, n)
-    sig_b(:, :, ib) = 0
-    do i = i0, i1
-      if (soa%state(i) /= alive$) cycle
-      vec = basis_vec(i) - avg
-      do j2 = 1, 6
-        sig_b(:, j2, ib) = sig_b(:, j2, ib) + vec(1:6)*vec(j2)*charge(i)
-      enddo
-    enddo
-  enddo
-  !$OMP end parallel do
-
-  do ib = 1, nb
-    bunch_params%sigma = bunch_params%sigma + sig_b(:, :, ib)
-  enddo
-
-  bunch_params%sigma        = bunch_params%sigma / charge_live
-  bunch_params%rel_max      = bunch_params%rel_max - avg
-  bunch_params%rel_min      = bunch_params%rel_min - avg
-  bunch_params%centroid%vec = avg(1:6)
-endif
-
-average_pc = (1+bunch_params%centroid%vec(6)) * bunch_params%centroid%p0c
-call convert_pc_to (average_pc, species, beta = bunch_params%centroid%beta)
-
-! Rather arbitrary cutoff: If less than 6 particles, calculation of sigma matrix, etc is declared invalid
-
-if (bunch_params%n_particle_live < 6) return
-
-call calc_emittances_and_twiss_from_sigma_matrix (bunch_params%sigma, bunch_params, error)
-if (error) then
-  if (present(ele)) call out_io(s_blank$, r_name, 'This at element: ' // ele_full_name(ele))
-endif
-
-!------------------------
-contains
-
-function block_total (k) result (total)
-integer k
-real(rp) total
-total = 0
-do ib = 1, nb
-  total = total + part(k, ib)
-enddo
-end function block_total
-
-function basis_vec (i) result (vec)
-integer i
-real(rp) vec(7)
-vec = [real(rp):: soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i), soa%t(i)]
-end function basis_vec
-
-end subroutine calc_bunch_params_soa
+end subroutine bunch_view_soa
 
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
@@ -2291,12 +2198,12 @@ end subroutine calc_spin_params
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
 !+
-! Subroutine calc_bunch_sigma_matrix_etc (particle, charge, bunch_params, is_time_coords, ele)
+! Subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
 !
 ! Routine to find the sigma matrix elements of a particle distribution.
 ! 
 ! Input:
-!   particle(:) -- Coord_struct: Array of particles.
+!   v               -- bunch_view_struct: View of the particles (bunch_view_particles or bunch_view_soa).
 !   charge(:)   -- real(rp): Particle charge or photon intensity.
 !
 ! Output:
@@ -2309,11 +2216,11 @@ end subroutine calc_spin_params
 !     %rel_min(6)
 !-
 
-subroutine calc_bunch_sigma_matrix_etc (particle, charge, bunch_params, is_time_coords, ele)
+subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
 
 implicit none
 
-type (coord_struct) :: particle(:)
+type (bunch_view_struct) v
 type (bunch_params_struct), target :: bunch_params
 type (ele_struct), optional :: ele
 
@@ -2332,7 +2239,7 @@ character(*), parameter :: r_name = 'calc_bunch_sigma_matrix'
 
 ! Sums are accumulated in blocks as in calc_bunch_params.
 
-n = size(particle)
+n = size(v%state)
 nb = (n + bunch_sum_block - 1) / bunch_sum_block
 allocate (part(2, nb), sig_b(6, 6, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
 
@@ -2342,9 +2249,9 @@ do ib = 1, nb
   i1 = min(ib * bunch_sum_block, n)
   part(:, ib) = 0
   do i = i0, i1
-    if (particle(i)%state /= alive$) cycle
+    if (v%state(i) /= alive$) cycle
     part(1, ib) = part(1, ib) + charge(i)
-    part(2, ib) = part(2, ib) + particle(i)%p0c*charge(i)
+    part(2, ib) = part(2, ib) + v%p0c(i)*charge(i)
   enddo
 enddo
 !$OMP end parallel do
@@ -2362,6 +2269,11 @@ if (charge_live == 0) then
 endif
 
 is_time = logic_option(.false., is_time_coords)
+if (is_time .and. .not. associated(v%particle)) then
+  call out_io (s_error$, r_name, 'Time coordinates need the particles as coord_structs! Aborting calculation.')
+  return
+endif
+
 p0c_avg = p0c_avg / charge_live
 if (is_time) bunch_params%centroid%p0c = p0c_avg  ! Round-off error is problematic with track1 code if not time coords.
 
@@ -2381,8 +2293,8 @@ do ib = 1, nb
   max_b(:, ib) = -1e30_rp
   min_b(:, ib) =  1e30_rp
   do i = i0, i1
-    if (particle(i)%state /= alive$) cycle
-    vec = to_basis_coords(particle(i), ele, is_time)
+    if (v%state(i) /= alive$) cycle
+    vec = basis_vec(i)
     avg_b(:, ib) = avg_b(:, ib) + vec * charge(i)
     max_b(:, ib) = max(max_b(:, ib), vec)
     min_b(:, ib) = min(min_b(:, ib), vec)
@@ -2404,8 +2316,8 @@ do ib = 1, nb
   i1 = min(ib * bunch_sum_block, n)
   sig_b(:, :, ib) = 0
   do i = i0, i1
-    if (particle(i)%state /= alive$) cycle
-    vec = to_basis_coords(particle(i), ele, is_time) - avg
+    if (v%state(i) /= alive$) cycle
+    vec = basis_vec(i) - avg
     do j2 = 1, 6
       sig_b(:, j2, ib) = sig_b(:, j2, ib) + vec(1:6)*vec(j2)*charge(i)
     enddo
@@ -2425,26 +2337,25 @@ bunch_params%centroid%vec = avg(1:6)
 !------------------------
 contains
 
-function to_basis_coords (particle, ele, is_time) result (vec)
+function basis_vec (i) result (vec)
 
-type (coord_struct) particle, p
-type (ele_struct) ele
+type (coord_struct) p
+integer i
 real(rp) vec(7)
-logical is_time
 
 ! Time coords uses a different basis for the sigma matrix.
 
 if (.not. is_time) then
-  vec = [real(rp):: particle%vec, particle%t]
+  vec = [real(rp):: v%x(i), v%px(i), v%y(i), v%py(i), v%z(i), v%pz(i), v%t(i)]
   return
 endif
 
-p = particle
+p = v%particle(i)
 call convert_particle_coordinates_t_to_s(p, ele)
 vec = [real(rp):: p%vec(1), p%vec(2) * p%p0c / p0c_avg, p%vec(3), p%vec(4) * p%p0c / p0c_avg, &
                                                 p%s, (p%vec(6)*p%p0c + p%p0c - p0c_avg) / p0c_avg, p%t]
 
-end function to_basis_coords
+end function basis_vec
 
 end subroutine calc_bunch_sigma_matrix_etc
 
