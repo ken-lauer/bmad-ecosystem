@@ -619,7 +619,7 @@ do
   ! Lost particles
 
   n_bunch = s%global%bunch_to_plot
-  n_lost = count(beam%bunch(n_bunch)%particle(:)%state /= alive$ .and. beam%bunch(n_bunch)%particle(:)%state /= pre_born$)
+  n_lost = tao_n_dead_particles(beam%bunch(n_bunch))
   if (n_lost /= n_lost_old) then
     n = size(beam%bunch(n_bunch)%particle(:))
     if (size(s%u) == 1) then
@@ -782,13 +782,47 @@ no_beam = .false.
 
 do ib = 1, size(beam%bunch)
   p => beam%bunch(ib)%particle(:)
-  n_dead = count(p%state /= alive$ .and. p%state /= pre_born$)
+  n_dead = tao_n_dead_particles(beam%bunch(ib))
   if (n_dead * (1.0000001_rp) < size(p) * s%global%beam_dead_cutoff) cycle
   no_beam = .true.
   return
 enddo
 
 end function tao_too_many_particles_lost
+
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!+
+! Function tao_n_dead_particles (bunch) result (n_dead)
+!
+! Routine to count the particles of a bunch that are neither alive nor pre_born.
+! Counted in parallel for large bunches since this is done at every element.
+!
+! Input:
+!   bunch     -- bunch_struct: Bunch.
+!
+! Output:
+!   n_dead    -- integer: Number of dead particles.
+!-
+
+function tao_n_dead_particles (bunch) result (n_dead)
+
+implicit none
+
+type (bunch_struct) bunch
+integer n_dead, i
+
+!
+
+n_dead = 0
+!$OMP parallel do reduction(+:n_dead) if (size(bunch%particle) > 10000)
+do i = 1, size(bunch%particle)
+  if (bunch%particle(i)%state /= alive$ .and. bunch%particle(i)%state /= pre_born$) n_dead = n_dead + 1
+enddo
+!$OMP end parallel do
+
+end function tao_n_dead_particles
 
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------

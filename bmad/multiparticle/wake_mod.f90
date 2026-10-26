@@ -958,9 +958,11 @@ end subroutine order_particles_in_z
 ! Subroutine index_sort_blocked (key, ix)
 !
 ! Routine to compute ix such that key(ix(:)) is in ascending order, like indexer, using OpenMP for
-! large arrays: blocks of a fixed size are sorted in parallel with indexer and then merged pairwise,
-! the merges of each round running in parallel. The block size does not depend on the number of
-! threads, so neither does the result. The order of equal keys may differ from indexer's.
+! large arrays: blocks of a fixed size are sorted in parallel with indexer and then merged pairwise.
+! Each merge round is split into pieces of a fixed size, the start of each piece in the two runs found by
+! binary search, so that all threads take part in the last rounds too. The pieces give the same result as
+! merging each pair of runs in one go. The block size does not depend on the number of threads, so neither
+! does the result. The order of equal keys may differ from indexer's.
 !
 ! Input:
 !   key(:)    -- real(rp): Sort keys.
@@ -977,7 +979,8 @@ real(rp) key(:)
 integer ix(:)
 integer, allocatable :: tmp(:)
 integer, parameter :: blk = 16384
-integer n, nb, ib, i0, i1, width, s, m, e
+integer n, nb, ib, i0, i1, width, s, m, e, ip
+logical has_nan
 
 !
 
@@ -988,27 +991,51 @@ if (n <= blk) then
 endif
 
 nb = (n + blk - 1) / blk
-!$OMP parallel do private(i0, i1)
+has_nan = .false.
+!$OMP parallel do private(i0, i1) reduction(.or.:has_nan)
 do ib = 1, nb
   i0 = (ib - 1) * blk + 1
   i1 = min(ib * blk, n)
   call indexer (key(i0:i1), ix(i0:i1))
   ix(i0:i1) = ix(i0:i1) + (i0 - 1)
+  if (any(key(i0:i1) /= key(i0:i1))) has_nan = .true.
 enddo
 !$OMP end parallel do
 
 allocate (tmp(n))
 width = blk
 do while (width < n)
-  !$OMP parallel do private(s, m, e)
-  do ib = 1, (n + 2*width - 1) / (2*width)
-    s = (ib - 1) * 2 * width + 1
-    m = min(s + width - 1, n)
-    e = min(s + 2 * width - 1, n)
-    call merge_runs (s, m, e)
-    ix(s:e) = tmp(s:e)
-  enddo
-  !$OMP end parallel do
+  if (has_nan) then
+    ! With NaN keys the binary search for the piece boundaries is not valid.
+    !$OMP parallel do private(s, m, e)
+    do ib = 1, (n + 2*width - 1) / (2*width)
+      s = (ib - 1) * 2 * width + 1
+      m = min(s + width - 1, n)
+      e = min(s + 2 * width - 1, n)
+      call merge_runs (s, m, e)
+      ix(s:e) = tmp(s:e)
+    enddo
+    !$OMP end parallel do
+  else
+    ! Pieces of blk outputs. Since 2*width is a multiple of blk, each piece is within one pair of runs.
+    !$OMP parallel do private(i0, i1, s, m, e)
+    do ip = 1, nb
+      i0 = (ip - 1) * blk + 1
+      i1 = min(ip * blk, n)
+      s = ((i0 - 1) / (2 * width)) * 2 * width + 1
+      m = min(s + width - 1, n)
+      e = min(s + 2 * width - 1, n)
+      call merge_piece (s, m, e, i0, i1)
+    enddo
+    !$OMP end parallel do
+    !$OMP parallel do private(i0, i1)
+    do ip = 1, nb
+      i0 = (ip - 1) * blk + 1
+      i1 = min(ip * blk, n)
+      ix(i0:i1) = tmp(i0:i1)
+    enddo
+    !$OMP end parallel do
+  endif
   width = 2 * width
 enddo
 
@@ -1032,6 +1059,39 @@ do k = s, e
   endif
 enddo
 end subroutine merge_runs
+
+! Outputs k0 through k1 of merge_runs (s, m, e), into tmp(k0:k1). The numbers of elements of each run that
+! merge_runs outputs before position k0 are found by binary search.
+
+subroutine merge_piece (s, m, e, k0, k1)
+integer s, m, e, k0, k1, la, lb, i, j, k, lo, hi
+
+la = m - s + 1;  lb = e - m
+k = k0 - s
+lo = max(0, k - lb);  hi = min(k, la)
+do while (lo < hi)
+  i = (lo + hi) / 2;  j = k - i
+  ! merge_runs outputs the (i+1)th of the left run before the jth of the right run.
+  if (key(ix(m+j)) < key(ix(s+i))) then
+    hi = i
+  else
+    lo = i + 1
+  endif
+enddo
+
+i = s + lo;  j = m + 1 + k - lo
+do k = k0, k1
+  if (j > e) then
+    tmp(k) = ix(i);  i = i + 1
+  elseif (i > m) then
+    tmp(k) = ix(j);  j = j + 1
+  elseif (key(ix(j)) < key(ix(i))) then
+    tmp(k) = ix(j);  j = j + 1
+  else
+    tmp(k) = ix(i);  i = i + 1
+  endif
+enddo
+end subroutine merge_piece
 
 end subroutine index_sort_blocked
 

@@ -26,13 +26,12 @@ implicit none
 type (ele_struct), target :: ele
 type (bunch_struct) bunch
 type (bunch_track_struct), optional, target :: bunch_track
-type (bunch_track_struct), target :: bunch_track2
 
-integer n_pt, n, n_old
+integer n_pt, n, i
 real(rp), optional :: s_body
-real(rp) s_last, s_here
+real(rp) s_last, s_here, s_due, s_lo, s_hi, s_err
 logical, optional :: is_time_coords
-logical err
+logical err, not_finite
 
 ! Init
 
@@ -51,29 +50,40 @@ else
   s_last = bunch_track%pt(bunch_track%n_pt)%s
 endif
 
+s_due = s_last + bunch_track%ds_save
+
 if (present(s_body)) then
   s_here = s_body + ele%s_start
+  if (s_here < s_due) return
 else
-  n = count(bunch%particle(:)%state==alive$)
+  ! The test is on the mean s of the live particles. The mean is within the range of s, give or take the
+  ! round-off of the serial sum (less than n*epsilon*max|s|), so for a large bunch the range, which can be
+  ! found in parallel, usually decides the test. Otherwise the mean is computed as before.
+  n = 0;  s_lo = huge(1.0_rp);  s_hi = -huge(1.0_rp);  not_finite = .false.
+  !$OMP parallel do reduction(+:n) reduction(min:s_lo) reduction(max:s_hi) reduction(.or.:not_finite) &
+  !$OMP if (size(bunch%particle) > 10000)
+  do i = 1, size(bunch%particle)
+    if (bunch%particle(i)%state /= alive$) cycle
+    n = n + 1
+    s_lo = min(s_lo, bunch%particle(i)%s)
+    s_hi = max(s_hi, bunch%particle(i)%s)
+    if (.not. (abs(bunch%particle(i)%s) <= huge(1.0_rp))) not_finite = .true.
+  enddo
+  !$OMP end parallel do
   if (n == 0) return
-  s_here = sum(bunch%particle(:)%s, bunch%particle(:)%state==alive$)/n
-endif
 
-if (s_here < s_last + bunch_track%ds_save) return
+  s_err = 2 * n * epsilon(1.0_rp) * max(abs(s_lo), abs(s_hi))
+  if (not_finite .or. (s_hi + s_err >= s_due .and. s_lo - s_err < s_due)) then
+    s_here = sum(bunch%particle(:)%s, bunch%particle(:)%state==alive$)/n
+    if (s_here < s_due) return
+  elseif (s_hi + s_err < s_due) then
+    return
+  endif
+endif
 
 ! Save a track point
 
-bunch_track%n_pt = bunch_track%n_pt + 1
-n_pt = bunch_track%n_pt
-n_old = ubound(bunch_track%pt, 1)
-
-if (n_pt > n_old) then
-  n = 1.5 * n_pt
-  call move_alloc (bunch_track%pt, bunch_track2%pt)
-  allocate(bunch_track%pt(0:n))
-  bunch_track%pt(:n_old) = bunch_track2%pt
-end if
-
+call bunch_track_add_pt (bunch_track, n_pt)
 call calc_bunch_params (bunch, bunch_track%pt(n_pt), err, is_time_coords = is_time_coords, ele = ele)
 
 end subroutine save_a_bunch_step

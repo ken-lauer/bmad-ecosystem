@@ -1665,6 +1665,334 @@ end subroutine calc_bunch_params
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
 !+
+! Subroutine bunch_track_add_pt (bunch_track, n_pt)
+!
+! Routine to append a point to bunch_track%pt, enlarging the array as needed.
+! The point's bunch parameters are not set.
+!
+! Input:
+!   bunch_track -- bunch_track_struct: Track with bunch_track%pt allocated.
+!
+! Output:
+!   bunch_track -- bunch_track_struct: %n_pt incremented.
+!   n_pt        -- integer: Index of the new point.
+!-
+
+subroutine bunch_track_add_pt (bunch_track, n_pt)
+
+implicit none
+
+type (bunch_track_struct) bunch_track
+type (bunch_track_struct) bunch_track2
+integer n_pt, n, n_old
+
+!
+
+bunch_track%n_pt = bunch_track%n_pt + 1
+n_pt = bunch_track%n_pt
+n_old = ubound(bunch_track%pt, 1)
+
+if (n_pt > n_old) then
+  n = 1.5 * n_pt
+  call move_alloc (bunch_track%pt, bunch_track2%pt)
+  allocate(bunch_track%pt(0:n))
+  bunch_track%pt(:n_old) = bunch_track2%pt
+end if
+
+end subroutine bunch_track_add_pt
+
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!+
+! Subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
+!
+! Routine to compute what calc_bunch_params (with print_err, n_mat and is_time_coords not present) computes
+! for bunch after soa_to_bunch (soa, bunch), without writing soa to bunch%particle: the sums are taken over
+! the SoA arrays, in the same blocks and order, so the results are identical. Only the components of
+! bunch_params%centroid that are not computed (spin, phase, etc.) are taken from bunch%particle.
+! Time is folded into soa%t first, as soa_to_bunch does.
+!
+! Not for photons or with spin tracking on (use soa_to_bunch and calc_bunch_params).
+!
+! Input:
+!   soa           -- bunch_soa_struct: Particle positions. bunch%particle(:) may be out of date.
+!   bunch         -- bunch_struct: Bunch that soa was loaded from.
+!   ele           -- ele_struct, optional: Element being tracked through. Used in error messages.
+!
+! Output:
+!   soa           -- bunch_soa_struct: Time folded into %t.
+!   bunch         -- bunch_struct: %charge_tot and %charge_live set as calc_bunch_params does.
+!   bunch_params  -- bunch_params_struct: Bunch parameters.
+!   error         -- logical: Set True if there is an error.
+!-
+
+subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
+
+use bunch_soa_mod, only: bunch_soa_struct, soa_flush_time
+
+implicit none
+
+type (bunch_soa_struct), target :: soa
+type (bunch_struct) :: bunch
+type (bunch_params_struct) bunch_params
+type (ele_struct), optional :: ele
+
+real(rp) :: charge_live, average_pc, sum_s, p0c_avg, vec(7), avg(7)
+real(rp), allocatable :: part(:,:), sig_b(:,:,:), avg_b(:,:), max_b(:,:), min_b(:,:)
+real(rp), allocatable, target :: unit(:)
+real(rp), pointer :: charge(:)
+real(qp) sum_t, sum_t2
+real(qp), allocatable :: part_qp(:,:)
+
+integer i, j2, species, n, nb, ib, i0, i1, n_live
+integer, allocatable :: n_live_b(:)
+
+logical error
+
+character(*), parameter :: r_name = "calc_bunch_params"
+
+! Init
+
+call soa_flush_time (soa)
+
+bunch_params = bunch_params_struct()
+bunch_params%twiss_valid = .false.  ! Assume the worst
+error = .true.
+
+species = soa%species(1)
+n = soa%n
+
+do i = n, 1, -1
+  if (soa%state(i) /= alive$) cycle
+  bunch_params%ix_ele = soa%ix_ele(i)
+  bunch_params%location = soa%location(i)
+  bunch_params%centroid = bunch%particle(i)
+  ! As soa_to_bunch would leave bunch%particle(i).
+  bunch_params%centroid%vec = [soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i)]
+  bunch_params%centroid%s         = soa%s(i)
+  bunch_params%centroid%t         = soa%t(i)
+  bunch_params%centroid%p0c       = soa%p0c(i)
+  bunch_params%centroid%beta      = soa%beta(i)
+  bunch_params%centroid%state     = soa%state(i)
+  bunch_params%centroid%location  = soa%location(i)
+  bunch_params%centroid%ix_ele    = soa%ix_ele(i)
+  bunch_params%centroid%ix_branch = soa%ix_branch(i)
+  exit
+enddo
+
+! n_particle and centroid. Same blocks and order as calc_bunch_params.
+
+nb = (n + bunch_sum_block - 1) / bunch_sum_block
+allocate (part(6, nb), n_live_b(nb), part_qp(2, nb))
+
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(:, ib) = 0
+  n_live_b(ib) = 0
+  do i = i0, i1
+    part(2, ib) = part(2, ib) + soa%charge(i)
+    if (soa%state(i) /= alive$) cycle
+    n_live_b(ib) = n_live_b(ib) + 1
+    part(1, ib) = part(1, ib) + soa%charge(i)
+    part(3, ib) = part(3, ib) + soa%field(1, i)
+    part(4, ib) = part(4, ib) + soa%field(2, i)
+    part(5, ib) = part(5, ib) + soa%charge(i)
+  enddo
+enddo
+!$OMP end parallel do
+
+n_live = 0
+do ib = 1, nb
+  n_live = n_live + n_live_b(ib)
+enddo
+
+bunch_params%n_good_steps = bunch%n_good
+bunch_params%n_bad_steps = bunch%n_bad
+
+bunch_params%n_particle_tot = n
+bunch_params%n_particle_live = n_live
+bunch_params%charge_live = block_total(1)
+bunch_params%charge_tot = block_total(2)
+bunch%charge_tot  = bunch_params%charge_tot
+bunch%charge_live = bunch_params%charge_live
+
+bunch_params%centroid%field(1) = block_total(3)
+bunch_params%centroid%field(2) = block_total(4)
+
+if (bunch%charge_tot == 0) then
+  call out_io (s_error$, r_name, 'CHARGE OF PARTICLES IN BUNCH NOT SET. CALCULATION CANNOT BE DONE.')
+  return
+endif
+
+charge_live = block_total(5)
+bunch_params%centroid%charge = charge_live
+
+!
+
+if (bunch_params%n_particle_live == 0) return
+
+! The expressions below are kept the same as in calc_bunch_params (an indexed charge(i)), since that
+! decides how the compiler contracts them into fused multiply-adds.
+
+charge => soa%charge(1:n)
+if (charge_live == 0) then
+  allocate (unit(n))
+  unit = 1
+  charge => unit
+  charge_live = bunch_params%n_particle_live
+endif
+
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(6, ib) = 0
+  part_qp(:, ib) = 0
+  do i = i0, i1
+    if (soa%state(i) /= alive$) cycle
+    part(6, ib) = part(6, ib) + soa%s(i) * charge(i)
+    part_qp(1, ib) = part_qp(1, ib) + soa%t(i) * charge(i)
+    part_qp(2, ib) = part_qp(2, ib) + soa%t(i)**2 * charge(i)
+  enddo
+enddo
+!$OMP end parallel do
+
+sum_s = 0;  sum_t = 0;  sum_t2 = 0
+do ib = 1, nb
+  sum_s = sum_s + part(6, ib)
+  sum_t = sum_t + part_qp(1, ib)
+  sum_t2 = sum_t2 + part_qp(2, ib)
+enddo
+
+bunch_params%centroid%s = sum_s / charge_live
+bunch_params%centroid%t = sum_t / charge_live
+bunch_params%s = bunch_params%centroid%s
+bunch_params%t = bunch_params%centroid%t
+bunch_params%sigma_t = sum_t2 / charge_live
+bunch_params%sigma_t = sqrt(max(0.0_rp, bunch_params%sigma_t - bunch_params%t**2))
+
+! Sigma matrix calc. As calc_bunch_sigma_matrix_etc with is_time_coords = False.
+
+deallocate (part)
+allocate (part(2, nb), sig_b(6, 6, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
+
+!$OMP parallel do private(i0, i1, i) if (nb > 1)
+do ib = 1, nb
+  i0 = (ib - 1) * bunch_sum_block + 1
+  i1 = min(ib * bunch_sum_block, n)
+  part(:, ib) = 0
+  do i = i0, i1
+    if (soa%state(i) /= alive$) cycle
+    part(1, ib) = part(1, ib) + charge(i)
+    part(2, ib) = part(2, ib) + soa%p0c(i)*charge(i)
+  enddo
+enddo
+!$OMP end parallel do
+
+charge_live = 0
+p0c_avg = 0
+do ib = 1, nb
+  charge_live = charge_live + part(1, ib)
+  p0c_avg = p0c_avg + part(2, ib)
+enddo
+
+if (charge_live == 0) then
+  call out_io (s_error$, 'calc_bunch_sigma_matrix', 'Charge of live particle in bunch is zero! Aborting calculation.')
+else
+  avg = 0
+  bunch_params%sigma = 0
+  bunch_params%rel_max = -1e30_rp
+  bunch_params%rel_min =  1e30_rp
+
+  !$OMP parallel do private(i0, i1, i, vec) if (nb > 1)
+  do ib = 1, nb
+    i0 = (ib - 1) * bunch_sum_block + 1
+    i1 = min(ib * bunch_sum_block, n)
+    avg_b(:, ib) = 0
+    max_b(:, ib) = -1e30_rp
+    min_b(:, ib) =  1e30_rp
+    do i = i0, i1
+      if (soa%state(i) /= alive$) cycle
+      vec = basis_vec(i)
+      avg_b(:, ib) = avg_b(:, ib) + vec * charge(i)
+      max_b(:, ib) = max(max_b(:, ib), vec)
+      min_b(:, ib) = min(min_b(:, ib), vec)
+    enddo
+  enddo
+  !$OMP end parallel do
+
+  do ib = 1, nb
+    avg = avg + avg_b(:, ib)
+    bunch_params%rel_max = max(bunch_params%rel_max, max_b(:, ib))
+    bunch_params%rel_min = min(bunch_params%rel_min, min_b(:, ib))
+  enddo
+
+  avg = avg / charge_live
+
+  !$OMP parallel do private(i0, i1, i, j2, vec) if (nb > 1)
+  do ib = 1, nb
+    i0 = (ib - 1) * bunch_sum_block + 1
+    i1 = min(ib * bunch_sum_block, n)
+    sig_b(:, :, ib) = 0
+    do i = i0, i1
+      if (soa%state(i) /= alive$) cycle
+      vec = basis_vec(i) - avg
+      do j2 = 1, 6
+        sig_b(:, j2, ib) = sig_b(:, j2, ib) + vec(1:6)*vec(j2)*charge(i)
+      enddo
+    enddo
+  enddo
+  !$OMP end parallel do
+
+  do ib = 1, nb
+    bunch_params%sigma = bunch_params%sigma + sig_b(:, :, ib)
+  enddo
+
+  bunch_params%sigma        = bunch_params%sigma / charge_live
+  bunch_params%rel_max      = bunch_params%rel_max - avg
+  bunch_params%rel_min      = bunch_params%rel_min - avg
+  bunch_params%centroid%vec = avg(1:6)
+endif
+
+average_pc = (1+bunch_params%centroid%vec(6)) * bunch_params%centroid%p0c
+call convert_pc_to (average_pc, species, beta = bunch_params%centroid%beta)
+
+! Rather arbitrary cutoff: If less than 6 particles, calculation of sigma matrix, etc is declared invalid
+
+if (bunch_params%n_particle_live < 6) return
+
+call calc_emittances_and_twiss_from_sigma_matrix (bunch_params%sigma, bunch_params, error)
+if (error) then
+  if (present(ele)) call out_io(s_blank$, r_name, 'This at element: ' // ele_full_name(ele))
+endif
+
+!------------------------
+contains
+
+function block_total (k) result (total)
+integer k
+real(rp) total
+total = 0
+do ib = 1, nb
+  total = total + part(k, ib)
+enddo
+end function block_total
+
+function basis_vec (i) result (vec)
+integer i
+real(rp) vec(7)
+vec = [real(rp):: soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i), soa%t(i)]
+end function basis_vec
+
+end subroutine calc_bunch_params_soa
+
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!+
 ! Subroutine calc_emittances_and_twiss_from_sigma_matrix(sigma_mat, bunch_params, error, print_err, n_mat)
 !
 ! Routine to calc emittances and Twiss function from a beam sigma matrix.

@@ -141,6 +141,12 @@ integer, private :: csr_eleinfo_n = -1
 integer, private :: csr_eleinfo_depth = 0
 !$OMP THREADPRIVATE(csr_eleinfo_cache, csr_eleinfo_branch, csr_eleinfo_n, csr_eleinfo_depth)
 
+! Per-particle bin weights and first bin index used by csr_bin_view. Kept between calls since for large
+! bunches allocating them every step (and faulting in fresh pages) is a noticeable cost.
+real(rp), allocatable, target, private :: csr_bin_ovl(:,:)
+integer, allocatable, target, private :: csr_bin_ix0(:)
+!$OMP THREADPRIVATE(csr_bin_ovl, csr_bin_ix0)
+
 ! SoA bunch kept for the whole of a track1_bunch_csr call when the fast kernels are on.
 ! Reused between calls to avoid reallocating bunch sized arrays. Shared, so only used outside
 ! parallel regions.
@@ -405,9 +411,10 @@ do i_step = 0, n_step
 
   if (use_soa) then
     bunch_stale = .true.
-    if (bunch_track_save_due(s0_step)) call sync_bunch()
+    if (bunch_track_save_due(s0_step)) call save_soa_step(s0_step)
+  else
+    call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
   endif
-  call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
 
   ! Record wake to file?
 
@@ -458,6 +465,30 @@ subroutine finish()
 call sync_bunch()
 call csr_eleinfo_put (csr)
 end subroutine finish
+
+! save_a_bunch_step for a save that is due (bunch_track_save_due), with the bunch parameters computed from
+! csr_soa so that bunch%particle need not be brought up to date.
+
+subroutine save_soa_step (s_body)
+real(rp) s_body
+integer n_pt
+logical error
+
+if (bmad_com%spin_tracking_on .or. csr_soa%has_spin .or. csr_soa%species(1) == photon$) then  ! Not handled by calc_bunch_params_soa.
+  call sync_bunch()
+  call save_a_bunch_step (ele, bunch, bunch_track, s_body)
+  return
+endif
+
+if (.not. allocated (bunch_track%pt)) then
+  allocate(bunch_track%pt(0:100))
+  bunch_track%n_pt = -1
+endif
+if (bunch_track%n_pt < 0) bunch_track%n_pt = -1
+
+call bunch_track_add_pt (bunch_track, n_pt)
+call calc_bunch_params_soa (csr_soa, bunch, bunch_track%pt(n_pt), error, ele)
+end subroutine save_soa_step
 
 ! Mirrors the test in save_a_bunch_step: True if a call with s_body would save a track point.
 
@@ -892,9 +923,12 @@ real(rp) z_center, z_min, z_max, dz_particle, dz, z_maxval, z_minval, c_tot, n_t
 real(rp) zp_center, zp0, zp1, zb0, zb1, charge, overlap_fraction, charge_tot, sig_x_ave, sig_y_ave, f
 integer i, j, n, ix0, ib, ib2, ib_center, n_bin_eff, n_bin, pbs
 
-! Per-block bin sums (added in block order) and per-particle bin weights (reused by the width pass).
-real(rp), allocatable :: acc(:,:,:), ovl(:,:), zb0s(:), zb1s(:), x0s(:), y0s(:)
-integer, allocatable :: ix0s(:)
+! Per-block bin sums (added in block order). Per-particle bin weights (reused by the width pass) and
+! first bin index point into csr_bin_ovl and csr_bin_ix0 (threadprivate, so not usable directly by
+! the worker threads).
+real(rp), allocatable :: acc(:,:,:), zb0s(:), zb1s(:), x0s(:), y0s(:)
+real(rp), pointer, contiguous :: ovl(:,:)
+integer, pointer, contiguous :: ix0s(:)
 real(rp) :: inv_dz2
 integer :: nt, it
 integer, parameter :: bin_block = 8192
@@ -971,7 +1005,13 @@ inv_dz2 = 1.0_rp / dz_particle**2
 
 n = size(v%z)
 nt = (n + bin_block - 1) / bin_block
-allocate (acc(4, n_bin, 0:nt-1), ovl(0:pbs+1, n), ix0s(n), zb0s(n_bin), zb1s(n_bin))
+allocate (acc(4, n_bin, 0:nt-1), zb0s(n_bin), zb1s(n_bin))
+if (allocated(csr_bin_ovl)) then
+  if (size(csr_bin_ovl, 1) /= pbs+2 .or. size(csr_bin_ovl, 2) < n) deallocate (csr_bin_ovl, csr_bin_ix0)
+endif
+if (.not. allocated(csr_bin_ovl)) allocate (csr_bin_ovl(0:pbs+1, n), csr_bin_ix0(n))
+ovl => csr_bin_ovl
+ix0s => csr_bin_ix0
 zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
@@ -1096,13 +1136,17 @@ enddo
 end subroutine z_range
 
 ! Overlap of each particle's triangular distribution with bins ix0s(i)+j, j = 0..pbs+1, stored in
-! ovl(j, i), and the per-thread sums of overlap, charge, x*charge and y*charge in acc(1:4, :, block).
+! ovl(j, i), and the per-block sums of overlap, charge, x*charge and y*charge in acc(1:4, :, block).
+! The overlaps are selected with merge rather than branches: whether a bin overlaps a half of the
+! triangle is close to random from particle to particle, so branches mispredict often. Blocks are
+! scheduled dynamically (each block has its own sums so the result does not depend on the schedule).
 
 subroutine bin_weights ()
 real(rp) zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge
 integer i, j, ib, ix0, it
 
-!$OMP parallel do private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge)
+!$OMP parallel do private(it, i, j, ib, ix0, zp_center, zp0, zp1, zb0, zb1, z1_over, z2_over, overlap, charge) &
+!$OMP schedule(dynamic)
 do it = 0, nt-1
 acc(:, :, it) = 0
 do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
@@ -1116,13 +1160,12 @@ do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))
     ib = j + ix0
     zb0 = zb0s(ib)
     zb1 = zb1s(ib)
-    overlap = 0
     z1_over = max(zp0, zb0)
     z2_over = min(zp_center, zb1)
-    if (z2_over > z1_over) overlap = 2 * real(((z2_over - zp0)**2 - (z1_over - zp0)**2), rp) * inv_dz2
+    overlap = merge(2 * ((z2_over - zp0)**2 - (z1_over - zp0)**2) * inv_dz2, 0.0_rp, z2_over > z1_over)
     z1_over = max(zp_center, zb0)
     z2_over = min(zp1, zb1)
-    if (z2_over > z1_over) overlap = overlap + 2 * real(((z1_over - zp1)**2 - (z2_over - zp1)**2), rp) * inv_dz2
+    overlap = merge(overlap + 2 * ((z1_over - zp1)**2 - (z2_over - zp1)**2) * inv_dz2, overlap, z2_over > z1_over)
     ovl(j, i) = overlap
     acc(1, ib, it) = acc(1, ib, it) + overlap
     charge = overlap * v%charge(i)
@@ -1141,7 +1184,7 @@ subroutine bin_widths ()
 real(rp) charge
 integer i, j, ib, it
 
-!$OMP parallel do private(it, i, j, ib, charge)
+!$OMP parallel do private(it, i, j, ib, charge) schedule(dynamic)
 do it = 0, nt-1
 acc(1:2, :, it) = 0
 do i = it * bin_block + 1, min((it + 1) * bin_block, size(v%z))

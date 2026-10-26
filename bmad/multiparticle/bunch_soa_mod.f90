@@ -34,10 +34,11 @@ module bunch_soa_mod
 use bmad_interface
 use random_mod, only: ran_gauss
 use radiation_mod, only: radiation_map_setup
+use, intrinsic :: iso_fortran_env, only: int64
 
 implicit none
 
-private :: two_sum, dd_add, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
+private :: two_sum, dd_add, qp_add_dp, powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4
@@ -74,6 +75,7 @@ type bunch_soa_struct
   real(qp), allocatable :: t(:)
   real(rp), allocatable :: dt_hi(:), dt_lo(:)
   real(rp), allocatable :: charge(:), p0c(:), beta(:)
+  real(rp), allocatable :: field(:,:)          ! (2, n). Not changed by the kernels; for bunch statistics.
   integer, allocatable :: state(:), species(:), location(:), ix_ele(:), ix_branch(:)
   integer, allocatable :: direction(:), time_dir(:)
   logical :: has_spin = .false.
@@ -919,8 +921,9 @@ end function fast_soa_compatible
 ! Subroutine bunch_to_soa (bunch, soa, with_spin)
 !
 ! Routine to load a SoA bunch from bunch%particle(:).
-! Coord_struct components not used by the kernels (field, phase, dt_ref, r, E_potential, ix_turn, ix_user)
-! are not copied. soa_to_bunch leaves them untouched in bunch%particle.
+! Coord_struct components not used by the kernels (phase, dt_ref, r, E_potential, ix_turn, ix_user)
+! are not copied. soa_to_bunch leaves them, and field (copied for calc_bunch_params_soa), untouched in
+! bunch%particle.
 !
 ! Input:
 !   bunch     -- bunch_struct: Bunch.
@@ -953,6 +956,7 @@ do i = 1, n
   soa%t(i)  = p%t
   soa%dt_hi(i) = 0;  soa%dt_lo(i) = 0
   soa%charge(i)    = p%charge
+  soa%field(:, i)  = p%field
   soa%p0c(i)       = p%p0c
   soa%beta(i)      = p%beta
   soa%state(i)     = p%state
@@ -1089,7 +1093,8 @@ endif
 if (.not. allocated(soa%x)) then
   allocate (soa%x(n), soa%px(n), soa%y(n), soa%py(n), soa%z(n), soa%pz(n), soa%s(n), soa%t(n), &
             soa%dt_hi(n), soa%dt_lo(n), soa%charge(n), soa%p0c(n), soa%beta(n), soa%state(n), &
-            soa%species(n), soa%location(n), soa%ix_ele(n), soa%ix_branch(n), soa%direction(n), soa%time_dir(n))
+            soa%species(n), soa%location(n), soa%ix_ele(n), soa%ix_branch(n), soa%direction(n), soa%time_dir(n), &
+            soa%field(2, n))
 endif
 
 soa%n = n
@@ -1126,7 +1131,7 @@ type (bunch_soa_struct) soa
 
 if (allocated(soa%x)) deallocate (soa%x, soa%px, soa%y, soa%py, soa%z, soa%pz, soa%s, soa%t, &
             soa%dt_hi, soa%dt_lo, soa%charge, soa%p0c, soa%beta, soa%state, &
-            soa%species, soa%location, soa%ix_ele, soa%ix_branch, soa%direction, soa%time_dir)
+            soa%species, soa%location, soa%ix_ele, soa%ix_branch, soa%direction, soa%time_dir, soa%field)
 if (allocated(soa%spin)) deallocate (soa%spin)
 soa%n = 0
 soa%has_spin = .false.
@@ -1344,7 +1349,7 @@ soa%z(i) = orb%vec(5);  soa%pz(i) = orb%vec(6)
 soa%s(i) = orb%s;  soa%t(i) = orb%t;  soa%p0c(i) = orb%p0c;  soa%beta(i) = orb%beta
 soa%state(i) = orb%state;  soa%location(i) = orb%location
 soa%ix_ele(i) = orb%ix_ele;  soa%ix_branch(i) = orb%ix_branch
-soa%charge(i) = orb%charge;  soa%species(i) = orb%species
+soa%charge(i) = orb%charge;  soa%species(i) = orb%species;  soa%field(:, i) = orb%field
 soa%direction(i) = orb%direction;  soa%time_dir(i) = orb%time_dir
 if (soa%has_spin) soa%spin(:, i) = orb%spin
 
@@ -2423,7 +2428,7 @@ real(rp) dt
 integer i
 
 if (fast_track_time_mode == fast_time_qp$) then
-  soa%t(i) = soa%t(i) + dt
+  soa%t(i) = qp_add_dp(soa%t(i), dt)
 else
   call dd_add (soa%dt_hi(i), soa%dt_lo(i), dt)
 endif
@@ -2437,13 +2442,96 @@ real(rp) a, b
 integer i
 
 if (fast_track_time_mode == fast_time_qp$) then
-  soa%t(i) = (soa%t(i) + a) + b
+  soa%t(i) = qp_add_dp(qp_add_dp(soa%t(i), a), b)
 else
   call dd_add (soa%dt_hi(i), soa%dt_lo(i), a)
   call dd_add (soa%dt_hi(i), soa%dt_lo(i), b)
 endif
 
 end subroutine add_time2
+
+!--------------------------------------------------------------------------
+! t + d as the quad precision add computes it (round to nearest even), done in integer arithmetic for the
+! common case of a normal t and a normal d with |d| < |t|/2, which avoids the cost of the software quad
+! precision add (mostly in raising the floating point exception flags). Other cases use the quad add.
+
+elemental function qp_add_dp (t, d) result (r)
+
+real(qp), intent(in) :: t
+real(rp), intent(in) :: d
+real(qp) r
+integer, parameter :: i16 = selected_int_kind(38)
+integer(i16) bt, mt, x, xd, one
+integer(int64) bd, md
+integer et, ed, diff, sh, low
+
+if (d == 0) then
+  r = t
+  if (t == 0) r = t + d   ! Sign of zero.
+  return
+endif
+
+bt = transfer(t, bt)
+bd = transfer(d, bd)
+et = int(iand(shiftr(bt, 112), int(z'7FFF', i16)))   ! Biased exponents
+ed = int(iand(shiftr(bd, 52), int(z'7FF', int64)))
+diff = (et - 16383) - (ed - 1023)
+
+if (et == 0 .or. et == 32767 .or. ed == 0 .or. ed == 2047 .or. diff < 2) then
+  r = t + d
+  return
+endif
+
+! Significands, with t's scaled by 8 for guard, round and sticky bits: units of 2^(exponent(t)-116).
+
+one = 1
+mt = ior(iand(bt, shiftl(one, 112) - 1), shiftl(one, 112))
+md = ior(iand(bd, shiftl(1_int64, 52) - 1), shiftl(1_int64, 52))
+x = shiftl(mt, 3)
+sh = 63 - diff
+if (sh >= 0) then
+  xd = shiftl(int(md, i16), sh)
+elseif (sh <= -64) then
+  xd = 1
+else
+  xd = shiftr(int(md, i16), -sh)
+  if (iand(md, shiftl(1_int64, -sh) - 1) /= 0) xd = ior(xd, one)
+endif
+
+if ((bt < 0) .eqv. (bd < 0)) then
+  x = x + xd
+else
+  x = x - xd
+endif
+
+if (x >= shiftl(one, 116)) then
+  x = ior(shiftr(x, 1), iand(x, one))
+  et = et + 1
+elseif (x < shiftl(one, 115)) then
+  x = shiftl(x, 1)
+  et = et - 1
+endif
+
+low = int(iand(x, 7_i16))
+x = shiftr(x, 3)
+if (low > 4 .or. (low == 4 .and. iand(x, one) == 1)) then
+  x = x + 1
+  if (x == shiftl(one, 113)) then
+    x = shiftr(x, 1)
+    et = et + 1
+  endif
+endif
+
+if (et <= 0 .or. et >= 32767) then
+  r = t + d
+  return
+endif
+
+x = ior(iand(x, shiftl(one, 112) - 1), shiftl(int(et, i16), 112))
+if (bt < 0) x = ior(x, shiftl(one, 127))
+r = transfer(x, r)
+
+end function qp_add_dp
 
 !--------------------------------------------------------------------------
 ! Knuth two-sum: s + e = a + b exactly. Must not be compiled with -ffast-math / -fassociative-math.
