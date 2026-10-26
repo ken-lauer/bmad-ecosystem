@@ -127,8 +127,9 @@ type fast_slice_struct
   real(rp) :: sinc_a = 0, cos_a = 0, sin_a = 0, cosc_a = 0, sincc_a = 0
   ! Radiation kicks (track1_radiation) at the entrance (1) and exit (2) from ele%rad_map rm0/rm1.
   logical :: rad_damp = .false., rad_fluct = .false., rad_damp_vec = .false.
-  ! Per edge: whether the damping / stochastic kick is nonzero. track1_radiation also applies (and draws
-  ! random numbers for) all-zero kicks, which do not change the orbit; those are skipped here.
+  ! Per edge: whether the damping kick is nonzero (adding an all-zero kick does not change the orbit so
+  ! it is skipped). The stochastic kick is applied whenever fluctuations are on, so that the random
+  ! numbers are drawn exactly as track1_radiation draws them.
   logical :: rad_on_edge(2) = .false., rad_damp_edge(2) = .false., rad_fluct_edge(2) = .false.
   real(rp) :: rad_scale = 0
   real(rp) :: rad_ref(6,2) = 0, rad_dmat(6,6,2) = 0, rad_dvec(6,2) = 0, rad_smat(6,6,2) = 0
@@ -314,7 +315,11 @@ orb0%direction = 1;  orb0%time_dir = 1;  orb0%species = param%particle
 rel_charge_dir = ele%orientation * rel_tracking_charge_to_mass(orb0, param%particle)
 b1 = 0
 if (nint(ele%value(exact_multipoles$)) /= off$) then
+  ! track_a_bend then kicks with every pole, the dipole kick included, through bend_exact_multipole_field.
   call multipole_ele_to_ab(ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$)
+  if (ix_mag_max > -1) then
+    call set_why('bend exact multipoles');  return
+  endif
 else
   call multipole_ele_to_ab(ele, .false., ix_mag_max, an, bn, magnetic$, include_kicks$, b1)
   b1 = b1 * rel_charge_dir
@@ -611,7 +616,7 @@ fs%rad_smat(:,:,1) = ele%rad_map%rm0%stoc_mat;  fs%rad_smat(:,:,2) = ele%rad_map
 do ie = 1, 2
   fs%rad_damp_edge(ie) = fs%rad_damp .and. (any(fs%rad_dmat(:,:,ie) /= 0) .or. &
                                             (fs%rad_damp_vec .and. any(fs%rad_dvec(:,ie) /= 0)))
-  fs%rad_fluct_edge(ie) = fs%rad_fluct .and. any(fs%rad_smat(:,:,ie) /= 0)
+  fs%rad_fluct_edge(ie) = fs%rad_fluct
   fs%rad_on_edge(ie) = fs%rad_damp_edge(ie) .or. fs%rad_fluct_edge(ie)
 enddo
 end function radiation_setup

@@ -1600,29 +1600,29 @@ end subroutine add_bend_exact_multipole_field
 subroutine used_list_setup()
 if (present(used_eles)) return
 if (allocated(used_list)) return
-allocate (used_list(4))
+allocate (used_list(1))
 used_list(1)%ele => ele
 end subroutine used_list_setup
 
 !----------------------------------------------------------------------------
 ! contains
 
-! Add ele to list, in the first unused slot. The list is only enlarged when full.
+! Append ele to the list. The list holds exactly the elements used, with no unused slots, since
+! em_field_custom implementations may walk it.
 
 subroutine add_used_ele (list, ele)
 type (ele_pointer_struct), allocatable :: list(:), tmp(:)
 type (ele_struct), target :: ele
-integer k, n
+integer n
 
-if (.not. allocated(list)) allocate (list(4))
-n = size(list)
-do k = 1, n
-  if (associated(list(k)%ele)) cycle
-  list(k)%ele => ele
+if (.not. allocated(list)) then
+  allocate (list(1))
+  list(1)%ele => ele
   return
-enddo
+endif
 
-allocate (tmp(2*n))
+n = size(list)
+allocate (tmp(n+1))
 tmp(1:n) = list
 tmp(n+1)%ele => ele
 call move_alloc (tmp, list)

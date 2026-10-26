@@ -1253,8 +1253,9 @@ err_flag = .false.
 
 ! The source point of each bin is searched for starting from the source element of the previous bin.
 ! The bins are split into chunks of csr_kick_chunk that are done in parallel, each starting its
-! search at the kick element. The chunks do not depend on the number of threads. I_csr needs the
-! previous bin's I_csr so it is evaluated afterwards.
+! search at the kick element. The chunks do not depend on the number of threads. The point found
+! does not depend on where the search starts except at the round-off level (s_source_calc's guards
+! at element ends). I_csr needs the previous bin's I_csr so it is evaluated afterwards.
 
 if (csr%y_source == 0) then
   ! CSR only: skip negative bins since I_csr = 0 for dz_particles <= 0
@@ -1493,13 +1494,18 @@ do
   ddz0 = ddz_calc_csr(0.0_rp, status)
   ddz1 = ddz_calc_csr(einfo_s%L_chord, status)
 
+  ! The guards take the source point to be at the element end. ddz_calc_csr is evaluated there again
+  ! so that kick1 (floor_s, L_vec, ...) describes that point.
+
   if (last_step == -1 .and. ddz1 > 0) then  ! Roundoff error is causing ddz1 to be positive.
-    s_source = ddz_calc_csr(einfo_s%L_chord, status)
+    ddz1 = ddz_calc_csr(einfo_s%L_chord, status)
+    s_source = einfo_s%L_chord
     return
   endif
 
   if (last_step == 1 .and. ddz0 < 0) then  ! Roundoff error is causing ddz0 to be negative.
-    s_source = ddz_calc_csr(0.0_rp, status)
+    ddz0 = ddz_calc_csr(0.0_rp, status)
+    s_source = 0
     return
   endif
 
