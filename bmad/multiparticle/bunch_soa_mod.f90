@@ -57,6 +57,9 @@ logical, private, save :: fast_track_on = .false., fast_track_verbose = .false.,
 ! precision at every sync point, with the arithmetic in between still in double precision.
 logical, save :: fast_track_fp32_proxy = .false.
 
+! BMAD_FAST_TRACK=metal (or cuda): also use that device backend (see bunch_device_mod).
+character(16), save :: fast_track_device = ''
+
 ! With BMAD_FAST_TRACK=verbose, each distinct reason for not using the kernels is printed once.
 integer, parameter, private :: n_why_max = 64
 character(100), private, save :: why_seen(n_why_max) = ''
@@ -1346,6 +1349,8 @@ if (.not. fast_track_env_checked) then
     call get_environment_variable ('BMAD_FAST_TRACK', val, status = stat)
     fast_track_on = (stat == 0 .and. val /= '' .and. val /= '0')
     fast_track_verbose = (fast_track_on .and. val == 'verbose')
+    fast_track_device = ''
+    if (val == 'metal' .or. val == 'cuda') fast_track_device = val
     call get_environment_variable ('BMAD_FAST_TRACK_FP32', val, status = stat)
     fast_track_fp32_proxy = (stat == 0 .and. val /= '' .and. val /= '0')
     fast_track_env_checked = .true.

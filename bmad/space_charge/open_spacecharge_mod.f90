@@ -184,11 +184,6 @@ integer, allocatable :: kp_all(:), cnt(:,:), kstart(:), sij(:,:)
 integer, parameter :: dep_block = 16384
 integer :: k, nb, ib, m, nc
 
-! Saved mesh geometry for lazy resizing. Persists between calls so delta
-! stays constant when the bunch barely changes, enabling Green function caching.
-real(dp), save :: saved_mesh_min(3) = 0, saved_mesh_max(3) = 0
-logical, save :: saved_mesh_valid = .false.
-
 if (present(resize_mesh)) then
     resize = resize_mesh
 else
@@ -201,49 +196,7 @@ if (present(mesh_growth_factor)) growth_factor = mesh_growth_factor
 shrink_factor = 0
 if (present(mesh_shrink_factor)) shrink_factor = mesh_shrink_factor
 
-if (resize) then
-  call osc_coord_bounds(xa, ya, za, min, max)
-
-  if (growth_factor == 0 .and. shrink_factor == 0) then
-    ! Original tight-fit behavior: compute delta, add tiny relative padding.
-    delta = (max - min) / (mesh3d%nhi - mesh3d%nlo)
-    min = min - 1.0e-6_dp * delta
-    max = max + 1.0e-6_dp * delta
-  else
-    ! Lazy resize: only change mesh bounds when the bunch no longer fits or is much smaller.
-    ! This keeps delta stable across calls, enabling Green function FFT caching.
-    needs_resize = .not. saved_mesh_valid
-    if (.not. needs_resize) then
-      ! Grow: bunch exceeds saved mesh bounds
-      if (any(min < saved_mesh_min) .or. any(max > saved_mesh_max)) then
-        needs_resize = .true.
-      else
-        ! Shrink: bunch range significantly smaller than mesh range in any dimension
-        delta = saved_mesh_max - saved_mesh_min  ! reuse delta temporarily for mesh_range
-        if (any(max - min < delta * (1.0_dp - shrink_factor))) needs_resize = .true.
-      endif
-    endif
-
-    if (needs_resize) then
-      pad = (max - min) * (growth_factor * 0.5_dp)
-      ! Ensure minimum padding for numerical safety (handles zero-range dimensions)
-      where (pad < 1.0e-10_dp) pad = 1.0e-6_dp
-      min = min - pad
-      max = max + pad
-      saved_mesh_min = min
-      saved_mesh_max = max
-      saved_mesh_valid = .true.
-    else
-      min = saved_mesh_min
-      max = saved_mesh_max
-    endif
-  endif
-
-  delta = (max - min) / (mesh3d%nhi - mesh3d%nlo)
-  mesh3d%min = min
-  mesh3d%max = max
-  mesh3d%delta = delta
-endif
+if (resize) call osc_mesh_resize(xa, ya, za, mesh3d, growth_factor, shrink_factor)
 
 
 ! If allocated, check that the mesh sizes agree. Otherwise deallocate and below will allocate. 
@@ -422,6 +375,84 @@ endif
 
 
 end subroutine deposit_particles
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_mesh_resize(xa, ya, za, mesh3d, mesh_growth_factor, mesh_shrink_factor)
+!
+! Fits the mesh bounds (mesh3d%min, %max, %delta) to the particle coordinates, as deposit_particles
+! does before depositing: a tight fit with a tiny relative padding, or, with nonzero growth/shrink
+! factors, a lazy resize that keeps the bounds (and so delta) until the bunch outgrows them or shrinks
+! well inside them. The lazy state persists between calls.
+!
+! Input:
+!   xa(:), ya(:), za(:)  -- real(dp): Particle coordinates.
+!   mesh3d               -- mesh3d_struct: %nlo, %nhi set.
+!   mesh_growth_factor, mesh_shrink_factor -- real(dp): Zero for a tight fit each call.
+!
+! Output:
+!   mesh3d               -- mesh3d_struct: %min, %max, %delta set.
+!-
+
+subroutine osc_mesh_resize(xa, ya, za, mesh3d, mesh_growth_factor, mesh_shrink_factor)
+
+real(dp), intent(in) :: xa(:), ya(:), za(:)
+type(mesh3d_struct) :: mesh3d
+real(dp), intent(in) :: mesh_growth_factor, mesh_shrink_factor
+real(dp) :: min(3), max(3), delta(3), pad(3), growth_factor, shrink_factor
+logical :: needs_resize
+
+! Saved mesh geometry for lazy resizing. Persists between calls so delta
+! stays constant when the bunch barely changes, enabling Green function caching.
+real(dp), save :: saved_mesh_min(3) = 0, saved_mesh_max(3) = 0
+logical, save :: saved_mesh_valid = .false.
+
+growth_factor = mesh_growth_factor
+shrink_factor = mesh_shrink_factor
+
+call osc_coord_bounds(xa, ya, za, min, max)
+
+if (growth_factor == 0 .and. shrink_factor == 0) then
+  ! Original tight-fit behavior: compute delta, add tiny relative padding.
+  delta = (max - min) / (mesh3d%nhi - mesh3d%nlo)
+  min = min - 1.0e-6_dp * delta
+  max = max + 1.0e-6_dp * delta
+else
+  ! Lazy resize: only change mesh bounds when the bunch no longer fits or is much smaller.
+  ! This keeps delta stable across calls, enabling Green function FFT caching.
+  needs_resize = .not. saved_mesh_valid
+  if (.not. needs_resize) then
+    ! Grow: bunch exceeds saved mesh bounds
+    if (any(min < saved_mesh_min) .or. any(max > saved_mesh_max)) then
+      needs_resize = .true.
+    else
+      ! Shrink: bunch range significantly smaller than mesh range in any dimension
+      delta = saved_mesh_max - saved_mesh_min  ! reuse delta temporarily for mesh_range
+      if (any(max - min < delta * (1.0_dp - shrink_factor))) needs_resize = .true.
+    endif
+  endif
+
+  if (needs_resize) then
+    pad = (max - min) * (growth_factor * 0.5_dp)
+    ! Ensure minimum padding for numerical safety (handles zero-range dimensions)
+    where (pad < 1.0e-10_dp) pad = 1.0e-6_dp
+    min = min - pad
+    max = max + pad
+    saved_mesh_min = min
+    saved_mesh_max = max
+    saved_mesh_valid = .true.
+  else
+    min = saved_mesh_min
+    max = saved_mesh_max
+  endif
+endif
+
+delta = (max - min) / (mesh3d%nhi - mesh3d%nlo)
+mesh3d%min = min
+mesh3d%max = max
+mesh3d%delta = delta
+
+end subroutine osc_mesh_resize
 
 !------------------------------------------------------------------------
 !+

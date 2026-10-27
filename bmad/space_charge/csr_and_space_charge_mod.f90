@@ -15,6 +15,7 @@ use super_recipes_mod, only: super_zbrent
 use open_spacecharge_mod
 use csr3d_mod, only: csr3d_steady_state_solver
 use bunch_soa_mod
+use bunch_device_mod
 use radiation_mod, only: radiation_map_setup
 
 ! csr_ele_info_struct holds info for a particular lattice element
@@ -2213,9 +2214,16 @@ integer, allocatable, save :: idx_pk(:)
 real(rp), allocatable :: x_l(:), y_l(:), z_l(:), q_l(:), beta_l(:), E_l(:,:)
 integer, allocatable :: idx_l(:)
 integer :: n
-logical :: nested
+logical :: nested, done
 
 !
+
+if (bunch_device_on()) then
+  call bunch_device_sc_kick (csr%mesh3d, csr%actual_track_step, space_charge_com%mesh_growth_factor, &
+                             space_charge_com%mesh_shrink_factor, v%x, v%y, v%z, v%px, v%py, v%pz, v%p0c, v%beta, &
+                             v%charge, v%species, v%state, done)
+  if (done) return
+endif
 
 n = size(v%z)
 nested = .false.
