@@ -19,7 +19,7 @@ use bmad_interface
 use open_spacecharge_mod, only: mesh3d_struct, osc_get_rgrn_freespace, osc_mesh_resize, osc_mesh_resize_bounds, &
                                 osc_ordered_sum, deposit_particles, space_charge_3d, interpolate_field_batch
 use bunch_soa_mod, only: fast_track_enabled, fast_track_device, bunch_soa_struct, fast_slice_struct, fast_slice_prepare, &
-                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_max_ap
+                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_max_ap, qp_add_dp
 use random_mod, only: ran_seed_get
 use, intrinsic :: iso_c_binding
 !$ use omp_lib, only: omp_in_parallel
@@ -59,10 +59,12 @@ type, bind(c) :: bmad_dev_csr_par_struct
 end type
 
 interface
-  function bmad_dev_csr_bins_both (par1, par2, out1, out2, reason, reason_len) bind(c, name = 'bmad_dev_csr_bins_both') result (ierr)
-    import :: c_char, c_int, c_double, bmad_dev_csr_par_struct
-    type (bmad_dev_csr_par_struct) :: par1, par2
-    real(c_double) :: out1(*), out2(*)
+  function bmad_dev_csr_step (mass, n_bin, pbs, n_bin_eff, out_stats, out_layout, out1, out2, reason, reason_len) &
+                                                                      bind(c, name = 'bmad_dev_csr_step') result (ierr)
+    import :: c_char, c_int, c_double
+    real(c_double), value :: mass
+    integer(c_int), value :: n_bin, pbs, n_bin_eff
+    real(c_double) :: out_stats(*), out_layout(*), out1(*), out2(*)
     character(kind=c_char) :: reason(*)
     integer(c_int), value :: reason_len
     integer(c_int) :: ierr
@@ -709,7 +711,7 @@ do i = 1, soa%n
     endif
   endif
   call convert_pc_to (soa%p0c(i) * (1 + soa%pz(i)), res_species, beta = beta_now)
-  soa%t(i) = soa%t(i) + res_dt_ref - (soa%z(i) / beta_now - z_up(i) / beta_up(i)) / c_light
+  soa%t(i) = qp_add_dp(soa%t(i), res_dt_ref - (soa%z(i) / beta_now - z_up(i) / beta_up(i)) / c_light)
   soa%beta(i) = beta_now
   z_up(i) = soa%z(i)
   beta_up(i) = beta_now
@@ -882,97 +884,53 @@ end subroutine bunch_device_sc_kick_resident
 
 !--------------------------------------------------------------------------
 !+
-! Subroutine bunch_device_csr_stats (soa, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, done)
+! Subroutine bunch_device_csr_step (soa, n_bin, pbs, n_bin_eff, z_lo, z_hi, x_abs, y_abs, n_live, q_abs,
+!                                   z_min, dz_slice, dz_particle, sums1, sums2, done)
 !
-! Extent of the live resident particles (for csr_bin_view): z range, |x| and |y| maxima, live count,
-! sum of |charge|. done = False: the device declined, use the host arrays.
+! One CSR step of csr_bin_view on the resident bunch in one device submission: the live count, extent
+! and |charge| of the bunch, the bin layout (laid out on the device as csr_bin_view does it, so the
+! caller must use these values), and the bin sums: sums1(1:4, ib) = overlap, charge, x*charge, y*charge;
+! sums2(1:2, ib) = |x - x0|*charge, |y - y0|*charge with the per-bin centroids formed on the device.
 !-
 
-subroutine bunch_device_csr_stats (soa, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, done)
+subroutine bunch_device_csr_step (soa, n_bin, pbs, n_bin_eff, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, &
+                                                                  z_min, dz_slice, dz_particle, sums1, sums2, done)
 
 type (bunch_soa_struct) soa
-real(rp) z_lo, z_hi, x_abs, y_abs, q_abs
-integer n_live, ierr
+real(rp) z_lo, z_hi, x_abs, y_abs, q_abs, z_min, dz_slice, dz_particle, sums1(:,:), sums2(:,:)
+real(c_double) layout(4)
+real(c_double), allocatable :: out1(:), out2(:)
+integer n_bin, pbs, n_bin_eff, n_live, ierr
 logical done
 character(256) reason
-character(*), parameter :: r_name = 'bunch_device_csr_stats'
+character(*), parameter :: r_name = 'bunch_device_csr_step'
 
 done = .false.
 if (.not. res_active .or. .not. dev_ok) return
 call bunch_device_sync_device (soa)
 if (.not. res_active) return
+
+allocate (out1(4 * n_bin), out2(2 * n_bin))
 reason = ''
-if (.not. stats_valid) then
-  ierr = bmad_dev_bunch_stats (real(res_mass, c_double), 0.0_c_double, stats9, reason, len(reason))
-  if (ierr /= 0) then
-    call out_io (s_warn$, r_name, 'Reduction failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
-    dev_ok = .false.
-    return
-  endif
-  stats_valid = .true.
+ierr = bmad_dev_csr_step (real(res_mass, c_double), int(n_bin, c_int), int(pbs, c_int), int(n_bin_eff, c_int), &
+                                                                 stats9, layout, out1, out2, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'CSR step failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.
+  return
 endif
+stats_valid = .true.
 n_live = nint(stats9(1))
 q_abs = stats9(3)
 z_lo = stats9(6);  z_hi = stats9(9)
 x_abs = max(abs(stats9(4)), abs(stats9(7)));  y_abs = max(abs(stats9(5)), abs(stats9(8)))
-done = .true.
-
-end subroutine bunch_device_csr_stats
-
-!--------------------------------------------------------------------------
-!+
-! Subroutine bunch_device_csr_bins_both (soa, n_bin, pbs, z_min, dz_slice, dz_particle, x_abs, y_abs, n_live, q_abs,
-!                                        sums1, sums2, done)
-!
-! The bin sums of csr_bin_view on the resident bunch, both passes in one device submission:
-! sums1(1:4, ib) = overlap, charge, x*charge, y*charge; sums2(1:2, ib) = |x - x0|*charge, |y - y0|*charge
-! with the per-bin centroids x0, y0 formed on the device from the pass-1 sums.
-!-
-
-subroutine bunch_device_csr_bins_both (soa, n_bin, pbs, z_min, dz_slice, dz_particle, x_abs, y_abs, n_live, q_abs, &
-                                                                                              sums1, sums2, done)
-
-type (bunch_soa_struct) soa
-type (bmad_dev_csr_par_struct) par1, par2
-real(rp) z_min, dz_slice, dz_particle, x_abs, y_abs, q_abs, sums1(:,:), sums2(:,:), big(4)
-real(c_double), allocatable :: out1(:), out2(:)
-integer n_bin, pbs, n_live, ierr, k
-logical done
-character(256) reason
-character(*), parameter :: r_name = 'bunch_device_csr_bins_both'
-
-done = .false.
-if (.not. res_active .or. .not. dev_ok) return
-call bunch_device_sync_device (soa)
-if (.not. res_active) return
-
-big = [real(max(n_live, 1), rp), q_abs, q_abs * x_abs, q_abs * y_abs]
-do k = 1, 4
-  if (big(k) <= 0) big(k) = 1
-  par1%scale(k) = 2.0_rp**(61 - exponent(big(k)))
-enddo
-big = [2 * q_abs * x_abs, 2 * q_abs * y_abs, 1.0_rp, 1.0_rp]
-do k = 1, 4
-  if (big(k) <= 0) big(k) = 1
-  par2%scale(k) = 2.0_rp**(61 - exponent(big(k)))
-enddo
-par1%z_min = z_min;  par1%dz_slice = dz_slice;  par1%dz_particle = dz_particle;  par1%zc1 = 0
-par1%n_bin = n_bin;  par1%pbs = pbs;  par1%pass = 1;  par1%pad = 0
-par2 = par1;  par2%pass = 2
-allocate (out1(4 * n_bin), out2(2 * n_bin))
-reason = ''
-ierr = bmad_dev_csr_bins_both (par1, par2, out1, out2, reason, len(reason))
-if (ierr /= 0) then
-  call out_io (s_warn$, r_name, 'CSR binning failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
-  dev_ok = .false.
-  return
-endif
+z_min = layout(1);  dz_slice = layout(2);  dz_particle = layout(3)
 sums1(1:4, 1:n_bin) = reshape(out1, [4, n_bin])
 sums2(1:2, 1:n_bin) = reshape(out2, [2, n_bin])
 if (iand(bmad_dev_fault(), 2) /= 0) call out_io (s_warn$, r_name, 'Particle outside the CSR bins on the device.')
 done = .true.
 
-end subroutine bunch_device_csr_bins_both
+end subroutine bunch_device_csr_step
 
 !--------------------------------------------------------------------------
 !+

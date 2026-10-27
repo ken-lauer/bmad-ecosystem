@@ -371,18 +371,18 @@ do i_step = 0, n_step
 
   ! Cannot do a realistic calculation if there are less particles than bins
 
-  if (use_dev) then
-    n_live = bunch_device_n_live(csr_soa)
-  else
+  ! With a resident device bunch the live count comes back with the bin sums (csr_bin_view checks it).
+
+  if (.not. use_dev) then
     n_live = count(v%state == alive$)
-  endif
-  if (n_live < space_charge_com%n_bin) then
-    call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
-                          'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
-                          'AT ELEMENT: ' // trim(ele%name) // '  [# \i0\] ', &
-                          i_array = [n_live, ele%ix_ele ])
-    call finish()
-    return
+    if (n_live < space_charge_com%n_bin) then
+      call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
+                            'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
+                            'AT ELEMENT: ' // trim(ele%name) // '  [# \i0\] ', &
+                            i_array = [n_live, ele%ix_ele ])
+      call finish()
+      return
+    endif
   endif
 
   ! Assume a linear energy gain in a cavity
@@ -975,25 +975,43 @@ if (n_bin_eff < 1) then
   return
 endif
 
-! With a resident device bunch the extent, the bin sums and the widths come from the device.
+n_bin = space_charge_com%n_bin
+pbs = space_charge_com%particle_bin_span
+
+! With a resident device bunch the extent, the bin layout, the bin sums and the widths come from the
+! device in one submission (the layout is laid out on the device in float32; the host uses those values).
+
 use_dev = bunch_device_resident()
 if (use_dev) then
-  call bunch_device_csr_stats (csr_soa, z_minval, z_maxval, x_abs, y_abs, n_live_d, q_abs, done)
+  allocate (dsums(4, n_bin), dsums2(2, n_bin))
+  call bunch_device_csr_step (csr_soa, n_bin, pbs, n_bin_eff, z_minval, z_maxval, x_abs, y_abs, n_live_d, q_abs, &
+                                                          z_min, csr%dz_slice, dz_particle, dsums, dsums2, done)
   if (.not. done) then
     call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
     err_flag = .true.
     return
   endif
+  if (n_live_d < n_bin) then
+    call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
+                          'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
+                          'AT ELEMENT: ' // trim(ele%name) // '  [# \i0\] ', &
+                          i_array = [n_live_d, ele%ix_ele ])
+    err_flag = .true.
+    return
+  endif
+  dz = z_maxval - z_minval
+  z_center = (z_maxval + z_minval) / 2
+  z_max = z_min + n_bin * csr%dz_slice
 else
   call z_range (z_minval, z_maxval)
+  dz = z_maxval - z_minval
+  csr%dz_slice = dz / n_bin_eff
+  csr%dz_slice = 1.0000001 * csr%dz_slice     ! to prevent round off problems
+  z_center = (z_maxval + z_minval) / 2
+  z_min = z_center - n_bin * csr%dz_slice / 2
+  z_max = z_center + n_bin * csr%dz_slice / 2
+  dz_particle = pbs * csr%dz_slice
 endif
-dz = z_maxval - z_minval
-csr%dz_slice = dz / n_bin_eff
-csr%dz_slice = 1.0000001 * csr%dz_slice     ! to prevent round off problems
-z_center = (z_maxval + z_minval) / 2
-z_min = z_center - space_charge_com%n_bin * csr%dz_slice / 2
-z_max = z_center + space_charge_com%n_bin * csr%dz_slice / 2
-dz_particle = space_charge_com%particle_bin_span * csr%dz_slice
 
 if (dz == 0) then
   call out_io (s_fatal$, r_name, 'LONGITUDINAL WIDTH OF BEAM IS ZERO!')
@@ -1026,8 +1044,6 @@ enddo
 ! The contribution to the charge in a bin from a particle is computed from the overlap
 ! between the particle and the bin.
 
-n_bin = space_charge_com%n_bin
-pbs = space_charge_com%particle_bin_span
 inv_dz2 = 1.0_rp / dz_particle**2
 
 ! Bin sums are accumulated per block of bin_block particles and the blocks added in order, so the
@@ -1040,14 +1056,6 @@ zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
 if (use_dev) then
-  allocate (dsums(4, n_bin), dsums2(2, n_bin))
-  call bunch_device_csr_bins_both (csr_soa, n_bin, pbs, z_min, csr%dz_slice, dz_particle, x_abs, y_abs, n_live_d, q_abs, &
-                                                                                            dsums, dsums2, done)
-  if (.not. done) then
-    call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
-    err_flag = .true.
-    return
-  endif
   do ib = 1, n_bin
     csr%slice(ib)%n_particle = dsums(1, ib)
     csr%slice(ib)%charge = dsums(2, ib)
