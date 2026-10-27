@@ -79,6 +79,22 @@ int bmad_dev_set_green (const float *gx, const float *gy, const float *gz, char 
 int bmad_dev_sc_step (const bmad_dev_sc_par *par, const float *x, const float *y, const float *z, const float *q,
                       const float *factor, float *px, float *py, float *pz, char *reason, int reason_len);
 
+/* 1D CSR binning of the resident bunch (csr_bin_view). pass 1: per bin sums of overlap, charge, x*charge,
+   y*charge (out[4*n_bin]); pass 2: sums of |x - x0|*charge, |y - y0|*charge (out[2*n_bin]) with x0, y0 per bin.
+   scale[k] are the fixed-point scales of the sums (powers of two chosen by the host). */
+typedef struct {
+  double z_min, dz_slice, dz_particle, scale[4], zc1;
+  int32_t n_bin, pbs, pass, pad;
+} bmad_dev_csr_par;
+/* Both binning passes in one submission: out1[4*n_bin] (pass 1) and out2[2*n_bin] (pass 2 with the
+   centroids computed on the device). par2 carries the pass-2 scales. */
+int bmad_dev_csr_bins_both (const bmad_dev_csr_par *par1, const bmad_dev_csr_par *par2, double *out1, double *out2, char *reason, int reason_len);
+/* All statistics of the live resident particles in one pass:
+   out = {n_live, sum z/beta, sum |q|, min x, min y, min zs, max x, max y, max zs}, zs = z - dct*beta. */
+int bmad_dev_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
+/* CSR kick: pz += interpolation of kick[n_bin] at z (zc1 = z_center of bin 1). */
+int bmad_dev_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len);
+
 /* Resident bunch: upload the particles once, track slices and apply space charge on the device,
    download at the end. state/loc/lost_tag are int32; loc uses Bmad's upstream_end$/inside$/downstream_end$
    codes and lost_tag the slice's ele_tag at the moment the particle was lost. */
@@ -126,6 +142,9 @@ typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, char 
 typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
 typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);
 typedef int    (*bmad_backend_sc_step_resident_fn) (const bmad_dev_sc_par *, char *, int);
+typedef int    (*bmad_backend_csr_kick_fn) (const bmad_dev_csr_par *, const float *, char *, int);
+typedef int    (*bmad_backend_csr_bins_both_fn) (const bmad_dev_csr_par *, const bmad_dev_csr_par *, double *, double *, char *, int);
+typedef int    (*bmad_backend_bunch_stats_fn) (double, double, double *, char *, int);
 typedef double (*bmad_backend_seconds_fn) (void);
 typedef void   (*bmad_backend_timing_fn) (double *);
 typedef int    (*bmad_backend_fault_fn) (void);

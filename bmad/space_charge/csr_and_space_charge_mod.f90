@@ -393,7 +393,7 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
-  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call dev_to_host()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call dev_to_host()
   call csr_bin_view (ele, v, csr, err_flag)
   bunch_stale = (bunch_stale .or. (use_soa .and. err_flag))
   if (err_flag) then
@@ -435,9 +435,9 @@ do i_step = 0, n_step
   ! Give particles a kick. The CSR and slice space charge kicks run on the host; the 3D space charge
   ! kick runs on the device while the bunch is resident (apply_fft_3d_kicks).
 
-  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call dev_to_host()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call dev_to_host()
   call csr_and_sc_apply_kicks_view (ele, csr, v)
-  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call host_changed()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call host_changed()
 
   if (use_soa) then
     if (fast_track_fp32_proxy .and. .not. use_dev) call soa_round_fp32 (csr_soa)
@@ -945,14 +945,14 @@ integer i, j, n, ix0, ib, ib2, ib_center, n_bin_eff, n_bin, pbs
 ! Per-block bin sums (added in block order). Per-particle bin weights (reused by the width pass) and
 ! first bin index point into csr_bin_ovl and csr_bin_ix0 (threadprivate, so not usable directly by
 ! the worker threads).
-real(rp), allocatable :: acc(:,:,:), zb0s(:), zb1s(:), x0s(:), y0s(:)
+real(rp), allocatable :: acc(:,:,:), zb0s(:), zb1s(:), x0s(:), y0s(:), dsums(:,:), dsums2(:,:)
 real(rp), pointer, contiguous :: ovl(:,:)
 integer, pointer, contiguous :: ix0s(:)
-real(rp) :: inv_dz2
-integer :: nt, it
+real(rp) :: inv_dz2, x_abs, y_abs, q_abs
+integer :: nt, it, n_live_d
 integer, parameter :: bin_block = 8192
 
-logical err_flag
+logical err_flag, use_dev, done
 
 character(*), parameter :: r_name = 'csr_bin_view'
 
@@ -975,7 +975,18 @@ if (n_bin_eff < 1) then
   return
 endif
 
-call z_range (z_minval, z_maxval)
+! With a resident device bunch the extent, the bin sums and the widths come from the device.
+use_dev = bunch_device_resident()
+if (use_dev) then
+  call bunch_device_csr_stats (csr_soa, z_minval, z_maxval, x_abs, y_abs, n_live_d, q_abs, done)
+  if (.not. done) then
+    call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
+    err_flag = .true.
+    return
+  endif
+else
+  call z_range (z_minval, z_maxval)
+endif
 dz = z_maxval - z_minval
 csr%dz_slice = dz / n_bin_eff
 csr%dz_slice = 1.0000001 * csr%dz_slice     ! to prevent round off problems
@@ -1024,28 +1035,47 @@ inv_dz2 = 1.0_rp / dz_particle**2
 
 n = size(v%z)
 nt = (n + bin_block - 1) / bin_block
-allocate (acc(4, n_bin, 0:nt-1), zb0s(n_bin), zb1s(n_bin))
-if (allocated(csr_bin_ovl)) then
-  if (size(csr_bin_ovl, 1) /= pbs+2 .or. size(csr_bin_ovl, 2) < n) deallocate (csr_bin_ovl, csr_bin_ix0)
-endif
-if (.not. allocated(csr_bin_ovl)) allocate (csr_bin_ovl(0:pbs+1, n), csr_bin_ix0(n))
-ovl => csr_bin_ovl
-ix0s => csr_bin_ix0
+allocate (zb0s(n_bin), zb1s(n_bin), x0s(n_bin), y0s(n_bin))
 zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
-call bin_weights ()
-
-!$OMP parallel do private(it) if (n_bin * nt > 100000)
-do ib = 1, n_bin
-  do it = 0, nt-1
-    csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(1, ib, it)
-    csr%slice(ib)%charge = csr%slice(ib)%charge + acc(2, ib, it)
-    csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(3, ib, it)
-    csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(4, ib, it)
+if (use_dev) then
+  allocate (dsums(4, n_bin), dsums2(2, n_bin))
+  call bunch_device_csr_bins_both (csr_soa, n_bin, pbs, z_min, csr%dz_slice, dz_particle, x_abs, y_abs, n_live_d, q_abs, &
+                                                                                            dsums, dsums2, done)
+  if (.not. done) then
+    call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
+    err_flag = .true.
+    return
+  endif
+  do ib = 1, n_bin
+    csr%slice(ib)%n_particle = dsums(1, ib)
+    csr%slice(ib)%charge = dsums(2, ib)
+    csr%slice(ib)%x0 = dsums(3, ib)
+    csr%slice(ib)%y0 = dsums(4, ib)
   enddo
-enddo
-!$OMP end parallel do
+else
+  allocate (acc(4, n_bin, 0:nt-1))
+  if (allocated(csr_bin_ovl)) then
+    if (size(csr_bin_ovl, 1) /= pbs+2 .or. size(csr_bin_ovl, 2) < n) deallocate (csr_bin_ovl, csr_bin_ix0)
+  endif
+  if (.not. allocated(csr_bin_ovl)) allocate (csr_bin_ovl(0:pbs+1, n), csr_bin_ix0(n))
+  ovl => csr_bin_ovl
+  ix0s => csr_bin_ix0
+
+  call bin_weights ()
+
+  !$OMP parallel do private(it) if (n_bin * nt > 100000)
+  do ib = 1, n_bin
+    do it = 0, nt-1
+      csr%slice(ib)%n_particle = csr%slice(ib)%n_particle + acc(1, ib, it)
+      csr%slice(ib)%charge = csr%slice(ib)%charge + acc(2, ib, it)
+      csr%slice(ib)%x0 = csr%slice(ib)%x0 + acc(3, ib, it)
+      csr%slice(ib)%y0 = csr%slice(ib)%y0 + acc(4, ib, it)
+    enddo
+  enddo
+  !$OMP end parallel do
+endif
 
 do ib = 1, space_charge_com%n_bin
   if (ib /= 1) csr%slice(ib)%edge_dcharge_density_dz = (csr%slice(ib)%charge - csr%slice(ib-1)%charge) / csr%dz_slice**2
@@ -1069,19 +1099,26 @@ csr%y0_bunch = sum(csr%slice%y0 * csr%slice%charge) / sum(csr%slice%charge)
 ! Abs(x-x0) is used instead of the usual formula involving (x-x0)^2 to lessen the effect
 ! of non-Gaussian tails.
 
-allocate (x0s(n_bin), y0s(n_bin))
 x0s = csr%slice(1:n_bin)%x0
 y0s = csr%slice(1:n_bin)%y0
-call bin_widths ()
 
-!$OMP parallel do private(it) if (n_bin * nt > 100000)
-do ib = 1, n_bin
-  do it = 0, nt-1
-    csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(1, ib, it)
-    csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(2, ib, it)
+if (use_dev) then
+  do ib = 1, n_bin
+    csr%slice(ib)%sig_x = dsums2(1, ib)
+    csr%slice(ib)%sig_y = dsums2(2, ib)
   enddo
-enddo
-!$OMP end parallel do
+else
+  call bin_widths ()
+
+  !$OMP parallel do private(it) if (n_bin * nt > 100000)
+  do ib = 1, n_bin
+    do it = 0, nt-1
+      csr%slice(ib)%sig_x = csr%slice(ib)%sig_x + acc(1, ib, it)
+      csr%slice(ib)%sig_y = csr%slice(ib)%sig_y + acc(2, ib, it)
+    enddo
+  enddo
+  !$OMP end parallel do
+endif
 
 charge_tot = 0;  sig_x_ave = 0;  sig_y_ave = 0
 f = sqrt(pi/2)  ! This corrects for the fact that |x - x0| is used instead of (x - x0)^2 to compute the sigma.
@@ -2097,7 +2134,9 @@ type (csr_bunch_slice_struct), pointer :: slice
 
 real(rp) zp, r1, r0, dz, dpz, nk(2), dnk(2,2), f0, f, beta0, dpx, dpy, x, y, f_tot
 real(rp) Evec(3), factor, pz0, dct_ave, new_beta, ef
+real(rp), allocatable :: kicks(:)
 integer i, n, i0, i_del, ip
+logical done
 
 ! CSR kick and Slice space charge kick
 ! We use a weighted average so that the integral varies smoothly as a function of particle%vec(5).
@@ -2106,6 +2145,13 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
 
   ! CSR-only kick (no space charge): each particle reads shared slice data and updates only its own vec(6).
   if (ele%csr_method == one_dim$ .and. ele%space_charge_method /= slice$) then
+    done = .false.
+    if (bunch_device_resident()) then
+      allocate (kicks(space_charge_com%n_bin))
+      kicks = csr%slice(1:space_charge_com%n_bin)%kick_csr
+      call bunch_device_csr_kick (csr_soa, space_charge_com%n_bin, kicks, csr%slice(1)%z_center, csr%dz_slice, done)
+    endif
+    if (.not. done) then
     !$OMP parallel do default(none) shared(v, csr, space_charge_com, global_com) private(ip, zp, i0, r1, r0)
     do ip = 1, size(v%z)
       if (v%state(ip) /= alive$) cycle
@@ -2120,6 +2166,7 @@ if (ele%csr_method == one_dim$ .or. ele%space_charge_method == slice$) then
       v%pz(ip) = v%pz(ip) + r0 * csr%slice(i0)%kick_csr + r1 * csr%slice(i0+1)%kick_csr
     enddo
     !$OMP end parallel do
+    endif
 
   else
   ! General case with possible space charge

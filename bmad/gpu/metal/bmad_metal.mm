@@ -41,6 +41,9 @@ int    bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, in
 int    bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len);
 int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
 int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
+int    bmad_backend_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len);
+int    bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
+int    bmad_backend_csr_bins_both (const bmad_dev_csr_par *par1, const bmad_dev_csr_par *par2, double *out1, double *out2, char *reason, int reason_len);
 double bmad_backend_seconds (void);
 void   bmad_backend_timing (double *t);
 int    bmad_backend_fault (void);
@@ -297,6 +300,12 @@ struct Lane { float x, px, y, py, z, pz; int state; };
 
 inline float sqrt_one_f (float x) { return x / (sqrt(1.0f + x) + 1.0f); }     // sqrt(1+x) - 1
 inline float sinc_f (float x) { return (fabs(x) < 1.0e-3f) ? 1.0f - x * x / 6.0f : sin(x) / x; }
+// sinc(x) - 1 without cancellation.
+inline float sinc_m1_f (float x) {
+  float x2 = x * x;
+  if (fabs(x) < 0.3f) return -x2 / 6.0f * (1.0f - x2 / 20.0f * (1.0f - x2 / 42.0f * (1.0f - x2 / 72.0f)));
+  return sin(x) / x - 1.0f;
+}
 
 // x**m with the square-and-multiply order of __powidf2.
 inline float powi_f (float x, int m) {
@@ -570,17 +579,29 @@ inline bool bend_step_f (thread Lane& o, constant SlicePar& P, float mass, float
   else xi = (rad - cos_plus) / g_p;
   o.x = x * P.cos_a - step_len * step_len * g * P.cosc_a + xi;
   if (fabs(o.x) > P.max_ap) { o.state = LOST; return false; }
-  float L_u = xi;
-  float L_v = -(step_len * P.sinc_a + x * P.sin_a);
-  float L_c = sqrt(L_v * L_v + L_u * L_u);
-  float angle_p = 2.0f * (angle + phi_1 - atan2(L_u, -L_v));
-  float L_p = L_c / sinc_f(angle_p / 2.0f);
-  o.px = pt * sin(phi_1 + angle - angle_p);
+  // Path length L_p = L_c / sinc(angle_p/2) with L_c = sqrt(u^2 + v^2), u = xi, v = step_len*sinc_a + x*sin_a.
+  // L_p/step_len = (1 + g x) * S * T with S = sqrt(1 + (u/v)^2) and T = sinc(angle)/sinc(theta),
+  // theta = angle_p/2. The z update needs step_len - rel_p*L_p/pt, a difference of nearly equal
+  // numbers whose float32 rounding would repeat with the same sign step after step; so lambda =
+  // L_p/step_len - 1 and rho - 1 = rel_p/pt - 1 are formed from small quantities only.
+  float u = xi;
+  float v = step_len * P.sinc_a + x * P.sin_a;
+  float beta_a = atan2(u, v);
+  float theta = angle + phi_1 - beta_a;
+  float s1 = sqrt_one_f((u / v) * (u / v));                                  // S - 1
+  float sm_t = sinc_m1_f(theta);
+  float t1 = (sinc_m1_f(angle) - sm_t) / (1.0f + sm_t);                      // T - 1
+  float gx = g * x;
+  float lambda = gx + s1 + t1 + gx * s1 + gx * t1 + s1 * t1 + gx * s1 * t1;   // (1+gx)(1+s1)(1+t1) - 1
+  float w = py / rel_p;
+  float sq = sqrt(1.0f - w * w);
+  float rho_m1 = (w * w / (1.0f + sq)) / sq;                                 // rel_p/pt - 1
+  float L_p = step_len * (1.0f + lambda);
+  o.px = pt * sin(2.0f * beta_a - angle - phi_1);                            // phi_1 + angle - angle_p
   o.y = y + py * L_p / pt;
-  // z + beta*step_len/beta_ref - rel_p*L_p/pt, with beta/beta_ref - 1 formed without cancellation.
   float pc = p0c * rel_p;
   float A = mass * mass * (2.0f * pz + pz * pz) / (pc * pc + mass * mass);
-  o.z = z + step_len * sqrt_one_f(A) + (step_len - rel_p * L_p / pt);
+  o.z = z + step_len * sqrt_one_f(A) - step_len * (rho_m1 + lambda + rho_m1 * lambda);
   return true;
 }
 
@@ -696,6 +717,41 @@ kernel void reduce_sums (const device float* Z [[buffer(0)]], const device float
     threadgroup_barrier(mem_flags::mem_threadgroup);
   }
   if (tid == 0) { out[3 * tg] = sh[0][0]; out[3 * tg + 1] = sh[1][0]; out[3 * tg + 2] = sh[2][0]; }
+}
+
+// All of reduce_sums and reduce_bounds in one pass (bounds on z - dct*beta).
+kernel void reduce_all (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
+                        const device float* Z [[buffer(2)]], const device float* PZ [[buffer(3)]],
+                        const device float* P0C [[buffer(4)]], const device int* STATE [[buffer(5)]],
+                        const device float* Q [[buffer(6)]], device float* out [[buffer(7)]],
+                        constant RedPar& R [[buffer(8)]],
+                        uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
+                        uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float sh[9][256];
+  float cnt = 0.0f, s1 = 0.0f, c1 = 0.0f, s2 = 0.0f, c2 = 0.0f;
+  float lo[3] = {3.0e38f, 3.0e38f, 3.0e38f}, hi[3] = {-3.0e38f, -3.0e38f, -3.0e38f};
+  for (uint i = tg * tgs + tid; i < R.n; i += ntg * tgs) {
+    if (STATE[i] != ALIVE) continue;
+    float beta = beta_of(PZ[i], P0C[i], R.mass);
+    cnt += 1.0f;
+    float v = Z[i] / beta;
+    float y = v - c1; float t = s1 + y; c1 = (t - s1) - y; s1 = t;
+    v = fabs(Q[i]);
+    y = v - c2; t = s2 + y; c2 = (t - s2) - y; s2 = t;
+    float p[3] = {X[i], Y[i], Z[i] - R.dct * beta};
+    for (int k = 0; k < 3; k++) { lo[k] = min(lo[k], p[k]); hi[k] = max(hi[k], p[k]); }
+  }
+  sh[0][tid] = cnt; sh[1][tid] = s1; sh[2][tid] = s2;
+  for (int k = 0; k < 3; k++) { sh[3 + k][tid] = lo[k]; sh[6 + k][tid] = hi[k]; }
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint s = tgs / 2; s > 0; s >>= 1) {
+    if (tid < s) {
+      sh[0][tid] += sh[0][tid + s]; sh[1][tid] += sh[1][tid + s]; sh[2][tid] += sh[2][tid + s];
+      for (int k = 0; k < 3; k++) { sh[3 + k][tid] = min(sh[3 + k][tid], sh[3 + k][tid + s]); sh[6 + k][tid] = max(sh[6 + k][tid], sh[6 + k][tid + s]); }
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0) for (int k = 0; k < 9; k++) out[9 * tg + k] = sh[k][0];
 }
 
 kernel void reduce_bounds (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
@@ -815,6 +871,124 @@ kernel void interp_kick_r (const device float* Ex [[buffer(0)]], const device fl
   PY[gid] = py;
   PZ[gid] = pz_new;
 }
+
+// ------------------------------------------------------------------------------------------------
+// 1D CSR binning (csr_bin_view) and the CSR kick on the resident bunch. Bin sums are fixed point
+// (two uint32 words per sum, carry by hand) so the result is deterministic.
+
+struct CsrPar {
+  uint n, n_bin, pbs, pass;
+  float z_min, dz_slice, dz_particle, inv_dz2;
+  float scale0, scale1, scale2, scale3;
+  float zc1, pad1, pad2, pad3;
+  uint b0, nb_win, n_group, pad4;      // bin window [b0, b0 + nb_win) and the threadgroup count of a pass
+};
+
+inline void acc_fixed_tg (threadgroup atomic_uint* S, uint cell, float v) {
+  long q = (long) v;
+  uint lo = (uint) q;
+  uint hi = (uint) (q >> 32);
+  uint prev = atomic_fetch_add_explicit(&S[2u*cell], lo, memory_order_relaxed);
+  uint carry = (prev + lo < prev) ? 1u : 0u;
+  uint add_hi = hi + carry;
+  if (add_hi != 0u) atomic_fetch_add_explicit(&S[2u*cell + 1u], add_hi, memory_order_relaxed);
+}
+
+inline int nint_f (float x) { return (x >= 0.0f) ? (int) floor(x + 0.5f) : -((int) floor(-x + 0.5f)); }
+
+// Per-bin centroids from the pass-1 fixed-point sums (x0 = sum x q / sum q), for the width pass.
+kernel void csr_x0 (const device uint* S [[buffer(0)]], device float* X0 [[buffer(1)]], device float* Y0 [[buffer(2)]],
+                    constant CsrPar& C [[buffer(3)]], uint ib [[thread_position_in_grid]]) {
+  if (ib >= C.n_bin) return;
+  uint w = 4u * ib;
+  long qc = ((long) S[2u*(w+1u) + 1u] << 32) | (long) S[2u*(w+1u)];
+  long qx = ((long) S[2u*(w+2u) + 1u] << 32) | (long) S[2u*(w+2u)];
+  long qy = ((long) S[2u*(w+3u) + 1u] << 32) | (long) S[2u*(w+3u)];
+  float charge = (float) qc / C.scale1;
+  if (charge == 0.0f) { X0[ib] = 0.0f; Y0[ib] = 0.0f; return; }
+  X0[ib] = ((float) qx / C.scale2) / charge;
+  Y0[ib] = ((float) qy / C.scale3) / charge;
+}
+
+
+// One threadgroup's partial bin sums for the window [b0, b0 + nb_win), accumulated in threadgroup
+// memory (32 bytes per bin) and written to PART[tg][8 nb_win] for csr_bins_reduce. Global atomics on a
+// few hundred bins serialize 1e5-1e6 particles; this keeps the contention inside a threadgroup.
+kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
+                         const device float* Z [[buffer(2)]], const device float* Q [[buffer(3)]],
+                         const device int* STATE [[buffer(4)]], device uint* PART [[buffer(5)]],
+                         const device float* X0 [[buffer(6)]], const device float* Y0 [[buffer(7)]],
+                         constant CsrPar& C [[buffer(8)]], device atomic_uint* fault [[buffer(9)]],
+                         threadgroup atomic_uint* sh [[threadgroup(0)]],
+                         uint gid [[thread_position_in_grid]], uint tid [[thread_index_in_threadgroup]],
+                         uint tg [[threadgroup_position_in_grid]], uint tgs [[threads_per_threadgroup]]) {
+  uint nw = 8u * C.nb_win;
+  for (uint w = tid; w < nw; w += tgs) atomic_store_explicit(&sh[w], 0u, memory_order_relaxed);
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  if (gid < C.n && STATE[gid] == ALIVE) {
+    float zp_center = Z[gid];
+    float zp0 = zp_center - C.dz_particle / 2.0f;
+    float zp1 = zp_center + C.dz_particle / 2.0f;
+    int ix0 = nint_f((zp0 - C.z_min) / C.dz_slice);
+    float x = X[gid], y = Y[gid], q = Q[gid];
+    for (uint j = 0; j <= C.pbs + 1u; j++) {
+      int ib = (int) j + ix0;                                 // 1-based bin
+      if (ib < 1 || ib > (int) C.n_bin) { atomic_fetch_or_explicit(fault, 2u, memory_order_relaxed); continue; }
+      uint ibl = (uint) (ib - 1);
+      if (ibl < C.b0 || ibl >= C.b0 + C.nb_win) continue;
+      float zb0 = C.z_min + (float) (ib - 1) * C.dz_slice;
+      float zb1 = zb0 + C.dz_slice;
+      float z1_over = max(zp0, zb0), z2_over = min(zp_center, zb1);
+      float overlap = (z2_over > z1_over) ? 2.0f * ((z2_over - zp0) * (z2_over - zp0) - (z1_over - zp0) * (z1_over - zp0)) * C.inv_dz2 : 0.0f;
+      z1_over = max(zp_center, zb0);  z2_over = min(zp1, zb1);
+      if (z2_over > z1_over) overlap += 2.0f * ((z1_over - zp1) * (z1_over - zp1) - (z2_over - zp1) * (z2_over - zp1)) * C.inv_dz2;
+      float charge = overlap * q;
+      uint base = 4u * (ibl - C.b0);
+      if (C.pass == 1u) {
+        acc_fixed_tg(sh, base,      overlap * C.scale0);
+        acc_fixed_tg(sh, base + 1u, charge * C.scale1);
+        acc_fixed_tg(sh, base + 2u, x * charge * C.scale2);
+        acc_fixed_tg(sh, base + 3u, y * charge * C.scale3);
+      } else {
+        acc_fixed_tg(sh, base,      fabs(x - X0[ibl]) * charge * C.scale0);
+        acc_fixed_tg(sh, base + 1u, fabs(y - Y0[ibl]) * charge * C.scale1);
+      }
+    }
+  }
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  device uint* out = PART + (ulong) tg * nw;
+  for (uint w = tid; w < nw; w += tgs) out[w] = atomic_load_explicit(&sh[w], memory_order_relaxed);
+}
+
+// Sum the threadgroup partials of a window in index order (64-bit modular, so the result is the same
+// as a single fixed-point accumulator) into the bin sums S[8 n_bin].
+kernel void csr_bins_reduce (const device uint* PART [[buffer(0)]], device uint* S [[buffer(1)]],
+                             constant CsrPar& C [[buffer(2)]], uint c [[thread_position_in_grid]]) {
+  uint ncell = 4u * C.nb_win;
+  if (c >= ncell) return;
+  uint nw = 2u * ncell;
+  ulong acc = 0;
+  for (uint g = 0; g < C.n_group; g++) {
+    const device uint* p = PART + (ulong) g * nw + 2u * c;
+    acc += ((ulong) p[1] << 32) | (ulong) p[0];
+  }
+  uint w = 2u * (4u * C.b0 + c);
+  S[w] = (uint) acc;
+  S[w + 1u] = (uint) (acc >> 32);
+}
+
+kernel void csr_kick (device float* PZ [[buffer(0)]], const device float* Z [[buffer(1)]],
+                      const device int* STATE [[buffer(2)]], const device float* K [[buffer(3)]],
+                      constant CsrPar& C [[buffer(4)]], device atomic_uint* fault [[buffer(5)]],
+                      uint gid [[thread_position_in_grid]]) {
+  if (gid >= C.n) return;
+  if (STATE[gid] != ALIVE) return;
+  float zp = Z[gid];
+  int i0 = (int) ((zp - C.zc1) / C.dz_slice) + 1;
+  float r1 = (zp - (C.zc1 + (float) (i0 - 1) * C.dz_slice)) / C.dz_slice;
+  if (r1 < -0.01f || r1 > 1.01f || i0 < 1 || i0 >= (int) C.n_bin) { atomic_fetch_or_explicit(fault, 4u, memory_order_relaxed); return; }
+  PZ[gid] += (1.0f - r1) * K[i0 - 1] + r1 * K[i0];
+}
 )MSL";
 
 //------------------------------------------------------------------------------------------------
@@ -836,6 +1010,13 @@ struct ScParH {
 };
 
 struct RedParH { uint32_t n; float dct; float mass; uint32_t pad; };
+struct CsrParH {
+  uint32_t n, n_bin, pbs, pass;
+  float z_min, dz_slice, dz_particle, inv_dz2;
+  float scale0, scale1, scale2, scale3;
+  float zc1, pad1, pad2, pad3;
+  uint32_t b0, nb_win, n_group, pad4;
+};
 static const uint32_t kRedGroups = 512;
 
 struct FftParH {
@@ -858,6 +1039,22 @@ struct Impl {
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
   id<MTLBuffer> bW = nil;          // twiddle tables, one per padded dimension length
   id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil;   // resident bunch
+  id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
+  uint32_t n_bin_max = 0;
+  id<MTLComputePipelineState> psoCsrBinsTG = nil, psoCsrReduce = nil, psoCsrKick = nil, psoCsrX0 = nil, psoRedAll = nil;
+  id<MTLBuffer> bCsrAcc2 = nil, bCsrPart = nil;   // per-threadgroup partial bin sums
+  size_t csr_part_bytes = 0;
+
+  void ensure_bins (uint32_t n_bin) {
+    if (n_bin <= n_bin_max) return;
+    uint32_t nb = n_bin < 1024 ? 1024 : n_bin;
+    bCsrAcc = alloc((size_t) nb * 8 * 4);
+    bCsrAcc2 = alloc((size_t) nb * 8 * 4);
+    bCsrX0 = alloc((size_t) nb * 4);
+    bCsrY0 = alloc((size_t) nb * 4);
+    bCsrK = alloc((size_t) nb * 4);
+    n_bin_max = nb;
+  }
   id<MTLComputePipelineState> psoTrack = nil, psoRedSums = nil, psoRedBounds = nil, psoDepositR = nil, psoKickR = nil;
   int n_res = 0;                   // particles in the resident bunch
   uint32_t woff[3] = {0, 0, 0};
@@ -1038,6 +1235,11 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoRedBounds = pso(@"reduce_bounds");
     p->psoDepositR = pso(@"deposit_r");
     p->psoKickR = pso(@"interp_kick_r");
+    p->psoCsrBinsTG = pso(@"csr_bins_tg");
+    p->psoCsrReduce = pso(@"csr_bins_reduce");
+    p->psoCsrKick = pso(@"csr_kick");
+    p->psoCsrX0 = pso(@"csr_x0");
+    p->psoRedAll = pso(@"reduce_all");
     if (!ok) { put_reason(reason, reason_len, p->err); delete p; return 1; }
 
     size_t np = (size_t) (n_particle_max > 0 ? n_particle_max : 1);
@@ -1047,7 +1249,7 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bX = p->alloc(np * 4);  p->bY = p->alloc(np * 4);  p->bZ = p->alloc(np * 4);  p->bQ = p->alloc(np * 4);
     p->bF = p->alloc(np * 4);  p->bPX = p->alloc(np * 4); p->bPY = p->alloc(np * 4); p->bPZ = p->alloc(np * 4);
     p->bState = p->alloc(np * 4); p->bLoc = p->alloc(np * 4); p->bLost = p->alloc(np * 4); p->bP0c = p->alloc(np * 4);
-    p->bRed = p->alloc((size_t) kRedGroups * 6 * 4);
+    p->bRed = p->alloc((size_t) kRedGroups * 9 * 4);
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);
     p->bB = p->alloc(nm2 * 8);
@@ -1453,6 +1655,154 @@ int bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int
       [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     }
     p->mark(3);
+    return 0;
+  }
+}
+
+
+// ------------------------------------------------------------------------------------------------ 1D CSR
+
+static void csr_par_fill (CsrParH *C, const bmad_dev_csr_par *par, uint32_t n)
+{
+  memset(C, 0, sizeof(*C));
+  C->n = n; C->n_bin = (uint32_t) par->n_bin; C->pbs = (uint32_t) par->pbs; C->pass = (uint32_t) par->pass;
+  C->z_min = (float) par->z_min; C->dz_slice = (float) par->dz_slice; C->dz_particle = (float) par->dz_particle;
+  C->inv_dz2 = (float) (1.0 / (par->dz_particle * par->dz_particle));
+  C->scale0 = (float) par->scale[0]; C->scale1 = (float) par->scale[1]; C->scale2 = (float) par->scale[2]; C->scale3 = (float) par->scale[3];
+  C->zc1 = (float) par->zc1;
+}
+
+// One binning pass over the resident bunch into acc[8 n_bin] (fixed point, two words per sum), by bin
+// windows that fit the threadgroup memory (32 bytes per bin).
+static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, CsrParH C, id<MTLBuffer> acc)
+{
+  uint32_t n = C.n, nbin = C.n_bin;
+  NSUInteger tgs = p->psoCsrBinsTG.maxTotalThreadsPerThreadgroup;
+  if (tgs > 1024) tgs = 1024;
+  uint32_t ngroup = (n + (uint32_t) tgs - 1) / (uint32_t) tgs;
+  uint32_t win_max = (uint32_t) (p->dev.maxThreadgroupMemoryLength / 32);
+  if (win_max < 1) win_max = 1;
+  uint32_t win = nbin < win_max ? nbin : win_max;
+  size_t part_bytes = (size_t) ngroup * 8 * win * 4;
+  if (part_bytes > p->csr_part_bytes) { p->bCsrPart = p->alloc(part_bytes); p->csr_part_bytes = part_bytes; }
+  for (uint32_t b0 = 0; b0 < nbin; b0 += win) {
+    C.b0 = b0;  C.nb_win = (nbin - b0 < win) ? nbin - b0 : win;  C.n_group = ngroup;
+    [e setComputePipelineState:p->psoCsrBinsTG];
+    [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bY offset:0 atIndex:1];
+    [e setBuffer:p->bZ offset:0 atIndex:2]; [e setBuffer:p->bQ offset:0 atIndex:3];
+    [e setBuffer:p->bState offset:0 atIndex:4]; [e setBuffer:p->bCsrPart offset:0 atIndex:5];
+    [e setBuffer:p->bCsrX0 offset:0 atIndex:6]; [e setBuffer:p->bCsrY0 offset:0 atIndex:7];
+    [e setBytes:&C length:sizeof(C) atIndex:8];
+    [e setBuffer:p->bFault offset:0 atIndex:9];
+    [e setThreadgroupMemoryLength:(NSUInteger) C.nb_win * 32 atIndex:0];
+    [e dispatchThreadgroups:MTLSizeMake(ngroup, 1, 1) threadsPerThreadgroup:MTLSizeMake(tgs, 1, 1)];
+    [e setComputePipelineState:p->psoCsrReduce];
+    [e setBuffer:p->bCsrPart offset:0 atIndex:0]; [e setBuffer:acc offset:0 atIndex:1];
+    [e setBytes:&C length:sizeof(C) atIndex:2];
+    [e dispatchThreads:MTLSizeMake(4 * C.nb_win, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+  }
+}
+
+int bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    RedParH R = {(uint32_t) p->n_res, (float) dct, (float) mass, 0};
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoRedAll];
+    [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bY offset:0 atIndex:1];
+    [e setBuffer:p->bZ offset:0 atIndex:2]; [e setBuffer:p->bPZ offset:0 atIndex:3];
+    [e setBuffer:p->bP0c offset:0 atIndex:4]; [e setBuffer:p->bState offset:0 atIndex:5];
+    [e setBuffer:p->bQ offset:0 atIndex:6]; [e setBuffer:p->bRed offset:0 atIndex:7];
+    [e setBytes:&R length:sizeof(R) atIndex:8];
+    [e dispatchThreadgroups:MTLSizeMake(kRedGroups, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    const float *r = (const float *) p->bRed.contents;
+    out[0] = out[1] = out[2] = 0;
+    for (int k = 0; k < 3; k++) { out[3 + k] = 3.0e38; out[6 + k] = -3.0e38; }
+    for (uint32_t g = 0; g < kRedGroups; g++) {
+      out[0] += r[9 * g]; out[1] += r[9 * g + 1]; out[2] += r[9 * g + 2];
+      for (int k = 0; k < 3; k++) {
+        if (r[9 * g + 3 + k] < out[3 + k]) out[3 + k] = r[9 * g + 3 + k];
+        if (r[9 * g + 6 + k] > out[6 + k]) out[6 + k] = r[9 * g + 6 + k];
+      }
+    }
+    return 0;
+  }
+}
+
+// Both binning passes in one command buffer: pass 1 sums, per-bin centroids on the device, pass 2 widths.
+int bmad_backend_csr_bins_both (const bmad_dev_csr_par *par1, const bmad_dev_csr_par *par2, double *out1, double *out2, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    uint32_t n = (uint32_t) p->n_res, nbin = (uint32_t) par1->n_bin;
+    p->ensure_bins(nbin);
+    CsrParH C1, C2;
+    csr_par_fill(&C1, par1, n);
+    csr_par_fill(&C2, par2, n);
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    if (n == 0) {
+      uint32_t nwords = 8 * nbin;
+      [e setComputePipelineState:p->psoZero];
+      [e setBuffer:p->bCsrAcc offset:0 atIndex:0];
+      [e setBytes:&nwords length:4 atIndex:1];
+      [e dispatchThreads:MTLSizeMake(nwords, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      [e setBuffer:p->bCsrAcc2 offset:0 atIndex:0];
+      [e dispatchThreads:MTLSizeMake(nwords, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    } else {
+      csr_encode_pass(p, e, C1, p->bCsrAcc);
+      [e setComputePipelineState:p->psoCsrX0];
+      [e setBuffer:p->bCsrAcc offset:0 atIndex:0];
+      [e setBuffer:p->bCsrX0 offset:0 atIndex:1]; [e setBuffer:p->bCsrY0 offset:0 atIndex:2];
+      [e setBytes:&C1 length:sizeof(C1) atIndex:3];
+      [e dispatchThreads:MTLSizeMake(nbin, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      csr_encode_pass(p, e, C2, p->bCsrAcc2);
+    }
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    const uint32_t *S1 = (const uint32_t *) p->bCsrAcc.contents;
+    const uint32_t *S2 = (const uint32_t *) p->bCsrAcc2.contents;
+    double sinv1[4] = {1.0 / par1->scale[0], 1.0 / par1->scale[1], 1.0 / par1->scale[2], 1.0 / par1->scale[3]};
+    double sinv2[2] = {1.0 / par2->scale[0], 1.0 / par2->scale[1]};
+    for (uint32_t ib = 0; ib < nbin; ib++) {
+      for (int k = 0; k < 4; k++) {
+        uint32_t w = 4 * ib + (uint32_t) k;
+        int64_t q = (int64_t) (((uint64_t) S1[2 * w + 1] << 32) | (uint64_t) S1[2 * w]);
+        out1[k + 4 * ib] = (double) q * sinv1[k];
+      }
+      for (int k = 0; k < 2; k++) {
+        uint32_t w = 4 * ib + (uint32_t) k;
+        int64_t q = (int64_t) (((uint64_t) S2[2 * w + 1] << 32) | (uint64_t) S2[2 * w]);
+        out2[k + 2 * ib] = (double) q * sinv2[k];
+      }
+    }
+    return 0;
+  }
+}
+
+int bmad_backend_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    uint32_t n = (uint32_t) p->n_res, nbin = (uint32_t) par->n_bin;
+    if (n == 0) return 0;
+    p->sync();
+    p->ensure_bins(nbin);
+    memcpy(p->bCsrK.contents, kick, (size_t) nbin * 4);
+    CsrParH C;
+    csr_par_fill(&C, par, n);
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoCsrKick];
+    [e setBuffer:p->bPZ offset:0 atIndex:0]; [e setBuffer:p->bZ offset:0 atIndex:1];
+    [e setBuffer:p->bState offset:0 atIndex:2]; [e setBuffer:p->bCsrK offset:0 atIndex:3];
+    [e setBytes:&C length:sizeof(C) atIndex:4];
+    [e setBuffer:p->bFault offset:0 atIndex:5];
+    [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     return 0;
   }
 }

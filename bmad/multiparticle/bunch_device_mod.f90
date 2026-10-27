@@ -52,7 +52,37 @@ type, bind(c) :: bmad_dev_slice_par_struct
   real(c_float) :: rad_ref(12), rad_dmat(72), rad_dvec(12), rad_smat(72)
 end type
 
+! Mirror of bmad_dev_csr_par.
+type, bind(c) :: bmad_dev_csr_par_struct
+  real(c_double) :: z_min, dz_slice, dz_particle, scale(4), zc1
+  integer(c_int32_t) :: n_bin, pbs, pass, pad
+end type
+
 interface
+  function bmad_dev_csr_bins_both (par1, par2, out1, out2, reason, reason_len) bind(c, name = 'bmad_dev_csr_bins_both') result (ierr)
+    import :: c_char, c_int, c_double, bmad_dev_csr_par_struct
+    type (bmad_dev_csr_par_struct) :: par1, par2
+    real(c_double) :: out1(*), out2(*)
+    character(kind=c_char) :: reason(*)
+    integer(c_int), value :: reason_len
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_bunch_stats (mass, dct, out, reason, reason_len) bind(c, name = 'bmad_dev_bunch_stats') result (ierr)
+    import :: c_char, c_int, c_double
+    real(c_double), value :: mass, dct
+    real(c_double) :: out(9)
+    character(kind=c_char) :: reason(*)
+    integer(c_int), value :: reason_len
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_csr_kick (par, kick, reason, reason_len) bind(c, name = 'bmad_dev_csr_kick') result (ierr)
+    import :: c_char, c_int, c_float, bmad_dev_csr_par_struct
+    type (bmad_dev_csr_par_struct) :: par
+    real(c_float) :: kick(*)
+    character(kind=c_char) :: reason(*)
+    integer(c_int), value :: reason_len
+    integer(c_int) :: ierr
+  end function
   function bmad_dev_bunch_upload (n, x, px, y, py, z, pz, state, q, p0c, reason, reason_len) &
                                                               bind(c, name = 'bmad_dev_bunch_upload') result (ierr)
     import :: c_char, c_int, c_float, c_int32_t
@@ -179,6 +209,9 @@ integer, private, save :: tag_ix_ele(n_tag_max) = 0, tag_ix_branch(n_tag_max) = 
 real(rp), allocatable, private, save :: z_up(:), beta_up(:)
 real(c_float), allocatable, private, save :: p0c32(:)
 integer(c_int32_t), allocatable, private, save :: st32(:), loc32(:), tag32(:)
+! Statistics of the resident bunch (dct = 0), valid until the device changes it.
+logical, private, save :: stats_valid = .false.
+real(c_double), private, save :: stats9(9) = 0
 
 private :: c_str, from_c, ensure_arrays, ensure_resident_arrays, slice_to_par, device_mesh_setup
 
@@ -620,6 +653,7 @@ res_dev_current = .true.
 res_host_current = .true.
 res_dt_ref = 0
 res_tag = 0
+stats_valid = .false.
 
 end subroutine bunch_device_sync_device
 
@@ -736,6 +770,7 @@ if (ierr /= 0) then
 endif
 res_dt_ref = res_dt_ref + fs%delta_ref_time
 res_host_current = .false.
+stats_valid = .false.
 tracked = .true.
 
 end subroutine bunch_device_track_slice
@@ -749,13 +784,15 @@ end subroutine bunch_device_track_slice
 
 function bunch_device_n_live (soa) result (n_live)
 type (bunch_soa_struct) soa
-real(c_double) sums(3)
 integer n_live, ierr
 character(256) reason
 if (res_active .and. res_dev_current .and. .not. res_host_current) then
-  ierr = bmad_dev_bunch_sums (real(res_mass, c_double), sums, reason, len(reason))
-  if (ierr == 0) then
-    n_live = nint(sums(1))
+  if (.not. stats_valid) then
+    ierr = bmad_dev_bunch_stats (real(res_mass, c_double), 0.0_c_double, stats9, reason, len(reason))
+    stats_valid = (ierr == 0)
+  endif
+  if (stats_valid) then
+    n_live = nint(stats9(1))
     return
   endif
 endif
@@ -829,6 +866,7 @@ if (ierr /= 0) then
   call fail ('Space charge step failed: ' // trim(from_c(reason)));  return
 endif
 res_host_current = .false.
+stats_valid = .false.
 done = .true.
 
 !--------------------------
@@ -841,6 +879,139 @@ dev_ok = .false.
 end subroutine fail
 
 end subroutine bunch_device_sc_kick_resident
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_csr_stats (soa, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, done)
+!
+! Extent of the live resident particles (for csr_bin_view): z range, |x| and |y| maxima, live count,
+! sum of |charge|. done = False: the device declined, use the host arrays.
+!-
+
+subroutine bunch_device_csr_stats (soa, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, done)
+
+type (bunch_soa_struct) soa
+real(rp) z_lo, z_hi, x_abs, y_abs, q_abs
+integer n_live, ierr
+logical done
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_csr_stats'
+
+done = .false.
+if (.not. res_active .or. .not. dev_ok) return
+call bunch_device_sync_device (soa)
+if (.not. res_active) return
+reason = ''
+if (.not. stats_valid) then
+  ierr = bmad_dev_bunch_stats (real(res_mass, c_double), 0.0_c_double, stats9, reason, len(reason))
+  if (ierr /= 0) then
+    call out_io (s_warn$, r_name, 'Reduction failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+    dev_ok = .false.
+    return
+  endif
+  stats_valid = .true.
+endif
+n_live = nint(stats9(1))
+q_abs = stats9(3)
+z_lo = stats9(6);  z_hi = stats9(9)
+x_abs = max(abs(stats9(4)), abs(stats9(7)));  y_abs = max(abs(stats9(5)), abs(stats9(8)))
+done = .true.
+
+end subroutine bunch_device_csr_stats
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_csr_bins_both (soa, n_bin, pbs, z_min, dz_slice, dz_particle, x_abs, y_abs, n_live, q_abs,
+!                                        sums1, sums2, done)
+!
+! The bin sums of csr_bin_view on the resident bunch, both passes in one device submission:
+! sums1(1:4, ib) = overlap, charge, x*charge, y*charge; sums2(1:2, ib) = |x - x0|*charge, |y - y0|*charge
+! with the per-bin centroids x0, y0 formed on the device from the pass-1 sums.
+!-
+
+subroutine bunch_device_csr_bins_both (soa, n_bin, pbs, z_min, dz_slice, dz_particle, x_abs, y_abs, n_live, q_abs, &
+                                                                                              sums1, sums2, done)
+
+type (bunch_soa_struct) soa
+type (bmad_dev_csr_par_struct) par1, par2
+real(rp) z_min, dz_slice, dz_particle, x_abs, y_abs, q_abs, sums1(:,:), sums2(:,:), big(4)
+real(c_double), allocatable :: out1(:), out2(:)
+integer n_bin, pbs, n_live, ierr, k
+logical done
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_csr_bins_both'
+
+done = .false.
+if (.not. res_active .or. .not. dev_ok) return
+call bunch_device_sync_device (soa)
+if (.not. res_active) return
+
+big = [real(max(n_live, 1), rp), q_abs, q_abs * x_abs, q_abs * y_abs]
+do k = 1, 4
+  if (big(k) <= 0) big(k) = 1
+  par1%scale(k) = 2.0_rp**(61 - exponent(big(k)))
+enddo
+big = [2 * q_abs * x_abs, 2 * q_abs * y_abs, 1.0_rp, 1.0_rp]
+do k = 1, 4
+  if (big(k) <= 0) big(k) = 1
+  par2%scale(k) = 2.0_rp**(61 - exponent(big(k)))
+enddo
+par1%z_min = z_min;  par1%dz_slice = dz_slice;  par1%dz_particle = dz_particle;  par1%zc1 = 0
+par1%n_bin = n_bin;  par1%pbs = pbs;  par1%pass = 1;  par1%pad = 0
+par2 = par1;  par2%pass = 2
+allocate (out1(4 * n_bin), out2(2 * n_bin))
+reason = ''
+ierr = bmad_dev_csr_bins_both (par1, par2, out1, out2, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'CSR binning failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.
+  return
+endif
+sums1(1:4, 1:n_bin) = reshape(out1, [4, n_bin])
+sums2(1:2, 1:n_bin) = reshape(out2, [2, n_bin])
+if (iand(bmad_dev_fault(), 2) /= 0) call out_io (s_warn$, r_name, 'Particle outside the CSR bins on the device.')
+done = .true.
+
+end subroutine bunch_device_csr_bins_both
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_csr_kick (soa, n_bin, kick, zc1, dz_slice, done)
+!
+! The CSR-only kick of csr_and_sc_apply_kicks_view on the resident bunch: pz += interpolated kick(ib).
+!-
+
+subroutine bunch_device_csr_kick (soa, n_bin, kick, zc1, dz_slice, done)
+
+type (bunch_soa_struct) soa
+type (bmad_dev_csr_par_struct) par
+real(rp) kick(:), zc1, dz_slice
+real(c_float), allocatable :: k32(:)
+integer n_bin, ierr
+logical done
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_csr_kick'
+
+done = .false.
+if (.not. res_active .or. .not. dev_ok) return
+call bunch_device_sync_device (soa)
+if (.not. res_active) return
+par%z_min = 0;  par%dz_slice = dz_slice;  par%dz_particle = 1;  par%scale = 1;  par%zc1 = zc1
+par%n_bin = n_bin;  par%pbs = 0;  par%pass = 0;  par%pad = 0
+allocate (k32(n_bin))
+k32 = real(kick(1:n_bin), c_float)
+reason = ''
+ierr = bmad_dev_csr_kick (par, k32, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'CSR kick failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.
+  return
+endif
+res_host_current = .false.
+stats_valid = .false.
+done = .true.
+
+end subroutine bunch_device_csr_kick
 
 !--------------------------------------------------------------------------
 ! fast_slice_struct -> device slice parameters.
