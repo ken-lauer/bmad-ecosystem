@@ -52,6 +52,11 @@ logical :: fast_track_drifts = .false.
 
 logical, private, save :: fast_track_on = .false., fast_track_verbose = .false., fast_track_env_checked = .false.
 
+! BMAD_FAST_TRACK_FP32=1: round the six phase space coordinates to single precision after every kernel
+! slice and every CSR/space charge kick. A proxy for a single precision (GPU) kernel: the same storage
+! precision at every sync point, with the arithmetic in between still in double precision.
+logical, save :: fast_track_fp32_proxy = .false.
+
 ! With BMAD_FAST_TRACK=verbose, each distinct reason for not using the kernels is printed once.
 integer, parameter, private :: n_why_max = 64
 character(100), private, save :: why_seen(n_why_max) = ''
@@ -1341,6 +1346,8 @@ if (.not. fast_track_env_checked) then
     call get_environment_variable ('BMAD_FAST_TRACK', val, status = stat)
     fast_track_on = (stat == 0 .and. val /= '' .and. val /= '0')
     fast_track_verbose = (fast_track_on .and. val == 'verbose')
+    call get_environment_variable ('BMAD_FAST_TRACK_FP32', val, status = stat)
+    fast_track_fp32_proxy = (stat == 0 .and. val /= '' .and. val /= '0')
     fast_track_env_checked = .true.
   endif
   !$OMP END CRITICAL (fast_track_env_lock)
@@ -1395,7 +1402,41 @@ do ib = 1, n_block
 enddo
 !$OMP end parallel do
 
+if (fast_track_fp32_proxy) call soa_round_fp32 (soa)
+
 end subroutine fast_track_soa
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine soa_round_fp32 (soa)
+!
+! Routine to round the phase space coordinates of a SoA bunch to single precision (see fast_track_fp32_proxy).
+!
+! Input:
+!   soa   -- bunch_soa_struct.
+!
+! Output:
+!   soa   -- bunch_soa_struct: %x, %px, %y, %py, %z, %pz rounded to real32 and widened back.
+!-
+
+subroutine soa_round_fp32 (soa)
+
+use, intrinsic :: iso_fortran_env, only: real32
+
+type (bunch_soa_struct) soa
+integer i
+
+!$OMP parallel do if (soa%n > 10000)
+do i = 1, soa%n
+  soa%x(i)  = real(real(soa%x(i),  real32), rp);  soa%px(i) = real(real(soa%px(i), real32), rp)
+  soa%y(i)  = real(real(soa%y(i),  real32), rp);  soa%py(i) = real(real(soa%py(i), real32), rp)
+  soa%z(i)  = real(real(soa%z(i),  real32), rp);  soa%pz(i) = real(real(soa%pz(i), real32), rp)
+enddo
+!$OMP end parallel do
+
+end subroutine soa_round_fp32
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------

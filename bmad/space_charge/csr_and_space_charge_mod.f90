@@ -410,6 +410,7 @@ do i_step = 0, n_step
   call csr_and_sc_apply_kicks_view (ele, csr, v)
 
   if (use_soa) then
+    if (fast_track_fp32_proxy) call soa_round_fp32 (csr_soa)
     bunch_stale = .true.
     if (bunch_track_save_due(s0_step)) call save_soa_step(s0_step)
   else
