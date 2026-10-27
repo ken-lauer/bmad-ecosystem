@@ -399,6 +399,26 @@ subroutine osc_mesh_resize(xa, ya, za, mesh3d, mesh_growth_factor, mesh_shrink_f
 real(dp), intent(in) :: xa(:), ya(:), za(:)
 type(mesh3d_struct) :: mesh3d
 real(dp), intent(in) :: mesh_growth_factor, mesh_shrink_factor
+real(dp) :: min(3), max(3)
+
+call osc_coord_bounds(xa, ya, za, min, max)
+call osc_mesh_resize_bounds(min, max, mesh3d, mesh_growth_factor, mesh_shrink_factor)
+
+end subroutine osc_mesh_resize
+
+!------------------------------------------------------------------------
+!+
+! Subroutine osc_mesh_resize_bounds(lo, hi, mesh3d, mesh_growth_factor, mesh_shrink_factor)
+!
+! osc_mesh_resize given the particle bounds (componentwise minimum lo and maximum hi) instead of the
+! coordinates. The lazy-resize state is shared with osc_mesh_resize.
+!-
+
+subroutine osc_mesh_resize_bounds(lo, hi, mesh3d, mesh_growth_factor, mesh_shrink_factor)
+
+real(dp), intent(in) :: lo(3), hi(3)
+type(mesh3d_struct) :: mesh3d
+real(dp), intent(in) :: mesh_growth_factor, mesh_shrink_factor
 real(dp) :: min(3), max(3), delta(3), pad(3), growth_factor, shrink_factor
 logical :: needs_resize
 
@@ -409,8 +429,8 @@ logical, save :: saved_mesh_valid = .false.
 
 growth_factor = mesh_growth_factor
 shrink_factor = mesh_shrink_factor
-
-call osc_coord_bounds(xa, ya, za, min, max)
+min = lo
+max = hi
 
 if (growth_factor == 0 .and. shrink_factor == 0) then
   ! Original tight-fit behavior: compute delta, add tiny relative padding.
@@ -452,7 +472,7 @@ mesh3d%min = min
 mesh3d%max = max
 mesh3d%delta = delta
 
-end subroutine osc_mesh_resize
+end subroutine osc_mesh_resize_bounds
 
 !------------------------------------------------------------------------
 !+

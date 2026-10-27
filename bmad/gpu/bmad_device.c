@@ -24,6 +24,12 @@ static bmad_backend_close_fn     p_close = NULL;
 static bmad_backend_set_green_fn p_set_green = NULL;
 static bmad_backend_sc_step_fn   p_sc_step = NULL;
 static bmad_backend_get_field_fn p_get_field = NULL;
+static bmad_backend_bunch_upload_fn   p_upload = NULL;
+static bmad_backend_bunch_download_fn p_download = NULL;
+static bmad_backend_track_slice_fn    p_track = NULL;
+static bmad_backend_bunch_sums_fn     p_sums = NULL;
+static bmad_backend_bunch_bounds_fn   p_bounds = NULL;
+static bmad_backend_sc_step_resident_fn p_sc_res = NULL;
 static bmad_backend_seconds_fn   p_seconds = NULL;
 static bmad_backend_timing_fn    p_timing = NULL;
 static bmad_backend_fault_fn     p_fault = NULL;
@@ -84,11 +90,18 @@ static int load_backend (const char *backend, char *reason, int reason_len)
   p_set_green = (bmad_backend_set_green_fn) must_sym("bmad_backend_set_green");
   p_sc_step   = (bmad_backend_sc_step_fn)   must_sym("bmad_backend_sc_step");
   p_get_field = (bmad_backend_get_field_fn) must_sym("bmad_backend_get_field");
+  p_upload    = (bmad_backend_bunch_upload_fn)   must_sym("bmad_backend_bunch_upload");
+  p_download  = (bmad_backend_bunch_download_fn) must_sym("bmad_backend_bunch_download");
+  p_track     = (bmad_backend_track_slice_fn)    must_sym("bmad_backend_track_slice");
+  p_sums      = (bmad_backend_bunch_sums_fn)     must_sym("bmad_backend_bunch_sums");
+  p_bounds    = (bmad_backend_bunch_bounds_fn)   must_sym("bmad_backend_bunch_bounds");
+  p_sc_res    = (bmad_backend_sc_step_resident_fn) must_sym("bmad_backend_sc_step_resident");
   p_seconds   = (bmad_backend_seconds_fn)   must_sym("bmad_backend_seconds");
   p_timing    = (bmad_backend_timing_fn)    must_sym("bmad_backend_timing");
   p_fault     = (bmad_backend_fault_fn)     must_sym("bmad_backend_fault");
 
-  if (!p_available || !p_init || !p_close || !p_set_green || !p_sc_step || !p_get_field || !p_seconds || !p_timing || !p_fault) {
+  if (!p_available || !p_init || !p_close || !p_set_green || !p_sc_step || !p_get_field || !p_seconds || !p_timing || !p_fault ||
+      !p_upload || !p_download || !p_track || !p_sums || !p_bounds || !p_sc_res) {
     dlclose(handle);
     handle = NULL;
     put_reason(reason, reason_len, load_reason);
@@ -125,6 +138,45 @@ int bmad_dev_sc_step (const bmad_dev_sc_par *par, const float *x, const float *y
 {
   if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
   return p_sc_step(par, x, y, z, q, factor, px, py, pz, reason, reason_len);
+}
+
+int bmad_dev_bunch_upload (int n, const float *x, const float *px, const float *y, const float *py,
+                           const float *z, const float *pz, const int32_t *state, const float *q,
+                           const float *p0c, char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_upload(n, x, px, y, py, z, pz, state, q, p0c, reason, reason_len);
+}
+
+int bmad_dev_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
+                             int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_download(n, x, px, y, py, z, pz, state, loc, lost_tag, reason, reason_len);
+}
+
+int bmad_dev_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_track(par, reason, reason_len);
+}
+
+int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_sums(mass, out, reason, reason_len);
+}
+
+int bmad_dev_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_bounds(mass, dct, out, reason, reason_len);
+}
+
+int bmad_dev_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len)
+{
+  if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
+  return p_sc_res(par, reason, reason_len);
 }
 
 int bmad_dev_get_field (int comp, float *E, char *reason, int reason_len)

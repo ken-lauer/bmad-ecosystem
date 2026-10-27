@@ -32,6 +32,15 @@ int    bmad_backend_set_green (const float *gx, const float *gy, const float *gz
 int    bmad_backend_sc_step (const bmad_dev_sc_par *par, const float *x, const float *y, const float *z, const float *q,
                              const float *factor, float *px, float *py, float *pz, char *reason, int reason_len);
 int    bmad_backend_get_field (int comp, float *E, char *reason, int reason_len);
+int    bmad_backend_bunch_upload (int n, const float *x, const float *px, const float *y, const float *py,
+                                  const float *z, const float *pz, const int32_t *state, const float *q,
+                                  const float *p0c, char *reason, int reason_len);
+int    bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
+                                    int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len);
+int    bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
+int    bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len);
+int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
+int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
 double bmad_backend_seconds (void);
 void   bmad_backend_timing (double *t);
 int    bmad_backend_fault (void);
@@ -55,6 +64,8 @@ struct ScPar {
   uint nx2, ny2, nz2;
   uint n;
   uint pad;
+  float dct, track_step, mass;
+  uint pad2;
 };
 
 struct FftPar {
@@ -251,6 +262,559 @@ kernel void interp_kick (const device float* Ex [[buffer(0)]], const device floa
   PY[gid] = py;
   PZ[gid] = pz;
 }
+
+// ------------------------------------------------------------------------------------------------
+// Particle tracking on the resident bunch: the fast kernels of bunch_soa_mod (track1 for drifts,
+// quadrupoles, thick multipoles and fringe-free bend slices), one thread per particle, in float32.
+// Time is not tracked here: the host reconstructs it from z when it downloads the bunch.
+
+constant int ALIVE = 1, LOST = 2, LOST_NEG_X = 3, LOST_POS_X = 4, LOST_NEG_Y = 5, LOST_POS_Y = 6, LOST_PZ = 8;
+constant int UPSTREAM_END = 1, DOWNSTREAM_END = 2, INSIDE = 3;
+constant int AP_AUTO = 1, AP_RECT = 2, AP_ELLIPSE = 3;
+constant int KIND_DRIFT = 1, KIND_QUAD = 2, KIND_THICK = 3, KIND_BEND = 4;
+
+// Mirrored by bmad_dev_slice_par (C) and bmad_dev_slice_par_struct (Fortran). All members are 4 bytes.
+struct SlicePar {
+  int kind, n_step, ix_mag_max, offset_on, do_tilt, is_misaligned;
+  int n_ap0, n_ap1;
+  int rad_damp0, rad_damp1, rad_fluct0, rad_fluct1, rad_damp_vec;
+  int ele_tag;
+  uint rng_seed, rng_ctr;
+  float length, s_start, s_end, p0c_ele, e_tot_ele, mass, max_ap;
+  float charge_dir, b1, r_step, step_len, ab_f;
+  float an[22], bn[22], cm[484];
+  float tilt_tot, cos_t, sin_t, cos_mt, sin_mt;
+  float x_off, y_off, z_off, zc_set, l_half, ds_center_unset, s_target_set, s_target_unset;
+  float w_inv[9], w_mat[9];
+  int ap_type[8];
+  float ap_lim[64];
+  float g, dg, g_tot, angle, beta_ref, sinc_a, cos_a, sin_a, cosc_a, sincc_a;
+  float rad_scale;
+  float rad_ref[12], rad_dmat[72], rad_dvec[12], rad_smat[72];
+};
+
+struct Lane { float x, px, y, py, z, pz; int state; };
+
+inline float sqrt_one_f (float x) { return x / (sqrt(1.0f + x) + 1.0f); }     // sqrt(1+x) - 1
+inline float sinc_f (float x) { return (fabs(x) < 1.0e-3f) ? 1.0f - x * x / 6.0f : sin(x) / x; }
+
+// x**m with the square-and-multiply order of __powidf2.
+inline float powi_f (float x, int m) {
+  if (m < 0) return 0.0f;
+  if (m == 0) return 1.0f;
+  float xx = x, y = (m & 1) ? x : 1.0f;
+  int n = m;
+  while (true) {
+    n /= 2;
+    if (n == 0) break;
+    xx *= xx;
+    if (n & 1) y *= xx;
+  }
+  return y;
+}
+
+// Philox4x32-10 counter based random numbers, six standard normals per (particle, slice, edge).
+inline uint4 philox4 (uint4 c, uint2 k) {
+  for (int i = 0; i < 10; i++) {
+    ulong p0 = (ulong) 0xD2511F53u * (ulong) c.x;
+    ulong p1 = (ulong) 0xCD9E8D57u * (ulong) c.z;
+    uint hi0 = (uint) (p0 >> 32), lo0 = (uint) p0, hi1 = (uint) (p1 >> 32), lo1 = (uint) p1;
+    c = uint4(hi1 ^ c.y ^ k.x, lo1, hi0 ^ c.w ^ k.y, lo0);
+    k.x += 0x9E3779B9u;
+    k.y += 0xBB67AE85u;
+  }
+  return c;
+}
+inline float u01_f (uint v) { return ((float) v + 1.0f) * 2.3283064365386963e-10f; }    // (0, 1]
+inline void box_muller (uint a, uint b, thread float& g0, thread float& g1) {
+  float r = sqrt(-2.0f * log(u01_f(a)));
+  float t = 6.283185307179586f * u01_f(b);
+  g0 = r * cos(t);
+  g1 = r * sin(t);
+}
+inline void gauss6 (uint pid, uint ctr, uint seed, int ie, thread float* g) {
+  uint4 r1 = philox4(uint4(pid, ctr, (uint) ie, 0u), uint2(seed, 0x6A09E667u));
+  uint4 r2 = philox4(uint4(pid, ctr, (uint) ie, 1u), uint2(seed, 0x6A09E667u));
+  box_muller(r1.x, r1.y, g[0], g[1]);
+  box_muller(r1.z, r1.w, g[2], g[3]);
+  box_muller(r2.x, r2.y, g[4], g[5]);
+}
+
+// orbit_too_large (check_momentum = True). Returns true (and sets the state) if lost.
+inline bool too_large (thread Lane& o, float max_ap) {
+  if (o.x > max_ap)  { o.state = LOST_POS_X; return true; }
+  if (-o.x > max_ap) { o.state = LOST_NEG_X; return true; }
+  if (o.y > max_ap)  { o.state = LOST_POS_Y; return true; }
+  if (-o.y > max_ap) { o.state = LOST_NEG_Y; return true; }
+  float rel_p = 1.0f + o.pz;
+  if (rel_p < 0.0f)  { o.state = LOST_PZ; return true; }
+  float f = o.px * o.px + o.py * o.py - rel_p * rel_p;
+  if (f > 0.0f) {
+    if (fabs(o.px) > fabs(o.py)) o.state = (o.px > 0.0f) ? LOST_POS_X : LOST_NEG_X;
+    else                         o.state = (o.py > 0.0f) ? LOST_POS_Y : LOST_NEG_Y;
+    return true;
+  }
+  return false;
+}
+
+inline void aperture_one (thread Lane& o, int type, const constant float* L) {
+  // L: x1_lim, x2_lim, y1_lim, y2_lim, ex_w2, ex_c, ey_w2, ey_c
+  if (type == AP_ELLIPSE) {
+    float xp = o.x - L[5], yp = o.y - L[7];
+    float r = (xp / L[4]) * (xp / L[4]) + (yp / L[6]) * (yp / L[6]);
+    if (r < 1.0f) return;
+    if (fabs(xp / L[4]) > fabs(yp / L[6])) o.state = (xp > 0.0f) ? LOST_POS_X : LOST_NEG_X;
+    else                                   o.state = (yp > 0.0f) ? LOST_POS_Y : LOST_NEG_Y;
+  } else if (type == AP_RECT || type == AP_AUTO) {
+    float unstable = 0.0f, f;
+    if (L[0] != 0.0f && o.x < L[0]) { f = fabs((o.x - L[0]) / (L[1] - L[0])); if (f > unstable) { o.state = LOST_NEG_X; unstable = f; } }
+    if (L[1] != 0.0f && o.x > L[1]) { f = fabs((o.x - L[1]) / (L[1] - L[0])); if (f > unstable) { o.state = LOST_POS_X; unstable = f; } }
+    if (L[2] != 0.0f && o.y < L[2]) { f = fabs((o.y - L[2]) / (L[3] - L[2])); if (f > unstable) { o.state = LOST_NEG_Y; unstable = f; } }
+    if (L[3] != 0.0f && o.y > L[3]) { f = fabs((o.y - L[3]) / (L[3] - L[2])); if (f > unstable) { o.state = LOST_POS_Y; unstable = f; } }
+  }
+}
+
+inline void apertures (thread Lane& o, constant SlicePar& P, int ie) {
+  int nap = (ie == 0) ? P.n_ap0 : P.n_ap1;
+  for (int k = 0; k < nap; k++) {
+    int idx = k + 4 * ie;
+    aperture_one(o, P.ap_type[idx], &P.ap_lim[8 * idx]);
+    if (o.state != ALIVE) return;
+  }
+}
+
+// track1_radiation at edge ie (0 entrance, 1 exit); matrices stored Fortran order (j,k,ie).
+inline void radiation (thread Lane& o, constant SlicePar& P, int ie, uint pid) {
+  float v[6] = {o.x, o.px, o.y, o.py, o.z, o.pz};
+  float dv[6];
+  int damp = (ie == 0) ? P.rad_damp0 : P.rad_damp1;
+  int fluct = (ie == 0) ? P.rad_fluct0 : P.rad_fluct1;
+  if (damp) {
+    float w[6];
+    for (int j = 0; j < 6; j++) w[j] = v[j] - P.rad_ref[j + 6 * ie];
+    for (int j = 0; j < 6; j++) {
+      dv[j] = 0.0f;
+      for (int k = 0; k < 6; k++) dv[j] += P.rad_dmat[j + 6 * k + 36 * ie] * w[k];
+    }
+    for (int j = 0; j < 6; j++) v[j] += P.rad_scale * dv[j];
+    if (P.rad_damp_vec) for (int j = 0; j < 6; j++) v[j] += P.rad_scale * P.rad_dvec[j + 6 * ie];
+  }
+  if (fluct) {
+    float g[6];
+    gauss6(pid, P.rng_ctr, P.rng_seed, ie, g);
+    for (int j = 0; j < 6; j++) {
+      dv[j] = 0.0f;
+      for (int k = 0; k < 6; k++) dv[j] += P.rad_smat[j + 6 * k + 36 * ie] * g[k];
+    }
+    for (int j = 0; j < 6; j++) v[j] += P.rad_scale * dv[j];
+  }
+  o.x = v[0]; o.px = v[1]; o.y = v[2]; o.py = v[3]; o.z = v[4]; o.pz = v[5];
+  if (v[5] < -1.0f) o.state = LOST_PZ;
+}
+
+// track_a_drift (include_ref_motion = True), no time update.
+inline void drift_f (thread Lane& o, float length, float mass, float p0c) {
+  if (length == 0.0f) return;
+  float rel_pc = 1.0f + o.pz;
+  float px_rel = o.px / rel_pc, py_rel = o.py / rel_pc;
+  float pxy2 = px_rel * px_rel + py_rel * py_rel;
+  if (pxy2 >= 1.0f) { o.state = LOST_PZ; return; }
+  float ps = sqrt(1.0f - pxy2);
+  o.x += length * px_rel / ps;
+  o.y += length * py_rel / ps;
+  float pc = p0c * rel_pc;
+  float A = mass * mass * (2.0f * o.pz + o.pz * o.pz) / (pc * pc + mass * mass);   // beta/beta_ref = sqrt(1 + A)
+  o.z += length * (sqrt_one_f(A) + sqrt_one_f(-pxy2) / ps);
+}
+
+// track_a_drift (include_ref_motion = False): offset drifts.
+inline void offset_drift_f (thread Lane& o, float length) {
+  if (length == 0.0f) return;
+  float rel_pc = 1.0f + o.pz;
+  float px_rel = o.px / rel_pc, py_rel = o.py / rel_pc;
+  float pxy2 = px_rel * px_rel + py_rel * py_rel;
+  if (pxy2 >= 1.0f) { o.state = LOST_PZ; return; }
+  float ps = sqrt(1.0f - pxy2);
+  o.x += length * px_rel / ps;
+  o.y += length * py_rel / ps;
+  o.z += -length / ps;
+}
+
+inline void tilt_f (thread Lane& o, float c, float s) {
+  float a = o.x, b = o.y;
+  o.x = c * a + s * b;  o.y = -s * a + c * b;
+  a = o.px;  b = o.py;
+  o.px = c * a + s * b;  o.py = -s * a + c * b;
+}
+
+inline void mat3_vec_f (const constant float* w, const thread float* v, thread float* r) {
+  r[0] = r[1] = r[2] = 0.0f;
+  for (int k = 0; k < 3; k++) for (int i = 0; i < 3; i++) r[i] += w[i + 3 * k] * v[k];
+}
+
+inline void offset_set_f (thread Lane& o, constant SlicePar& P) {
+  float rel_p = 1.0f + o.pz, s_body;
+  if (P.is_misaligned) {
+    float r[3] = {o.x - P.x_off, o.y - P.y_off, -P.zc_set}, r2[3];
+    mat3_vec_f(P.w_inv, r, r2);
+    r2[2] += P.l_half;
+    s_body = r2[2];
+    float pz2 = rel_p * rel_p - o.px * o.px - o.py * o.py;
+    if (pz2 <= 0.0f) o.state = LOST_PZ;
+    else {
+      float p0[3] = {o.px, o.py, sqrt(pz2)}, p[3];
+      mat3_vec_f(P.w_inv, p0, p);
+      o.px = p[0]; o.py = p[1]; o.x = r2[0]; o.y = r2[1];
+    }
+  } else s_body = 0.0f;
+  float ds = P.s_target_set - s_body;
+  if (fabs(ds) > 1.0e-14f && o.state == ALIVE) offset_drift_f(o, ds);
+  if (P.do_tilt && P.tilt_tot != 0.0f) tilt_f(o, P.cos_t, P.sin_t);
+}
+
+inline void offset_unset_f (thread Lane& o, constant SlicePar& P) {
+  float rel_p = 1.0f + o.pz, s_lab;
+  if (P.do_tilt && -P.tilt_tot != 0.0f) tilt_f(o, P.cos_mt, P.sin_mt);
+  if (P.is_misaligned) {
+    float r[3] = {o.x, o.y, -P.ds_center_unset}, r2[3];
+    mat3_vec_f(P.w_mat, r, r2);
+    r2[0] += P.x_off; r2[1] += P.y_off; r2[2] += P.z_off + P.l_half;
+    s_lab = r2[2];
+    float pz2 = rel_p * rel_p - o.px * o.px - o.py * o.py;
+    if (pz2 <= 0.0f) o.state = LOST_PZ;
+    else {
+      float p0[3] = {o.px, o.py, sqrt(pz2)}, p[3];
+      mat3_vec_f(P.w_mat, p0, p);
+      o.px = p[0]; o.py = p[1]; o.x = r2[0]; o.y = r2[1];
+    }
+  } else s_lab = P.length;
+  float ds = P.s_target_unset - s_lab;
+  if (fabs(ds) > 1.0e-14f && o.state == ALIVE) offset_drift_f(o, ds);
+}
+
+// ab_multipole_kicks, magnetic.
+inline void ab_kick_f (thread Lane& o, constant SlicePar& P, float scale, float p0c) {
+  float kx_tot = 0.0f, ky_tot = 0.0f;
+  float r = P.p0c_ele / p0c;
+  for (int n = 0; n <= P.ix_mag_max; n++) {
+    float a = r * P.an[n], b = r * P.bn[n], kx = 0.0f, ky = 0.0f;
+    if (a != 0.0f || b != 0.0f) {
+      float a2 = scale * (a * P.ab_f), b2 = scale * (b * P.ab_f);
+      for (int m = 0; m <= n; m += 2) {
+        float f = P.cm[n + 22 * m] * powi_f(o.x, n - m) * powi_f(o.y, m);
+        kx += b2 * f;  ky -= a2 * f;
+      }
+      for (int m = 1; m <= n; m += 2) {
+        float f = P.cm[n + 22 * m] * powi_f(o.x, n - m) * powi_f(o.y, m);
+        kx += a2 * f;  ky += b2 * f;
+      }
+    }
+    kx_tot += kx;  ky_tot += ky;
+  }
+  o.px += kx_tot;
+  o.py += ky_tot;
+}
+
+inline void quad_z_coef_f (float k1, float length, float rel_p, thread float* m, thread float* zc) {
+  float sqrt_k = sqrt(fabs(k1)), sk_l = sqrt_k * length, cx, sx;
+  if (fabs(sk_l) < 1.0e-10f) {
+    float k_l2 = k1 * length * length;
+    cx = 1.0f + k_l2 / 2.0f;
+    sx = (1.0f + k_l2 / 6.0f) * length;
+  } else if (k1 < 0.0f) { cx = cos(sk_l); sx = sin(sk_l) / sqrt_k; }
+  else { cx = cosh(sk_l); sx = sinh(sk_l) / sqrt_k; }
+  m[0] = cx;  m[1] = sx / rel_p;  m[2] = k1 * sx * rel_p;  m[3] = cx;
+  zc[0] = k1 * (-cx * sx + length) / 4.0f;
+  zc[1] = -k1 * sx * sx / (2.0f * rel_p);
+  zc[2] = -(cx * sx + length) / (4.0f * rel_p * rel_p);
+}
+
+// low_energy_z_correction; the large-pz branch (beta - beta0)/beta0 in a form without cancellation.
+inline float low_e_dz_f (float pz, float p0c, float mass, float e_tot, float ds) {
+  float beta0 = p0c / e_tot;
+  if (mass * (beta0 * pz) * (beta0 * pz) < 3.0e-7f * e_tot) {
+    float f = beta0 * beta0 * (2.0f * beta0 * beta0 - (mass / e_tot) * (mass / e_tot) / 2.0f);
+    return ds * pz * (1.0f - 3.0f * (pz * beta0 * beta0) / 2.0f + pz * pz * f) * (mass / e_tot) * (mass / e_tot);
+  }
+  float a = 1.0f + pz;
+  float E = sqrt((p0c * a) * (p0c * a) + mass * mass);
+  return ds * mass * mass * (2.0f * pz + pz * pz) / (E * (a * e_tot + E));
+}
+
+// One step of the track_a_bend body. Returns false if the particle is lost inside.
+inline bool bend_step_f (thread Lane& o, constant SlicePar& P, float mass, float p0c) {
+  float g = P.g, angle = P.angle, step_len = P.step_len;
+  float x = o.x, px = o.px, y = o.y, py = o.py, z = o.z, pz = o.pz;
+  float rel_p = 1.0f + pz, rel_p2 = rel_p * rel_p;
+  if (P.dg == 0.0f && fabs(x * g) < 1.0e-9f && fabs(px) < 1.0e-9f && fabs(py) < 1.0e-9f && fabs(pz) < 1.0e-9f) {
+    float ll = step_len;
+    float pc = rel_p * p0c;
+    float gam2 = mass * mass / (pc * pc + mass * mass);
+    float m56 = ll * (gam2 - (g * ll) * (g * ll) * P.sincc_a);
+    o.x = P.cos_a * x + ll * P.sinc_a * px + g * ll * ll * P.cosc_a * pz;
+    o.px = -g * P.sin_a * x + P.cos_a * px + g * ll * P.sinc_a * pz;
+    o.y = y + ll * py;
+    o.z = -g * ll * P.sinc_a * x - g * ll * ll * P.cosc_a * px + z + m56 * pz;
+    return true;
+  }
+  float pt = sqrt(rel_p2 - py * py);
+  if (fabs(px) > pt) { o.state = LOST_PZ; return false; }
+  float g_p = P.g_tot / pt;
+  float phi_1 = asin(px / pt);
+  float cos_plus = cos(angle + phi_1), sin_plus = sin(angle + phi_1);
+  float alpha = 2.0f * (1.0f + g * x) * sin_plus * step_len * P.sinc_a - g_p * ((1.0f + g * x) * step_len * P.sinc_a) * ((1.0f + g * x) * step_len * P.sinc_a);
+  float r = cos_plus * cos_plus + g_p * alpha;
+  if (r < 0.0f || (fabs(g_p) < 1.0e-5f && fabs(cos_plus) < 1.0e-5f)) { o.state = LOST; o.x = 2.0f * P.max_ap; return false; }
+  float rad = sqrt(r), xi;
+  if (cos_plus > 0.0f) xi = alpha / (rad + cos_plus);
+  else xi = (rad - cos_plus) / g_p;
+  o.x = x * P.cos_a - step_len * step_len * g * P.cosc_a + xi;
+  if (fabs(o.x) > P.max_ap) { o.state = LOST; return false; }
+  float L_u = xi;
+  float L_v = -(step_len * P.sinc_a + x * P.sin_a);
+  float L_c = sqrt(L_v * L_v + L_u * L_u);
+  float angle_p = 2.0f * (angle + phi_1 - atan2(L_u, -L_v));
+  float L_p = L_c / sinc_f(angle_p / 2.0f);
+  o.px = pt * sin(phi_1 + angle - angle_p);
+  o.y = y + py * L_p / pt;
+  // z + beta*step_len/beta_ref - rel_p*L_p/pt, with beta/beta_ref - 1 formed without cancellation.
+  float pc = p0c * rel_p;
+  float A = mass * mass * (2.0f * pz + pz * pz) / (pc * pc + mass * mass);
+  o.z = z + step_len * sqrt_one_f(A) + (step_len - rel_p * L_p / pt);
+  return true;
+}
+
+kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffer(1)]],
+                         device float* Y [[buffer(2)]], device float* PY [[buffer(3)]],
+                         device float* Z [[buffer(4)]], device float* PZ [[buffer(5)]],
+                         device int* STATE [[buffer(6)]], device int* LOC [[buffer(7)]],
+                         device int* LOST_TAG [[buffer(8)]], const device float* P0C [[buffer(9)]],
+                         constant SlicePar& P [[buffer(10)]], constant uint& n [[buffer(11)]],
+                         uint gid [[thread_position_in_grid]]) {
+  if (gid >= n) return;
+  if (STATE[gid] != ALIVE) return;
+  Lane o;
+  o.x = X[gid]; o.px = PX[gid]; o.y = Y[gid]; o.py = PY[gid]; o.z = Z[gid]; o.pz = PZ[gid]; o.state = ALIVE;
+  float p0c = P0C[gid];
+  float mass = P.mass;
+  int loc = UPSTREAM_END;
+
+  // Entrance: orbit_too_large, apertures, radiation (track1 order).
+  bool big = too_large(o, P.max_ap);
+  if (!big) apertures(o, P, 0);
+  if (P.rad_damp0 || P.rad_fluct0) radiation(o, P, 0, gid);
+  bool go = (o.state == ALIVE);
+
+  if (go) {
+    if (P.kind == KIND_DRIFT) {
+      drift_f(o, P.length, mass, p0c);
+    } else if (P.kind == KIND_QUAD) {
+      if (P.offset_on) offset_set_f(o, P);
+      if (P.ix_mag_max > -1) ab_kick_f(o, P, P.r_step / 2.0f, p0c);
+      float rel_p = 1.0f + o.pz;
+      float k1 = P.charge_dir * P.b1 / (P.length * rel_p);
+      float mx[4], my[4], zx[3], zy[3];
+      quad_z_coef_f(-k1, P.step_len, rel_p, mx, zx);
+      quad_z_coef_f(k1, P.step_len, rel_p, my, zy);
+      float dz_low_e = low_e_dz_f(o.pz, p0c, mass, P.e_tot_ele, P.step_len);
+      for (int istep = 1; istep <= P.n_step; istep++) {
+        float x = o.x, px = o.px, y = o.y, py = o.py;
+        o.z += (zx[0] * x * x + zx[1] * x * px + zx[2] * px * px + zy[0] * y * y + zy[1] * y * py + zy[2] * py * py);
+        o.x = mx[0] * x + mx[1] * px;  o.px = mx[2] * x + mx[3] * px;
+        o.y = my[0] * y + my[1] * py;  o.py = my[2] * y + my[3] * py;
+        o.z += dz_low_e;
+        if (P.ix_mag_max > -1) ab_kick_f(o, P, (istep == P.n_step) ? P.r_step / 2.0f : P.r_step, p0c);
+      }
+      if (P.offset_on) offset_unset_f(o, P);
+    } else if (P.kind == KIND_THICK) {
+      if (P.offset_on) offset_set_f(o, P);
+      if (P.ix_mag_max > -1) ab_kick_f(o, P, P.r_step / 2.0f, p0c);
+      for (int istep = 1; istep <= P.n_step; istep++) {
+        drift_f(o, P.step_len, mass, p0c);
+        if (P.ix_mag_max > -1) ab_kick_f(o, P, (istep == P.n_step) ? P.r_step / 2.0f : P.r_step, p0c);
+      }
+      if (P.offset_on) offset_unset_f(o, P);
+    } else if (P.kind == KIND_BEND) {
+      bool lost = false;
+      for (int istep = 1; istep <= P.n_step; istep++) {
+        if (!bend_step_f(o, P, mass, p0c)) { lost = true; break; }
+      }
+      if (!lost) too_large(o, P.max_ap);
+    }
+
+    // Exit block.
+    if (!too_large(o, P.max_ap)) {
+      if (o.state != ALIVE) loc = INSIDE;
+      else {
+        loc = DOWNSTREAM_END;
+        bool bad = false;
+        if (P.rad_damp1 || P.rad_fluct1) {
+          radiation(o, P, 1, gid);
+          bad = too_large(o, P.max_ap);
+        }
+        if (!bad) apertures(o, P, 1);
+      }
+    } else if (loc == UPSTREAM_END) loc = INSIDE;
+  }
+
+  X[gid] = o.x; PX[gid] = o.px; Y[gid] = o.y; PY[gid] = o.py; Z[gid] = o.z; PZ[gid] = o.pz;
+  if (o.state != ALIVE) { STATE[gid] = o.state; LOST_TAG[gid] = P.ele_tag; }
+  LOC[gid] = loc;
+}
+
+// ------------------------------------------------------------------------------------------------
+// Reductions over the resident bunch: fixed threadgroup assignment, per-thread Kahan sums, a tree
+// over the threadgroup, partials per threadgroup; the host adds the partials in double, in order.
+
+struct RedPar { uint n; float dct; float mass; uint pad; };
+
+inline float beta_of (float pz, float p0c, float mass) {
+  float pc = p0c * (1.0f + pz);
+  return pc / sqrt(pc * pc + mass * mass);
+}
+
+kernel void reduce_sums (const device float* Z [[buffer(0)]], const device float* PZ [[buffer(1)]],
+                         const device float* Q [[buffer(2)]], const device float* P0C [[buffer(3)]],
+                         const device int* STATE [[buffer(4)]], device float* out [[buffer(5)]],
+                         constant RedPar& R [[buffer(6)]],
+                         uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
+                         uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float sh[3][256];
+  float cnt = 0.0f, s1 = 0.0f, c1 = 0.0f, s2 = 0.0f, c2 = 0.0f;
+  for (uint i = tg * tgs + tid; i < R.n; i += ntg * tgs) {
+    if (STATE[i] != ALIVE) continue;
+    cnt += 1.0f;
+    float v = Z[i] / beta_of(PZ[i], P0C[i], R.mass);
+    float y = v - c1; float t = s1 + y; c1 = (t - s1) - y; s1 = t;
+    v = fabs(Q[i]);
+    y = v - c2; t = s2 + y; c2 = (t - s2) - y; s2 = t;
+  }
+  sh[0][tid] = cnt; sh[1][tid] = s1; sh[2][tid] = s2;
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint s = tgs / 2; s > 0; s >>= 1) {
+    if (tid < s) { sh[0][tid] += sh[0][tid + s]; sh[1][tid] += sh[1][tid + s]; sh[2][tid] += sh[2][tid + s]; }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0) { out[3 * tg] = sh[0][0]; out[3 * tg + 1] = sh[1][0]; out[3 * tg + 2] = sh[2][0]; }
+}
+
+kernel void reduce_bounds (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
+                           const device float* Z [[buffer(2)]], const device float* PZ [[buffer(3)]],
+                           const device float* P0C [[buffer(4)]], const device int* STATE [[buffer(5)]],
+                           device float* out [[buffer(6)]], constant RedPar& R [[buffer(7)]],
+                           uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
+                           uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float sh[6][256];
+  float lo[3] = {3.0e38f, 3.0e38f, 3.0e38f}, hi[3] = {-3.0e38f, -3.0e38f, -3.0e38f};
+  for (uint i = tg * tgs + tid; i < R.n; i += ntg * tgs) {
+    if (STATE[i] != ALIVE) continue;
+    float zs = Z[i] - R.dct * beta_of(PZ[i], P0C[i], R.mass);
+    float v[3] = {X[i], Y[i], zs};
+    for (int k = 0; k < 3; k++) { lo[k] = min(lo[k], v[k]); hi[k] = max(hi[k], v[k]); }
+  }
+  for (int k = 0; k < 3; k++) { sh[k][tid] = lo[k]; sh[3 + k][tid] = hi[k]; }
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint s = tgs / 2; s > 0; s >>= 1) {
+    if (tid < s) for (int k = 0; k < 3; k++) { sh[k][tid] = min(sh[k][tid], sh[k][tid + s]); sh[3 + k][tid] = max(sh[3 + k][tid], sh[3 + k][tid + s]); }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0) for (int k = 0; k < 6; k++) out[6 * tg + k] = sh[k][0];
+}
+
+// ------------------------------------------------------------------------------------------------
+// Space charge step on the resident bunch: deposit and kick read the shift and the kick factor from
+// the particle itself (z - dct*beta, track_step/(p0c*beta)), skip dead particles, and rescale z by
+// beta_new/beta_old without cancellation.
+
+kernel void deposit_r (device atomic_uint* S [[buffer(0)]],
+                       const device float* X [[buffer(1)]], const device float* Y [[buffer(2)]],
+                       const device float* Z [[buffer(3)]], const device float* Q [[buffer(4)]],
+                       const device float* PZ [[buffer(5)]], const device float* P0C [[buffer(6)]],
+                       const device int* STATE [[buffer(7)]],
+                       constant ScPar& P [[buffer(8)]], device atomic_uint* fault [[buffer(9)]],
+                       uint gid [[thread_position_in_grid]]) {
+  if (gid >= P.n) return;
+  if (STATE[gid] != ALIVE) return;
+  float x = X[gid], y = Y[gid];
+  float z = Z[gid] - P.dct * beta_of(PZ[gid], P0C[gid], P.mass);
+  int ip = (int) floor((x - P.xmin) * P.dxi + 1.0f);
+  int jp = (int) floor((y - P.ymin) * P.dyi + 1.0f);
+  int kp = (int) floor((z - P.zmin) * P.dzi + 1.0f);
+  if (ip < 0 || jp < 0 || kp < 0 || ip > (int) P.nx || jp > (int) P.ny || kp > (int) P.nz)
+    atomic_fetch_or_explicit(fault, 1u, memory_order_relaxed);
+  ip = clamp(ip, 1, (int) P.nx - 1);
+  jp = clamp(jp, 1, (int) P.ny - 1);
+  kp = clamp(kp, 1, (int) P.nz - 1);
+  float ab = ((P.xmin - x) + (float) ip * P.dx) * P.dxi;
+  float de = ((P.ymin - y) + (float) jp * P.dy) * P.dyi;
+  float gh = ((P.zmin - z) + (float) kp * P.dz) * P.dzi;
+  float oab = 1.0f - ab, ode = 1.0f - de, ogh = 1.0f - gh;
+  float q = Q[gid] * P.dscale;
+  uint c = (uint) (ip - 1) + P.nx * ((uint) (jp - 1) + P.ny * (uint) (kp - 1));
+  uint sx = 1u, sy = P.nx, sz = P.nx * P.ny;
+  acc_fixed(S, c,                ab  * de  * gh  * q);
+  acc_fixed(S, c + sy,           ab  * ode * gh  * q);
+  acc_fixed(S, c + sy + sz,      ab  * ode * ogh * q);
+  acc_fixed(S, c + sz,           ab  * de  * ogh * q);
+  acc_fixed(S, c + sx + sz,      oab * de  * ogh * q);
+  acc_fixed(S, c + sx + sy + sz, oab * ode * ogh * q);
+  acc_fixed(S, c + sx + sy,      oab * ode * gh  * q);
+  acc_fixed(S, c + sx,           oab * de  * gh  * q);
+}
+
+kernel void interp_kick_r (const device float* Ex [[buffer(0)]], const device float* Ey [[buffer(1)]],
+                           const device float* Ez [[buffer(2)]],
+                           const device float* X [[buffer(3)]], const device float* Y [[buffer(4)]],
+                           device float* Z [[buffer(5)]], const device float* P0C [[buffer(6)]],
+                           device float* PX [[buffer(7)]], device float* PY [[buffer(8)]],
+                           device float* PZ [[buffer(9)]], const device int* STATE [[buffer(10)]],
+                           constant ScPar& P [[buffer(11)]], uint gid [[thread_position_in_grid]]) {
+  if (gid >= P.n) return;
+  if (STATE[gid] != ALIVE) return;
+  float p0c = P0C[gid], pz = PZ[gid], px = PX[gid], py = PY[gid];
+  float beta = beta_of(pz, p0c, P.mass);
+  float x = X[gid], y = Y[gid];
+  float z = Z[gid] - P.dct * beta;
+  int ip = (int) floor((x - P.xmin) * P.dxi + 1.0f);
+  int jp = (int) floor((y - P.ymin) * P.dyi + 1.0f);
+  int kp = (int) floor((z - P.zmin) * P.dzi + 1.0f);
+  ip = clamp(ip, 1, (int) P.nx - 1);
+  jp = clamp(jp, 1, (int) P.ny - 1);
+  kp = clamp(kp, 1, (int) P.nz - 1);
+  float ab = ((P.xmin - x) + (float) ip * P.dx) * P.dxi;
+  float de = ((P.ymin - y) + (float) jp * P.dy) * P.dyi;
+  float gh = ((P.zmin - z) + (float) kp * P.dz) * P.dzi;
+  float oab = 1.0f - ab, ode = 1.0f - de, ogh = 1.0f - gh;
+  float w000 = ab  * de  * gh,  w010 = ab  * ode * gh;
+  float w011 = ab  * ode * ogh, w001 = ab  * de  * ogh;
+  float w101 = oab * de  * ogh, w111 = oab * ode * ogh;
+  float w110 = oab * ode * gh,  w100 = oab * de  * gh;
+  uint c = (uint) (ip - 1) + P.nx * ((uint) (jp - 1) + P.ny * (uint) (kp - 1));
+  uint sx = 1u, sy = P.nx, sz = P.nx * P.ny;
+  float ex = Ex[c]*w000 + Ex[c+sy]*w010 + Ex[c+sy+sz]*w011 + Ex[c+sz]*w001
+           + Ex[c+sx+sz]*w101 + Ex[c+sx+sy+sz]*w111 + Ex[c+sx+sy]*w110 + Ex[c+sx]*w100;
+  float ey = Ey[c]*w000 + Ey[c+sy]*w010 + Ey[c+sy+sz]*w011 + Ey[c+sz]*w001
+           + Ey[c+sx+sz]*w101 + Ey[c+sx+sy+sz]*w111 + Ey[c+sx+sy]*w110 + Ey[c+sx]*w100;
+  float ez = Ez[c]*w000 + Ez[c+sy]*w010 + Ez[c+sy+sz]*w011 + Ez[c+sz]*w001
+           + Ez[c+sx+sz]*w101 + Ez[c+sx+sy+sz]*w111 + Ez[c+sx+sy]*w110 + Ez[c+sx]*w100;
+  float factor = P.track_step / (p0c * beta);
+  float pz0 = sqrt((1.0f + pz) * (1.0f + pz) - px * px - py * py);
+  px += ex * factor * P.kick_scale;
+  py += ey * factor * P.kick_scale;
+  float ef = ez * factor;
+  float a = ef * ef + 2.0f * ef * pz0;
+  float alpha = 1.0f + pz;
+  float pz_new = pz + a / (sqrt(alpha * alpha + a) + alpha);
+  // z *= beta_new/beta_old:  ratio - 1 = mu2 (b-a)(b+a) / (b sqrt(a2+mu2) + a sqrt(b2+mu2))
+  float aa = 1.0f + pz, bb = 1.0f + pz_new;
+  float mu2 = (P.mass / p0c) * (P.mass / p0c);
+  float ea = sqrt(aa * aa + mu2), eb = sqrt(bb * bb + mu2);
+  float ratio_m1 = mu2 * (bb - aa) * (bb + aa) / ((bb * ea + aa * eb) * (aa * eb));
+  Z[gid] = Z[gid] + Z[gid] * ratio_m1;
+  PX[gid] = px;
+  PY[gid] = py;
+  PZ[gid] = pz_new;
+}
 )MSL";
 
 //------------------------------------------------------------------------------------------------
@@ -267,7 +831,12 @@ struct ScParH {
   uint32_t nx2, ny2, nz2;
   uint32_t n;
   uint32_t pad;
+  float dct, track_step, mass;
+  uint32_t pad2;
 };
+
+struct RedParH { uint32_t n; float dct; float mass; uint32_t pad; };
+static const uint32_t kRedGroups = 512;
 
 struct FftParH {
   uint32_t n, stride, bs1, count1, bs2, nl, l1_off, l2_off, tfast, woff;
@@ -288,6 +857,9 @@ struct Impl {
   id<MTLBuffer> bX = nil, bY = nil, bZ = nil, bQ = nil, bF = nil, bPX = nil, bPY = nil, bPZ = nil;
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
   id<MTLBuffer> bW = nil;          // twiddle tables, one per padded dimension length
+  id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil;   // resident bunch
+  id<MTLComputePipelineState> psoTrack = nil, psoRedSums = nil, psoRedBounds = nil, psoDepositR = nil, psoKickR = nil;
+  int n_res = 0;                   // particles in the resident bunch
   uint32_t woff[3] = {0, 0, 0};
   uint32_t nx = 0, ny = 0, nz = 0, nx2 = 0, ny2 = 0, nz2 = 0;
   int nmax = 0;
@@ -461,6 +1033,11 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoCmul = pso(@"cmul");
     p->psoExtract = pso(@"extract");
     p->psoKick = pso(@"interp_kick");
+    p->psoTrack = pso(@"track_slice");
+    p->psoRedSums = pso(@"reduce_sums");
+    p->psoRedBounds = pso(@"reduce_bounds");
+    p->psoDepositR = pso(@"deposit_r");
+    p->psoKickR = pso(@"interp_kick_r");
     if (!ok) { put_reason(reason, reason_len, p->err); delete p; return 1; }
 
     size_t np = (size_t) (n_particle_max > 0 ? n_particle_max : 1);
@@ -469,6 +1046,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->nmax = (int) np;
     p->bX = p->alloc(np * 4);  p->bY = p->alloc(np * 4);  p->bZ = p->alloc(np * 4);  p->bQ = p->alloc(np * 4);
     p->bF = p->alloc(np * 4);  p->bPX = p->alloc(np * 4); p->bPY = p->alloc(np * 4); p->bPZ = p->alloc(np * 4);
+    p->bState = p->alloc(np * 4); p->bLoc = p->alloc(np * 4); p->bLost = p->alloc(np * 4); p->bP0c = p->alloc(np * 4);
+    p->bRed = p->alloc((size_t) kRedGroups * 6 * 4);
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);
     p->bB = p->alloc(nm2 * 8);
@@ -664,6 +1243,218 @@ int bmad_backend_fault (void)
   int v = (int) *f;
   *f = 0;
   return v;
+}
+
+
+// ------------------------------------------------------------------------------------------------ resident bunch
+
+int bmad_backend_bunch_upload (int n, const float *x, const float *px, const float *y, const float *py,
+                               const float *z, const float *pz, const int32_t *state, const float *q,
+                               const float *p0c, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (n < 0 || n > p->nmax) { put_reason(reason, reason_len, "particle count exceeds the device allocation"); return 1; }
+    p->sync();
+    size_t nb = (size_t) n * 4;
+    memcpy(p->bX.contents, x, nb);   memcpy(p->bPX.contents, px, nb);
+    memcpy(p->bY.contents, y, nb);   memcpy(p->bPY.contents, py, nb);
+    memcpy(p->bZ.contents, z, nb);   memcpy(p->bPZ.contents, pz, nb);
+    memcpy(p->bState.contents, state, nb);
+    memcpy(p->bQ.contents, q, nb);   memcpy(p->bP0c.contents, p0c, nb);
+    memset(p->bLoc.contents, 0, nb); memset(p->bLost.contents, 0, nb);
+    p->n_res = n;
+    return 0;
+  }
+}
+
+int bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
+                                 int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (n != p->n_res) { put_reason(reason, reason_len, "download size differs from the resident bunch"); return 1; }
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    size_t nb = (size_t) n * 4;
+    memcpy(x, p->bX.contents, nb);   memcpy(px, p->bPX.contents, nb);
+    memcpy(y, p->bY.contents, nb);   memcpy(py, p->bPY.contents, nb);
+    memcpy(z, p->bZ.contents, nb);   memcpy(pz, p->bPZ.contents, nb);
+    memcpy(state, p->bState.contents, nb);
+    memcpy(loc, p->bLoc.contents, nb);
+    memcpy(lost_tag, p->bLost.contents, nb);
+    memset(p->bLoc.contents, 0, nb);     // the next download reports only particles touched after this one
+    return 0;
+  }
+}
+
+int bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    uint32_t n = (uint32_t) p->n_res;
+    if (n == 0) return 0;
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoTrack];
+    [e setBuffer:p->bX offset:0 atIndex:0];  [e setBuffer:p->bPX offset:0 atIndex:1];
+    [e setBuffer:p->bY offset:0 atIndex:2];  [e setBuffer:p->bPY offset:0 atIndex:3];
+    [e setBuffer:p->bZ offset:0 atIndex:4];  [e setBuffer:p->bPZ offset:0 atIndex:5];
+    [e setBuffer:p->bState offset:0 atIndex:6]; [e setBuffer:p->bLoc offset:0 atIndex:7];
+    [e setBuffer:p->bLost offset:0 atIndex:8]; [e setBuffer:p->bP0c offset:0 atIndex:9];
+    [e setBytes:par length:sizeof(bmad_dev_slice_par) atIndex:10];
+    [e setBytes:&n length:4 atIndex:11];
+    [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    return 0;
+  }
+}
+
+static void reduce_dispatch (Impl *p, id<MTLComputePipelineState> pso, const RedParH *R, bool bounds)
+{
+  id<MTLComputeCommandEncoder> e = p->encoder();
+  [e setComputePipelineState:pso];
+  if (!bounds) {
+    [e setBuffer:p->bZ offset:0 atIndex:0]; [e setBuffer:p->bPZ offset:0 atIndex:1];
+    [e setBuffer:p->bQ offset:0 atIndex:2]; [e setBuffer:p->bP0c offset:0 atIndex:3];
+    [e setBuffer:p->bState offset:0 atIndex:4]; [e setBuffer:p->bRed offset:0 atIndex:5];
+    [e setBytes:R length:sizeof(*R) atIndex:6];
+  } else {
+    [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bY offset:0 atIndex:1];
+    [e setBuffer:p->bZ offset:0 atIndex:2]; [e setBuffer:p->bPZ offset:0 atIndex:3];
+    [e setBuffer:p->bP0c offset:0 atIndex:4]; [e setBuffer:p->bState offset:0 atIndex:5];
+    [e setBuffer:p->bRed offset:0 atIndex:6]; [e setBytes:R length:sizeof(*R) atIndex:7];
+  }
+  [e dispatchThreadgroups:MTLSizeMake(kRedGroups, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+}
+
+int bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    RedParH R = {(uint32_t) p->n_res, 0.0f, (float) mass, 0};
+    reduce_dispatch(p, p->psoRedSums, &R, false);
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    const float *r = (const float *) p->bRed.contents;
+    out[0] = out[1] = out[2] = 0;
+    for (uint32_t g = 0; g < kRedGroups; g++) { out[0] += r[3 * g]; out[1] += r[3 * g + 1]; out[2] += r[3 * g + 2]; }
+    return 0;
+  }
+}
+
+int bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    RedParH R = {(uint32_t) p->n_res, (float) dct, (float) mass, 0};
+    reduce_dispatch(p, p->psoRedBounds, &R, true);
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    const float *r = (const float *) p->bRed.contents;
+    for (int k = 0; k < 3; k++) { out[k] = 3.0e38; out[3 + k] = -3.0e38; }
+    for (uint32_t g = 0; g < kRedGroups; g++)
+      for (int k = 0; k < 3; k++) {
+        if (r[6 * g + k] < out[k]) out[k] = r[6 * g + k];
+        if (r[6 * g + 3 + k] > out[3 + k]) out[3 + k] = r[6 * g + 3 + k];
+      }
+    return 0;
+  }
+}
+
+int bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (!p->green_set) { put_reason(reason, reason_len, "Green function not set"); return 1; }
+    uint32_t n = (uint32_t) p->n_res;
+
+    double qabs = par->q_total_abs > 0 ? par->q_total_abs : 1.0;
+    double dscale = ldexp(1.0, 62 - (int) ceil(log2(qabs)) - 1);
+    ScParH P;
+    memset(&P, 0, sizeof(P));
+    P.xmin = (float) par->mesh_min[0]; P.ymin = (float) par->mesh_min[1]; P.zmin = (float) par->mesh_min[2];
+    P.dx = (float) par->delta[0]; P.dy = (float) par->delta[1]; P.dz = (float) par->delta[2];
+    P.dxi = (float) (1.0 / par->delta[0]); P.dyi = (float) (1.0 / par->delta[1]); P.dzi = (float) (1.0 / par->delta[2]);
+    P.kick_scale = (float) par->kick_scale;
+    P.dscale = (float) dscale;
+    P.dsinv = (float) (1.0 / dscale);
+    P.grn_scale = (float) par->grn_scale;
+    P.nx = p->nx; P.ny = p->ny; P.nz = p->nz;
+    P.nx2 = p->nx2; P.ny2 = p->ny2; P.nz2 = p->nz2;
+    P.n = n;
+    P.dct = (float) par->dct_ave;
+    P.track_step = (float) par->track_step;
+    P.mass = (float) par->mass;
+
+    uint32_t nm = p->nx * p->ny * p->nz;
+    uint32_t nm2 = p->nx2 * p->ny2 * p->nz2;
+    uint32_t nwords = 2 * nm;
+
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoZero];
+    [e setBuffer:p->bRho offset:0 atIndex:0];
+    [e setBytes:&nwords length:4 atIndex:1];
+    [e dispatchThreads:MTLSizeMake(nwords, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+
+    if (n > 0) {
+      [e setComputePipelineState:p->psoDepositR];
+      [e setBuffer:p->bRho offset:0 atIndex:0];
+      [e setBuffer:p->bX offset:0 atIndex:1]; [e setBuffer:p->bY offset:0 atIndex:2];
+      [e setBuffer:p->bZ offset:0 atIndex:3]; [e setBuffer:p->bQ offset:0 atIndex:4];
+      [e setBuffer:p->bPZ offset:0 atIndex:5]; [e setBuffer:p->bP0c offset:0 atIndex:6];
+      [e setBuffer:p->bState offset:0 atIndex:7];
+      [e setBytes:&P length:sizeof(P) atIndex:8];
+      [e setBuffer:p->bFault offset:0 atIndex:9];
+      [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    }
+
+    [e setComputePipelineState:p->psoRho];
+    [e setBuffer:p->bRho offset:0 atIndex:0];
+    [e setBuffer:p->bA offset:0 atIndex:1];
+    [e setBytes:&P length:sizeof(P) atIndex:2];
+    [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    p->mark(0);
+
+    p->fft3d_forward_padded(p->bA);
+    p->mark(1);
+
+    for (int c = 0; c < 3; c++) {
+      e = p->encoder();
+      [e setComputePipelineState:p->psoCmul];
+      [e setBuffer:p->bA offset:0 atIndex:0];
+      [e setBuffer:p->bG[c] offset:0 atIndex:1];
+      [e setBuffer:p->bB offset:0 atIndex:2];
+      [e setBytes:&nm2 length:4 atIndex:3];
+      [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      p->fft3d_backward_octant(p->bB);
+      e = p->encoder();
+      [e setComputePipelineState:p->psoExtract];
+      [e setBuffer:p->bB offset:0 atIndex:0];
+      [e setBuffer:p->bE[c] offset:0 atIndex:1];
+      [e setBytes:&P length:sizeof(P) atIndex:2];
+      [e dispatchThreads:MTLSizeMake(nm, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    }
+    p->mark(2);
+
+    if (n > 0) {
+      e = p->encoder();
+      [e setComputePipelineState:p->psoKickR];
+      [e setBuffer:p->bE[0] offset:0 atIndex:0]; [e setBuffer:p->bE[1] offset:0 atIndex:1]; [e setBuffer:p->bE[2] offset:0 atIndex:2];
+      [e setBuffer:p->bX offset:0 atIndex:3]; [e setBuffer:p->bY offset:0 atIndex:4]; [e setBuffer:p->bZ offset:0 atIndex:5];
+      [e setBuffer:p->bP0c offset:0 atIndex:6];
+      [e setBuffer:p->bPX offset:0 atIndex:7]; [e setBuffer:p->bPY offset:0 atIndex:8]; [e setBuffer:p->bPZ offset:0 atIndex:9];
+      [e setBuffer:p->bState offset:0 atIndex:10];
+      [e setBytes:&P length:sizeof(P) atIndex:11];
+      [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    }
+    p->mark(3);
+    return 0;
+  }
 }
 
 } // extern "C"

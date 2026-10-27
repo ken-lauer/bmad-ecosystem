@@ -33,9 +33,35 @@ typedef struct {
   double kick_scale;      /* factor applied to the transverse kicks (1/gamma^2) */
   double grn_scale;       /* field = grn_scale * ifft(fft(rho) * fft(green)); includes the FFT normalization */
   double q_total_abs;     /* sum of |charge| over the particles, for the fixed-point deposit scale */
-  int32_t n;              /* number of particles in the arrays */
+  double dct_ave;         /* resident step: mean of z/beta over the live particles (z is shifted by dct_ave*beta) */
+  double track_step;      /* resident step: csr%actual_track_step */
+  double mass;            /* resident step: particle mass [eV] */
+  int32_t n;              /* number of particles in the arrays (staged step) */
   int32_t pad[3];
 } bmad_dev_sc_par;
+
+/* One tracking slice for the resident bunch (the fast_slice_struct of bunch_soa_mod). All members are
+   4 bytes; mirrored by the SlicePar shader struct and bmad_dev_slice_par_struct in Fortran. Array
+   layouts are Fortran column-major: cm[n + 22*m], w[i + 3*k], rad_dmat[j + 6*k + 36*ie],
+   ap_type[k + 4*ie], ap_lim[8*(k + 4*ie) + {x1, x2, y1, y2, ex_w2, ex_c, ey_w2, ey_c}]. */
+typedef struct {
+  int32_t kind, n_step, ix_mag_max, offset_on, do_tilt, is_misaligned;
+  int32_t n_ap0, n_ap1;
+  int32_t rad_damp0, rad_damp1, rad_fluct0, rad_fluct1, rad_damp_vec;
+  int32_t ele_tag;
+  uint32_t rng_seed, rng_ctr;
+  float length, s_start, s_end, p0c_ele, e_tot_ele, mass, max_ap;
+  float charge_dir, b1, r_step, step_len, ab_f;
+  float an[22], bn[22], cm[484];
+  float tilt_tot, cos_t, sin_t, cos_mt, sin_mt;
+  float x_off, y_off, z_off, zc_set, l_half, ds_center_unset, s_target_set, s_target_unset;
+  float w_inv[9], w_mat[9];
+  int32_t ap_type[8];
+  float ap_lim[64];
+  float g, dg, g_tot, angle, beta_ref, sinc_a, cos_a, sin_a, cosc_a, sincc_a;
+  float rad_scale;
+  float rad_ref[12], rad_dmat[72], rad_dvec[12], rad_smat[72];
+} bmad_dev_slice_par;
 
 /* Load the backend named `backend` ("metal", "cuda") if not yet loaded and ask whether a device is usable. */
 int bmad_dev_available (const char *backend, char *reason, int reason_len);
@@ -52,6 +78,22 @@ int bmad_dev_set_green (const float *gx, const float *gy, const float *gz, char 
    px, py, pz are read and written in place. */
 int bmad_dev_sc_step (const bmad_dev_sc_par *par, const float *x, const float *y, const float *z, const float *q,
                       const float *factor, float *px, float *py, float *pz, char *reason, int reason_len);
+
+/* Resident bunch: upload the particles once, track slices and apply space charge on the device,
+   download at the end. state/loc/lost_tag are int32; loc uses Bmad's upstream_end$/inside$/downstream_end$
+   codes and lost_tag the slice's ele_tag at the moment the particle was lost. */
+int bmad_dev_bunch_upload (int n, const float *x, const float *px, const float *y, const float *py,
+                           const float *z, const float *pz, const int32_t *state, const float *q,
+                           const float *p0c, char *reason, int reason_len);
+int bmad_dev_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
+                             int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len);
+int bmad_dev_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
+/* Sums over the live resident particles: out = {n_live, sum z/beta, sum |q|}. */
+int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len);
+/* Bounds of the live resident particles: out = {min x, min y, min zs, max x, max y, max zs}, zs = z - dct*beta. */
+int bmad_dev_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
+/* The space charge step on the resident bunch (par->dct_ave, track_step, mass used; par->n ignored). */
+int bmad_dev_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
 
 /* Debug: copy field component comp (1..3) of the last step, nx*ny*nz floats x fastest, into E. */
 int bmad_dev_get_field (int comp, float *E, char *reason, int reason_len);
@@ -75,6 +117,15 @@ typedef int    (*bmad_backend_set_green_fn) (const float *, const float *, const
 typedef int    (*bmad_backend_sc_step_fn) (const bmad_dev_sc_par *, const float *, const float *, const float *,
                                            const float *, const float *, float *, float *, float *, char *, int);
 typedef int    (*bmad_backend_get_field_fn) (int, float *, char *, int);
+typedef int    (*bmad_backend_bunch_upload_fn) (int, const float *, const float *, const float *, const float *,
+                                                const float *, const float *, const int32_t *, const float *,
+                                                const float *, char *, int);
+typedef int    (*bmad_backend_bunch_download_fn) (int, float *, float *, float *, float *, float *, float *,
+                                                  int32_t *, int32_t *, int32_t *, char *, int);
+typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, char *, int);
+typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
+typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);
+typedef int    (*bmad_backend_sc_step_resident_fn) (const bmad_dev_sc_par *, char *, int);
 typedef double (*bmad_backend_seconds_fn) (void);
 typedef void   (*bmad_backend_timing_fn) (double *);
 typedef int    (*bmad_backend_fault_fn) (void);

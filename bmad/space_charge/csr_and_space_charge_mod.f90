@@ -201,6 +201,7 @@ type (csr_particle_view_struct) v
 real(rp), optional :: s_start, s_end
 real(rp) s0_step, vec0(6), vec(6), theta_chord, theta0, theta1, L
 real(rp) e_tot, f1, x, z, ds_step, s_save_last, p0c_checked
+logical use_dev
 
 integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
@@ -311,6 +312,16 @@ else
   call csr_view_particles (bunch%particle, v)
 endif
 
+! With a device backend the SoA bunch lives on the device across the steps; the host copy is brought
+! up to date (dev_to_host) only where the CPU reads it, and the device told (host_changed) where the
+! CPU writes it.
+
+use_dev = .false.
+if (use_soa) then
+  if (ele%space_charge_method /= fft_3d$) csr%mesh3d%nhi = space_charge_com%space_charge_mesh_size
+  call bunch_device_resident_begin (csr_soa, csr%mesh3d, branch%param%particle, use_dev)
+endif
+
 !----------------------------------------------------------------------------------------
 ! Loop over the tracking steps
 ! runt is the element that is tracked through at each step.
@@ -323,14 +334,23 @@ do i_step = 0, n_step
     call element_slice_iterator (ele, branch%param, i_step, n_step, runt, s_start, s_end)
     if (use_soa) then
       tracked = .false.
-      if (.not. bunch_wake_here(runt)) call fast_track1_soa (csr_soa, runt, branch%param, tracked, p0c_checked = p0c_checked)
+      if (.not. bunch_wake_here(runt)) then
+        if (use_dev) call bunch_device_track_slice (csr_soa, runt, branch%param, tracked)
+        if (.not. tracked) then
+          call dev_to_host()
+          call fast_track1_soa (csr_soa, runt, branch%param, tracked, p0c_checked = p0c_checked)
+          if (tracked) call host_changed()
+        endif
+      endif
       if (tracked) then
         bunch_stale = .true.
       elseif (.not. bunch_wake_here(runt) .and. runt%tracking_method /= taylor$) then
         ! Unsupported slice: track1 one particle at a time in place, as track1_bunch_hom would.
+        call dev_to_host()
         if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(runt, rad_err)
         call fast_track1_soa_fallback (csr_soa, bunch, runt, branch%param, &
                          runt%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
+        call host_changed()
         bunch_stale = .true.
         p0c_checked = -1
       else
@@ -338,6 +358,7 @@ do i_step = 0, n_step
         call track1_bunch_hom (bunch, runt)
         call bunch_to_soa (bunch, csr_soa)
         call csr_view_soa (csr_soa, v)
+        call host_changed()
         p0c_checked = -1
       endif
     else
@@ -350,7 +371,11 @@ do i_step = 0, n_step
 
   ! Cannot do a realistic calculation if there are less particles than bins
 
-  n_live = count(v%state == alive$)
+  if (use_dev) then
+    n_live = bunch_device_n_live(csr_soa)
+  else
+    n_live = count(v%state == alive$)
+  endif
   if (n_live < space_charge_com%n_bin) then
     call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
                           'LESS THAN NUMBER OF BINS FOR CSR CALC.', &
@@ -368,6 +393,7 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
+  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call dev_to_host()
   call csr_bin_view (ele, v, csr, err_flag)
   bunch_stale = (bunch_stale .or. (use_soa .and. err_flag))
   if (err_flag) then
@@ -406,14 +432,20 @@ do i_step = 0, n_step
     enddo
   endif
 
-  ! Give particles a kick
+  ! Give particles a kick. The CSR and slice space charge kicks run on the host; the 3D space charge
+  ! kick runs on the device while the bunch is resident (apply_fft_3d_kicks).
 
+  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call dev_to_host()
   call csr_and_sc_apply_kicks_view (ele, csr, v)
+  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) call host_changed()
 
   if (use_soa) then
-    if (fast_track_fp32_proxy) call soa_round_fp32 (csr_soa)
+    if (fast_track_fp32_proxy .and. .not. use_dev) call soa_round_fp32 (csr_soa)
     bunch_stale = .true.
-    if (bunch_track_save_due(s0_step)) call save_soa_step(s0_step)
+    if (bunch_track_save_due(s0_step)) then
+      call dev_to_host()
+      call save_soa_step(s0_step)
+    endif
   else
     call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
   endif
@@ -458,15 +490,25 @@ contains
 
 subroutine sync_bunch()
 if (.not. bunch_stale) return
+call dev_to_host()
 call soa_to_bunch (csr_soa, bunch)
 bunch%charge_live = bunch_charge_live(bunch)
 bunch_stale = .false.
 end subroutine sync_bunch
 
 subroutine finish()
+if (use_dev) call bunch_device_resident_end (csr_soa)
 call sync_bunch()
 call csr_eleinfo_put (csr)
 end subroutine finish
+
+subroutine dev_to_host()
+if (use_dev) call bunch_device_sync_host (csr_soa)
+end subroutine dev_to_host
+
+subroutine host_changed()
+if (use_dev) call bunch_device_host_changed ()
+end subroutine host_changed
 
 ! save_a_bunch_step for a save that is due (bunch_track_save_due), with the bunch parameters computed from
 ! csr_soa so that bunch%particle need not be brought up to date.
@@ -2217,6 +2259,12 @@ integer :: n
 logical :: nested, done
 
 !
+
+if (bunch_device_resident()) then
+  call bunch_device_sc_kick_resident (csr%mesh3d, csr%actual_track_step, space_charge_com%mesh_growth_factor, &
+                                      space_charge_com%mesh_shrink_factor, csr_soa, done)
+  if (done) return
+endif
 
 if (bunch_device_on()) then
   call bunch_device_sc_kick (csr%mesh3d, csr%actual_track_step, space_charge_com%mesh_growth_factor, &
