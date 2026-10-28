@@ -92,6 +92,9 @@ int bmad_dev_init (int n_particle_max, const int32_t mesh_n[3], char *reason, in
 void bmad_dev_close (void);
 
 /* Upload the padded real Green functions for Ex, Ey, Ez ((2nx)*(2ny)*(2nz) floats each) and transform them. */
+/* Green functions of Ex, Ey, Ez: the unique octant only, g(nx + a, ny + b, nz + c) of the padded
+   (2nx, 2ny, 2nz) array for a < nx, b < ny, c < nz (Fortran order, nx*ny*nz floats each). The device
+   fills the rest by symmetry (odd in x for Ex, in y for Ey, in z for Ez) and zeroes the last planes. */
 int bmad_dev_set_green (const float *gx, const float *gy, const float *gz, char *reason, int reason_len);
 
 /* Deposit the n particles, solve, interpolate and kick. factor(i) = track_step / (p0c * beta) of particle i.

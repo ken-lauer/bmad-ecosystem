@@ -515,7 +515,7 @@ end function bunch_device_seconds
 subroutine device_mesh_setup (mesh3d, n_tot, with_green, ierr)
 
 type (mesh3d_struct) mesh3d
-integer n_tot, ierr, mesh_n(3), nx2, ny2, nz2, icomp
+integer n_tot, ierr, mesh_n(3), nx2, ny2, nz2, icomp, k
 logical with_green
 character(256) reason
 character(*), parameter :: r_name = 'device_mesh_setup'
@@ -545,17 +545,18 @@ if (.not. with_green) return
 
 nx2 = 2 * mesh_n(1);  ny2 = 2 * mesh_n(2);  nz2 = 2 * mesh_n(3)
 if (any(mesh3d%delta /= grn_delta) .or. mesh3d%gamma /= grn_gamma) then
+  ! Only the unique octant of each Green function is evaluated and sent; the device mirrors it.
   if (allocated(gbuf)) then
     if (any(shape(gbuf) /= [nx2, ny2, nz2])) deallocate (gbuf, g32)
   endif
-  if (.not. allocated(gbuf)) allocate (gbuf(nx2, ny2, nz2), g32(nx2, ny2, nz2, 3))
+  if (.not. allocated(gbuf)) allocate (gbuf(nx2, ny2, nz2), g32(mesh_n(1), mesh_n(2), mesh_n(3), 3))
   do icomp = 1, 3
-    call osc_get_rgrn_freespace (gbuf, mesh3d%delta, mesh3d%gamma, icomp)
-    g32(:,:,:,icomp) = real(gbuf, c_float)
-    ! The last plane in each dimension holds the undifferenced indefinite integral (huge, up to 1e14),
-    ! which the extracted octant never multiplies in exact arithmetic but whose round-off would
-    ! swamp a single precision transform. Zero it.
-    g32(nx2, :, :, icomp) = 0;  g32(:, ny2, :, icomp) = 0;  g32(:, :, nz2, icomp) = 0
+    call osc_get_rgrn_freespace (gbuf, mesh3d%delta, mesh3d%gamma, icomp, octant_only = .true.)
+    !$OMP PARALLEL DO
+    do k = 1, mesh_n(3)
+      g32(:, :, k, icomp) = real(gbuf(mesh_n(1):nx2-1, mesh_n(2):ny2-1, mesh_n(3)+k-1), c_float)
+    enddo
+    !$OMP END PARALLEL DO
   enddo
   reason = ''
   ierr = bmad_dev_set_green (g32(:,:,:,1), g32(:,:,:,2), g32(:,:,:,3), reason, len(reason))

@@ -229,6 +229,39 @@ kernel void extract2 (const device float2* B [[buffer(0)]], device float* E0 [[b
   E1[gid] = P.grn_scale * b.y;
 }
 
+
+// Padded Green functions from their octants (osc_get_rgrn_freespace, octant_only). Cell (i, j, k), 1-based
+// in [1, 2n]: the last plane in each dimension is zero (undifferenced integral, see device_mesh_setup);
+// otherwise the mirror cell in the upper octant with a sign flip for each mirrored odd dimension.
+// pair = 1: real part from the Ex octant (odd in x), imaginary part from Ey (odd in y). pair = 0: Ez (odd in z).
+struct GreenPar { uint nx, ny, nz, pair; };
+kernel void expand_green (const device float* OX [[buffer(0)]], const device float* OY [[buffer(1)]],
+                          const device float* OZ [[buffer(2)]], device float2* G [[buffer(3)]],
+                          constant GreenPar& Q [[buffer(4)]], uint gid [[thread_position_in_grid]]) {
+  uint nx2 = 2u * Q.nx, ny2 = 2u * Q.ny, nz2 = 2u * Q.nz;
+  if (gid >= nx2 * ny2 * nz2) return;
+  uint i = gid % nx2 + 1u;
+  uint t = gid / nx2;
+  uint j = t % ny2 + 1u;
+  uint k = t / ny2 + 1u;
+  if (i == nx2 || j == ny2 || k == nz2) { G[gid] = float2(0.0f, 0.0f); return; }
+  bool lx = (i < Q.nx), ly = (j < Q.ny), lz = (k < Q.nz);
+  uint a = lx ? Q.nx - i : i - Q.nx;
+  uint b = ly ? Q.ny - j : j - Q.ny;
+  uint c = lz ? Q.nz - k : k - Q.nz;
+  uint o = a + Q.nx * (b + Q.ny * c);
+  if (Q.pair) {
+    float gx = OX[o], gy = OY[o];
+    if (lx) gx = -gx;
+    if (ly) gy = -gy;
+    G[gid] = float2(gx, gy);
+  } else {
+    float gz = OZ[o];
+    if (lz) gz = -gz;
+    G[gid] = float2(gz, 0.0f);
+  }
+}
+
 // Two real arrays (R[0:n), R[n:2n)) as the real and imaginary parts of one complex array.
 kernel void reals_to_complex (const device float* R [[buffer(0)]], device float2* A [[buffer(1)]],
                               constant uint& n [[buffer(2)]], uint gid [[thread_position_in_grid]]) {
@@ -1685,7 +1718,7 @@ struct Impl {
   id<MTLBuffer> bX = nil, bY = nil, bZ = nil, bQ = nil, bF = nil, bPX = nil, bPY = nil, bPZ = nil;
   // bG[0]: spectrum of gx + i gy (Ex and Ey from one inverse transform), bG[1]: spectrum of gz.
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
-  id<MTLComputePipelineState> psoExtract2 = nil, psoR2C2 = nil;
+  id<MTLComputePipelineState> psoExtract2 = nil, psoR2C2 = nil, psoGreen = nil;
   id<MTLBuffer> bW = nil;          // twiddle tables, one per padded dimension length
   id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil, bTZ0 = nil;   // resident bunch
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
@@ -1886,6 +1919,7 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoExtract = pso(@"extract");
     p->psoExtract2 = pso(@"extract2");
     p->psoR2C2 = pso(@"reals_to_complex");
+    p->psoGreen = pso(@"expand_green");
     p->psoKick = pso(@"interp_kick");
     p->psoTrack = pso(@"track_slice");
     p->psoRedSums = pso(@"reduce_sums");
@@ -1958,27 +1992,27 @@ int bmad_backend_set_green (const float *gx, const float *gy, const float *gz, c
   @autoreleasepool {
     Impl *p = gImpl;
     if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
-    uint32_t nm2 = p->nx2 * p->ny2 * p->nz2;
-    // bA holds 2*nm2 floats: gx and gy side by side, packed into the complex array gx + i gy.
+    uint32_t nm = p->nx * p->ny * p->nz, nm2 = p->nx2 * p->ny2 * p->nz2;
+    // The three octants go side by side into bA (2*nm2 floats = 16 nm >= 3 nm).
     p->sync();
-    memcpy(p->bA.contents, gx, (size_t) nm2 * 4);
-    memcpy((char *) p->bA.contents + (size_t) nm2 * 4, gy, (size_t) nm2 * 4);
-    id<MTLComputeCommandEncoder> e = p->encoder();
-    [e setComputePipelineState:p->psoR2C2];
-    [e setBuffer:p->bA offset:0 atIndex:0];
-    [e setBuffer:p->bG[0] offset:0 atIndex:1];
-    [e setBytes:&nm2 length:4 atIndex:2];
-    [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-    p->fft3d_forward_full(p->bG[0]);
-    p->sync();
-    memcpy(p->bA.contents, gz, (size_t) nm2 * 4);
-    e = p->encoder();
-    [e setComputePipelineState:p->psoR2C];
-    [e setBuffer:p->bA offset:0 atIndex:0];
-    [e setBuffer:p->bG[1] offset:0 atIndex:1];
-    [e setBytes:&nm2 length:4 atIndex:2];
-    [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-    p->fft3d_forward_full(p->bG[1]);
+    size_t nb = (size_t) nm * 4;
+    memcpy(p->bA.contents, gx, nb);
+    memcpy((char *) p->bA.contents + nb, gy, nb);
+    memcpy((char *) p->bA.contents + 2 * nb, gz, nb);
+    for (uint32_t pair = 1; ; pair = 0) {
+      struct { uint32_t nx, ny, nz, pair; } Q = {p->nx, p->ny, p->nz, pair};
+      id<MTLBuffer> dst = pair ? p->bG[0] : p->bG[1];
+      id<MTLComputeCommandEncoder> e = p->encoder();
+      [e setComputePipelineState:p->psoGreen];
+      [e setBuffer:p->bA offset:0 atIndex:0];
+      [e setBuffer:p->bA offset:nb atIndex:1];
+      [e setBuffer:p->bA offset:2 * nb atIndex:2];
+      [e setBuffer:dst offset:0 atIndex:3];
+      [e setBytes:&Q length:sizeof(Q) atIndex:4];
+      [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      p->fft3d_forward_full(dst);
+      if (pair == 0) break;
+    }
     p->sync();
     if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
     p->green_set = true;

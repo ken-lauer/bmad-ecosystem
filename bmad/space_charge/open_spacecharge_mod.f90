@@ -1261,7 +1261,7 @@ end subroutine osc_padded_fft_backward
 
 !------------------------------------------------------------------------
 !+
-! Subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset)
+! Subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset, octant_only)
 !
 ! Computes the free space Green function on a mesh with given spacings in the lab frame.
 ! The computation is performed in the rest fram by boosting the coordinates by gamma.
@@ -1292,13 +1292,17 @@ end subroutine osc_padded_fft_backward
 !   and these points are used to evaluate the integral with array addition and subtraction. 
 !
 !-
-subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset)
+subroutine osc_get_rgrn_freespace(rgrn, delta, gamma, icomp, offset, octant_only)
 
 real(dp), intent(out), dimension(:,:,:) :: rgrn
 real(dp), intent(in), dimension(3) :: delta
 integer, intent(in) :: icomp
 real(dp), intent(in) :: gamma
 real(dp), intent(in), optional :: offset(3)
+! octant_only: with the symmetric evaluation, only fill rgrn(ih:isize-1, jh:jsize-1, kh:ksize-1)
+! (ih = isize/2 etc.), from which the rest follows by symmetry (the device mirrors it itself).
+logical, intent(in), optional :: octant_only
+logical :: oct_only
 ! Local
 real(dp) :: dx,dy,dz
 real(dp) :: u,v,w, umin, vmin, wmin
@@ -1339,6 +1343,8 @@ endif
 
 use_symmetry = (mod(isize, 2) == 0 .and. mod(jsize, 2) == 0 .and. mod(ksize, 2) == 0)
 if (present(offset)) use_symmetry = use_symmetry .and. all(offset == 0)
+oct_only = .false.
+if (present(octant_only)) oct_only = octant_only
 
 if (use_symmetry) then
   call rgrn_by_symmetry()
@@ -1453,6 +1459,8 @@ do k = kh, ksize-1
     + fq(ih+1:isize,   jh:jsize-1,   k)
 enddo
 !$OMP END PARALLEL DO
+
+if (oct_only) return
 
 px = 1;  py = 1;  pz = 1
 if (icomp == 1) px = -1
