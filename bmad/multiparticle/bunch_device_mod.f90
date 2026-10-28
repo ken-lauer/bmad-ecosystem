@@ -19,7 +19,7 @@ use bmad_interface
 use open_spacecharge_mod, only: mesh3d_struct, osc_get_rgrn_freespace, osc_mesh_resize, osc_mesh_resize_bounds, &
                                 osc_ordered_sum, deposit_particles, space_charge_3d, interpolate_field_batch
 use bunch_soa_mod, only: fast_track_enabled, fast_track_device, bunch_soa_struct, fast_slice_struct, fast_slice_prepare, &
-                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_max_ap, qp_add_dp
+                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_lcav$, fast_max_ap, qp_add_dp
 use random_mod, only: ran_seed_get
 use, intrinsic :: iso_c_binding
 !$ use omp_lib, only: omp_in_parallel
@@ -50,6 +50,9 @@ type, bind(c) :: bmad_dev_slice_par_struct
   real(c_float) :: g, dg, g_tot, angle, beta_ref, sinc_a, cos_a, sin_a, cosc_a, sincc_a
   real(c_float) :: rad_scale
   real(c_float) :: rad_ref(12), rad_dmat(72), rad_dvec(12), rad_smat(72)
+  integer(c_int32_t) :: lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick
+  real(c_float) :: lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1
+  real(c_float) :: lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor
 end type
 
 ! Mirror of bmad_dev_csr_par.
@@ -94,12 +97,19 @@ interface
     character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
-  function bmad_dev_bunch_download (n, x, px, y, py, z, pz, state, loc, lost_tag, reason, reason_len) &
+  function bmad_dev_bunch_download (n, x, px, y, py, z, pz, state, loc, lost_tag, p0c, reason, reason_len) &
                                                               bind(c, name = 'bmad_dev_bunch_download') result (ierr)
     import :: c_char, c_int, c_float, c_int32_t
     integer(c_int), value :: n, reason_len
-    real(c_float) :: x(*), px(*), y(*), py(*), z(*), pz(*)
+    real(c_float) :: x(*), px(*), y(*), py(*), z(*), pz(*), p0c(*)
     integer(c_int32_t) :: state(*), loc(*), lost_tag(*)
+    character(kind=c_char) :: reason(*)
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_bunch_set_tz0 (n, tz0, reason, reason_len) bind(c, name = 'bmad_dev_bunch_set_tz0') result (ierr)
+    import :: c_char, c_int, c_float
+    integer(c_int), value :: n, reason_len
+    real(c_float) :: tz0(*)
     character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
@@ -206,16 +216,22 @@ integer, parameter, private :: n_tag_max = 4096
 logical, private, save :: res_active = .false., res_dev_current = .false., res_host_current = .true.
 integer, private, save :: res_n = 0, res_tag = 0, res_species = 0, res_seed = 0, res_rng_ctr = 0
 real(rp), private, save :: res_dt_ref = 0, res_mass = 0
-real(rp), private, save :: tag_s_start(n_tag_max) = 0, tag_s_end(n_tag_max) = 0
+real(rp), private, save :: tag_s_start(n_tag_max) = 0, tag_s_end(n_tag_max) = 0, tag_p0c(n_tag_max) = 0
 integer, private, save :: tag_ix_ele(n_tag_max) = 0, tag_ix_branch(n_tag_max) = 0
 real(rp), allocatable, private, save :: z_up(:), beta_up(:)
 real(c_float), allocatable, private, save :: p0c32(:)
+! Time base of the device: t_i - res_t_base - res_dt_ref is the particle's time relative to the reference
+! time at the current slice start, and tz0 = t_i - res_t_base + z_i/(beta_i c) (invariant across device
+! slices) is kept on the device for the lcavity kernel, computed when first needed after an upload.
+real(rp), private, save :: res_t_base = 0
+logical, private, save :: tz0_valid = .false.
+real(c_float), allocatable, private, save :: tz032(:)
 integer(c_int32_t), allocatable, private, save :: st32(:), loc32(:), tag32(:)
 ! Statistics of the resident bunch (dct = 0), valid until the device changes it.
 logical, private, save :: stats_valid = .false.
 real(c_double), private, save :: stats9(9) = 0
 
-private :: c_str, from_c, ensure_arrays, ensure_resident_arrays, slice_to_par, device_mesh_setup
+private :: c_str, from_c, ensure_arrays, ensure_resident_arrays, slice_to_par, device_mesh_setup, tz0_upload
 
 contains
 
@@ -570,6 +586,8 @@ res_dev_current = .false.
 res_host_current = .true.
 res_tag = 0
 res_dt_ref = 0
+res_t_base = 0
+tz0_valid = .false.
 call ran_seed_get (res_seed)
 ok = .true.
 
@@ -656,6 +674,7 @@ res_host_current = .true.
 res_dt_ref = 0
 res_tag = 0
 stats_valid = .false.
+tz0_valid = .false.
 
 end subroutine bunch_device_sync_device
 
@@ -679,7 +698,7 @@ character(*), parameter :: r_name = 'bunch_device_sync_host'
 if (.not. res_active .or. res_host_current .or. .not. res_dev_current) return
 
 reason = ''
-ierr = bmad_dev_bunch_download (int(soa%n, c_int), x32, px32, y32, py32, z32, pz32, st32, loc32, tag32, reason, len(reason))
+ierr = bmad_dev_bunch_download (int(soa%n, c_int), x32, px32, y32, py32, z32, pz32, st32, loc32, tag32, p0c32, reason, len(reason))
 if (ierr /= 0) then
   call out_io (s_error$, r_name, 'Download failed: ' // trim(from_c(reason)), 'Bunch state is undefined from here on.')
   dev_ok = .false.;  res_active = .false.
@@ -704,10 +723,18 @@ do i = 1, soa%n
         else
           soa%s(i) = tag_s_end(tg)
         endif
+        ! The reference momentum where the particle was lost: the slice's (exact) unless the kernel
+        ! left it at the entrance value (lost before the energy correction).
+        if (p0c32(i) == real(tag_p0c(tg), c_float)) then
+          soa%p0c(i) = tag_p0c(tg)
+        else
+          soa%p0c(i) = p0c32(i)
+        endif
       endif
     else if (res_tag > 0) then
       soa%ix_ele(i) = tag_ix_ele(res_tag);  soa%ix_branch(i) = tag_ix_branch(res_tag)
       soa%s(i) = tag_s_end(res_tag)
+      soa%p0c(i) = tag_p0c(res_tag)
     endif
   endif
   call convert_pc_to (soa%p0c(i) * (1 + soa%pz(i)), res_species, beta = beta_now)
@@ -718,11 +745,51 @@ do i = 1, soa%n
 enddo
 !$OMP END PARALLEL DO
 
+res_t_base = res_t_base + res_dt_ref
 res_dt_ref = 0
 res_tag = 0
 res_host_current = .true.
 
 end subroutine bunch_device_sync_host
+
+!--------------------------------------------------------------------------
+! tz0 = t - res_t_base + z/(beta c) of every particle at the upload, from the host copy (soa%t is the
+! upload-time value while the device copy is current). res_t_base is the first live particle's time.
+
+subroutine tz0_upload (soa)
+
+type (bunch_soa_struct) soa
+integer i, ierr
+character(256) reason
+character(*), parameter :: r_name = 'tz0_upload'
+
+res_t_base = 0
+do i = 1, soa%n
+  if (soa%state(i) /= alive$) cycle
+  res_t_base = real(soa%t(i), rp)
+  exit
+enddo
+
+!$OMP PARALLEL DO IF (soa%n > 10000)
+do i = 1, soa%n
+  if (beta_up(i) == 0) then
+    tz032(i) = 0
+  else
+    tz032(i) = real(real(soa%t(i) - res_t_base, rp) + z_up(i) / (beta_up(i) * c_light), c_float)
+  endif
+enddo
+!$OMP END PARALLEL DO
+
+reason = ''
+ierr = bmad_dev_bunch_set_tz0 (int(soa%n, c_int), tz032, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'Time upload failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.;  res_active = .false.
+  return
+endif
+tz0_valid = .true.
+
+end subroutine tz0_upload
 
 !--------------------------------------------------------------------------
 !+
@@ -742,25 +809,55 @@ type (ele_struct) ele
 type (lat_param_struct) param
 type (fast_slice_struct) fs
 type (bmad_dev_slice_par_struct) par
+type (coord_struct) orb0
 integer ierr
 logical tracked, err
 character(256) reason
+character(200) why
+character(8) val
+logical, save :: why_init = .false., why_on = .false.
+integer, save :: n_why = 0
 character(*), parameter :: r_name = 'bunch_device_track_slice'
 
 tracked = .false.
 if (.not. res_active .or. .not. dev_ok) return
-call fast_slice_prepare (ele, param, fs, err)
-if (err) return
+call fast_slice_prepare (ele, param, fs, err, why, for_device = .true.)
+if (err) then
+  ! BMAD_DEVICE_WHY=1: report why slices are left to the CPU (debug).
+  if (.not. why_init) then
+    call get_environment_variable ('BMAD_DEVICE_WHY', val)
+    why_on = (val == '1');  why_init = .true.
+  endif
+  if (why_on .and. n_why < 40) then
+    n_why = n_why + 1
+    print '(a, a, a, a, a, a)', 'device declined ', trim(ele%name), ' (', trim(key_name(ele%key)), '): ', trim(why)
+  endif
+  return
+endif
 if (fs%species /= res_species) return
 
 if (res_tag >= n_tag_max) call bunch_device_sync_host (soa)   ! tag table full: new baseline
 call bunch_device_sync_device (soa)
 if (.not. res_active) return
 
+if (fs%kind == fast_lcav$) then
+  if (.not. tz0_valid) call tz0_upload (soa)
+  if (.not. res_active) return
+  if (fs%lc_abs_time) then
+    ! The RF time of a particle with t = reference time at the slice start (particle_rf_time).
+    orb0 = coord_struct()
+    orb0%vec = 0;  orb0%beta = 1;  orb0%p0c = ele%value(p0c_start$)
+    orb0%species = param%particle;  orb0%direction = 1;  orb0%time_dir = 1
+    orb0%t = real(res_t_base, qp) + real(res_dt_ref, qp)
+    fs%lc_time0 = real(particle_rf_time (orb0, ele, .true., 0.0_rp, rf_freq = fs%lc_rf_freq), rp)
+  endif
+endif
+
 res_tag = res_tag + 1
 res_rng_ctr = res_rng_ctr + 1
 tag_s_start(res_tag) = fs%s_start;  tag_s_end(res_tag) = fs%s_end
 tag_ix_ele(res_tag) = fs%ix_ele;    tag_ix_branch(res_tag) = fs%ix_branch
+tag_p0c(res_tag) = fs%p0c_ele
 call slice_to_par (fs, par)
 
 reason = ''
@@ -770,7 +867,11 @@ if (ierr /= 0) then
   dev_ok = .false.
   return
 endif
-res_dt_ref = res_dt_ref + fs%delta_ref_time
+if (fs%kind == fast_lcav$) then
+  res_dt_ref = res_dt_ref + fs%lc_dt_ref_rk     ! odeint_bmad advances t_ref at the lord's average rate
+else
+  res_dt_ref = res_dt_ref + fs%delta_ref_time
+endif
 res_host_current = .false.
 stats_valid = .false.
 tracked = .true.
@@ -1026,6 +1127,20 @@ par%rad_ref = real(reshape(fs%rad_ref, [12]), c_float)
 par%rad_dmat = real(reshape(fs%rad_dmat, [72]), c_float)
 par%rad_dvec = real(reshape(fs%rad_dvec, [12]), c_float)
 par%rad_smat = real(reshape(fs%rad_smat, [72]), c_float)
+par%lc_abs_time = merge(1, 0, fs%lc_abs_time);  par%lc_long_mode = fs%lc_long_mode
+par%lc_travel = merge(1, 0, fs%lc_travel);      par%lc_ap_cont = merge(1, 0, fs%lc_ap_cont)
+par%lc_max_steps = fs%lc_max_steps
+par%lc_kick = merge(1, 0, fs%lc_kick(1)) + merge(2, 0, fs%lc_kick(2))
+par%lc_grad = real(fs%lc_grad, c_float);        par%lc_k = real(fs%lc_k, c_float)
+par%lc_omega = real(fs%lc_omega, c_float);      par%lc_phase = real(fs%lc_phase, c_float)
+par%lc_s_off = real(fs%lc_s_off, c_float);      par%lc_l_active = real(fs%lc_l_active, c_float)
+par%lc_time0 = real(fs%lc_time0, c_float);      par%lc_inv_cb0 = real(fs%lc_inv_cb0, c_float)
+par%lc_ib0m1 = real(fs%lc_ib0m1, c_float);      par%lc_edge1 = real(fs%lc_edge1, c_float)
+par%lc_edge2 = real(fs%lc_edge2, c_float);      par%lc_zk = real(fs%lc_zk, c_float)
+par%lc_rel_tol = real(fs%lc_rel_tol, c_float);  par%lc_abs_tol = real(fs%lc_abs_tol, c_float)
+par%lc_init_ds = real(fs%lc_init_ds, c_float);  par%lc_min_ds = real(fs%lc_min_ds, c_float)
+par%lc_fatal_ds = real(fs%lc_fatal_ds, c_float); par%lc_ds_tiny = real(fs%lc_ds_tiny, c_float)
+par%lc_charge = real(fs%lc_charge, c_float);    par%lc_rel_floor = real(fs%lc_rel_floor, c_float)
 
 end subroutine slice_to_par
 
@@ -1036,9 +1151,9 @@ integer n
 call ensure_arrays (n)
 if (allocated(z_up)) then
   if (size(z_up) >= n) return
-  deallocate (z_up, beta_up, p0c32, st32, loc32, tag32)
+  deallocate (z_up, beta_up, p0c32, st32, loc32, tag32, tz032)
 endif
-allocate (z_up(n), beta_up(n), p0c32(n), st32(n), loc32(n), tag32(n))
+allocate (z_up(n), beta_up(n), p0c32(n), st32(n), loc32(n), tag32(n), tz032(n))
 end subroutine ensure_resident_arrays
 
 !--------------------------------------------------------------------------

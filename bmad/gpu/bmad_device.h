@@ -61,6 +61,10 @@ typedef struct {
   float g, dg, g_tot, angle, beta_ref, sinc_a, cos_a, sin_a, cosc_a, sincc_a;
   float rad_scale;
   float rad_ref[12], rad_dmat[72], rad_dvec[12], rad_smat[72];
+  /* Runge-Kutta lcavity (kind 5). */
+  int32_t lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick;
+  float lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1;
+  float lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor;
 } bmad_dev_slice_par;
 
 /* Load the backend named `backend` ("metal", "cuda") if not yet loaded and ask whether a device is usable. */
@@ -104,7 +108,9 @@ int bmad_dev_bunch_upload (int n, const float *x, const float *px, const float *
                            const float *z, const float *pz, const int32_t *state, const float *q,
                            const float *p0c, char *reason, int reason_len);
 int bmad_dev_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
-                             int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len);
+                             int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
+/* Per particle t - t_base + z/(beta c) at the upload (float32), which the lcavity kernel needs for the RF time. */
+int bmad_dev_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
 int bmad_dev_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
 /* Sums over the live resident particles: out = {n_live, sum z/beta, sum |q|}. */
 int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len);
@@ -139,7 +145,8 @@ typedef int    (*bmad_backend_bunch_upload_fn) (int, const float *, const float 
                                                 const float *, const float *, const int32_t *, const float *,
                                                 const float *, char *, int);
 typedef int    (*bmad_backend_bunch_download_fn) (int, float *, float *, float *, float *, float *, float *,
-                                                  int32_t *, int32_t *, int32_t *, char *, int);
+                                                  int32_t *, int32_t *, int32_t *, float *, char *, int);
+typedef int    (*bmad_backend_bunch_set_tz0_fn) (int, const float *, char *, int);
 typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, char *, int);
 typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
 typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);

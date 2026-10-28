@@ -36,8 +36,9 @@ int    bmad_backend_bunch_upload (int n, const float *x, const float *px, const 
                                   const float *z, const float *pz, const int32_t *state, const float *q,
                                   const float *p0c, char *reason, int reason_len);
 int    bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
-                                    int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len);
+                                    int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
 int    bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
+int    bmad_backend_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
 int    bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len);
 int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
 int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
@@ -275,7 +276,8 @@ kernel void interp_kick (const device float* Ex [[buffer(0)]], const device floa
 constant int ALIVE = 1, LOST = 2, LOST_NEG_X = 3, LOST_POS_X = 4, LOST_NEG_Y = 5, LOST_POS_Y = 6, LOST_PZ = 8;
 constant int UPSTREAM_END = 1, DOWNSTREAM_END = 2, INSIDE = 3;
 constant int AP_AUTO = 1, AP_RECT = 2, AP_ELLIPSE = 3;
-constant int KIND_DRIFT = 1, KIND_QUAD = 2, KIND_THICK = 3, KIND_BEND = 4;
+constant int KIND_DRIFT = 1, KIND_QUAD = 2, KIND_THICK = 3, KIND_BEND = 4, KIND_LCAV = 5;
+constant float C_LIGHT = 299792458.0f;
 
 // Mirrored by bmad_dev_slice_par (C) and bmad_dev_slice_par_struct (Fortran). All members are 4 bytes.
 struct SlicePar {
@@ -295,6 +297,9 @@ struct SlicePar {
   float g, dg, g_tot, angle, beta_ref, sinc_a, cos_a, sin_a, cosc_a, sincc_a;
   float rad_scale;
   float rad_ref[12], rad_dmat[72], rad_dvec[12], rad_smat[72];
+  int lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick;   // lc_kick bit 0: entrance edge kick, bit 1: exit
+  float lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1;
+  float lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor;
 };
 
 struct Lane { float x, px, y, py, z, pz; int state; };
@@ -606,12 +611,236 @@ inline bool bend_step_f (thread Lane& o, constant SlicePar& P, float mass, float
   return true;
 }
 
+
+// ------------------------------------------------------------------------------------------------
+// Runge-Kutta lcavity: track1_runge_kutta / odeint_bmad / rk_adaptive_step / rk_step1 / kick_vector_calc
+// with the bmad_standard standing or traveling wave cavity field, one particle per thread. The time
+// t is relative to the slice's reference time at its start (float32), the RF phase constant comes
+// from the host. Differences of nearly equal numbers (beta/beta0 - 1, dt/ds - dt_ref/ds) are formed
+// from small quantities so float32 does not lose them.
+
+struct LcState { float x, px, y, py, z, pz, t; };
+
+inline float lcav_beta (float pz, float p0c, float mass) {
+  float pc = p0c * (1.0f + pz);
+  return pc / sqrt(pc * pc + mass * mass);
+}
+
+// inside: the point is in the active region. The integrator knows this from the edges it has passed,
+// which is more reliable than comparing float32 positions right at an edge.
+inline void lcav_field (constant SlicePar& P, float x, float y, float s_eff, float time, bool inside, thread float* E, thread float* B) {
+  E[0] = 0.0f; E[1] = 0.0f; E[2] = 0.0f; B[0] = 0.0f; B[1] = 0.0f; B[2] = 0.0f;
+  if (!inside) return;
+  float G = P.lc_grad, k = P.lc_k;
+  float wt = P.lc_omega * time + P.lc_phase;
+  float Ez, Er, Bp;
+  if (P.lc_travel) {
+    float phi = wt - k * s_eff, sp = sin(phi), cp = cos(phi);
+    Ez = G * cp;  Er = -G * k * sp * 0.5f;  Bp = -G * k * sp / (2.0f * C_LIGHT);
+  } else {
+    float ks = k * s_eff, sks = sin(ks), cks = cos(ks), swt = sin(wt), cwt = cos(wt);
+    if (P.lc_long_mode == 0) { Ez = 2.0f * G * sks * swt;  Er = -G * k * cks * swt;  Bp =  G * k * sks * cwt / C_LIGHT; }
+    else                     { Ez = 2.0f * G * cks * cwt;  Er =  G * k * sks * cwt;  Bp = -G * k * cks * swt / C_LIGHT; }
+  }
+  E[0] = Er * x;  E[1] = Er * y;  E[2] = Ez;
+  B[0] = -Bp * y;  B[1] = Bp * x;
+}
+
+// particle_rf_time for the state at s_body.
+inline float lcav_time (constant SlicePar& P, float s_body, float z, float beta, float t) {
+  if (P.lc_abs_time) return P.lc_time0 + t;
+  return P.lc_time0 + s_body * P.lc_inv_cb0 - z / (beta * C_LIGHT);
+}
+
+// kick_vector_calc: d = d(x, px, y, py, z, pz, t)/ds; dtd = dt/ds - dt_ref/ds. False if the particle
+// moves (nearly) transversely.
+inline bool lcav_kick (constant SlicePar& P, float mass, float s_body, bool inside, thread const LcState& r, thread float* d, thread float& dtd) {
+  float rel_pc = 1.0f + r.pz;
+  float pc = P.p0c_ele * rel_pc;
+  float u = (mass / pc) * (mass / pc);
+  float e = sqrt_one_f(u);                                   // 1/beta - 1
+  float beta = 1.0f / (1.0f + e);
+  float vx = r.px / rel_pc, vy = r.py / rel_pc;
+  float v2 = vx * vx + vy * vy;
+  if (v2 > 0.99999999f) return false;
+  float s1 = sqrt_one_f(-v2);                                // sqrt(1 - v2) - 1
+  float sq = 1.0f + s1;
+  float w = -s1 / sq;                                        // 1/sqrt(1 - v2) - 1
+  float E[3], B[3];
+  float time = lcav_time(P, s_body, r.z, beta, r.t);
+  lcav_field(P, r.x, r.y, s_body + P.lc_s_off, time, inside, E, B);
+  float q = P.lc_charge;
+  float bc = beta * C_LIGHT;
+  float vel0 = bc * vx, vel1 = bc * vy, vel2 = bc * sq;
+  float Ef0 = q * E[0], Ef1 = q * E[1], Ef2 = q * E[2];
+  float Bf0 = q * (vel1 * B[2] - vel2 * B[1]);
+  float Bf1 = q * (vel2 * B[0] - vel0 * B[2]);
+  float dt_ds = 1.0f / vel2;
+  float dp_ds = (Ef0 * vel0 + Ef1 * vel1 + Ef2 * vel2) * dt_ds / bc;
+  float e_tot = pc / beta;
+  float dbeta_ds = mass * mass * dp_ds * C_LIGHT / (e_tot * e_tot * e_tot);
+  float p0 = P.p0c_ele / C_LIGHT;
+  d[0] = vel0 * dt_ds;
+  d[1] = (Ef0 + Bf0) * dt_ds / p0;
+  d[2] = vel1 * dt_ds;
+  d[3] = (Ef1 + Bf1) * dt_ds / p0;
+  d[4] = (P.lc_ib0m1 - e) / (1.0f + e) + s1 / sq + dbeta_ds * r.z / beta;   // beta/beta0 - 1 + sqrt_one(-v2)/sqrt(1-v2)
+  d[5] = dp_ds / p0;
+  d[6] = dt_ds;
+  dtd = (e + w + e * w - P.lc_ib0m1) / C_LIGHT;              // (1/beta)(1/vz) - 1/beta0, over c
+  return true;
+}
+
+// transfer_this_orbit: the state advanced by dvec from the step start, z from the time advance.
+inline void lcav_transfer (constant SlicePar& P, float mass, thread const LcState& r, float beta_r,
+                           thread const float* dv, float dz_t, thread LcState& out, thread float& beta_out) {
+  out.x = r.x + dv[0];  out.px = r.px + dv[1];  out.y = r.y + dv[2];  out.py = r.py + dv[3];
+  out.pz = r.pz + dv[5];  out.t = r.t + dv[6];
+  beta_out = (dv[5] != 0.0f) ? lcav_beta(out.pz, P.p0c_ele, mass) : beta_r;
+  out.z = r.z * (beta_out / beta_r) - C_LIGHT * beta_out * dz_t;   // c beta (dt_ref - dt), dz_t = sum w (dt/ds - dt_ref/ds) ds
+}
+
+// rk_step1: one fifth order Cash-Karp step with the embedded error estimate.
+inline bool lcav_rk_step1 (constant SlicePar& P, float mass, float s, float ds, bool inside, thread const LcState& r, float beta_r,
+                           thread LcState& rn, thread float& beta_n, thread float* r_err, thread float* d1) {
+  const float a2 = 0.2f, a3 = 0.3f, a4 = 0.6f, a5 = 1.0f, a6 = 0.875f;
+  const float b21 = 0.2f, b31 = 3.0f/40.0f, b32 = 9.0f/40.0f, b41 = 0.3f, b42 = -0.9f, b43 = 1.2f;
+  const float b51 = -11.0f/54.0f, b52 = 2.5f, b53 = -70.0f/27.0f, b54 = 35.0f/27.0f;
+  const float b61 = 1631.0f/55296.0f, b62 = 175.0f/512.0f, b63 = 575.0f/13824.0f, b64 = 44275.0f/110592.0f, b65 = 253.0f/4096.0f;
+  const float c1 = 37.0f/378.0f, c3 = 250.0f/621.0f, c4 = 125.0f/594.0f, c6 = 512.0f/1771.0f;
+  const float dc1 = c1 - 2825.0f/27648.0f, dc3 = c3 - 18575.0f/48384.0f, dc4 = c4 - 13525.0f/55296.0f;
+  const float dc5 = -277.0f/14336.0f, dc6 = c6 - 0.25f;
+  float d2[7], d3[7], d4[7], d5[7], d6[7], dv[7];
+  float td1, td2, td3, td4, td5, td6, bt;
+  LcState rt;
+  if (!lcav_kick(P, mass, s, inside, r, d1, td1)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * b21 * d1[k];
+  lcav_transfer(P, mass, r, beta_r, dv, ds * b21 * td1, rt, bt);
+  if (!lcav_kick(P, mass, s + a2 * ds, inside, rt, d2, td2)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * (b31 * d1[k] + b32 * d2[k]);
+  lcav_transfer(P, mass, r, beta_r, dv, ds * (b31 * td1 + b32 * td2), rt, bt);
+  if (!lcav_kick(P, mass, s + a3 * ds, inside, rt, d3, td3)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * (b41 * d1[k] + b42 * d2[k] + b43 * d3[k]);
+  lcav_transfer(P, mass, r, beta_r, dv, ds * (b41 * td1 + b42 * td2 + b43 * td3), rt, bt);
+  if (!lcav_kick(P, mass, s + a4 * ds, inside, rt, d4, td4)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * (b51 * d1[k] + b52 * d2[k] + b53 * d3[k] + b54 * d4[k]);
+  lcav_transfer(P, mass, r, beta_r, dv, ds * (b51 * td1 + b52 * td2 + b53 * td3 + b54 * td4), rt, bt);
+  if (!lcav_kick(P, mass, s + a5 * ds, inside, rt, d5, td5)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * (b61 * d1[k] + b62 * d2[k] + b63 * d3[k] + b64 * d4[k] + b65 * d5[k]);
+  lcav_transfer(P, mass, r, beta_r, dv, ds * (b61 * td1 + b62 * td2 + b63 * td3 + b64 * td4 + b65 * td5), rt, bt);
+  if (!lcav_kick(P, mass, s + a6 * ds, inside, rt, d6, td6)) return false;
+  for (int k = 0; k < 7; k++) dv[k] = ds * (c1 * d1[k] + c3 * d3[k] + c4 * d4[k] + c6 * d6[k]);
+  lcav_transfer(P, mass, r, beta_r, dv, ds * (c1 * td1 + c3 * td3 + c4 * td4 + c6 * td6), rn, beta_n);
+  for (int k = 0; k < 6; k++) r_err[k] = ds * (dc1 * d1[k] + dc3 * d3[k] + dc4 * d4[k] + dc5 * d5[k] + dc6 * d6[k]);
+  r_err[6] = ds * (dc1 * td1 + dc3 * td3 + dc4 * td4 + dc5 * td5 + dc6 * td6);
+  return true;
+}
+
+// rk_adaptive_step. Returns false if the particle is lost (field error or step size underflow).
+inline bool lcav_adaptive (constant SlicePar& P, float mass, bool inside, thread LcState& r, thread float& beta_r, thread float& s,
+                           float ds_try, float ds12, thread float& ds_did, thread float& ds_next) {
+  float ds = ds_try, ds_temp, err_max = 0.0f;
+  float r_err[7], d1[7], bn;
+  LcState rn;
+  while (true) {
+    if (!lcav_rk_step1(P, mass, s, ds, inside, r, beta_r, rn, bn, r_err, d1)) {
+      if (ds < 1.0e-3f) return false;
+      ds_temp = ds / 10.0f;
+    } else {
+      float sqrt_N = sqrt(fabs(ds12 / ds));
+      float rel_tol = max(P.lc_rel_tol / sqrt_N, P.lc_rel_floor), abs_tol = P.lc_abs_tol / sqrt_N;
+      float st[7] = {r.x, r.px, r.y, r.py, r.z, r.pz, 1.0e-9f};
+      err_max = 0.0f;
+      for (int k = 0; k < 7; k++) {
+        float scal = fabs(st[k]) + fabs(ds * d1[k]) + 1.0e-30f;
+        err_max = max(err_max, fabs(r_err[k]) / (scal * rel_tol + abs_tol));
+      }
+      if (err_max <= 1.0f) break;
+      ds_temp = 0.9f * ds * pow(err_max, -0.25f);
+    }
+    ds = max(fabs(ds_temp), 0.1f * fabs(ds));
+    if (s + ds == s) return false;
+  }
+  ds_next = (err_max > 1.89e-4f) ? 0.9f * ds * pow(err_max, -0.2f) : 5.0f * ds;
+  ds_did = ds;
+  s += ds;
+  r = rn;
+  beta_r = bn;
+  return true;
+}
+
+// apply_element_edge_kick for an lcavity hard edge at s_edge (slice coordinate): the transverse kick
+// of the longitudinal field just inside the active region. at_sign = +1 entrance, -1 exit.
+inline void lcav_edge_kick (constant SlicePar& P, float mass, thread LcState& r, float at_sign, float s_edge) {
+  float rel_pc = 1.0f + r.pz;
+  float beta = lcav_beta(r.pz, P.p0c_ele, mass);
+  float z_eff = P.lc_abs_time ? r.z : r.z - C_LIGHT * beta * P.lc_zk;
+  float time = lcav_time(P, s_edge, z_eff, beta, r.t);
+  float delta = max(1.0e-11f, 4.77e-7f * P.lc_l_active);
+  float s_eff = s_edge + P.lc_s_off + at_sign * delta;
+  float E[3], B[3];
+  lcav_field(P, r.x, r.y, s_eff, time, s_eff >= 0.0f && s_eff <= P.lc_l_active, E, B);
+  float ff = at_sign * P.lc_charge / (2.0f * P.p0c_ele);
+  r.px = r.px - E[2] * r.x * ff + C_LIGHT * B[2] * r.y * ff;
+  r.py = r.py - E[2] * r.y * ff - C_LIGHT * B[2] * r.x * ff;
+  (void) rel_pc;
+}
+
+// odeint_bmad through the slice. p0c is the particle's reference momentum (updated to the slice's).
+inline bool lcav_rk_f (thread Lane& o, constant SlicePar& P, float mass, thread float& p0c, float tz0) {
+  // ele_reference_energy_correction at the first track edge.
+  float p_rel = p0c / P.p0c_ele;
+  o.px *= p_rel;  o.py *= p_rel;
+  o.pz = (o.pz * p0c - (P.p0c_ele - p0c)) / P.p0c_ele;
+  p0c = P.p0c_ele;
+  LcState r = {o.x, o.px, o.y, o.py, o.z, o.pz, 0.0f};
+  float beta = lcav_beta(r.pz, p0c, mass);
+  r.t = tz0 - r.z / (beta * C_LIGHT);
+  float L = P.length;
+  float tol_s = max(P.lc_ds_tiny, 4.77e-7f * L);
+  float s = 0.0f, ds_next = P.lc_init_ds, ds_try = 0.0f, ds_saved = 0.0f, ds_did = 0.0f;
+  int stage = 0;                       // 0: entrance edge ahead, 1: exit edge ahead, 2: none
+  float s_edge = P.lc_edge1;
+  bool done = false, at_hard_edge = false;
+  for (int n_step = 1; n_step <= P.lc_max_steps; n_step++) {
+    while (stage < 2 && s - s_edge >= -tol_s) {
+      if (P.lc_kick & (1 << stage)) lcav_edge_kick(P, mass, r, (stage == 0) ? 1.0f : -1.0f, s_edge);
+      if (stage == 0) { stage = 1; s_edge = P.lc_edge2; } else { stage = 2; s_edge = L; }
+      if (fabs(s - L) > tol_s) s += P.lc_ds_tiny;
+    }
+    if (s - L > -tol_s) { done = true; break; }
+    ds_try = ds_next;
+    at_hard_edge = false;
+    if (stage < 2 && s + ds_try - s_edge > 0.0f) { at_hard_edge = true; ds_saved = ds_try; ds_try = s_edge - s - 0.5f * P.lc_ds_tiny; }
+    if (!lcav_adaptive(P, mass, stage == 1, r, beta, s, ds_try, L, ds_did, ds_next)) {
+      o.x = r.x; o.px = r.px; o.y = r.y; o.py = r.py; o.z = r.z; o.pz = r.pz;
+      o.state = LOST;
+      return false;
+    }
+    o.x = r.x; o.px = r.px; o.y = r.y; o.py = r.py; o.z = r.z; o.pz = r.pz;
+    if (P.lc_ap_cont) { apertures(o, P, 0); if (o.state != ALIVE) return false; }
+    if (too_large(o, P.max_ap)) return false;
+    if (at_hard_edge && ds_next >= ds_try) ds_next = max(ds_saved, ds_next);
+    if (s + ds_next - L > 0.0f) { ds_next = L - s; at_hard_edge = true; }
+    if (ds_next < P.lc_min_ds) ds_next = P.lc_min_ds;
+    if (!at_hard_edge && ds_try < P.lc_fatal_ds) break;
+  }
+  o.x = r.x; o.px = r.px; o.y = r.y; o.py = r.py; o.z = r.z; o.pz = r.pz;
+  if (!done) {
+    float rel_p = 1.0f + o.pz;
+    o.state = (sqrt(o.px * o.px + o.py * o.py) > 0.9f * rel_p || o.pz < -0.99f) ? LOST_PZ : LOST;
+    return false;
+  }
+  return true;
+}
+
 kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffer(1)]],
                          device float* Y [[buffer(2)]], device float* PY [[buffer(3)]],
                          device float* Z [[buffer(4)]], device float* PZ [[buffer(5)]],
                          device int* STATE [[buffer(6)]], device int* LOC [[buffer(7)]],
-                         device int* LOST_TAG [[buffer(8)]], const device float* P0C [[buffer(9)]],
+                         device int* LOST_TAG [[buffer(8)]], device float* P0C [[buffer(9)]],
                          constant SlicePar& P [[buffer(10)]], constant uint& n [[buffer(11)]],
+                         const device float* TZ0 [[buffer(12)]],
                          uint gid [[thread_position_in_grid]]) {
   if (gid >= n) return;
   if (STATE[gid] != ALIVE) return;
@@ -662,6 +891,11 @@ kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffe
         if (!bend_step_f(o, P, mass, p0c)) { lost = true; break; }
       }
       if (!lost) too_large(o, P.max_ap);
+    } else if (P.kind == KIND_LCAV) {
+      if (P.offset_on) offset_set_f(o, P);
+      bool ok = lcav_rk_f(o, P, mass, p0c, TZ0[gid]);
+      P0C[gid] = p0c;
+      if (ok && P.offset_on) offset_unset_f(o, P);
     }
 
     // Exit block.
@@ -1099,7 +1333,7 @@ struct Impl {
   id<MTLBuffer> bX = nil, bY = nil, bZ = nil, bQ = nil, bF = nil, bPX = nil, bPY = nil, bPZ = nil;
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
   id<MTLBuffer> bW = nil;          // twiddle tables, one per padded dimension length
-  id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil;   // resident bunch
+  id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil, bTZ0 = nil;   // resident bunch
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
   uint32_t n_bin_max = 0;
   id<MTLComputePipelineState> psoCsrBinsTG = nil, psoCsrReduce = nil, psoCsrKick = nil, psoCsrX0 = nil, psoRedAll = nil;
@@ -1313,6 +1547,7 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bX = p->alloc(np * 4);  p->bY = p->alloc(np * 4);  p->bZ = p->alloc(np * 4);  p->bQ = p->alloc(np * 4);
     p->bF = p->alloc(np * 4);  p->bPX = p->alloc(np * 4); p->bPY = p->alloc(np * 4); p->bPZ = p->alloc(np * 4);
     p->bState = p->alloc(np * 4); p->bLoc = p->alloc(np * 4); p->bLost = p->alloc(np * 4); p->bP0c = p->alloc(np * 4);
+    p->bTZ0 = p->alloc(np * 4);
     p->bRed = p->alloc((size_t) kRedGroups * 9 * 4);
     p->bCsrPar = p->alloc(2 * sizeof(CsrParH));
     p->bStats = p->alloc(16 * 4);
@@ -1537,8 +1772,20 @@ int bmad_backend_bunch_upload (int n, const float *x, const float *px, const flo
   }
 }
 
+int bmad_backend_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (n != p->n_res) { put_reason(reason, reason_len, "tz0 size differs from the resident bunch"); return 1; }
+    p->sync();
+    memcpy(p->bTZ0.contents, tz0, (size_t) n * 4);
+    return 0;
+  }
+}
+
 int bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
-                                 int32_t *state, int32_t *loc, int32_t *lost_tag, char *reason, int reason_len)
+                                 int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len)
 {
   @autoreleasepool {
     Impl *p = gImpl;
@@ -1553,6 +1800,7 @@ int bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py
     memcpy(state, p->bState.contents, nb);
     memcpy(loc, p->bLoc.contents, nb);
     memcpy(lost_tag, p->bLost.contents, nb);
+    memcpy(p0c, p->bP0c.contents, nb);
     memset(p->bLoc.contents, 0, nb);     // the next download reports only particles touched after this one
     return 0;
   }
@@ -1574,6 +1822,7 @@ int bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int r
     [e setBuffer:p->bLost offset:0 atIndex:8]; [e setBuffer:p->bP0c offset:0 atIndex:9];
     [e setBytes:par length:sizeof(bmad_dev_slice_par) atIndex:10];
     [e setBytes:&n length:4 atIndex:11];
+    [e setBuffer:p->bTZ0 offset:0 atIndex:12];
     [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     return 0;
   }
@@ -1748,6 +1997,9 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
   if (tgs > 1024) tgs = 1024;
   uint32_t ngroup = (n + (uint32_t) tgs - 1) / (uint32_t) tgs;
   uint32_t win_max = (uint32_t) (p->dev.maxThreadgroupMemoryLength / 32);
+  static int win_env = -1;                      // BMAD_DEVICE_CSR_WIN: smaller windows, for testing the window path
+  if (win_env < 0) { const char *ev = getenv("BMAD_DEVICE_CSR_WIN"); win_env = ev ? atoi(ev) : 0; }
+  if (win_env > 0 && win_max > (uint32_t) win_env) win_max = (uint32_t) win_env;
   if (win_max < 1) win_max = 1;
   uint32_t win = nbin < win_max ? nbin : win_max;
   size_t part_bytes = (size_t) ngroup * 8 * win * 4;

@@ -39,7 +39,7 @@ implicit none
 private :: powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
 
-integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4
+integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4, fast_lcav$ = 5
 
 integer, parameter :: fast_block_size = 256
 
@@ -132,6 +132,21 @@ type fast_slice_struct
   logical :: rad_on_edge(2) = .false., rad_damp_edge(2) = .false., rad_fluct_edge(2) = .false.
   real(rp) :: rad_scale = 0
   real(rp) :: rad_ref(6,2) = 0, rad_dmat(6,6,2) = 0, rad_dvec(6,2) = 0, rad_smat(6,6,2) = 0
+  ! Runge-Kutta lcavity (track1_runge_kutta with the bmad_standard cavity field). Device kernel only.
+  logical :: lc_abs_time = .false., lc_travel = .false., lc_ap_cont = .false.
+  logical :: lc_kick(2) = .false.           ! Edge kick applied at the entrance / exit edge (fringe_at of slice and lord)
+  integer :: lc_long_mode = 0, lc_max_steps = 0
+  real(rp) :: lc_grad = 0, lc_k = 0, lc_omega = 0, lc_phase = 0, lc_rf_freq = 0
+  real(rp) :: lc_s_off = 0                  ! s_eff = s_body + lc_s_off (active region coordinate)
+  real(rp) :: lc_l_active = 0
+  real(rp) :: lc_time0 = 0, lc_inv_cb0 = 0  ! RF time = lc_time0 + t (absolute) or lc_time0 + s_body*lc_inv_cb0 - z/(beta c)
+  real(rp) :: lc_ib0m1 = 0                  ! 1/beta0 - 1 of the reference time rate (kick_vector_calc)
+  real(rp) :: lc_dt_ref_rk = 0              ! Reference time advance over the slice as odeint_bmad takes it
+  real(rp) :: lc_edge1 = 0, lc_edge2 = 0    ! Entrance and exit edge kick positions in the slice (calc_next_fringe_edge)
+  real(rp) :: lc_zk = 0                     ! z shift to the lord's reference for the edge field (relative time only)
+  real(rp) :: lc_rel_tol = 0, lc_abs_tol = 0, lc_init_ds = 0, lc_min_ds = 0, lc_fatal_ds = 0, lc_ds_tiny = 0
+  real(rp) :: lc_charge = 0
+  real(rp) :: lc_rel_floor = 0             ! float32 floor of the relative tolerance after the sqrt(N) scaling
 end type
 
 contains
@@ -316,7 +331,7 @@ end function bend_supported
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Function fast_kind (ele) result (kind)
+! Function fast_kind (ele, for_device) result (kind)
 !
 ! Routine to map an element onto the fast kernel that reproduces its track1_bmad branch.
 !
@@ -327,15 +342,20 @@ end function bend_supported
 !   kind  -- integer: fast_drift$, fast_quad$, fast_thick$, fast_bend$ or fast_none$.
 !-
 
-function fast_kind (ele) result (kind)
+function fast_kind (ele, for_device) result (kind)
 
 type (ele_struct) ele
 integer kind
+logical, optional :: for_device
 
 kind = fast_none$
 
 ! track1: "if (.not. ele%is_on) tracking_method = bmad_standard$"
-if (ele%is_on .and. ele%tracking_method /= bmad_standard$) return
+if (ele%is_on .and. ele%tracking_method /= bmad_standard$) then
+  ! Runge-Kutta lcavity: device kernel only.
+  if (logic_option(.false., for_device) .and. ele%key == lcavity$ .and. ele%tracking_method == runge_kutta$) kind = fast_lcav$
+  return
+endif
 
 if (.not. ele%is_on) then
   ! track1_bmad maps most "off" elements to drift$. Only accept keys where that is certain.
@@ -363,10 +383,12 @@ end function fast_kind
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine fast_slice_prepare (ele, param, fs, err_flag, why)
+! Subroutine fast_slice_prepare (ele, param, fs, err_flag, why, for_device)
 !
 ! Routine to check that ele is supported by the fast kernels (fast_track_eligible lists what is
 ! supported) and to compute all slice-invariant quantities used by them.
+! With for_device = True, element kinds that only the device kernels support (Runge-Kutta lcavity)
+! are accepted too; fast_track_soa must not be called with such a slice.
 ! Must be called serially (outside any OpenMP parallel region) since it calls Bmad routines
 ! that initialize SAVEd tables (c_multi) and may allocate ele%multipole_cache.
 !
@@ -380,9 +402,9 @@ end function fast_kind
 !   why       -- character(*), optional: Reason if ele is not supported. Blank if supported.
 !-
 
-subroutine fast_slice_prepare (ele, param, fs, err_flag, why)
+subroutine fast_slice_prepare (ele, param, fs, err_flag, why, for_device)
 
-type (ele_struct) ele
+type (ele_struct), target :: ele
 type (lat_param_struct) param
 type (fast_slice_struct) fs
 type (coord_struct) orb0
@@ -391,6 +413,7 @@ type (fringe_field_info_struct) fringe_info
 real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), xp, yp, ds_center_set, s_pos0
 integer ix_elec_max, n, m
 logical err_flag
+logical, optional :: for_device
 character(*), optional :: why
 
 character(*), parameter :: r_name = 'fast_slice_prepare'
@@ -411,7 +434,7 @@ if (associated(track1_preprocess_ptr) .or. associated(track1_postprocess_ptr)) t
   call set_why('track1 hooks set');  return
 endif
 
-fs%kind = fast_kind(ele)
+fs%kind = fast_kind(ele, for_device)
 if (fs%kind == fast_none$) then
   call set_why('element type / tracking method not supported');  return
 endif
@@ -451,6 +474,22 @@ endif
 
 if (fs%kind == fast_bend$) then
   if (.not. bend_supported(ele, param, why, fs = fs)) return
+  err_flag = .false.
+  return
+endif
+
+!------------------------------------------
+! Runge-Kutta lcavity (device kernel)
+
+if (fs%kind == fast_lcav$) then
+  if (ele%orientation /= 1) then
+    call set_why('reversed element');  return
+  endif
+  if (ele%bookkeeping_state%has_misalign .and. .not. has_orientation_attributes(ele)) then
+    call set_why('misaligned without orientation attributes');  return
+  endif
+  if (.not. lcav_setup()) return
+  call misalign_setup ()
   err_flag = .false.
   return
 endif
@@ -512,6 +551,25 @@ do n = 0, n_pole_maxx
   enddo
 enddo
 
+call misalign_setup ()
+
+err_flag = .false.
+
+
+
+!------------------------
+contains
+
+subroutine set_why(str)
+character(*) str
+if (present(why)) why = str
+end subroutine set_why
+
+!------------------------
+! Misalignment of the slice (offset_particle set/unset as the kernels apply it).
+
+subroutine misalign_setup ()
+
 ! Misalignment. Mirrors offset_particle for set_hvkicks = F, set_tilt = T, s_pos absent,
 ! direction = time_dir = orientation = 1, non-bend key.
 
@@ -545,17 +603,141 @@ if (fs%offset_on) then
   fs%s_target_unset = (1 + orb0%direction * orb0%time_dir) * fs%l_half
 endif
 
-err_flag = .false.
-
-
+end subroutine misalign_setup
 
 !------------------------
-contains
+! Runge-Kutta lcavity: everything odeint_bmad, kick_vector_calc, em_field_calc (bmad_standard cavity),
+! calc_next_fringe_edge and apply_element_edge_kick need, for a forward particle through this slice.
 
-subroutine set_why(str)
-character(*) str
-if (present(why)) why = str
-end subroutine set_why
+function lcav_setup () result (ok)
+
+type (ele_struct), pointer :: lord, flord, lord2
+type (coord_struct) orb0
+real(rp) gradient, s_act_off, s_lord_off, s1, s2, beta0, beta_ref
+real(qp) t0, t1
+integer ix_mag_max, i, n_flord
+logical ok
+
+! lord: the element the slice is cut from (geometry, reference energy and time, fringe_at, edges).
+! flord: the element whose field em_field_calc evaluates (a multipass lord when lord refers to it).
+
+ok = .false.
+lord => ele
+if (ele%slave_status == slice_slave$) lord => ele%lord
+if (fs%length <= 0) then
+  call set_why('zero or negative length lcavity');  return
+endif
+flord => lord
+if (lord%field_calc == refer_to_lords$) then
+  n_flord = 0
+  do i = 1, lord%n_lord
+    lord2 => pointer_to_lord(lord, i)
+    if (lord2%field_calc == no_field$) cycle
+    n_flord = n_flord + 1
+    flord => lord2
+  enddo
+  if (n_flord /= 1 .or. flord%lord_status /= multipass_lord$ .or. flord%key /= lcavity$) then
+    call set_why('lcavity field from other than one multipass lord');  return
+  endif
+endif
+if (flord%field_calc /= bmad_standard$) then
+  call set_why('lcavity field_calc not bmad_standard');  return
+endif
+if (lord%n_lord_field /= 0 .or. flord%n_lord_field /= 0) then
+  call set_why('overlapping fields');  return
+endif
+if (flord%value(rf_frequency$) == 0 .or. flord%value(l_active$) <= 0 .or. lord%value(l_active$) <= 0) then
+  call set_why('lcavity without rf_frequency or active length');  return
+endif
+if (lord%value(coupler_strength$) /= 0 .or. flord%value(coupler_strength$) /= 0) then
+  call set_why('rf coupler kick');  return
+endif
+call multipole_ele_to_ab (ele, .false., ix_elec_max, an, bn, electric$)
+if (ix_elec_max > -1) then
+  call set_why('electric multipoles');  return
+endif
+call multipole_ele_to_ab (ele, .false., ix_mag_max, an, bn, magnetic$)
+if (ix_mag_max > -1) then
+  call set_why('magnetic multipoles');  return
+endif
+fs%lc_travel = (nint(flord%value(cavity_type$)) == traveling_wave$)
+fs%lc_long_mode = nint(flord%value(longitudinal_mode$))
+if (.not. fs%lc_travel .and. fs%lc_long_mode /= 0 .and. fs%lc_long_mode /= 1) then
+  call set_why('longitudinal_mode not 0 or 1');  return
+endif
+
+! Field (em_field_calc, case lcavity$, called with the lord through field_from_lords).
+
+gradient = e_accel_field (flord, gradient$)
+if (.not. flord%is_on) gradient = 0
+gradient = (gradient + gradient_shift_sr_wake(flord, param)) / charge_of(flord%ref_species)
+fs%lc_grad = gradient * flord%value(l$) / flord%value(l_active$)
+fs%lc_phase = twopi * (flord%value(phi0$) + flord%value(phi0_err$) + flord%value(phi0_autoscale$))
+if (.not. bmad_com%absolute_time_tracking) fs%lc_phase = fs%lc_phase + twopi * ele%value(phi0_multipass$)
+fs%lc_rf_freq = flord%value(rf_frequency$)
+fs%lc_omega = twopi * fs%lc_rf_freq
+fs%lc_k = fs%lc_omega / c_light
+fs%lc_l_active = flord%value(l_active$)
+s_act_off = (flord%value(l$) - flord%value(l_active$)) / 2
+s_lord_off = ele%s_start - lord%s_start
+fs%lc_s_off = s_lord_off - s_act_off
+
+! Edges (calc_next_fringe_edge from the slice entrance): the active edges clamped to the slice. The
+! integrator stops there; the kick (apply_element_edge_kick) is applied only where fringe_at of the
+! slice (set by makeup_super_slave1 from the ends the slice contains) and of the lord allow it.
+! The field is zero outside the active region.
+
+s1 = -(s_lord_off - (lord%value(l$) - lord%value(l_active$)) / 2)
+s2 = s1 + lord%value(l_active$)
+fs%lc_edge1 = min(max(s1, 0.0_rp), fs%length)
+fs%lc_edge2 = min(max(s2, 0.0_rp), fs%length)
+fs%lc_kick(1) = at_this_ele_end(entrance_end$, nint(ele%value(fringe_at$))) .and. at_this_ele_end(entrance_end$, nint(lord%value(fringe_at$)))
+fs%lc_kick(2) = at_this_ele_end(exit_end$, nint(ele%value(fringe_at$))) .and. at_this_ele_end(exit_end$, nint(lord%value(fringe_at$)))
+
+! Reference time rate of kick_vector_calc (the lord's average) and the z shift of the edge field.
+
+if (lord%value(delta_ref_time$) == 0) then
+  beta0 = lord%value(p0c$) / lord%value(e_tot$)
+else
+  beta0 = lord%value(l$) / (c_light * lord%value(delta_ref_time$))
+endif
+fs%lc_ib0m1 = 1 / beta0 - 1
+fs%lc_dt_ref_rk = fs%length / (beta0 * c_light)
+beta_ref = lord%value(p0c$) / lord%value(e_tot$)
+fs%lc_zk = (ele%value(ref_time_start$) - lord%value(ref_time_start$)) - s_lord_off / (beta_ref * c_light)
+
+! RF time (particle_rf_time). Absolute time: lc_time0 is set by the caller from the bunch's reference time.
+! Relative time: probe the s dependence at z = 0.
+
+fs%lc_abs_time = absolute_time_tracking(ele)
+if (.not. fs%lc_abs_time) then
+  orb0 = coord_struct()
+  orb0%vec = 0;  orb0%beta = 1;  orb0%t = 0;  orb0%p0c = ele%value(p0c_start$)
+  orb0%species = param%particle;  orb0%direction = 1;  orb0%time_dir = 1
+  t0 = particle_rf_time (orb0, ele, .true., 0.0_rp)
+  t1 = particle_rf_time (orb0, ele, .true., 1.0_rp)
+  fs%lc_inv_cb0 = real(t1 - t0, rp)
+  fs%lc_time0 = real(modulo2(t0, 0.5_qp / fs%lc_rf_freq), rp)
+endif
+
+! Integrator parameters. float32 cannot resolve a relative error below ~1e-6 of the step increments
+! (and the field phase k s has the resolution of s, epsilon * length), so the relative tolerance
+! is floored there after rk_adaptive_step's sqrt(N) scaling; the step controller would otherwise
+! chase round-off until the step size collapses.
+
+fs%lc_rel_tol = bmad_com%rel_tol_adaptive_tracking
+fs%lc_rel_floor = max(2.0e-6_rp, 10 * fs%lc_k * 1.2e-7_rp * fs%length)
+fs%lc_abs_tol = bmad_com%abs_tol_adaptive_tracking
+fs%lc_init_ds = bmad_com%init_ds_adaptive_tracking
+fs%lc_min_ds = bmad_com%min_ds_adaptive_tracking
+fs%lc_fatal_ds = bmad_com%fatal_ds_adaptive_tracking
+fs%lc_max_steps = bmad_com%max_num_runge_kutta_step
+fs%lc_ds_tiny = bmad_com%significant_length / 100
+fs%lc_charge = charge_of(param%particle)
+fs%lc_ap_cont = bmad_com%aperture_limit_on .and. (ele%aperture_at == continuous$ .or. ele%aperture_at == lord_defined$)
+ok = .true.
+
+end function lcav_setup
 
 !------------------------
 ! As track1 / track1_radiation: kicks at both edges for elements that radiate, with the maps from

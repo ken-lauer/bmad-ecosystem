@@ -586,8 +586,8 @@ if (.not. fast_track_enabled()) return
 !$ if (omp_in_parallel()) return
 if (.not. global_com%mp_threading_is_safe) return
 if (bmad_com%spin_tracking_on) return
-use_soa = (fast_kind(ele) /= fast_none$)
-if (use_soa .and. fast_kind(ele) == fast_bend$) use_soa = bend_supported(ele, param, check_fringe = .false.)
+use_soa = (fast_kind(ele, fast_track_device /= '') /= fast_none$)
+if (use_soa .and. fast_kind(ele, fast_track_device /= '') == fast_bend$) use_soa = bend_supported(ele, param, check_fringe = .false.)
 
 end function csr_use_soa
 
@@ -1062,6 +1062,7 @@ if (use_dev) then
     csr%slice(ib)%x0 = dsums(3, ib)
     csr%slice(ib)%y0 = dsums(4, ib)
   enddo
+  call check_device_bins ()
 else
   allocate (acc(4, n_bin, 0:nt-1))
   if (allocated(csr_bin_ovl)) then
@@ -1178,6 +1179,65 @@ enddo
 
 !------------------------------------------------------------------------
 contains
+
+!------------------------------------------------------------------------
+! BMAD_DEVICE_CSR_CHECK=1: compare the device bin sums with the CPU binning of the same bunch (debug).
+
+subroutine check_device_bins ()
+
+real(rp), allocatable :: cpu(:,:)
+real(rp) zlo, zhi, dmax(4), cmax(4)
+integer ib, it, k, ibmax(4)
+logical, save :: init = .false., on = .false.
+integer, save :: n_done = 0, n_step_chk = 0
+character(8) val
+
+if (.not. init) then
+  call get_environment_variable ('BMAD_DEVICE_CSR_CHECK', val)
+  on = (val == '1')
+  init = .true.
+endif
+if (.not. on .or. n_done >= 40) return
+
+call bunch_device_sync_host (csr_soa)
+call z_range (zlo, zhi)
+if (.not. allocated(acc)) allocate (acc(4, n_bin, 0:nt-1))
+if (allocated(csr_bin_ovl)) then
+  if (size(csr_bin_ovl, 1) /= pbs+2 .or. size(csr_bin_ovl, 2) < n) deallocate (csr_bin_ovl, csr_bin_ix0)
+endif
+if (.not. allocated(csr_bin_ovl)) allocate (csr_bin_ovl(0:pbs+1, n), csr_bin_ix0(n))
+ovl => csr_bin_ovl
+ix0s => csr_bin_ix0
+call bin_weights ()
+allocate (cpu(4, n_bin))
+cpu = 0
+do ib = 1, n_bin
+  do it = 0, nt-1
+    cpu(:, ib) = cpu(:, ib) + acc(:, ib, it)
+  enddo
+enddo
+dmax = 0;  cmax = 0;  ibmax = 0
+do ib = 1, n_bin
+  do k = 1, 4
+    cmax(k) = max(cmax(k), abs(cpu(k, ib)))
+    if (abs(cpu(k, ib) - dsums(k, ib)) > dmax(k)) then
+      dmax(k) = abs(cpu(k, ib) - dsums(k, ib));  ibmax(k) = ib
+    endif
+  enddo
+enddo
+n_step_chk = n_step_chk + 1
+if (all(dmax / max(cmax, tiny(1.0_rp)) < 1.0e-4_rp) .and. abs(zlo - z_minval) + abs(zhi - z_maxval) < 1e-6 * (zhi - zlo) .and. n_live_d == count(v%state == alive$)) return
+n_done = n_done + 1
+print '(a, i0, a, a, a, 2es16.8, a, 2es16.8, a, 2i9)', 'csr check step ', n_step_chk, ' ', trim(ele%name), ': z range cpu ', zlo, zhi, '  dev ', z_minval, z_maxval, '  n_live cpu/dev ', count(v%state == alive$), n_live_d
+print '(a, 3es16.8, i8, i6)', '   layout z_min, dz_slice, dz_particle, n_live, n_bin: ', z_min, csr%dz_slice, dz_particle, n_live_d, n_bin
+print '(a, 4es12.3, a, 4i6)', '   max |dev - cpu| / max|cpu| (n, q, xq, yq): ', dmax / max(cmax, tiny(1.0_rp)), '   at bins ', ibmax
+do k = 1, 4
+  ib = max(ibmax(k), 1)
+  print '(a, i0, a, i0, 2es16.8)', '   component ', k, ' bin ', ib, cpu(k, ib), dsums(k, ib)
+enddo
+
+end subroutine check_device_bins
+
 
 ! Note: The view's arrays are used through v rather than passed as array arguments: for a view of
 ! bunch%particle(:) they are pointers to a component of a derived type array, which gfortran does not
