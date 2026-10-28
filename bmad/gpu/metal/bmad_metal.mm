@@ -584,13 +584,22 @@ inline bool wedger_f (float a, float g_tot, thread float* v) {
   if (pt < 1.0e-10f) return false;
   pt = sqrt(pt);
   float s2a = sin(2.0f * a), s2 = sa * sa;
-  float pxn = px * ca + (ps - g_tot * x) * sa;
-  float psn = pt * pt - pxn * pxn;
-  if (psn < 1.0e-10f) return false;
-  psn = sqrt(psn);
+  // pxn = px cos a + (ps - g x) sin a. The path length L = (a + asin(px/pt) - asin(pxn/pt)) / g is the
+  // difference of the edge angle and a nearly equal angle (x = 0 is the pure rotation by a); in float32
+  // it is formed from the small deviation d = g x sin a: with w = sin(theta2 - theta1) = sin a - eps,
+  // a - asin(w) = asin(cos a (eps + sin a (sqrt(1 + u) - 1))), u = (2 eps sin a - eps^2) / cos^2 a.
+  float pxn0 = px * ca + ps * sa;
+  float d = g_tot * x * sa;
+  float pxn = pxn0 - d;
+  float psn2 = pt * pt - pxn * pxn;
+  if (psn2 < 1.0e-10f) return false;
+  float psn = sqrt(psn2);
+  float psn0 = sqrt(max(pt * pt - pxn0 * pxn0, 0.0f));
+  float eps = d * (ps + px * (pxn0 + pxn) / (psn + psn0)) / (pt * pt);
+  float u = (2.0f * eps * sa - eps * eps) / (ca * ca);
+  float L = asin(ca * (eps + sa * sqrt_one_f(u))) / g_tot;
   float den = psn + ps * ca - px * sa;
   float num = x * px * s2a + s2 * (2.0f * x * ps - g_tot * x * x);
-  float L = (a + asin(px / pt) - asin(pxn / pt)) / g_tot;
   v[0] = x * ca + num / den;
   v[1] = pxn;
   v[2] += py * L;

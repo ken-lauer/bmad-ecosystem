@@ -817,8 +817,8 @@ logical tracked, err
 character(256) reason
 character(200) why
 character(8) val
-logical, save :: why_init = .false., why_on = .false.
-integer, save :: n_why = 0
+logical, save :: why_init = .false., why_on = .false., nofr_init = .false.
+integer, save :: n_why = 0, nofr_mode = 0
 character(*), parameter :: r_name = 'bunch_device_track_slice'
 
 tracked = .false.
@@ -837,6 +837,19 @@ if (err) then
   return
 endif
 if (fs%species /= res_species) return
+
+! BMAD_DEVICE_NO_FRINGE=1: bend end slices stay on the CPU; 2: tracked on the device without the fringe kicks (debug).
+if (.not. nofr_init) then
+  call get_environment_variable ('BMAD_DEVICE_NO_FRINGE', val)
+  nofr_mode = 0
+  if (val == '1') nofr_mode = 1
+  if (val == '2') nofr_mode = 2
+  nofr_init = .true.
+endif
+if (fs%kind == fast_bend$ .and. any(fs%fr_on)) then
+  if (nofr_mode == 1) return
+  if (nofr_mode == 2) fs%fr_on = .false.
+endif
 
 if (res_tag >= n_tag_max) call bunch_device_sync_host (soa)   ! tag table full: new baseline
 call bunch_device_sync_device (soa)
