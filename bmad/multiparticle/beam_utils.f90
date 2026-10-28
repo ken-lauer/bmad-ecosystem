@@ -1571,11 +1571,12 @@ type (bunch_params_struct) bunch_params
 type (ele_struct), optional :: ele
 
 real(rp), optional :: n_mat(6,6)
-real(rp) :: charge_live, average_pc, sum_s, sum_t, sum_t2, t_ref, dt
-real(rp), allocatable :: charge(:), part(:,:), part_t(:,:)
+real(rp) :: charge_live, average_pc, sum_s, sum_t, sum_t2, t_ref, dt, vec(7)
+real(rp), allocatable :: charge(:), part(:,:), part_t(:,:), sig_b(:,:), avg_b(:,:), max_b(:,:), min_b(:,:)
 
 integer i, species, n, nb, ib, i0, i1, n_live
 integer, allocatable :: n_live_b(:)
+logical fused
 
 logical, optional :: print_err, is_time_coords
 logical error
@@ -1591,12 +1592,31 @@ species = bunch%particle(1)%species
 nb = (n + bunch_sum_block - 1) / bunch_sum_block
 allocate (part(6, nb), n_live_b(nb), part_t(2, nb))
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
+! The first-order sums of this routine and of calc_bunch_sigma_matrix_etc are accumulated in one pass over the
+! particles (each sum in its own per-block order, as in separate passes). Time coordinates need the mean p0c
+! before basis_vec, so they keep the separate passes.
+fused = .not. logic_option(.false., is_time_coords)
+t_ref = 0
+do i = 1, n
+  if (v%state(i) /= alive$) cycle
+  t_ref = qp_to_dp(v%t(i))
+  exit
+enddo
+if (fused) allocate (sig_b(2, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
+
+!$OMP parallel do private(i0, i1, i, dt, vec) if (nb > 1)
 do ib = 1, nb
   i0 = (ib - 1) * bunch_sum_block + 1
   i1 = min(ib * bunch_sum_block, n)
   part(:, ib) = 0
   n_live_b(ib) = 0
+  if (fused) then
+    part_t(:, ib) = 0
+    sig_b(:, ib) = 0
+    avg_b(:, ib) = 0
+    max_b(:, ib) = -1e30_rp
+    min_b(:, ib) =  1e30_rp
+  endif
   do i = i0, i1
     part(2, ib) = part(2, ib) + v%charge(i)
     if (species == photon$) then
@@ -1610,6 +1630,18 @@ do ib = 1, nb
     part(3, ib) = part(3, ib) + v%field1(i)
     part(4, ib) = part(4, ib) + v%field2(i)
     part(5, ib) = part(5, ib) + charge(i)
+    if (fused) then
+      part(6, ib) = part(6, ib) + v%s(i) * charge(i)
+      dt = qp_to_dp(v%t(i)) - t_ref
+      part_t(1, ib) = part_t(1, ib) + dt * charge(i)
+      part_t(2, ib) = part_t(2, ib) + dt**2 * charge(i)
+      sig_b(1, ib) = sig_b(1, ib) + charge(i)
+      sig_b(2, ib) = sig_b(2, ib) + v%p0c(i)*charge(i)
+      vec = [v%x(i), v%px(i), v%y(i), v%py(i), v%z(i), v%pz(i), qp_to_dp(v%t(i))]
+      avg_b(:, ib) = avg_b(:, ib) + vec * charge(i)
+      max_b(:, ib) = max(max_b(:, ib), vec)
+      min_b(:, ib) = min(min_b(:, ib), vec)
+    endif
   enddo
 enddo
 !$OMP end parallel do
@@ -1647,20 +1679,15 @@ if (bunch_params%n_particle_live == 0) return
 if (charge_live == 0) then
   charge = 1
   charge_live = bunch_params%n_particle_live
+  fused = .false.            ! The fused sums used the zero charges.
 endif
 
 ! Time relative to the first live particle, in double precision (the spread of t is far below what double
 ! resolves at that offset); the quad precision arithmetic would cost more than the rest of the statistics.
 
-t_ref = 0
-do i = 1, n
-  if (v%state(i) /= alive$) cycle
-  t_ref = qp_to_dp(v%t(i))
-  exit
-enddo
-
-!$OMP parallel do private(i0, i1, i, dt) if (nb > 1)
+!$OMP parallel do private(i0, i1, i, dt) if (nb > 1 .and. .not. fused)
 do ib = 1, nb
+  if (fused) cycle
   i0 = (ib - 1) * bunch_sum_block + 1
   i1 = min(ib * bunch_sum_block, n)
   part(6, ib) = 0
@@ -1692,7 +1719,11 @@ if (bmad_com%spin_tracking_on) call calc_spin_params (bunch, bunch_params)
   
 ! Sigma matrix calc
 
-call calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
+if (fused) then
+  call calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele, sig_b, avg_b, max_b, min_b)
+else
+  call calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
+endif
 
 if (species == photon$) return
 
@@ -2208,7 +2239,7 @@ end subroutine calc_spin_params
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
 !+
-! Subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
+! Subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele, sig_b0, avg_b0, max_b0, min_b0)
 !
 ! Routine to find the sigma matrix elements of a particle distribution.
 ! 
@@ -2226,7 +2257,7 @@ end subroutine calc_spin_params
 !     %rel_min(6)
 !-
 
-subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
+subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele, sig_b0, avg_b0, max_b0, min_b0)
 
 use bunch_soa_mod, only: qp_to_dp
 
@@ -2238,6 +2269,9 @@ type (ele_struct), optional :: ele
 
 real(rp) charge_live, p0c_avg, vec(7)
 real(rp) charge(:)
+! Per-block first-order sums from the caller's fused pass (charge, p0c*charge; charge weighted coordinates,
+! maxima, minima), in place of the first two passes here.
+real(rp), optional :: sig_b0(:,:), avg_b0(:,:), max_b0(:,:), min_b0(:,:)
 real(rp) :: avg(7)
 real(rp), allocatable :: part(:,:), sig_b(:,:,:), avg_b(:,:), max_b(:,:), min_b(:,:)
 
@@ -2255,18 +2289,22 @@ n = size(v%state)
 nb = (n + bunch_sum_block - 1) / bunch_sum_block
 allocate (part(2, nb), sig_b(6, 6, nb), avg_b(7, nb), max_b(7, nb), min_b(7, nb))
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
-do ib = 1, nb
-  i0 = (ib - 1) * bunch_sum_block + 1
-  i1 = min(ib * bunch_sum_block, n)
-  part(:, ib) = 0
-  do i = i0, i1
-    if (v%state(i) /= alive$) cycle
-    part(1, ib) = part(1, ib) + charge(i)
-    part(2, ib) = part(2, ib) + v%p0c(i)*charge(i)
+if (present(sig_b0)) then
+  part = sig_b0
+else
+  !$OMP parallel do private(i0, i1, i) if (nb > 1)
+  do ib = 1, nb
+    i0 = (ib - 1) * bunch_sum_block + 1
+    i1 = min(ib * bunch_sum_block, n)
+    part(:, ib) = 0
+    do i = i0, i1
+      if (v%state(i) /= alive$) cycle
+      part(1, ib) = part(1, ib) + charge(i)
+      part(2, ib) = part(2, ib) + v%p0c(i)*charge(i)
+    enddo
   enddo
-enddo
-!$OMP end parallel do
+  !$OMP end parallel do
+endif
 
 charge_live = 0
 p0c_avg = 0
@@ -2297,8 +2335,12 @@ bunch_params%rel_min =  1e30_rp
 ! It is important to use sigma = <r-r_ave>^2 rather than sigma = <r>^2 - r_ave^2 since the latter
 ! has round-off issues when r_ave is large.
 
-!$OMP parallel do private(i0, i1, i, vec) if (nb > 1)
+!$OMP parallel do private(i0, i1, i, vec) if (nb > 1 .and. .not. present(avg_b0))
 do ib = 1, nb
+  if (present(avg_b0)) then
+    avg_b(:, ib) = avg_b0(:, ib);  max_b(:, ib) = max_b0(:, ib);  min_b(:, ib) = min_b0(:, ib)
+    cycle
+  endif
   i0 = (ib - 1) * bunch_sum_block + 1
   i1 = min(ib * bunch_sum_block, n)
   avg_b(:, ib) = 0
