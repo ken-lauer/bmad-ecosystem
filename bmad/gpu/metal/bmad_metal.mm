@@ -1705,6 +1705,7 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
       float overlap = (z2_over > z1_over) ? 2.0f * ((z2_over - zp0) * (z2_over - zp0) - (z1_over - zp0) * (z1_over - zp0)) * C.inv_dz2 : 0.0f;
       z1_over = max(zp_center, zb0);  z2_over = min(zp1, zb1);
       if (z2_over > z1_over) overlap += 2.0f * ((z1_over - zp1) * (z1_over - zp1) - (z2_over - zp1) * (z2_over - zp1)) * C.inv_dz2;
+      if (overlap == 0.0f) continue;                          // adds nothing to any sum
       float charge = overlap * q;
       uint base = W.ns * (ibl - W.b0);
       if (C.pass == 1u) {
