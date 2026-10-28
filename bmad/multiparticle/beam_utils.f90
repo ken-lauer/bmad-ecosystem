@@ -54,7 +54,7 @@ use ptc_interface_mod, only: ele_to_taylor
 use radiation_mod, only: radiation_map_setup
 implicit none
 
-type (bunch_struct) bunch
+type (bunch_struct), target :: bunch
 type (ele_struct) ele, half_ele
 type (bunch_track_struct), optional :: bunch_track
 type (ele_struct), pointer :: wake_ele
@@ -62,6 +62,8 @@ type (ele_struct), pointer :: wake_ele
 type (branch_struct), pointer :: branch
 
 real(rp) charge, ds_wake
+real(rp), pointer :: z(:)
+integer, pointer :: state(:)
 
 integer, optional :: direction
 integer i, j, n, jj, dir
@@ -130,16 +132,23 @@ else
   call track1_bunch_particles (bunch, half_ele, branch%param, thread_safe)
 endif
 
-! Wakefields
+! Wakefields. A short range wake that kicks nothing (sr_wake_null) needs no z ordering unless long range
+! wakes or a hook use it.
 
-call order_particles_in_z (bunch)  
+if (sr_wake_null(wake_ele) .and. .not. associated(track1_wake_hook_ptr) .and. &
+                  .not. (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0)) then
+  z => bunch%particle%vec(5);  state => bunch%particle%state
+  call sr_wake_length_check (wake_ele, z, state)
+else
+  call order_particles_in_z (bunch)  
 
-finished = .false.
-if (associated(track1_wake_hook_ptr)) call track1_wake_hook_ptr (bunch, ele, finished)
+  finished = .false.
+  if (associated(track1_wake_hook_ptr)) call track1_wake_hook_ptr (bunch, ele, finished)
 
-if (.not. finished) then
-  call track1_sr_wake (bunch, wake_ele)
-  call track1_lr_wake (bunch, wake_ele)
+  if (.not. finished) then
+    call track1_sr_wake (bunch, wake_ele)
+    call track1_lr_wake (bunch, wake_ele)
+  endif
 endif
 
 ! Track the last half of the cavity.

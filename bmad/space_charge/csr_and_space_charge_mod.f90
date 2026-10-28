@@ -333,27 +333,12 @@ do i_step = 0, n_step
   if (i_step /= 0) then
     call element_slice_iterator (ele, branch%param, i_step, n_step, runt, s_start, s_end)
     if (use_soa) then
-      tracked = .false.
       if (.not. bunch_wake_here(runt)) then
-        if (use_dev) call bunch_device_track_slice (csr_soa, runt, branch%param, tracked)
-        if (.not. tracked) then
-          call dev_to_host()
-          call fast_track1_soa (csr_soa, runt, branch%param, tracked, p0c_checked = p0c_checked)
-          if (tracked) call host_changed()
-        endif
-      endif
-      if (tracked) then
-        bunch_stale = .true.
-      elseif (.not. bunch_wake_here(runt) .and. runt%tracking_method /= taylor$) then
-        ! Unsupported slice: track1 one particle at a time in place, as track1_bunch_hom would.
-        call dev_to_host()
-        if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(runt, rad_err)
-        call fast_track1_soa_fallback (csr_soa, bunch, runt, branch%param, &
-                         runt%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
-        call host_changed()
-        bunch_stale = .true.
-        p0c_checked = -1
+        call track_runt_soa (runt, tracked)
       else
+        call track_wake_runt_soa (runt, tracked)
+      endif
+      if (.not. tracked) then
         call sync_bunch()
         call track1_bunch_hom (bunch, runt)
         call bunch_to_soa (bunch, csr_soa)
@@ -482,6 +467,79 @@ err = .false.
 
 !------------------------------------------------------------------------
 contains
+
+! Track the SoA bunch through slice r without wakes: device, else the CPU kernels, else track1 one particle
+! at a time in place (as track1_bunch_hom would). Not tracked: a taylor slice the kernels do not support.
+
+subroutine track_runt_soa (r, tracked)
+type (ele_struct) r
+logical tracked, rad_err
+
+tracked = .false.
+if (use_dev) call bunch_device_track_slice (csr_soa, r, branch%param, tracked)
+if (.not. tracked) then
+  call dev_to_host()
+  call fast_track1_soa (csr_soa, r, branch%param, tracked, p0c_checked = p0c_checked)
+  if (tracked) call host_changed()
+endif
+if (.not. tracked .and. r%tracking_method /= taylor$) then
+  call dev_to_host()
+  if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(r, rad_err)
+  call fast_track1_soa_fallback (csr_soa, bunch, r, branch%param, &
+                   r%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
+  call host_changed()
+  p0c_checked = -1
+  tracked = .true.
+endif
+if (tracked) bunch_stale = .true.
+end subroutine track_runt_soa
+
+! track1_bunch_hom for a slice r with wakes, on the SoA bunch: the slice up to the wake point, the short
+! range wake kicks on the SoA arrays, then the rest of the slice. Not tracked (bunch untouched): long range
+! wakes, a wake hook, or a taylor slice.
+
+subroutine track_wake_runt_soa (r, tracked)
+type (ele_struct) r
+type (ele_struct) half
+type (ele_struct), pointer :: wake_ele
+real(rp) ds_wake
+integer n
+logical tracked, err
+
+tracked = .false.
+wake_ele => pointer_to_wake_ele(r, ds_wake)
+if (.not. associated(wake_ele) .or. associated(track1_wake_hook_ptr) .or. r%tracking_method == taylor$) return
+if (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0) return
+
+if (r%value(l$) == 0) then
+  call track_runt_soa (r, tracked)
+else
+  call transfer_ele (r, half, .true.)
+  call create_element_slice (half, r, ds_wake, 0.0_rp, branch%param, .true., .false., err)
+  if (err) then
+    call deallocate_ele_pointers (half)
+    return
+  endif
+  call track_runt_soa (half, tracked)
+endif
+
+call dev_to_host()
+n = csr_soa%n
+call re_allocate (bunch%ix_z, n)
+call order_in_z (csr_soa%z(1:n), csr_soa%state(1:n), bunch%ix_z, bunch%n_live)
+call track1_sr_wake_arr (wake_ele, bunch%ix_z, bunch%n_live, csr_soa%x(1:n), csr_soa%px(1:n), csr_soa%y(1:n), &
+                 csr_soa%py(1:n), csr_soa%z(1:n), csr_soa%pz(1:n), csr_soa%charge(1:n), csr_soa%state(1:n))
+call host_changed()
+bunch_stale = .true.
+
+if (r%value(l$) /= 0) then
+  call create_element_slice (half, r, r%value(l$)-ds_wake, ds_wake, branch%param, .false., .true., err, half)
+  if (err .and. global_com%exit_on_error) call err_exit
+  if (.not. err) call track_runt_soa (half, tracked)
+  call deallocate_ele_pointers (half)
+endif
+tracked = .true.
+end subroutine track_wake_runt_soa
 
 ! Write the SoA bunch back to bunch%particle if it has changed since the last write.
 

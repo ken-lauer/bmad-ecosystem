@@ -392,36 +392,38 @@ end subroutine sr_longitudinal_wake_particle
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine sr_longitudinal_wake_bunch (ele, bunch, n_live)
+! Subroutine sr_longitudinal_wake_arr (ele, ix_z, n_live, z, x, y, charge, pz)
 !
-! Same as calling sr_longitudinal_wake_particle for particles bunch%particle(bunch%ix_z(1:n_live)) in
-! order. The wake sums are a sequential recurrence over the particles, but the recurrence only depends
-! on each particle's z, x, y and charge, which the kicks do not change. So for each chunk of particles:
+! Same as calling sr_longitudinal_wake_particle for particles ix_z(1:n_live) in order. The wake sums are a
+! sequential recurrence over the particles, but the recurrence only depends on each particle's z, x, y and
+! charge, which the kicks do not change. So for each chunk of particles:
 !   1. (parallel) the particle data and the exponential/trigonometric factors are gathered,
 !   2. (serial)   the recurrence is evaluated on these contiguous arrays, saving each particle's wake,
 !   3. (parallel) the kicks are applied.
 ! The same expressions are evaluated in the same order as in sr_longitudinal_wake_particle.
 !
 ! Input:
-!   ele       -- ele_struct: Element with wakes.
-!   bunch     -- bunch_struct: Bunch with bunch%ix_z set by order_particles_in_z.
-!   n_live    -- integer: Number of live particles.
+!   ele         -- ele_struct: Element with wakes.
+!   ix_z(:)     -- integer: Particle order from order_in_z.
+!   n_live      -- integer: Number of live particles.
+!   z(:), x(:), y(:), charge(:) -- real(rp): Particle coordinates and charges.
 !
 ! Output:
-!   ele       -- ele_struct: Mode wake sums and %wake%sr%z_ref_long updated.
-!   bunch     -- bunch_struct: Particles kicked.
+!   ele         -- ele_struct: Mode wake sums and %wake%sr%z_ref_long updated.
+!   pz(:)       -- real(rp): Kicked.
 !-
 
-subroutine sr_longitudinal_wake_bunch (ele, bunch, n_live)
+subroutine sr_longitudinal_wake_arr (ele, ix_z, n_live, z, x, y, charge, pz)
 
 type (ele_struct), target :: ele
-type (bunch_struct), target :: bunch
 type (wake_sr_mode_struct), pointer :: mode
-type (coord_struct), pointer :: orbit
+
+real(rp), pointer, intent(in) :: z(:), x(:), y(:), charge(:), pz(:)
+integer ix_z(:)
 
 real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:)
 real(rp) arg, f0, ff, dz, z_prev
-integer n_live, i, j, jj, nm, j0, j1, nc
+integer n_live, i, j, jj, k, nm, j0, j1, nc
 
 !
 
@@ -437,23 +439,23 @@ do j0 = 1, n_live, sr_wake_chunk
 
   ! Gather: pd = (z, x, y, |charge|) and the per-mode factors.
 
-  !$OMP parallel do private(jj, orbit, z_prev, dz, i, arg) if (j1 - j0 > 10000)
+  !$OMP parallel do private(jj, k, z_prev, dz, i, arg) if (j1 - j0 > 10000)
   do j = j0, j1
     jj = j - j0 + 1
-    orbit => bunch%particle(bunch%ix_z(j))
+    k = ix_z(j)
     if (j == 1) then
       z_prev = ele%wake%sr%z_ref_long
     else
-      z_prev = bunch%particle(bunch%ix_z(j-1))%vec(5)
+      z_prev = z(ix_z(j-1))
     endif
-    pd(:, jj) = [orbit%vec(5), orbit%vec(1), orbit%vec(3), abs(orbit%charge)]
-    dz = ele%wake%sr%z_scale * (orbit%vec(5) - z_prev) ! Should be negative
+    pd(:, jj) = [z(k), x(k), y(k), abs(charge(k))]
+    dz = ele%wake%sr%z_scale * (z(k) - z_prev) ! Should be negative
     do i = 1, nm
       ef(i, jj) = exp(dz * ele%wake%sr%long(i)%damp)
-      arg = ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
+      arg = ele%wake%sr%z_scale * z(k) * ele%wake%sr%long(i)%k
       cs(1, i, jj) = cos (arg)
       cs(2, i, jj) = sin (arg)
-      arg = twopi * ele%wake%sr%long(i)%phi - ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%long(i)%k
+      arg = twopi * ele%wake%sr%long(i)%phi - ele%wake%sr%z_scale * z(k) * ele%wake%sr%long(i)%k
       cs(3, i, jj) = cos (arg)
       cs(4, i, jj) = sin (arg)
     enddo
@@ -490,10 +492,10 @@ do j0 = 1, n_live, sr_wake_chunk
 
   ! Kicks: existing wake, then self kick, mode by mode.
 
-  !$OMP parallel do private(jj, orbit, f0, i, mode, ff) if (j1 - j0 > 10000)
+  !$OMP parallel do private(jj, k, f0, i, mode, ff) if (j1 - j0 > 10000)
   do j = j0, j1
     jj = j - j0 + 1
-    orbit => bunch%particle(bunch%ix_z(j))
+    k = ix_z(j)
     f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
     if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
     do i = 1, nm
@@ -502,58 +504,60 @@ do j0 = 1, n_live, sr_wake_chunk
 
       select case (mode%position_dependence)
       case (none$, x_leading$, y_leading$)
-        orbit%vec(6) = orbit%vec(6) - w(i, jj)
+        pz(k) = pz(k) - w(i, jj)
       case (x_trailing$)
-        orbit%vec(6) = orbit%vec(6) - w(i, jj) * orbit%vec(1)
+        pz(k) = pz(k) - w(i, jj) * x(k)
       case (y_trailing$)
-        orbit%vec(6) = orbit%vec(6) - w(i, jj) * orbit%vec(3)
+        pz(k) = pz(k) - w(i, jj) * y(k)
       end select
 
       select case (mode%position_dependence)
       case (none$)
-        orbit%vec(6) = orbit%vec(6) - ff * sin(twopi * mode%phi) / 2
+        pz(k) = pz(k) - ff * sin(twopi * mode%phi) / 2
       case (x_leading$, x_trailing$)
-        orbit%vec(6) = orbit%vec(6) - orbit%vec(1) * ff * sin(twopi * mode%phi) / 2
+        pz(k) = pz(k) - x(k) * ff * sin(twopi * mode%phi) / 2
       case (y_leading$, y_trailing$)
-        orbit%vec(6) = orbit%vec(6) - orbit%vec(3) * ff * sin(twopi * mode%phi) / 2
+        pz(k) = pz(k) - y(k) * ff * sin(twopi * mode%phi) / 2
       end select
     enddo
   enddo
   !$OMP end parallel do
 enddo
 
-end subroutine sr_longitudinal_wake_bunch
+end subroutine sr_longitudinal_wake_arr
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine sr_transverse_wake_bunch (ele, bunch, n_live)
+! Subroutine sr_transverse_wake_arr (ele, ix_z, n_live, z, x, y, charge, px, py)
 !
-! Same as calling sr_transverse_wake_particle for particles bunch%particle(bunch%ix_z(1:n_live)) in
-! order, done in the three steps described in sr_longitudinal_wake_bunch. The recurrence only depends
-! on z, x, y and the charge, and the kicks only change px and py.
+! Same as calling sr_transverse_wake_particle for particles ix_z(1:n_live) in order, done in the three
+! steps described in sr_longitudinal_wake_arr. The recurrence only depends on z, x, y and the charge,
+! and the kicks only change px and py.
 !
 ! Input:
-!   ele       -- ele_struct: Element with wakes.
-!   bunch     -- bunch_struct: Bunch with bunch%ix_z set by order_particles_in_z.
-!   n_live    -- integer: Number of live particles.
+!   ele         -- ele_struct: Element with wakes.
+!   ix_z(:)     -- integer: Particle order from order_in_z.
+!   n_live      -- integer: Number of live particles.
+!   z(:), x(:), y(:), charge(:) -- real(rp): Particle coordinates and charges.
 !
 ! Output:
-!   ele       -- ele_struct: Mode wake sums and %wake%sr%z_ref_trans updated.
-!   bunch     -- bunch_struct: Particles kicked.
+!   ele         -- ele_struct: Mode wake sums and %wake%sr%z_ref_trans updated.
+!   px(:), py(:) -- real(rp): Kicked.
 !-
 
-subroutine sr_transverse_wake_bunch (ele, bunch, n_live)
+subroutine sr_transverse_wake_arr (ele, ix_z, n_live, z, x, y, charge, px, py)
 
 type (ele_struct), target :: ele
-type (bunch_struct), target :: bunch
 type (wake_sr_mode_struct), pointer :: mode
-type (coord_struct), pointer :: orbit
+
+real(rp), pointer, intent(in) :: z(:), x(:), y(:), charge(:), px(:), py(:)
+integer ix_z(:)
 
 real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:,:)
 real(rp) arg, f0, ff, dz, z_prev
-integer n_live, i, j, jj, nm, j0, j1, nc
+integer n_live, i, j, jj, k, nm, j0, j1, nc
 
 !
 
@@ -567,23 +571,23 @@ allocate (ef(nm, nc), cs(4, nm, nc), pd(4, nc), w(2, nm, nc))
 do j0 = 1, n_live, sr_wake_chunk
   j1 = min(j0 + sr_wake_chunk - 1, n_live)
 
-  !$OMP parallel do private(jj, orbit, z_prev, dz, i, arg) if (j1 - j0 > 10000)
+  !$OMP parallel do private(jj, k, z_prev, dz, i, arg) if (j1 - j0 > 10000)
   do j = j0, j1
     jj = j - j0 + 1
-    orbit => bunch%particle(bunch%ix_z(j))
+    k = ix_z(j)
     if (j == 1) then
       z_prev = ele%wake%sr%z_ref_trans
     else
-      z_prev = bunch%particle(bunch%ix_z(j-1))%vec(5)
+      z_prev = z(ix_z(j-1))
     endif
-    pd(:, jj) = [orbit%vec(5), orbit%vec(1), orbit%vec(3), abs(orbit%charge)]
-    dz = ele%wake%sr%z_scale * (orbit%vec(5) - z_prev) ! Should be negative
+    pd(:, jj) = [z(k), x(k), y(k), abs(charge(k))]
+    dz = ele%wake%sr%z_scale * (z(k) - z_prev) ! Should be negative
     do i = 1, nm
       ef(i, jj) = exp(dz * ele%wake%sr%trans(i)%damp)
-      arg = ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%trans(i)%k
+      arg = ele%wake%sr%z_scale * z(k) * ele%wake%sr%trans(i)%k
       cs(1, i, jj) = cos (arg)
       cs(2, i, jj) = sin (arg)
-      arg = twopi * ele%wake%sr%trans(i)%phi - ele%wake%sr%z_scale * orbit%vec(5) * ele%wake%sr%trans(i)%k
+      arg = twopi * ele%wake%sr%trans(i)%phi - ele%wake%sr%z_scale * z(k) * ele%wake%sr%trans(i)%k
       cs(3, i, jj) = cos (arg)
       cs(4, i, jj) = sin (arg)
     enddo
@@ -623,24 +627,24 @@ do j0 = 1, n_live, sr_wake_chunk
     enddo
   enddo
 
-  !$OMP parallel do private(jj, orbit, i, mode) if (j1 - j0 > 10000)
+  !$OMP parallel do private(jj, k, i, mode) if (j1 - j0 > 10000)
   do j = j0, j1
     jj = j - j0 + 1
-    orbit => bunch%particle(bunch%ix_z(j))
+    k = ix_z(j)
     do i = 1, nm
       mode => ele%wake%sr%trans(i)
       if (mode%polarization /= y_polarization$) then
         if (mode%position_dependence == trailing$) then
-          orbit%vec(2) = orbit%vec(2) - w(1, i, jj) * orbit%vec(1)
+          px(k) = px(k) - w(1, i, jj) * x(k)
         else
-          orbit%vec(2) = orbit%vec(2) - w(1, i, jj)
+          px(k) = px(k) - w(1, i, jj)
         endif
       endif
       if (mode%polarization /= x_polarization$) then
         if (mode%position_dependence == trailing$) then
-          orbit%vec(4) = orbit%vec(4) - w(2, i, jj) * orbit%vec(3)
+          py(k) = py(k) - w(2, i, jj) * y(k)
         else
-          orbit%vec(4) = orbit%vec(4) - w(2, i, jj)
+          py(k) = py(k) - w(2, i, jj)
         endif
       endif
     enddo
@@ -648,7 +652,7 @@ do j0 = 1, n_live, sr_wake_chunk
   !$OMP end parallel do
 enddo
 
-end subroutine sr_transverse_wake_bunch
+end subroutine sr_transverse_wake_arr
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -761,31 +765,32 @@ end subroutine sr_transverse_wake_particle
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
-! Subroutine sr_z_long_wake (ele, bunch, z_ave)
+! Subroutine sr_z_long_wake (ele, z, x, y, charge, state, pz, z_ave)
 !
-! Subroutine to apply the short-range z-wake kick to a particle.
+! Subroutine to apply the short-range z-wake kick to the particles.
 !
 ! Input:
 !   ele           -- ele_struct: Element with wake.
-!   bunch         -- bunch_struct: Bunch before wake applied.
+!   z(:), x(:), y(:), charge(:), state(:) -- Particle coordinates, charges and states.
 !   z_ave         -- real(rp): Average z-position of all live particles.
 !
 ! Output:
-!   orbit         -- coord_struct: Ending particle coords.
-!   bunch         -- bunch_struct: Bunch before wake applied.
+!   pz(:)         -- real(rp): Kicked.
+!   state(:)      -- integer: Set lost if the bunch is too long for the wake.
 !+
 
-subroutine sr_z_long_wake (ele, bunch, z_ave)
+subroutine sr_z_long_wake (ele, z, x, y, charge, state, pz, z_ave)
 
 use spline_mod
 
 type (ele_struct), target :: ele
-type (bunch_struct), target :: bunch
 type (wake_sr_struct), pointer :: sr
 type (wake_sr_z_long_struct), pointer :: srz
-type (coord_struct), pointer :: p, orbit
 
-real(rp) x, f0, ff, f_add, kick, dz, rz_rel, r1, r2
+real(rp), pointer, intent(in) :: z(:), x(:), y(:), charge(:), pz(:)
+integer, pointer, intent(in) :: state(:)
+
+real(rp) f0, ff, f_add, kick, dz, rz_rel, r1, r2
 real(rp) z_ave
 
 integer i, j, ix1, ix2, n2, n_bad, nn
@@ -811,11 +816,10 @@ n2 = (nn - 1) / 2
 srz%w_out = 0
 n_bad = 0
 
-do i = 1, size(bunch%particle)
-  p => bunch%particle(i)
-  if (p%state /= alive$) cycle
+do i = 1, size(z)
+  if (state(i) /= alive$) cycle
 
-  rz_rel = sr%z_scale * (p%vec(5) - z_ave) / srz%dz + n2 + 1 
+  rz_rel = sr%z_scale * (z(i) - z_ave) / srz%dz + n2 + 1 
   ix1 = floor(rz_rel)
   ix2 = ix1 + 1
   if (ix1 < 1 .or. ix2 > nn) then
@@ -823,26 +827,26 @@ do i = 1, size(bunch%particle)
     cycle
   endif
 
-  r1 = (ix2 - rz_rel) * p%charge
-  r2 = (rz_rel - ix1) * p%charge
+  r1 = (ix2 - rz_rel) * charge(i)
+  r2 = (rz_rel - ix1) * charge(i)
 
   select case (srz%position_dependence)
   case (none$, x_trailing$, y_trailing$)
     srz%w_out(ix1) = srz%w_out(ix1) + r1
     srz%w_out(ix2) = srz%w_out(ix2) + r2
   case (x_leading$)
-    srz%w_out(ix1) = srz%w_out(ix1) + r1 * p%vec(1)
-    srz%w_out(ix2) = srz%w_out(ix2) + r2 * p%vec(1)
+    srz%w_out(ix1) = srz%w_out(ix1) + r1 * x(i)
+    srz%w_out(ix2) = srz%w_out(ix2) + r2 * x(i)
   case (y_leading$)
-    srz%w_out(ix1) = srz%w_out(ix1) + r1 * p%vec(3)
-    srz%w_out(ix2) = srz%w_out(ix2) + r2 * p%vec(3)
+    srz%w_out(ix1) = srz%w_out(ix1) + r1 * y(i)
+    srz%w_out(ix2) = srz%w_out(ix2) + r2 * y(i)
   end select
 enddo
 
-if (n_bad > 0.01 * size(bunch%particle)) then
+if (n_bad > 0.01 * size(z)) then
   call out_io (s_error$, r_name, &
       'The bunch is longer than the sr-z wake can handle for element: ' // ele%name)
-  p%state = lost$
+  state(size(state)) = lost$   ! As before: the particle the loop above ended on.
   return
 endif
 
@@ -851,13 +855,12 @@ srz%w_out = srz%w_out * srz%fw * f0 / nn
 call fft_1d(srz%w_out, 1)
 
 ! Apply wake
-! Notice that p%charge does not appear here.
+! Notice that charge(i) does not appear here.
 
-do i = 1, size(bunch%particle)
-  p => bunch%particle(i)
-  if (p%state /= alive$) cycle
+do i = 1, size(z)
+  if (state(i) /= alive$) cycle
 
-  rz_rel = sr%z_scale * (p%vec(5) - z_ave) / srz%dz + n2 + 1
+  rz_rel = sr%z_scale * (z(i) - z_ave) / srz%dz + n2 + 1
   ix1 = MOD(floor(rz_rel) + n2 - 1, nn) + 1
   ix2 = MOD(ix1, nn) + 1
 
@@ -866,11 +869,11 @@ do i = 1, size(bunch%particle)
 
   select case (srz%position_dependence)
   case (none$, x_leading$, y_leading$)
-    p%vec(6) = p%vec(6) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2))
+    pz(i) = pz(i) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2))
   case (x_trailing$)
-    p%vec(6) = p%vec(6) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2)) * p%vec(1)
+    pz(i) = pz(i) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2)) * x(i)
   case (y_trailing$)
-    p%vec(6) = p%vec(6) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2)) * p%vec(3)
+    pz(i) = pz(i) - (r1 * srz%w_out(ix1) + r2 * srz%w_out(ix2)) * y(i)
   end select
 enddo
 
@@ -905,20 +908,49 @@ Subroutine order_particles_in_z (bunch)
 implicit none
 
 type (bunch_struct), target :: bunch
-type (coord_struct), pointer :: particle(:)
-real(rp), allocatable :: z_key(:)
-integer ix, nm, n_max
-
-!
-
-particle => bunch%particle
-n_max = size(particle)
+real(rp), pointer :: z(:)
+integer, pointer :: state(:)
 
 ! bunch%ix_z can be stale if the particle array has been reallocated (for example, by
 ! remove_dead_from_bunch) without ix_z being resized to match. re_allocate is a no-op
 ! when ix_z is already the right size.
 
-call re_allocate(bunch%ix_z, n_max)
+call re_allocate(bunch%ix_z, size(bunch%particle))
+z => bunch%particle%vec(5);  state => bunch%particle%state
+call order_in_z (z, state, bunch%ix_z, bunch%n_live)
+
+end subroutine order_particles_in_z
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine order_in_z (z, state, ix_z, n_live)
+!
+! order_particles_in_z for particles given by their z and state arrays.
+!
+! Input:
+!   z(:)      -- real(rp): Particle z.
+!   state(:)  -- integer: Particle states.
+!
+! Output:
+!   ix_z(:)   -- integer: Order from large z to small z, live particles first. Same size as z.
+!   n_live    -- integer: Number of live particles.
+!-
+
+subroutine order_in_z (z, state, ix_z, n_live)
+
+implicit none
+
+real(rp), pointer, intent(in) :: z(:)
+real(rp), allocatable :: z_key(:)
+integer, pointer, intent(in) :: state(:)
+integer ix_z(:)
+integer n_live, ix, nm, n_max
+
+!
+
+n_max = size(z)
 
 ! Sort all particles from large z (head of bunch) to small z.
 ! A full n*log(n) sort is used rather than an incremental sort. The incremental sort is order n
@@ -926,8 +958,8 @@ call re_allocate(bunch%ix_z, n_max)
 ! from ordered (which happens, for example, after tracking a bunch through a bend with dispersion),
 ! and it churns heap allocations on every move. The full sort avoids both problems.
 !
-! The sort keys are gathered into a contiguous array since sorting on the strided particle%vec(5)
-! section directly would touch one cache line per comparison. The key is -vec(5) so that an
+! The sort keys are gathered into a contiguous array since sorting on the strided z(:)
+! section (bunch%particle%vec(5)) directly would touch one cache line per comparison. The key is -vec(5) so that an
 ! ascending sort gives the head-to-tail order directly. Dead particles are given a key of huge()
 ! so they sort to the end without their coordinates (which may not even be finite) entering the
 ! comparisons of the live particles.
@@ -937,19 +969,19 @@ allocate (z_key(n_max))
 nm = 0
 !$OMP parallel do reduction(+:nm) if (n_max > 10000)
 do ix = 1, n_max
-  if (particle(ix)%state == alive$) then
+  if (state(ix) == alive$) then
     nm = nm + 1
-    z_key(ix) = -particle(ix)%vec(5)
+    z_key(ix) = -z(ix)
   else
     z_key(ix) = huge(0.0_rp)
   endif
 enddo
 !$OMP end parallel do
 
-call index_sort_blocked (z_key, bunch%ix_z)
-bunch%n_live = nm
+call index_sort_blocked (z_key, ix_z)
+n_live = nm
 
-end subroutine order_particles_in_z
+end subroutine order_in_z
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1117,33 +1149,67 @@ implicit none
 
 type (bunch_struct), target :: bunch
 type (ele_struct) ele
-type (coord_struct), pointer :: particle
-type (coord_struct), pointer :: p(:)
+real(rp), pointer :: x(:), px(:), y(:), py(:), z(:), pz(:), charge(:)
+integer, pointer :: state(:)
 
-real(rp) sr02
-integer i, j, k, i1, i2, n_sr_long, n_sr_trans, k_start, n_live
+!
 
-logical wake_here
-character(16) :: r_name = 'track1_sr_wake'
+x => bunch%particle%vec(1);  px => bunch%particle%vec(2)
+y => bunch%particle%vec(3);  py => bunch%particle%vec(4)
+z => bunch%particle%vec(5);  pz => bunch%particle%vec(6)
+charge => bunch%particle%charge;  state => bunch%particle%state
+call track1_sr_wake_arr (ele, bunch%ix_z, bunch%n_live, x, px, y, py, z, pz, charge, state)
+
+end subroutine track1_sr_wake
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine track1_sr_wake_arr (ele, ix_z, n_live, x, px, y, py, z, pz, charge, state)
+!
+! track1_sr_wake for particles given by their coordinate arrays.
+!
+! Input:
+!   ele         -- ele_struct: Element with wakefields.
+!   ix_z(:)     -- integer: Particle order from order_in_z.
+!   n_live      -- integer: Number of live particles.
+!   x(:), ..., pz(:), charge(:), state(:) -- Particle coordinates, charges and states.
+!
+! Output:
+!   px(:), py(:), pz(:) -- real(rp): Kicked.
+!   state(:)    -- integer: All set lost if the bunch is too long for the wake.
+!-
+
+subroutine track1_sr_wake_arr (ele, ix_z, n_live, x, px, y, py, z, pz, charge, state)
+
+implicit none
+
+type (ele_struct) ele
+
+real(rp), pointer, intent(in) :: x(:), px(:), y(:), py(:), z(:), pz(:), charge(:)
+integer, pointer, intent(in) :: state(:)
+integer ix_z(:)
+integer i1, i2, n_live
+
+character(*), parameter :: r_name = 'track1_sr_wake'
 
 !-----------------------------------
 
 if (.not. bmad_com%sr_wakes_on) return
 if (.not. associated(ele%wake)) return
 
-n_live = bunch%n_live
 if (n_live == 0) return    ! No one left alive.
-p => bunch%particle
 
 ! error check and zero wake sums and order particles in z
 
-i1 = bunch%ix_z(1)
-i2 = bunch%ix_z(n_live)
+i1 = ix_z(1)
+i2 = ix_z(n_live)
 
-if (ele%wake%sr%z_max > 0 .and. p(i1)%vec(5) - p(i2)%vec(5) > ele%wake%sr%z_max) then
+if (ele%wake%sr%z_max > 0 .and. z(i1) - z(i2) > ele%wake%sr%z_max) then
   call out_io (s_error$, r_name, &
       'The bunch is longer than the sr wake can handle for element: ' // ele%name)
-  p%state = lost$
+  state = lost$
   return
 endif
 
@@ -1153,25 +1219,105 @@ ele%wake%sr%long%b_sin = 0
 ele%wake%sr%long%b_cos = 0
 ele%wake%sr%long%a_sin = 0
 ele%wake%sr%long%a_cos = 0
-ele%wake%sr%z_ref_long = p(i1)%vec(5)
+ele%wake%sr%z_ref_long = z(i1)
 
 ele%wake%sr%trans%b_sin = 0
 ele%wake%sr%trans%b_cos = 0
 ele%wake%sr%trans%a_sin = 0
 ele%wake%sr%trans%a_cos = 0
-ele%wake%sr%z_ref_trans = p(i1)%vec(5)
+ele%wake%sr%z_ref_trans = z(i1)
 
 ! Z-wake
 
-call sr_z_long_wake(ele, bunch, p((i1+i2)/2)%vec(5))
+call sr_z_long_wake(ele, z, x, y, charge, state, pz, z((i1+i2)/2))
 
 ! Loop over all particles in the bunch and apply the mode wakes.
 ! The longitudinal and transverse mode wakes are independent of each other (separate wake sums,
 ! and the kicks change different coordinates), so they are done in separate loops.
 
-call sr_longitudinal_wake_bunch (ele, bunch, n_live)
-call sr_transverse_wake_bunch (ele, bunch, n_live)
+call sr_longitudinal_wake_arr (ele, ix_z, n_live, z, x, y, charge, pz)
+call sr_transverse_wake_arr (ele, ix_z, n_live, z, x, y, charge, px, py)
 
-end subroutine track1_sr_wake
+end subroutine track1_sr_wake_arr
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Function sr_wake_null (ele) result (is_null)
+!
+! True if track1_sr_wake would not kick any particle: sr wakes off, no wake, zero amplitude scale, or a
+! zero length element whose wakes scale with length (the mode and z wake kicks are then all exactly zero).
+! Its bunch length check (sr_wake_length_check) still applies. An element with a z wake table is never
+! null here (its range check can mark a particle lost).
+!
+! Input:
+!   ele       -- ele_struct: Element with the wake (pointer_to_wake_ele).
+!
+! Output:
+!   is_null   -- logical: True if the sort and the mode sums can be skipped.
+!-
+
+function sr_wake_null (ele) result (is_null)
+
+type (ele_struct) ele
+logical is_null
+
+is_null = .true.
+if (.not. bmad_com%sr_wakes_on) return
+if (.not. associated(ele%wake)) return
+is_null = (ele%wake%sr%z_long%dz == 0 .and. (ele%wake%sr%amp_scale == 0 .or. &
+                                  (ele%wake%sr%scale_with_length .and. ele%value(l$) == 0)))
+
+end function sr_wake_null
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine sr_wake_length_check (ele, z, state)
+!
+! The bunch length check of track1_sr_wake_arr (all particles lost if the live particles span more than
+! the wake's z_max), for a wake that sr_wake_null says gives no kicks. Needs no z ordering.
+!
+! Input:
+!   ele       -- ele_struct: Element with the wake.
+!   z(:)      -- real(rp): Particle z.
+!   state(:)  -- integer: Particle states.
+!
+! Output:
+!   state(:)  -- integer: All lost if the bunch is too long.
+!-
+
+subroutine sr_wake_length_check (ele, z, state)
+
+type (ele_struct) ele
+real(rp), pointer, intent(in) :: z(:)
+integer, pointer, intent(in) :: state(:)
+real(rp) z_lo, z_hi
+integer i, n
+character(*), parameter :: r_name = 'track1_sr_wake'
+
+if (.not. bmad_com%sr_wakes_on) return
+if (.not. associated(ele%wake)) return
+if (ele%wake%sr%z_max <= 0) return
+
+n = 0;  z_lo = huge(1.0_rp);  z_hi = -huge(1.0_rp)
+!$OMP parallel do reduction(+:n) reduction(min:z_lo) reduction(max:z_hi) if (size(z) > 10000)
+do i = 1, size(z)
+  if (state(i) /= alive$) cycle
+  n = n + 1
+  z_lo = min(z_lo, z(i));  z_hi = max(z_hi, z(i))
+enddo
+!$OMP end parallel do
+if (n == 0) return
+
+if (z_hi - z_lo > ele%wake%sr%z_max) then
+  call out_io (s_error$, r_name, &
+      'The bunch is longer than the sr wake can handle for element: ' // ele%name)
+  state = lost$
+endif
+
+end subroutine sr_wake_length_check
 
 end module
