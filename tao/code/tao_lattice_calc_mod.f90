@@ -437,6 +437,8 @@ subroutine tao_beam_track (u, tao_lat, ix_branch, beam, calc_ok)
 use wake_mod, only: zero_lr_wakes_in_lat
 use beam_utils, only: calc_bunch_params
 use radiation_mod, only: radiation_map_setup
+use csr_and_space_charge_mod, only: track1_bunch_sliced, track1_bunch_sliced_ok
+use bunch_soa_mod, only: fast_track_enabled
 
 implicit none
 
@@ -568,6 +570,14 @@ do
           endif
         endif
         call track_beam (lat, beam, branch%ele(ie-1), ele, err, centroid = tao_branch%orbit, bunch_tracks = bunch_params_comb)
+
+      elseif (ix_slice == -1 .and. .not. radiation_on .and. fast_track_enabled() .and. &
+                                                        all_sliced_ok(beam, ele)) then
+        ! All slices of the element in one go (track1_bunch_sliced), the per slice checks below skipped.
+        do i = 1, size(beam%bunch)
+          call track1_bunch_sliced (beam%bunch(i), ele, n_slice, err, bunch_params_comb(i))
+          if (err) exit
+        enddo
 
       else
         if (ix_slice == -1) then
@@ -755,6 +765,20 @@ tao_model_ele(ie)%beam = beam   ! Make sure the beam tracked so far is saved.
 calc_ok = .false.
 
 end subroutine stop_beam_track_on_rad_error
+
+!------------------------------------------------------------------------------
+
+function all_sliced_ok (beam, ele) result (ok)
+type (beam_struct) beam
+type (ele_struct) ele
+logical ok
+integer ib
+ok = .false.
+do ib = 1, size(beam%bunch)
+  if (.not. track1_bunch_sliced_ok(beam%bunch(ib), ele)) return
+enddo
+ok = .true.
+end function all_sliced_ok
 
 end subroutine tao_beam_track
 

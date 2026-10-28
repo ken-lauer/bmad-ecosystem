@@ -153,6 +153,15 @@ integer, allocatable, target, private :: csr_bin_ix0(:)
 ! parallel regions.
 type (bunch_soa_struct), target, private, save :: csr_soa
 
+! State of csr_soa while it holds a bunch (track1_bunch_csr, track1_bunch_sliced).
+type, private :: soa_session_struct
+  logical :: use_dev = .false.        ! csr_soa is resident on the device (bunch_device_mod).
+  logical :: stale = .false.          ! bunch%particle is behind csr_soa.
+  real(rp) :: p0c_checked = -1        ! See fast_track1_soa.
+end type
+private soa_track_slice, soa_track_wake_slice, soa_sync_bunch, soa_dev_to_host, soa_host_changed
+private soa_save_step, soa_save_due, soa_save_due_end
+
 contains
 
 !----------------------------------------------------------------------------
@@ -200,14 +209,14 @@ type (csr_particle_view_struct) v
 
 real(rp), optional :: s_start, s_end
 real(rp) s0_step, vec0(6), vec(6), theta_chord, theta0, theta1, L
-real(rp) e_tot, f1, x, z, ds_step, s_save_last, p0c_checked
-logical use_dev
+real(rp) e_tot, f1, x, z, ds_step, s_save_last
+type (soa_session_struct) ss
 
 integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
 
 character(*), parameter :: r_name = 'track1_bunch_csr'
-logical err, err_flag, parallel0, parallel1, use_soa, bunch_stale, tracked, rad_err
+logical err, err_flag, parallel0, parallel1, use_soa, tracked
 
 ! Init
 
@@ -298,8 +307,8 @@ call save_a_bunch_step (ele, bunch, bunch_track, s_start)
 ! for runts tracked by track1_bunch_hom, for bunch_track saves, and on return.
 
 use_soa = csr_use_soa(ele, branch%param)
-bunch_stale = .false.
-p0c_checked = -1
+ss%stale = .false.
+ss%p0c_checked = -1
 if (use_soa) then
   !$OMP parallel do if (size(bunch%particle) > 10000)
   do j = 1, size(bunch%particle)
@@ -316,10 +325,10 @@ endif
 ! up to date (dev_to_host) only where the CPU reads it, and the device told (host_changed) where the
 ! CPU writes it.
 
-use_dev = .false.
+ss%use_dev = .false.
 if (use_soa) then
   if (ele%space_charge_method /= fft_3d$) csr%mesh3d%nhi = space_charge_com%space_charge_mesh_size
-  call bunch_device_resident_begin (csr_soa, csr%mesh3d, branch%param%particle, use_dev)
+  call bunch_device_resident_begin (csr_soa, csr%mesh3d, branch%param%particle, ss%use_dev)
 endif
 
 !----------------------------------------------------------------------------------------
@@ -334,9 +343,9 @@ do i_step = 0, n_step
     call element_slice_iterator (ele, branch%param, i_step, n_step, runt, s_start, s_end)
     if (use_soa) then
       if (.not. bunch_wake_here(runt)) then
-        call track_runt_soa (runt, tracked)
+        call soa_track_slice (ss, bunch, runt, branch%param, tracked)
       else
-        call track_wake_runt_soa (runt, tracked)
+        call soa_track_wake_slice (ss, bunch, runt, branch%param, tracked)
       endif
       if (.not. tracked) then
         call sync_bunch()
@@ -344,7 +353,7 @@ do i_step = 0, n_step
         call bunch_to_soa (bunch, csr_soa)
         call csr_view_soa (csr_soa, v)
         call host_changed()
-        p0c_checked = -1
+        ss%p0c_checked = -1
       endif
     else
       call track1_bunch_hom (bunch, runt)
@@ -358,7 +367,7 @@ do i_step = 0, n_step
 
   ! With a resident device bunch the live count comes back with the bin sums (csr_bin_view checks it).
 
-  if (.not. use_dev) then
+  if (.not. ss%use_dev) then
     n_live = count(v%state == alive$)
     if (n_live < space_charge_com%n_bin) then
       call out_io (s_error$, r_name, 'NUMBER OF LIVE PARTICLES: \i0\ ', &
@@ -378,9 +387,9 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
-  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call dev_to_host()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. ss%use_dev)) call dev_to_host()
   call csr_bin_view (ele, v, csr, err_flag)
-  bunch_stale = (bunch_stale .or. (use_soa .and. err_flag))
+  ss%stale = (ss%stale .or. (use_soa .and. err_flag))
   if (err_flag) then
     call finish()
     return
@@ -420,13 +429,13 @@ do i_step = 0, n_step
   ! Give particles a kick. The CSR and slice space charge kicks run on the host; the 3D space charge
   ! kick runs on the device while the bunch is resident (apply_fft_3d_kicks).
 
-  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call dev_to_host()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. ss%use_dev)) call dev_to_host()
   call csr_and_sc_apply_kicks_view (ele, csr, v)
-  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. use_dev)) call host_changed()
+  if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. ss%use_dev)) call host_changed()
 
   if (use_soa) then
-    if (fast_track_fp32_proxy .and. .not. use_dev) call soa_round_fp32 (csr_soa)
-    bunch_stale = .true.
+    if (fast_track_fp32_proxy .and. .not. ss%use_dev) call soa_round_fp32 (csr_soa)
+    ss%stale = .true.
     if (bunch_track_save_due(s0_step)) call save_soa_step(s0_step)
   else
     call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
@@ -468,38 +477,215 @@ err = .false.
 !------------------------------------------------------------------------
 contains
 
-! Track the SoA bunch through slice r without wakes: device, else the CPU kernels, else track1 one particle
-! at a time in place (as track1_bunch_hom would). Not tracked: a taylor slice the kernels do not support.
+subroutine sync_bunch()
+call soa_sync_bunch (ss, bunch)
+end subroutine sync_bunch
 
-subroutine track_runt_soa (r, tracked)
+subroutine finish()
+if (ss%use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
+if (ss%use_dev) call bunch_device_resident_end (csr_soa)
+call sync_bunch()
+call csr_eleinfo_put (csr)
+end subroutine finish
+
+subroutine dev_to_host()
+call soa_dev_to_host (ss)
+end subroutine dev_to_host
+
+subroutine host_changed()
+call soa_host_changed (ss)
+end subroutine host_changed
+
+subroutine save_soa_step (s_body)
+real(rp) s_body
+call soa_save_step (ss, bunch, ele, bunch_track, s_body)
+end subroutine save_soa_step
+
+! Mirrors the test in save_a_bunch_step: True if a call with s_body would save a track point.
+
+function bunch_track_save_due (s_body) result (is_due)
+real(rp) s_body
+logical is_due
+is_due = soa_save_due(bunch_track, s_body + ele%s_start)
+end function bunch_track_save_due
+
+
+end subroutine track1_bunch_csr
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine track1_bunch_sliced (bunch, ele, n_slice, err, bunch_track)
+!
+! Routine to track a bunch through ele in n_slice slices, with bunch_track saves, as tao_beam_track does
+! for an element without CSR and space charge: for each slice from element_slice_iterator, track1_bunch
+! through the slice and then save_a_bunch_step. With the fast kernels (see fast_track_enabled) the bunch is
+! held as a SoA bunch, and with a device backend kept on the device, for the whole element; the saves are
+! computed from it. The tracking and the saves are the same as for the slice by slice calls.
+! Only for an element and bunch for which track1_bunch_sliced_ok is True.
+!
+! Input:
+!   bunch         -- bunch_struct: Starting bunch.
+!   ele           -- ele_struct: Element to track through. Its CSR and space charge must be off.
+!   n_slice       -- integer: Number of slices.
+!   bunch_track   -- bunch_track_struct, optional: Existing track (see save_a_bunch_step).
+!
+! Output:
+!   bunch         -- bunch_struct: Ending bunch.
+!   err           -- logical: Set True if there is an error.
+!   bunch_track   -- bunch_track_struct, optional: Track with the saves appended.
+!-
+
+subroutine track1_bunch_sliced (bunch, ele, n_slice, err, bunch_track)
+
+!$ use omp_lib, only: omp_in_parallel
+implicit none
+
+type (bunch_struct), target :: bunch
+type (ele_struct), target :: ele
+type (bunch_track_struct), optional :: bunch_track
+type (ele_struct) slice
+type (branch_struct), pointer :: branch
+type (soa_session_struct) ss
+type (mesh3d_struct) mesh3d
+
+integer n_slice, i, j
+logical err, tracked
+
+!
+
+err = .false.
+branch => pointer_to_branch(ele)
+
+!$OMP parallel do if (size(bunch%particle) > 10000)
+do j = 1, size(bunch%particle)
+  bunch%particle(j)%direction = 1   ! As track1_bunch_hom does.
+enddo
+!$OMP end parallel do
+call bunch_to_soa (bunch, csr_soa)
+ss = soa_session_struct()
+mesh3d%nhi = space_charge_com%space_charge_mesh_size
+call bunch_device_resident_begin (csr_soa, mesh3d, branch%param%particle, ss%use_dev)
+
+do i = 1, n_slice
+  call element_slice_iterator (ele, branch%param, i, n_slice, slice)
+
+  ! track1_bunch_hom: save at the slice start, track (wakes: save also at the slice end).
+  if (soa_save_due(bunch_track, 0.0_rp + slice%s_start)) call soa_save_step (ss, bunch, slice, bunch_track, 0.0_rp)
+  if (bunch_wake_here(slice)) then
+    call soa_track_wake_slice (ss, bunch, slice, branch%param, tracked)
+    if (soa_save_due(bunch_track, slice%value(l$) + slice%s_start)) &
+                                  call soa_save_step (ss, bunch, slice, bunch_track, slice%value(l$))
+  else
+    call soa_track_slice (ss, bunch, slice, branch%param, tracked)
+  endif
+  if (.not. tracked) then
+    call out_io (s_fatal$, 'track1_bunch_sliced', 'SLICE NOT TRACKED: ' // ele%name)
+    if (global_com%exit_on_error) call err_exit
+    err = .true.
+    exit
+  endif
+
+  ! save_a_bunch_step without s_body, as tao_beam_track calls it after the slice.
+  if (soa_save_due_end(ss, bunch_track, slice)) call soa_save_step (ss, bunch, slice, bunch_track)
+enddo
+
+if (ss%use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
+if (ss%use_dev) call bunch_device_resident_end (csr_soa)
+call soa_sync_bunch (ss, bunch)
+bunch%charge_live = bunch_charge_live(bunch)
+bunch%ix_ele = slice%ix_ele
+if (slice%value(l$) /= 0) bunch%t0 = real_garbage$
+call deallocate_ele_pointers (slice)
+
+end subroutine track1_bunch_sliced
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Function track1_bunch_sliced_ok (bunch, ele) result (ok)
+!
+! True if track1_bunch_sliced can track bunch through ele: the fast kernels support ele, and there are no
+! track1 or wake hooks, long range wakes, radiation, CSR or space charge, and bunch is in s coordinates.
+!
+! Input:
+!   bunch     -- bunch_struct: Bunch to track.
+!   ele       -- ele_struct: Element to track through.
+!
+! Output:
+!   ok        -- logical: True if track1_bunch_sliced may be used.
+!-
+
+function track1_bunch_sliced_ok (bunch, ele) result (ok)
+
+implicit none
+
+type (bunch_struct) bunch
+type (ele_struct), target :: ele
+type (ele_struct), pointer :: wake_ele
+type (branch_struct), pointer :: branch
+real(rp) ds_wake
+logical ok
+
+!
+
+branch => pointer_to_branch(ele)
+ok = (csr_use_soa(ele, branch%param) .and. ele%tracking_method /= taylor$ .and. ele%key /= match$ .and. &
+      .not. associated(track1_bunch_hook_ptr) .and. .not. associated(track1_wake_hook_ptr) .and. &
+      .not. bunch%drift_between_t_and_s .and. .not. bmad_com%radiation_damping_on .and. &
+      .not. bmad_com%radiation_fluctuations_on .and. &
+      .not. (bmad_com%csr_and_space_charge_on .and. (ele%csr_method /= off$ .or. ele%space_charge_method /= off$)))
+if (.not. ok) return
+wake_ele => pointer_to_wake_ele(ele, ds_wake)
+if (associated(wake_ele)) ok = (size(wake_ele%wake%lr%mode) == 0)
+
+end function track1_bunch_sliced_ok
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+! The routines below act on csr_soa holding bunch, with session state ss.
+
+! Track csr_soa through slice r without wakes: device, else the CPU kernels, else track1 one particle at a
+! time in place (as track1_bunch_hom would). Not tracked: a taylor slice the kernels do not support.
+
+subroutine soa_track_slice (ss, bunch, r, param, tracked)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
 type (ele_struct) r
+type (lat_param_struct) param
 logical tracked, rad_err
 
 tracked = .false.
-if (use_dev) call bunch_device_track_slice (csr_soa, r, branch%param, tracked)
+if (ss%use_dev) call bunch_device_track_slice (csr_soa, r, param, tracked)
 if (.not. tracked) then
-  call dev_to_host()
-  call fast_track1_soa (csr_soa, r, branch%param, tracked, p0c_checked = p0c_checked)
-  if (tracked) call host_changed()
+  call soa_dev_to_host(ss)
+  call fast_track1_soa (csr_soa, r, param, tracked, p0c_checked = ss%p0c_checked)
+  if (tracked) call soa_host_changed(ss)
 endif
 if (.not. tracked .and. r%tracking_method /= taylor$) then
-  call dev_to_host()
+  call soa_dev_to_host(ss)
   if (bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) call radiation_map_setup(r, rad_err)
-  call fast_track1_soa_fallback (csr_soa, bunch, r, branch%param, &
+  call fast_track1_soa_fallback (csr_soa, bunch, r, param, &
                    r%tracking_method /= symp_lie_ptc$ .and. global_com%mp_threading_is_safe)
-  call host_changed()
-  p0c_checked = -1
+  call soa_host_changed(ss)
+  ss%p0c_checked = -1
   tracked = .true.
 endif
-if (tracked) bunch_stale = .true.
-end subroutine track_runt_soa
+if (tracked) ss%stale = .true.
+end subroutine soa_track_slice
 
-! track1_bunch_hom for a slice r with wakes, on the SoA bunch: the slice up to the wake point, the short
-! range wake kicks on the SoA arrays, then the rest of the slice. Not tracked (bunch untouched): long range
+! track1_bunch_hom for a slice r with wakes, on csr_soa: the slice up to the wake point, the short range
+! wake kicks on the SoA arrays, then the rest of the slice. Not tracked (bunch untouched): long range
 ! wakes, a wake hook, or a taylor slice.
 
-subroutine track_wake_runt_soa (r, tracked)
+subroutine soa_track_wake_slice (ss, bunch, r, param, tracked)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
 type (ele_struct) r
+type (lat_param_struct) param
 type (ele_struct) half
 type (ele_struct), pointer :: wake_ele
 real(rp) ds_wake
@@ -512,70 +698,71 @@ if (.not. associated(wake_ele) .or. associated(track1_wake_hook_ptr) .or. r%trac
 if (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0) return
 
 if (r%value(l$) == 0) then
-  call track_runt_soa (r, tracked)
+  call soa_track_slice (ss, bunch, r, param, tracked)
 else
   call transfer_ele (r, half, .true.)
-  call create_element_slice (half, r, ds_wake, 0.0_rp, branch%param, .true., .false., err)
+  call create_element_slice (half, r, ds_wake, 0.0_rp, param, .true., .false., err)
   if (err) then
     call deallocate_ele_pointers (half)
     return
   endif
-  call track_runt_soa (half, tracked)
+  call soa_track_slice (ss, bunch, half, param, tracked)
 endif
 
-call dev_to_host()
+call soa_dev_to_host(ss)
 n = csr_soa%n
 call re_allocate (bunch%ix_z, n)
 call order_in_z (csr_soa%z(1:n), csr_soa%state(1:n), bunch%ix_z, bunch%n_live)
 call track1_sr_wake_arr (wake_ele, bunch%ix_z, bunch%n_live, csr_soa%x(1:n), csr_soa%px(1:n), csr_soa%y(1:n), &
                  csr_soa%py(1:n), csr_soa%z(1:n), csr_soa%pz(1:n), csr_soa%charge(1:n), csr_soa%state(1:n))
-call host_changed()
-bunch_stale = .true.
+call soa_host_changed(ss)
+ss%stale = .true.
 
 if (r%value(l$) /= 0) then
-  call create_element_slice (half, r, r%value(l$)-ds_wake, ds_wake, branch%param, .false., .true., err, half)
+  call create_element_slice (half, r, r%value(l$)-ds_wake, ds_wake, param, .false., .true., err, half)
   if (err .and. global_com%exit_on_error) call err_exit
-  if (.not. err) call track_runt_soa (half, tracked)
+  if (.not. err) call soa_track_slice (ss, bunch, half, param, tracked)
   call deallocate_ele_pointers (half)
 endif
 tracked = .true.
-end subroutine track_wake_runt_soa
+end subroutine soa_track_wake_slice
 
-! Write the SoA bunch back to bunch%particle if it has changed since the last write.
+! Write csr_soa back to bunch%particle if it has changed since the last write.
 
-subroutine sync_bunch()
-if (.not. bunch_stale) return
-call dev_to_host()
+subroutine soa_sync_bunch (ss, bunch)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
+if (.not. ss%stale) return
+call soa_dev_to_host(ss)
 call soa_to_bunch (csr_soa, bunch)
 bunch%charge_live = bunch_charge_live(bunch)
-bunch_stale = .false.
-end subroutine sync_bunch
+ss%stale = .false.
+end subroutine soa_sync_bunch
 
-subroutine finish()
-if (use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
-if (use_dev) call bunch_device_resident_end (csr_soa)
-call sync_bunch()
-call csr_eleinfo_put (csr)
-end subroutine finish
+subroutine soa_dev_to_host (ss)
+type (soa_session_struct) ss
+if (ss%use_dev) call bunch_device_sync_host (csr_soa)
+end subroutine soa_dev_to_host
 
-subroutine dev_to_host()
-if (use_dev) call bunch_device_sync_host (csr_soa)
-end subroutine dev_to_host
+subroutine soa_host_changed (ss)
+type (soa_session_struct) ss
+if (ss%use_dev) call bunch_device_host_changed ()
+end subroutine soa_host_changed
 
-subroutine host_changed()
-if (use_dev) call bunch_device_host_changed ()
-end subroutine host_changed
+! save_a_bunch_step (ele, bunch, bunch_track, s_body) for a save that is due (soa_save_due, soa_save_due_end),
+! with the bunch parameters computed from csr_soa so that bunch%particle need not be brought up to date.
 
-! save_a_bunch_step for a save that is due (bunch_track_save_due), with the bunch parameters computed from
-! csr_soa so that bunch%particle need not be brought up to date.
-
-subroutine save_soa_step (s_body)
-real(rp) s_body
+subroutine soa_save_step (ss, bunch, ele, bunch_track, s_body)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
+type (ele_struct) ele
+type (bunch_track_struct) bunch_track
+real(rp), optional :: s_body
 integer n_pt
 logical error, done
 
 if (bmad_com%spin_tracking_on .or. csr_soa%has_spin .or. csr_soa%species(1) == photon$) then  ! Not handled by calc_bunch_params_soa.
-  call sync_bunch()
+  call soa_sync_bunch (ss, bunch)
   call save_a_bunch_step (ele, bunch, bunch_track, s_body)
   return
 endif
@@ -589,14 +776,15 @@ if (bunch_track%n_pt < 0) bunch_track%n_pt = -1
 call bunch_track_add_pt (bunch_track, n_pt)
 call bunch_device_save_enqueue (csr_soa, bunch, n_pt, bunch_track%pt(n_pt)%s, done)
 if (done) return
-call dev_to_host()
+call soa_dev_to_host(ss)
 call calc_bunch_params_soa (csr_soa, bunch, bunch_track%pt(n_pt), error, ele)
-end subroutine save_soa_step
+end subroutine soa_save_step
 
-! Mirrors the test in save_a_bunch_step: True if a call with s_body would save a track point.
+! The test of save_a_bunch_step with s_body: True if a save at s_here = s_body + ele%s_start is due.
 
-function bunch_track_save_due (s_body) result (is_due)
-real(rp) s_body
+function soa_save_due (bunch_track, s_here) result (is_due)
+type (bunch_track_struct), optional :: bunch_track
+real(rp) s_here
 logical is_due
 is_due = .false.
 if (.not. present(bunch_track)) return
@@ -604,11 +792,55 @@ if (bunch_track%ds_save < 0) return
 is_due = .true.
 if (.not. allocated(bunch_track%pt)) return
 if (bunch_track%n_pt < 0) return
-is_due = (s_body + ele%s_start >= bunch_track%pt(bunch_track%n_pt)%s + bunch_track%ds_save)
-end function bunch_track_save_due
+is_due = (s_here >= bunch_track%pt(bunch_track%n_pt)%s + bunch_track%ds_save)
+end function soa_save_due
 
+! The test of save_a_bunch_step without s_body (on the mean s of the live particles), for csr_soa at the end
+! of slice r. On the device, where s is not kept per particle, the slice end is used.
 
-end subroutine track1_bunch_csr
+function soa_save_due_end (ss, bunch_track, r) result (is_due)
+type (soa_session_struct) ss
+type (bunch_track_struct), optional :: bunch_track
+type (ele_struct) r
+real(rp) s_last, s_due, s_lo, s_hi, s_err, s_here
+integer i, n
+logical is_due, not_finite
+
+is_due = .false.
+if (.not. present(bunch_track)) return
+if (bunch_track%ds_save < 0) return
+s_last = -1e30   ! As save_a_bunch_step.
+if (allocated(bunch_track%pt)) then
+  if (bunch_track%n_pt >= 0) s_last = bunch_track%pt(bunch_track%n_pt)%s
+endif
+s_due = s_last + bunch_track%ds_save
+
+if (ss%use_dev) then
+  is_due = (r%s >= s_due)
+  return
+endif
+
+n = 0;  s_lo = huge(1.0_rp);  s_hi = -huge(1.0_rp);  not_finite = .false.
+!$OMP parallel do reduction(+:n) reduction(min:s_lo) reduction(max:s_hi) reduction(.or.:not_finite) &
+!$OMP if (csr_soa%n > 10000)
+do i = 1, csr_soa%n
+  if (csr_soa%state(i) /= alive$) cycle
+  n = n + 1
+  s_lo = min(s_lo, csr_soa%s(i))
+  s_hi = max(s_hi, csr_soa%s(i))
+  if (.not. (abs(csr_soa%s(i)) <= huge(1.0_rp))) not_finite = .true.
+enddo
+!$OMP end parallel do
+if (n == 0) return
+
+s_err = 2 * n * epsilon(1.0_rp) * max(abs(s_lo), abs(s_hi))
+if (not_finite .or. (s_hi + s_err >= s_due .and. s_lo - s_err < s_due)) then
+  s_here = sum(csr_soa%s(1:csr_soa%n), csr_soa%state(1:csr_soa%n)==alive$)/n
+  is_due = (s_here >= s_due)
+else
+  is_due = (s_hi + s_err >= s_due)
+endif
+end function soa_save_due_end
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
