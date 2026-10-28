@@ -143,6 +143,7 @@ int bmad_dev_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int rea
 int bmad_dev_get_field (int comp, float *E, char *reason, int reason_len);
 
 /* Accumulated device busy time [s] since init. */
+/* Accumulated GPU busy time [s] of the committed command buffers (not wall time). */
 double bmad_dev_seconds (void);
 
 /* With BMAD_DEVICE_TIMING set in the environment: accumulated device busy time [s] per phase of the

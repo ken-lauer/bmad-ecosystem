@@ -21,6 +21,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "bmad_device.h"
 
@@ -212,6 +214,27 @@ kernel void cmul (const device float2* A [[buffer(0)]], const device float2* G [
 }
 
 // Physical octant of the padded backward transform, scaled.
+// Two real fields from one complex transform: real part to E0, imaginary part to E1.
+kernel void extract2 (const device float2* B [[buffer(0)]], device float* E0 [[buffer(1)]], device float* E1 [[buffer(2)]],
+                      constant ScPar& P [[buffer(3)]], uint gid [[thread_position_in_grid]]) {
+  uint ntot = P.nx * P.ny * P.nz;
+  if (gid >= ntot) return;
+  uint i = gid % P.nx;
+  uint t = gid / P.nx;
+  uint j = t % P.ny;
+  uint k = t / P.ny;
+  uint src = (i + P.nx - 1u) + P.nx2 * ((j + P.ny - 1u) + P.ny2 * (k + P.nz - 1u));
+  float2 b = B[src];
+  E0[gid] = P.grn_scale * b.x;
+  E1[gid] = P.grn_scale * b.y;
+}
+
+// Two real arrays (R[0:n), R[n:2n)) as the real and imaginary parts of one complex array.
+kernel void reals_to_complex (const device float* R [[buffer(0)]], device float2* A [[buffer(1)]],
+                              constant uint& n [[buffer(2)]], uint gid [[thread_position_in_grid]]) {
+  if (gid < n) A[gid] = float2(R[gid], R[n + gid]);
+}
+
 kernel void extract (const device float2* B [[buffer(0)]], device float* E [[buffer(1)]],
                      constant ScPar& P [[buffer(2)]], uint gid [[thread_position_in_grid]]) {
   uint ntot = P.nx * P.ny * P.nz;
@@ -1643,6 +1666,14 @@ struct FftParH {
 
 static const MTLResourceOptions kShared = MTLResourceStorageModeShared;
 
+// Monotonic wall clock (bmad_backend_seconds reports accumulated GPU busy time instead).
+static double wall_seconds (void)
+{
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return (double) ts.tv_sec + 1.0e-9 * (double) ts.tv_nsec;
+}
+
 struct Impl {
   id<MTLDevice> dev = nil;
   id<MTLCommandQueue> queue = nil;
@@ -1652,7 +1683,9 @@ struct Impl {
   id<MTLCommandBuffer> cb = nil;
   id<MTLComputeCommandEncoder> enc = nil;
   id<MTLBuffer> bX = nil, bY = nil, bZ = nil, bQ = nil, bF = nil, bPX = nil, bPY = nil, bPZ = nil;
+  // bG[0]: spectrum of gx + i gy (Ex and Ey from one inverse transform), bG[1]: spectrum of gz.
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
+  id<MTLComputePipelineState> psoExtract2 = nil, psoR2C2 = nil;
   id<MTLBuffer> bW = nil;          // twiddle tables, one per padded dimension length
   id<MTLBuffer> bState = nil, bLoc = nil, bLost = nil, bP0c = nil, bRed = nil, bTZ0 = nil;   // resident bunch
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
@@ -1683,6 +1716,7 @@ struct Impl {
   bool timing = false;
   double csr_wall = 0, csr_busy = 0;  long csr_calls = 0;   // BMAD_DEVICE_TIMING: CSR step waits
   double busy = 0;
+  long n_sync = 0;
   double phase[4] = {0, 0, 0, 0};
 
   // With timing on, commit here and charge the busy time since the last mark to phase i.
@@ -1716,6 +1750,7 @@ struct Impl {
     [cb commit];
     [cb waitUntilCompleted];
     busy += [cb GPUEndTime] - [cb GPUStartTime];
+    n_sync++;
     if (cb.error != nil) snprintf(err, sizeof(err), "command buffer failed: %s", cb.error.localizedDescription.UTF8String);
     cb = nil;
     enc = nil;
@@ -1849,6 +1884,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoFft = pso(@"fft_lines");
     p->psoCmul = pso(@"cmul");
     p->psoExtract = pso(@"extract");
+    p->psoExtract2 = pso(@"extract2");
+    p->psoR2C2 = pso(@"reals_to_complex");
     p->psoKick = pso(@"interp_kick");
     p->psoTrack = pso(@"track_slice");
     p->psoRedSums = pso(@"reduce_sums");
@@ -1880,7 +1917,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);
     p->bB = p->alloc(nm2 * 8);
-    for (int c = 0; c < 3; c++) { p->bG[c] = p->alloc(nm2 * 8); p->bE[c] = p->alloc(nm * 4); }
+    for (int c = 0; c < 2; c++) p->bG[c] = p->alloc(nm2 * 8);
+    for (int c = 0; c < 3; c++) p->bE[c] = p->alloc(nm * 4);
     p->bFault = p->alloc(4);
     memset(p->bFault.contents, 0, 4);
     {
@@ -1920,19 +1958,27 @@ int bmad_backend_set_green (const float *gx, const float *gy, const float *gz, c
   @autoreleasepool {
     Impl *p = gImpl;
     if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
-    const float *g[3] = {gx, gy, gz};
     uint32_t nm2 = p->nx2 * p->ny2 * p->nz2;
-    for (int c = 0; c < 3; c++) {
-      p->sync();
-      memcpy(p->bA.contents, g[c], (size_t) nm2 * 4);    // bA holds 2*nm2 floats, enough for the real array
-      id<MTLComputeCommandEncoder> e = p->encoder();
-      [e setComputePipelineState:p->psoR2C];
-      [e setBuffer:p->bA offset:0 atIndex:0];
-      [e setBuffer:p->bG[c] offset:0 atIndex:1];
-      [e setBytes:&nm2 length:4 atIndex:2];
-      [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-      p->fft3d_forward_full(p->bG[c]);
-    }
+    // bA holds 2*nm2 floats: gx and gy side by side, packed into the complex array gx + i gy.
+    p->sync();
+    memcpy(p->bA.contents, gx, (size_t) nm2 * 4);
+    memcpy((char *) p->bA.contents + (size_t) nm2 * 4, gy, (size_t) nm2 * 4);
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoR2C2];
+    [e setBuffer:p->bA offset:0 atIndex:0];
+    [e setBuffer:p->bG[0] offset:0 atIndex:1];
+    [e setBytes:&nm2 length:4 atIndex:2];
+    [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    p->fft3d_forward_full(p->bG[0]);
+    p->sync();
+    memcpy(p->bA.contents, gz, (size_t) nm2 * 4);
+    e = p->encoder();
+    [e setComputePipelineState:p->psoR2C];
+    [e setBuffer:p->bA offset:0 atIndex:0];
+    [e setBuffer:p->bG[1] offset:0 atIndex:1];
+    [e setBytes:&nm2 length:4 atIndex:2];
+    [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    p->fft3d_forward_full(p->bG[1]);
     p->sync();
     if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
     p->green_set = true;
@@ -2006,7 +2052,7 @@ int bmad_backend_sc_step (const bmad_dev_sc_par *par, const float *x, const floa
     p->fft3d_forward_padded(p->bA);
     p->mark(1);
 
-    for (int c = 0; c < 3; c++) {
+    for (int c = 0; c < 2; c++) {
       e = p->encoder();
       [e setComputePipelineState:p->psoCmul];
       [e setBuffer:p->bA offset:0 atIndex:0];
@@ -2016,10 +2062,18 @@ int bmad_backend_sc_step (const bmad_dev_sc_par *par, const float *x, const floa
       [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
       p->fft3d_backward_octant(p->bB);
       e = p->encoder();
-      [e setComputePipelineState:p->psoExtract];
-      [e setBuffer:p->bB offset:0 atIndex:0];
-      [e setBuffer:p->bE[c] offset:0 atIndex:1];
-      [e setBytes:&P length:sizeof(P) atIndex:2];
+      if (c == 0) {
+        [e setComputePipelineState:p->psoExtract2];
+        [e setBuffer:p->bB offset:0 atIndex:0];
+        [e setBuffer:p->bE[0] offset:0 atIndex:1];
+        [e setBuffer:p->bE[1] offset:0 atIndex:2];
+        [e setBytes:&P length:sizeof(P) atIndex:3];
+      } else {
+        [e setComputePipelineState:p->psoExtract];
+        [e setBuffer:p->bB offset:0 atIndex:0];
+        [e setBuffer:p->bE[2] offset:0 atIndex:1];
+        [e setBytes:&P length:sizeof(P) atIndex:2];
+      }
       [e dispatchThreads:MTLSizeMake(nm, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     }
     p->mark(2);
@@ -2222,6 +2276,13 @@ int bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int
 {
   @autoreleasepool {
     Impl *p = gImpl;
+    {
+      static int busy_on = -1;  static long n_calls = 0;  static double t_start = 0;
+      if (busy_on < 0) { busy_on = (getenv("BMAD_DEVICE_BUSY") != NULL); t_start = wall_seconds(); }
+      if (busy_on && p != NULL && (++n_calls % 500) == 0)
+        fprintf(stderr, "bmad_metal busy: sc steps %ld, wall since the first %.3f s, GPU busy %.3f s, command buffers %ld\n",
+                n_calls, wall_seconds() - t_start, p->busy, p->n_sync);
+    }
     if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
     if (!p->green_set) { put_reason(reason, reason_len, "Green function not set"); return 1; }
     uint32_t n = (uint32_t) p->n_res;
@@ -2276,7 +2337,7 @@ int bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int
     p->fft3d_forward_padded(p->bA);
     p->mark(1);
 
-    for (int c = 0; c < 3; c++) {
+    for (int c = 0; c < 2; c++) {
       e = p->encoder();
       [e setComputePipelineState:p->psoCmul];
       [e setBuffer:p->bA offset:0 atIndex:0];
@@ -2286,10 +2347,18 @@ int bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int
       [e dispatchThreads:MTLSizeMake(nm2, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
       p->fft3d_backward_octant(p->bB);
       e = p->encoder();
-      [e setComputePipelineState:p->psoExtract];
-      [e setBuffer:p->bB offset:0 atIndex:0];
-      [e setBuffer:p->bE[c] offset:0 atIndex:1];
-      [e setBytes:&P length:sizeof(P) atIndex:2];
+      if (c == 0) {
+        [e setComputePipelineState:p->psoExtract2];
+        [e setBuffer:p->bB offset:0 atIndex:0];
+        [e setBuffer:p->bE[0] offset:0 atIndex:1];
+        [e setBuffer:p->bE[1] offset:0 atIndex:2];
+        [e setBytes:&P length:sizeof(P) atIndex:3];
+      } else {
+        [e setComputePipelineState:p->psoExtract];
+        [e setBuffer:p->bB offset:0 atIndex:0];
+        [e setBuffer:p->bE[2] offset:0 atIndex:1];
+        [e setBytes:&P length:sizeof(P) atIndex:2];
+      }
       [e dispatchThreads:MTLSizeMake(nm, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     }
     p->mark(2);
@@ -2471,10 +2540,10 @@ int bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, doubl
       [e dispatchThreads:MTLSizeMake(nbin, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
       csr_encode_pass(p, e, n, nbin, 2, p->bCsrAcc2);
     }
-    double t0 = p->timing ? bmad_backend_seconds() : 0.0, b0 = p->busy;
+    double t0 = p->timing ? wall_seconds() : 0.0, b0 = p->busy;
     p->sync();
     if (p->timing) {
-      p->csr_wall += bmad_backend_seconds() - t0; p->csr_busy += p->busy - b0; p->csr_calls++;
+      p->csr_wall += wall_seconds() - t0; p->csr_busy += p->busy - b0; p->csr_calls++;
       if (p->csr_calls % 500 == 0)
         fprintf(stderr, "bmad_metal timing: csr_step calls %ld, wait %.3f s (%.3f ms/call), GPU busy %.3f s (%.3f ms/call)\n",
                 p->csr_calls, p->csr_wall, 1e3 * p->csr_wall / p->csr_calls, p->csr_busy, 1e3 * p->csr_busy / p->csr_calls);

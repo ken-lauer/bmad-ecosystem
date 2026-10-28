@@ -989,6 +989,12 @@ integer ierr, mesh_n(3), nx2, ny2, nz2
 logical done
 character(256) reason
 character(*), parameter :: r_name = 'bunch_device_sc_kick_resident'
+character(8) val
+real(rp) tt0, tt1, tt2
+real(c_double) gph(4)
+logical, save :: sct_init = .false., sct_on = .false.
+integer, save :: sct_n = 0, sct_n_green = 0, sct_n_dd = 0, sct_n_dg = 0
+real(rp), save :: sct_t(3) = 0
 
 done = .false.
 if (.not. res_active .or. .not. dev_ok) return
@@ -996,6 +1002,11 @@ call bunch_device_sync_device (soa)
 if (.not. res_active) return
 
 reason = ''
+if (.not. sct_init) then
+  call get_environment_variable ('BMAD_DEVICE_TIMING', val)
+  sct_on = (val /= '');  sct_init = .true.
+endif
+if (sct_on) tt0 = wall_now()
 ierr = bmad_dev_bunch_sums (real(res_mass, c_double), sums, reason, len(reason))
 if (ierr /= 0) then
   call fail ('Reduction failed: ' // trim(from_c(reason)));  return
@@ -1011,12 +1022,19 @@ ierr = bmad_dev_bunch_bounds (real(res_mass, c_double), real(dct_ave, c_double),
 if (ierr /= 0) then
   call fail ('Bounds reduction failed: ' // trim(from_c(reason)));  return
 endif
+if (sct_on) tt1 = wall_now()
 call osc_mesh_resize_bounds (bnd(1:3), bnd(4:6), mesh3d, growth, shrink)
 where (mesh3d%delta == 0) mesh3d%delta = 1d-10
 mesh3d%charge = sign(qabs, soa%charge(1))
 
+if (sct_on .and. (any(mesh3d%delta /= grn_delta) .or. mesh3d%gamma /= grn_gamma)) then
+  sct_n_green = sct_n_green + 1
+  if (any(mesh3d%delta /= grn_delta)) sct_n_dd = sct_n_dd + 1
+  if (mesh3d%gamma /= grn_gamma) sct_n_dg = sct_n_dg + 1
+endif
 call device_mesh_setup (mesh3d, soa%n, .true., ierr)
 if (ierr /= 0) return
+if (sct_on) tt2 = wall_now()
 mesh_n = mesh3d%nhi - mesh3d%nlo + 1
 nx2 = 2 * mesh_n(1);  ny2 = 2 * mesh_n(2);  nz2 = 2 * mesh_n(3)
 
@@ -1039,9 +1057,25 @@ endif
 res_host_current = .false.
 stats_valid = .false.
 done = .true.
+if (sct_on) then
+  sct_n = sct_n + 1
+  sct_t(1) = sct_t(1) + (tt1 - tt0);  sct_t(2) = sct_t(2) + (tt2 - tt1);  sct_t(3) = sct_t(3) + (wall_now() - tt2)
+  if (mod(sct_n, 200) == 0) then
+    call bmad_dev_timing (gph)
+    write (0, '(a, i0, a, i0, a, i0, a, i0, a, 3f9.3, a, f9.3)') 'sc step timing: steps ', sct_n, ', green rebuilds ', sct_n_green, &
+                 ' (mesh spacing ', sct_n_dd, ', gamma ', sct_n_dg, '), wall [s] in reductions (incl. GPU backlog), mesh + Green function, enqueue: ', &
+                 sct_t(1:3), '  GPU busy total [s] ', bmad_dev_seconds()
+  endif
+endif
 
 !--------------------------
 contains
+function wall_now () result (t)
+real(rp) t
+integer(8) cnt, rate
+call system_clock (cnt, rate)
+t = real(cnt, rp) / real(rate, rp)
+end function wall_now
 
 subroutine fail (msg)
 character(*) msg
