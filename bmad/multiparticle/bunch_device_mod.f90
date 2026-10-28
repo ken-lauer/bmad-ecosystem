@@ -53,6 +53,8 @@ type, bind(c) :: bmad_dev_slice_par_struct
   integer(c_int32_t) :: lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick
   real(c_float) :: lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1
   real(c_float) :: lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor
+  integer(c_int32_t) :: fr_type, fr_on
+  real(c_float) :: fr_e(2), fr_fg(2), fr_g, fr_g_dir, fr_beta0, fr_pad
 end type
 
 ! Mirror of bmad_dev_csr_par.
@@ -1141,6 +1143,11 @@ par%lc_rel_tol = real(fs%lc_rel_tol, c_float);  par%lc_abs_tol = real(fs%lc_abs_
 par%lc_init_ds = real(fs%lc_init_ds, c_float);  par%lc_min_ds = real(fs%lc_min_ds, c_float)
 par%lc_fatal_ds = real(fs%lc_fatal_ds, c_float); par%lc_ds_tiny = real(fs%lc_ds_tiny, c_float)
 par%lc_charge = real(fs%lc_charge, c_float);    par%lc_rel_floor = real(fs%lc_rel_floor, c_float)
+par%fr_type = fs%fr_type
+par%fr_on = merge(1, 0, fs%fr_on(1)) + merge(2, 0, fs%fr_on(2))
+par%fr_e = real(fs%fr_e, c_float);  par%fr_fg = real(fs%fr_fg, c_float)
+par%fr_g = real(fs%fr_g, c_float);  par%fr_g_dir = real(fs%fr_g_dir, c_float)
+par%fr_beta0 = real(fs%fr_beta0, c_float);  par%fr_pad = 0
 
 end subroutine slice_to_par
 

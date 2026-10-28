@@ -38,6 +38,7 @@ implicit none
 
 private :: powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
+private :: bend_fringe_lane, bend_fringe_setup
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4, fast_lcav$ = 5
 
@@ -121,9 +122,17 @@ type fast_slice_struct
   ! Apertures checked at the first (1) and second (2) track edge, in check_aperture_limit order.
   integer :: n_ap(2) = 0
   type (fast_aperture_struct) :: ap(fast_max_ap, 2)
-  ! Bend (track_a_bend body without fringe, k1, multipole kicks or misalignment).
+  ! Bend (track_a_bend body without k1, multipole kicks or misalignment).
   real(rp) :: g = 0, dg = 0, g_tot = 0, angle = 0, beta_ref = 0
   real(rp) :: sinc_a = 0, cos_a = 0, sin_a = 0, cosc_a = 0, sincc_a = 0
+  ! Bend fringe (bend_edge_kick): fr_type 1 = exact_bend_edge_kick (fringe_type full), 2 = hwang_bend_edge_kick
+  ! (basic_bend, hard_edge_only). fr_on(ie): kick at the first / second track edge of this slice (fringe_here).
+  integer :: fr_type = 0
+  logical :: fr_on(2) = .false.
+  real(rp) :: fr_e(2) = 0, fr_fg(2) = 0      ! Edge angle and fint * hgap of each edge (0 for hard_edge_only)
+  real(rp) :: fr_g = 0                      ! g + dg if on, else 0 (exact kick, charge independent)
+  real(rp) :: fr_g_dir = 0                  ! (g + dg) * charge_dir (hwang kick)
+  real(rp) :: fr_beta0 = 0                  ! p0c / e_tot of the slice
   ! Radiation kicks (track1_radiation) at the entrance (1) and exit (2) from ele%rad_map rm0/rm1.
   logical :: rad_damp = .false., rad_fluct = .false., rad_damp_vec = .false.
   ! Per edge: whether the damping kick is nonzero (adding an all-zero kick does not change the orbit so
@@ -251,10 +260,11 @@ if (associated(apply_element_edge_kick_hook_ptr)) then
   call set_why('edge kick hook set');  return
 endif
 if (logic_option(.true., check_fringe)) then
-  call init_fringe_info (fringe_info, ele)
-  if (fringe_info%has_fringe) then
-    call set_why('bend fringe at this slice');  return
-  endif
+  select case (nint(ele%value(fringe_type$)))
+  case (none$, full$, basic_bend$, hard_edge_only$)
+  case default
+    call set_why('bend fringe type');  return
+  end select
 endif
 if (ele%bookkeeping_state%has_misalign) then
   call set_why('misaligned bend');  return
@@ -316,6 +326,7 @@ fs%cos_a = cos(fs%angle)
 fs%sin_a = sin(fs%angle)
 fs%cosc_a = cosc(fs%angle)
 fs%sincc_a = sincc(fs%angle)
+call bend_fringe_setup (ele, fs)
 
 !------------------------
 contains
@@ -1765,6 +1776,12 @@ do i = i0, i1
   ! track_a_bend's orbit_too_large check after the entrance edge kick passes: the orbit has not
   ! changed since track1's check.
   lost = .false.
+  if (fs%fr_on(1)) then
+    call bend_fringe_lane (soa, fs, i, 1, lost)
+    if (lost) cycle
+    call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
+    if (too_large) cycle
+  endif
   do n = 1, fs%n_step
     call bend_body_lane (soa, fs, i, lost)
     if (lost) exit
@@ -1772,6 +1789,10 @@ do i = i0, i1
   if (lost) cycle
   call orbit_too_large_lane (soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%pz(i), fs%max_ap, soa%state(i), too_large)
   if (too_large) cycle
+  if (fs%fr_on(2)) then
+    call bend_fringe_lane (soa, fs, i, 2, lost)
+    if (lost) cycle
+  endif
   call add_time2 (soa, i, fs%delta_ref_time, (z0 - soa%z(i)) / (soa%beta(i) * c_light))
 enddo
 
@@ -1779,6 +1800,249 @@ call exit_block (soa, fs, i0, i1, go)
 
 end subroutine track_block_bend
 
+!--------------------------------------------------------------------------
+! Bend fringe parameters of a slice: which edges kick (fringe_here with the slice's fringe_at, which
+! makeup_super_slave1 sets from the ends the slice contains) and the per-edge angle and fint * hgap.
+
+subroutine bend_fringe_setup (ele, fs)
+
+type (ele_struct) ele
+type (fast_slice_struct) fs
+integer fringe_type, fringe_at
+
+fringe_type = nint(ele%value(fringe_type$))
+fringe_at = nint(ele%value(fringe_at$))
+fs%fr_type = 0
+fs%fr_on = .false.
+if (fringe_type == none$) return
+fs%fr_on(1) = at_this_ele_end(entrance_end$, fringe_at)
+fs%fr_on(2) = at_this_ele_end(exit_end$, fringe_at)
+if (.not. any(fs%fr_on)) return
+select case (fringe_type)
+case (full$);                       fs%fr_type = 1
+case (basic_bend$, hard_edge_only$); fs%fr_type = 2
+end select
+fs%fr_e = [ele%value(e1$), ele%value(e2$)]
+fs%fr_fg = [ele%value(fint$) * ele%value(hgap$), ele%value(fintx$) * ele%value(hgapx$)]
+if (fringe_type == hard_edge_only$) fs%fr_fg = 0
+if (ele%is_on) then
+  fs%fr_g = ele%value(g$) + ele%value(dg$)
+else
+  fs%fr_g = 0
+endif
+fs%fr_g_dir = fs%fr_g * fs%charge_dir
+fs%fr_beta0 = ele%value(p0c$) / ele%value(e_tot$)
+
+end subroutine bend_fringe_setup
+
+!--------------------------------------------------------------------------
+! bend_edge_kick at edge ie (1 = first track edge, 2 = second) for a forward particle, k1 = 0.
+! The time is left to the caller (track_a_bend recomputes t from the net change of z).
+
+subroutine bend_fringe_lane (soa, fs, i, ie, lost)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+real(rp) vec(6), e, fg, g, beta0, rel_p
+real(rp) f, c_y2, c_x3, c_xy2, c_b, cos_e, sin_e, tan_e, sec_e, b_sign
+integer i, ie
+logical lost, err
+
+lost = .false.
+vec = [soa%x(i), soa%px(i), soa%y(i), soa%py(i), soa%z(i), soa%pz(i)]
+e = fs%fr_e(ie);  fg = fs%fr_fg(ie);  beta0 = fs%fr_beta0
+
+select case (fs%fr_type)
+case (1)
+  ! exact_bend_edge_kick
+  g = fs%fr_g
+  if (ie == 1) then
+    call wedger_lane (e, 0.0_rp, beta0, vec, err)
+    if (err) then; call exit_lost; return; endif
+    call fringe_dipoler_lane (vec, g, beta0, fg, 1, err)
+    if (err) then; call exit_lost; return; endif
+    call wedger_lane (-e, g, beta0, vec, err)
+    if (err) then; call exit_lost; return; endif
+  else
+    call wedger_lane (-e, g, beta0, vec, err)
+    if (err) then; call exit_lost; return; endif
+    call fringe_dipoler_lane (vec, g, beta0, fg, 2, err)
+    if (err) then; call exit_lost; return; endif
+    call wedger_lane (e, 0.0_rp, beta0, vec, err)
+    if (err) then; call exit_lost; return; endif
+  endif
+
+case (2)
+  ! hwang_bend_edge_kick with k1 = 0, time_dir = 1.
+  g = fs%fr_g_dir
+  b_sign = merge(1.0_rp, -1.0_rp, ie == 1)
+  cos_e = cos(e);  sin_e = sin(e);  tan_e = sin_e / cos_e;  sec_e = 1 / cos_e
+  f = g * tan_e
+  c_y2 = fg * g**2 * sec_e**3 * (1 + sin_e**2)
+  c_x3 = -g**2 * tan_e**3 / 12
+  c_xy2 = g**2 * tan_e * sec_e**2 / 4
+  c_b = b_sign * g / 2
+  rel_p = 1 + vec(6)
+  call k_kick (0.5_rp)
+  call b1_flow (c_b * tan_e**2, err);  if (err) then; soa%state(i) = lost$; lost = .true.; return; endif
+  call b2_flow (-c_b * sec_e**2)
+  call b3_flow (-2 * c_b * tan_e**2)
+  call k_kick (0.5_rp)
+end select
+
+soa%x(i) = vec(1);  soa%px(i) = vec(2);  soa%y(i) = vec(3);  soa%py(i) = vec(4);  soa%z(i) = vec(5);  soa%pz(i) = vec(6)
+
+!------------------------
+contains
+
+subroutine exit_lost
+soa%state(i) = lost_pz$
+lost = .true.
+end subroutine exit_lost
+
+subroutine k_kick (a)
+real(rp) a, x, y, q, qx, qy
+x = vec(1); y = vec(3)
+q  = c_y2 * y**2 + c_x3 * x**3 + c_xy2 * x * y**2
+qx = 3 * c_x3 * x**2 + c_xy2 * y**2
+qy = 2 * c_y2 * y + 2 * c_xy2 * x * y
+vec(2) = vec(2) + a * (f * x + qx / rel_p)
+vec(4) = vec(4) + a * (-f * y + qy / rel_p)
+vec(5) = vec(5) + a * q / rel_p**2
+end subroutine k_kick
+
+subroutine b1_flow (c, err)
+real(rp) c, b, u, x, px
+logical err
+b = c / rel_p
+x = vec(1); px = vec(2)
+u = 1 + b * x
+err = (u <= 0)
+if (err) return
+vec(1) = x / u
+vec(2) = px * u**2
+vec(5) = vec(5) + b * x**2 * px / rel_p
+end subroutine b1_flow
+
+subroutine b2_flow (c)
+real(rp) c, b, y, px
+b = c / rel_p
+y = vec(3); px = vec(2)
+vec(1) = vec(1) - b * y**2
+vec(4) = vec(4) + 2 * b * y * px
+vec(5) = vec(5) + b * y**2 * px / rel_p
+end subroutine b2_flow
+
+subroutine b3_flow (c)
+real(rp) c, b, ex, x, y, py
+b = c / rel_p
+x = vec(1); y = vec(3); py = vec(4)
+ex = exp(-b * x)
+vec(2) = vec(2) + b * y * py
+vec(3) = y * ex
+vec(4) = py / ex
+vec(5) = vec(5) + b * x * y * py / rel_p
+end subroutine b3_flow
+
+end subroutine bend_fringe_lane
+
+!--------------------------------------------------------------------------
+! bmad_wedger (bmad_rot_xz for g_tot = 0) without the matrix.
+
+subroutine wedger_lane (a, g_tot, beta0, vec, err)
+
+real(rp) a, g_tot, beta0, vec(6)
+real(rp) b1, x, px, py, pp, ps, pt, ca, sa, s2a, s2, pxn, psn, den, num, L
+logical err
+
+err = .true.
+b1 = g_tot
+x = vec(1); px = vec(2); py = vec(4)
+pp = 1 + vec(6)
+ps = pp**2 - px**2 - py**2
+if (ps <= 0) return
+ps = sqrt(ps)
+ca = cos(a); sa = sin(a)
+
+if (b1 == 0) then
+  den = ps*ca - px*sa
+  L = x*sa/den
+  vec(1) = x*ps/den
+  vec(2) = px*ca + ps*sa
+  vec(3) = vec(3) + py*L
+  vec(5) = vec(5) - pp*L
+  err = .false.
+  return
+endif
+
+pt = pp**2 - py**2
+if (pt < 1e-10) return
+pt = sqrt(pt)
+s2a = sin(2.0_rp*a); s2 = sa**2
+pxn = px*ca + (ps - b1*x)*sa
+psn = pt**2 - pxn**2
+if (psn < 1e-10) return
+psn = sqrt(psn)
+den = psn + ps*ca - px*sa
+num = x*px*s2a + s2*(2*x*ps - b1*x**2)
+L = (a + asin(px/pt) - asin(pxn/pt)) / b1
+vec(1) = x*ca + num/den
+vec(2) = pxn
+vec(3) = vec(3) + py*L
+vec(5) = vec(5) - pp*L
+err = .false.
+
+end subroutine wedger_lane
+
+!--------------------------------------------------------------------------
+! bmad_fringe_dipoler without the matrix. particle_at: 1 = first track edge, 2 = second.
+
+subroutine fringe_dipoler_lane (vec, g_tot, beta0, fint_hgap, particle_at, err)
+
+real(rp) vec(6), g_tot, beta0, fint_hgap
+real(rp) b, x, px, y, py, z, pp, ee, beta, ps, xp, yp, kap, fac2
+real(rp) d(3,3), fi(3), fi0, fi0t, co1, co2, bb1, bb2, bb3, ynew, sq
+integer particle_at
+logical err
+
+err = .true.
+b = merge(g_tot, -g_tot, particle_at == 1)
+x = vec(1); px = vec(2); y = vec(3); py = vec(4); z = vec(5)
+pp = 1 + vec(6)
+ps = pp**2 - px**2 - py**2
+if (ps <= 0) return
+ps = sqrt(ps)
+ee = sqrt(pp**2 + 1/beta0**2 - 1)
+beta = pp / ee
+xp = px/ps; yp = py/ps
+kap = b*fint_hgap
+fac2 = 1 + yp**2
+d(1,1) = (1+xp**2)/ps;  d(2,1) = xp*yp/ps;      d(3,1) = -xp
+d(1,2) = xp*yp/ps;      d(2,2) = fac2/ps;       d(3,2) = -yp
+d(1,3) = -ee*xp/ps**2;  d(2,3) = -ee*yp/ps**2;  d(3,3) = ee/ps
+fi0 = atan(xp/fac2) - 2*kap*(1 + xp**2*(2+yp**2))*ps
+co2 = b/cos(fi0)**2
+co1 = co2/(1 + (xp/fac2)**2)
+fi(1) = co1/fac2 - 4*kap*co2*xp*(2+yp**2)*ps
+fi(2) = -2*co1*xp*yp/fac2**2 - 4*kap*co2*xp**2*yp*ps
+fi(3) = -2*kap*co2*(1 + xp**2*(2+yp**2))
+fi0t = b*tan(fi0)
+bb2 = fi(1)*d(1,2) + fi(2)*d(2,2) + fi(3)*d(3,2)
+sq = 1 - 2*bb2*y
+if (sq < 0) return
+sq = sqrt(sq)
+ynew = 2*y/(1 + sq)
+bb1 = fi(1)*d(1,1) + fi(2)*d(2,1) + fi(3)*d(3,1)
+bb3 = fi(1)*d(1,3) + fi(2)*d(2,3) + fi(3)*d(3,3)
+vec(1) = x + 0.5_rp*bb1*ynew**2
+vec(3) = ynew
+vec(4) = py - fi0t*ynew
+vec(5) = z + 0.5_rp*beta*bb3*ynew**2
+err = .false.
+
+end subroutine fringe_dipoler_lane
+
+!--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 ! One step of the track_a_bend body (b1 = 0, g or dg nonzero). lost = True if track_a_bend returns
 ! from inside the body (the particle state is set).

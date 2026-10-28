@@ -300,6 +300,8 @@ struct SlicePar {
   int lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick;   // lc_kick bit 0: entrance edge kick, bit 1: exit
   float lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1;
   float lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor;
+  int fr_type, fr_on;                      // bend fringe: 1 exact, 2 hwang; fr_on bit 0 entrance, bit 1 exit
+  float fr_e[2], fr_fg[2], fr_g, fr_g_dir, fr_beta0, fr_pad;
 };
 
 struct Lane { float x, px, y, py, z, pz; int state; };
@@ -557,6 +559,156 @@ inline float low_e_dz_f (float pz, float p0c, float mass, float e_tot, float ds)
 }
 
 // One step of the track_a_bend body. Returns false if the particle is lost inside.
+
+// ------------------------------------------------------------------------------------------------
+// Bend fringe kicks (bend_edge_kick with k1 = 0): exact_bend_edge_kick = wedge, dipole fringe, wedge
+// back (fringe_type full); hwang_bend_edge_kick (basic_bend, hard_edge_only).
+
+// bmad_wedger (bmad_rot_xz when g_tot = 0). False if the particle cannot be propagated.
+inline bool wedger_f (float a, float g_tot, thread float* v) {
+  float x = v[0], px = v[1], py = v[3], pp = 1.0f + v[5];
+  float ps = pp * pp - px * px - py * py;
+  if (ps <= 0.0f) return false;
+  ps = sqrt(ps);
+  float ca = cos(a), sa = sin(a);
+  if (g_tot == 0.0f) {
+    float den = ps * ca - px * sa;
+    float L = x * sa / den;
+    v[0] = x * ps / den;
+    v[1] = px * ca + ps * sa;
+    v[2] += py * L;
+    v[4] -= pp * L;
+    return true;
+  }
+  float pt = pp * pp - py * py;
+  if (pt < 1.0e-10f) return false;
+  pt = sqrt(pt);
+  float s2a = sin(2.0f * a), s2 = sa * sa;
+  float pxn = px * ca + (ps - g_tot * x) * sa;
+  float psn = pt * pt - pxn * pxn;
+  if (psn < 1.0e-10f) return false;
+  psn = sqrt(psn);
+  float den = psn + ps * ca - px * sa;
+  float num = x * px * s2a + s2 * (2.0f * x * ps - g_tot * x * x);
+  float L = (a + asin(px / pt) - asin(pxn / pt)) / g_tot;
+  v[0] = x * ca + num / den;
+  v[1] = pxn;
+  v[2] += py * L;
+  v[4] -= pp * L;
+  return true;
+}
+
+// bmad_fringe_dipoler. first: first track edge (b = g_tot), else second (b = -g_tot).
+inline bool dipoler_f (float g_tot, float beta0, float fint_hgap, bool first, thread float* v) {
+  float b = first ? g_tot : -g_tot;
+  float x = v[0], px = v[1], y = v[2], py = v[3], z = v[4], pp = 1.0f + v[5];
+  float ps = pp * pp - px * px - py * py;
+  if (ps <= 0.0f) return false;
+  ps = sqrt(ps);
+  float ee = sqrt(pp * pp + 1.0f / (beta0 * beta0) - 1.0f);
+  float beta = pp / ee;
+  float xp = px / ps, yp = py / ps;
+  float kap = b * fint_hgap;
+  float fac2 = 1.0f + yp * yp;
+  float d11 = (1.0f + xp * xp) / ps, d21 = xp * yp / ps, d31 = -xp;
+  float d12 = xp * yp / ps, d22 = fac2 / ps, d32 = -yp;
+  float d13 = -ee * xp / (ps * ps), d23 = -ee * yp / (ps * ps), d33 = ee / ps;
+  float g2 = 1.0f + xp * xp * (2.0f + yp * yp);
+  float fi0 = atan(xp / fac2) - 2.0f * kap * g2 * ps;
+  float cf = cos(fi0);
+  float co2 = b / (cf * cf);
+  float co1 = co2 / (1.0f + (xp / fac2) * (xp / fac2));
+  float fi1 = co1 / fac2 - 4.0f * kap * co2 * xp * (2.0f + yp * yp) * ps;
+  float fi2 = -2.0f * co1 * xp * yp / (fac2 * fac2) - 4.0f * kap * co2 * xp * xp * yp * ps;
+  float fi3 = -2.0f * kap * co2 * g2;
+  float fi0t = b * tan(fi0);
+  float bb2 = fi1 * d12 + fi2 * d22 + fi3 * d32;
+  float sq = 1.0f - 2.0f * bb2 * y;
+  if (sq < 0.0f) return false;
+  sq = sqrt(sq);
+  float ynew = 2.0f * y / (1.0f + sq);
+  float bb1 = fi1 * d11 + fi2 * d21 + fi3 * d31;
+  float bb3 = fi1 * d13 + fi2 * d23 + fi3 * d33;
+  v[0] = x + 0.5f * bb1 * ynew * ynew;
+  v[2] = ynew;
+  v[3] = py - fi0t * ynew;
+  v[4] = z + 0.5f * beta * bb3 * ynew * ynew;
+  return true;
+}
+
+// bend_edge_kick at edge ie (0 entrance, 1 exit). False (state set) if the particle is lost.
+inline bool bend_fringe_f (thread Lane& o, constant SlicePar& P, int ie) {
+  float v[6] = {o.x, o.px, o.y, o.py, o.z, o.pz};
+  float e = P.fr_e[ie], fg = P.fr_fg[ie];
+  if (P.fr_type == 1) {
+    float g = P.fr_g;
+    bool ok;
+    if (ie == 0) ok = wedger_f(e, 0.0f, v) && dipoler_f(g, P.fr_beta0, fg, true, v) && wedger_f(-e, g, v);
+    else         ok = wedger_f(-e, g, v) && dipoler_f(g, P.fr_beta0, fg, false, v) && wedger_f(e, 0.0f, v);
+    if (!ok) { o.state = LOST_PZ; return false; }
+  } else if (P.fr_type == 2) {
+    float g = P.fr_g_dir;
+    float b_sign = (ie == 0) ? 1.0f : -1.0f;
+    float cos_e = cos(e), sin_e = sin(e), tan_e = sin_e / cos_e, sec_e = 1.0f / cos_e;
+    float f = g * tan_e;
+    float c_y2 = fg * g * g * sec_e * sec_e * sec_e * (1.0f + sin_e * sin_e);
+    float c_x3 = -g * g * tan_e * tan_e * tan_e / 12.0f;
+    float c_xy2 = g * g * tan_e * sec_e * sec_e / 4.0f;
+    float c_b = b_sign * g / 2.0f;
+    float rel_p = 1.0f + v[5];
+    // k_kick(0.5)
+    {
+      float x = v[0], y = v[2];
+      float q = c_y2 * y * y + c_x3 * x * x * x + c_xy2 * x * y * y;
+      float qx = 3.0f * c_x3 * x * x + c_xy2 * y * y;
+      float qy = 2.0f * c_y2 * y + 2.0f * c_xy2 * x * y;
+      v[1] += 0.5f * (f * x + qx / rel_p);
+      v[3] += 0.5f * (-f * y + qy / rel_p);
+      v[4] += 0.5f * q / (rel_p * rel_p);
+    }
+    // b1_flow(c_b tan^2)
+    {
+      float bb = c_b * tan_e * tan_e / rel_p;
+      float x = v[0], px = v[1];
+      float u = 1.0f + bb * x;
+      if (u <= 0.0f) { o.state = LOST; return false; }
+      v[0] = x / u;
+      v[1] = px * u * u;
+      v[4] += bb * x * x * px / rel_p;
+    }
+    // b2_flow(-c_b sec^2)
+    {
+      float bb = -c_b * sec_e * sec_e / rel_p;
+      float y = v[2], px = v[1];
+      v[0] -= bb * y * y;
+      v[3] += 2.0f * bb * y * px;
+      v[4] += bb * y * y * px / rel_p;
+    }
+    // b3_flow(-2 c_b tan^2)
+    {
+      float bb = -2.0f * c_b * tan_e * tan_e / rel_p;
+      float x = v[0], y = v[2], py = v[3];
+      float ex = exp(-bb * x);
+      v[1] += bb * y * py;
+      v[2] = y * ex;
+      v[3] = py / ex;
+      v[4] += bb * x * y * py / rel_p;
+    }
+    // k_kick(0.5)
+    {
+      float x = v[0], y = v[2];
+      float q = c_y2 * y * y + c_x3 * x * x * x + c_xy2 * x * y * y;
+      float qx = 3.0f * c_x3 * x * x + c_xy2 * y * y;
+      float qy = 2.0f * c_y2 * y + 2.0f * c_xy2 * x * y;
+      v[1] += 0.5f * (f * x + qx / rel_p);
+      v[3] += 0.5f * (-f * y + qy / rel_p);
+      v[4] += 0.5f * q / (rel_p * rel_p);
+    }
+  }
+  o.x = v[0]; o.px = v[1]; o.y = v[2]; o.py = v[3]; o.z = v[4]; o.pz = v[5];
+  return true;
+}
+
 inline bool bend_step_f (thread Lane& o, constant SlicePar& P, float mass, float p0c) {
   float g = P.g, angle = P.angle, step_len = P.step_len;
   float x = o.x, px = o.px, y = o.y, py = o.py, z = o.z, pz = o.pz;
@@ -887,10 +1039,12 @@ kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffe
       if (P.offset_on) offset_unset_f(o, P);
     } else if (P.kind == KIND_BEND) {
       bool lost = false;
-      for (int istep = 1; istep <= P.n_step; istep++) {
-        if (!bend_step_f(o, P, mass, p0c)) { lost = true; break; }
+      if (P.fr_on & 1) lost = !bend_fringe_f(o, P, 0) || too_large(o, P.max_ap);
+      for (int istep = 1; istep <= P.n_step && !lost; istep++) {
+        if (!bend_step_f(o, P, mass, p0c)) lost = true;
       }
-      if (!lost) too_large(o, P.max_ap);
+      if (!lost) lost = too_large(o, P.max_ap);
+      if (!lost && (P.fr_on & 2)) bend_fringe_f(o, P, 1);
     } else if (P.kind == KIND_LCAV) {
       if (P.offset_on) offset_set_f(o, P);
       bool ok = lcav_rk_f(o, P, mass, p0c, TZ0[gid]);

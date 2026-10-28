@@ -65,6 +65,9 @@ typedef struct {
   int32_t lc_abs_time, lc_long_mode, lc_travel, lc_ap_cont, lc_max_steps, lc_kick;
   float lc_grad, lc_k, lc_omega, lc_phase, lc_s_off, lc_l_active, lc_time0, lc_inv_cb0, lc_ib0m1, lc_edge1;
   float lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor;
+  /* Bend fringe (bend_edge_kick). */
+  int32_t fr_type, fr_on;
+  float fr_e[2], fr_fg[2], fr_g, fr_g_dir, fr_beta0, fr_pad;
 } bmad_dev_slice_par;
 
 /* Load the backend named `backend` ("metal", "cuda") if not yet loaded and ask whether a device is usable. */
