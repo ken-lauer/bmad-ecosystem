@@ -1296,8 +1296,50 @@ kernel void reduce_all (const device float* X [[buffer(0)]], const device float*
 }
 
 
-// Bunch moments of the live particles for calc_bunch_params, per threadgroup in fixed order (host sums
-// the partials in double). v = (x, px, y, py, z, pz, t - t0) with t - t0 = tz0 - z/(beta c).
+inline float2 two_sum (float a, float b) {
+  float s = a + b;
+  float bb = s - a;
+  return float2(s, (a - (s - bb)) + (b - bb));
+}
+inline void csum_add (thread float& hi, thread float& lo, float b) {
+  float2 t = two_sum(hi, b);
+  hi = t.x;  lo += t.y;
+}
+
+// Fixed-order threadgroup reduction of nk columns: sums (columns [0, n_sum)) as compensated (hi, lo) pairs,
+// then n_min minima and the rest maxima. Lane shuffles within each simdgroup, then simdgroups in order.
+// Thread 0 writes the pairs of every column to out[2 nk tg + 2 k + (0, 1)].
+template <int NK>
+inline void mom_tg_reduce (thread float* hi, thread float* lo, int n_sum, int n_min, device float* out,
+                           threadgroup float (*shh)[8], threadgroup float (*shl)[8],
+                           uint tid, uint tg, uint tgs) {
+  uint lane = tid & 31u, sg = tid >> 5u, nsg = tgs >> 5u;
+  for (int k = 0; k < NK; k++) {
+    float h = hi[k], l = lo[k];
+    for (ushort off = 16; off > 0; off >>= 1) {
+      float h2 = simd_shuffle_down(h, off), l2 = simd_shuffle_down(l, off);
+      if (k < n_sum) { float2 t = two_sum(h, h2); h = t.x;  l = l + l2 + t.y; }
+      else if (k < n_sum + n_min) h = min(h, h2);
+      else h = max(h, h2);
+    }
+    if (lane == 0u) { shh[k][sg] = h;  shl[k][sg] = l; }
+  }
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  if (tid < (uint) NK) {
+    int k = (int) tid;
+    float h = shh[k][0], l = shl[k][0];
+    for (uint g = 1; g < nsg; g++) {
+      if (k < n_sum) { float2 t = two_sum(h, shh[k][g]); h = t.x;  l = l + shl[k][g] + t.y; }
+      else if (k < n_sum + n_min) h = min(h, shh[k][g]);
+      else h = max(h, shh[k][g]);
+    }
+    out[2 * (NK * tg + k)] = h;
+    out[2 * (NK * tg + k) + 1] = (k < n_sum) ? l : 0.0f;
+  }
+}
+
+// Bunch moments of the live particles for calc_bunch_params, per threadgroup in fixed order, every sum
+// compensated. v = (x, px, y, py, z, pz, t - t0) with t - t0 = tz0 - z/(beta c).
 // Pass 1 (25 per group): n_live, sum q (all), sum q (live), sum q v[7], sum q p0c, min v[7], max v[7].
 kernel void moments1 (const device float* X [[buffer(0)]], const device float* PX [[buffer(1)]],
                       const device float* Y [[buffer(2)]], const device float* PY [[buffer(3)]],
@@ -1307,32 +1349,24 @@ kernel void moments1 (const device float* X [[buffer(0)]], const device float* P
                       device float* out [[buffer(10)]], constant MomPar& M [[buffer(11)]],
                       uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
                       uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
-  threadgroup float sh[25][256];
-  float a[25];
+  threadgroup float shh[25][8], shl[25][8];
+  float a[25], c[25];
+  for (int k = 0; k < 25; k++) c[k] = 0.0f;
   for (int k = 0; k < 11; k++) a[k] = 0.0f;
   for (int k = 11; k < 18; k++) a[k] = 3.0e38f;
   for (int k = 18; k < 25; k++) a[k] = -3.0e38f;
   for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
     float q = Q[i] * M.qs;
-    a[1] += q;
+    csum_add(a[1], c[1], q);
     if (STATE[i] != ALIVE) continue;
     float pc = P0C[i] * (1.0f + PZ[i]);
     float beta = pc / sqrt(pc * pc + M.mass * M.mass);
     float v[7] = {X[i], PX[i], Y[i], PY[i], Z[i], PZ[i], (TZ0[i] - Z[i] * M.inv_c / beta) * M.ts};
-    a[0] += 1.0f;  a[2] += q;  a[10] += q * P0C[i];
-    for (int k = 0; k < 7; k++) { a[3 + k] += q * v[k]; a[11 + k] = min(a[11 + k], v[k]); a[18 + k] = max(a[18 + k], v[k]); }
+    a[0] += 1.0f;
+    csum_add(a[2], c[2], q);  csum_add(a[10], c[10], q * P0C[i]);
+    for (int k = 0; k < 7; k++) { csum_add(a[3 + k], c[3 + k], q * v[k]); a[11 + k] = min(a[11 + k], v[k]); a[18 + k] = max(a[18 + k], v[k]); }
   }
-  for (int k = 0; k < 25; k++) sh[k][tid] = a[k];
-  threadgroup_barrier(mem_flags::mem_threadgroup);
-  for (uint s = tgs / 2; s > 0; s >>= 1) {
-    if (tid < s) {
-      for (int k = 0; k < 11; k++) sh[k][tid] += sh[k][tid + s];
-      for (int k = 11; k < 18; k++) sh[k][tid] = min(sh[k][tid], sh[k][tid + s]);
-      for (int k = 18; k < 25; k++) sh[k][tid] = max(sh[k][tid], sh[k][tid + s]);
-    }
-    threadgroup_barrier(mem_flags::mem_threadgroup);
-  }
-  if (tid == 0) for (int k = 0; k < 25; k++) out[25 * tg + k] = sh[k][0];
+  mom_tg_reduce<25>(a, c, 11, 7, out, shh, shl, tid, tg, tgs);
 }
 
 // Pass 2 (22 per group, centred on AVG, the slot means written by mom_avg): sum q (v - avg)_i (v - avg)_j, i <= j, over the first six coordinates, and sum q (v6 - avg6)^2.
@@ -1345,41 +1379,30 @@ kernel void moments2 (const device float* X [[buffer(0)]], const device float* P
                       const device float* AVG [[buffer(12)]],
                       uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
                       uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
-  threadgroup float sh[22][256];
-  float a[22];
-  for (int k = 0; k < 22; k++) a[k] = 0.0f;
+  threadgroup float shh[22][8], shl[22][8];
+  float a[22], c[22];
+  for (int k = 0; k < 22; k++) { a[k] = 0.0f;  c[k] = 0.0f; }
   for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
     if (STATE[i] != ALIVE) continue;
     float q = Q[i] * M.qs;
     float d[6] = {X[i] - AVG[0], PX[i] - AVG[1], Y[i] - AVG[2], PY[i] - AVG[3], Z[i] - AVG[4], PZ[i] - AVG[5]};
     int idx = 0;
-    for (int r = 0; r < 6; r++) for (int c = r; c < 6; c++) a[idx++] += q * d[r] * d[c];
+    for (int r = 0; r < 6; r++) for (int cc = r; cc < 6; cc++) { csum_add(a[idx], c[idx], q * d[r] * d[cc]);  idx++; }
     float pc = P0C[i] * (1.0f + PZ[i]);
     float beta = pc / sqrt(pc * pc + M.mass * M.mass);
     float dt = (TZ0[i] - Z[i] * M.inv_c / beta) * M.ts - AVG[6];
-    a[21] += q * dt * dt;
+    csum_add(a[21], c[21], q * dt * dt);
   }
-  for (int k = 0; k < 22; k++) sh[k][tid] = a[k];
-  threadgroup_barrier(mem_flags::mem_threadgroup);
-  for (uint s = tgs / 2; s > 0; s >>= 1) {
-    if (tid < s) for (int k = 0; k < 22; k++) sh[k][tid] += sh[k][tid + s];
-    threadgroup_barrier(mem_flags::mem_threadgroup);
-  }
-  if (tid == 0) for (int k = 0; k < 22; k++) out[22 * tg + k] = sh[k][0];
+  mom_tg_reduce<22>(a, c, 22, 0, out, shh, shl, tid, tg, tgs);
 }
 
-// Partials of moments1/moments2 (ng groups x nk columns) reduced in group order into a save slot: columns
-// [0, n_sum) are sums kept as hi + lo float pairs (two-sum compensation, about double precision), the next
-// n_min columns minima and then n_max columns maxima (stored with lo = 0).
+// Partials of moments1/moments2 (ng groups x nk columns of (hi, lo) pairs) reduced in group order into a
+// save slot: columns [0, n_sum) are sums kept as hi + lo float pairs (two-sum compensation, about double
+// precision), the next n_min columns minima and then n_max columns maxima (stored with lo = 0).
 struct MomRed { uint ng, nk, n_sum, n_min, off, pad0, pad1, pad2; };
 // One threadgroup (256 threads) per column k. Sums: each thread adds its groups g = tid, tid + 256, ...
 // with two-sum compensation, then a fixed-shape tree adds the (hi, lo) pairs; the order is fixed, so the
 // result is deterministic.
-inline float2 two_sum (float a, float b) {
-  float s = a + b;
-  float bb = s - a;
-  return float2(s, (a - (s - bb)) + (b - bb));
-}
 kernel void mom_reduce (const device float* P [[buffer(0)]], device float* SLOT [[buffer(1)]],
                         constant MomRed& R [[buffer(2)]], uint k [[threadgroup_position_in_grid]],
                         uint tid [[thread_index_in_threadgroup]], uint tgs [[threads_per_threadgroup]]) {
@@ -1389,8 +1412,8 @@ kernel void mom_reduce (const device float* P [[buffer(0)]], device float* SLOT 
   bool is_sum = (k < R.n_sum), is_min = (!is_sum && k < R.n_sum + R.n_min);
   float hi = is_sum ? 0.0f : (is_min ? 3.0e38f : -3.0e38f), lo = 0.0f;
   for (uint g = tid; g < R.ng; g += tgs) {
-    float b = P[R.nk * g + k];
-    if (is_sum) { float2 t = two_sum(hi, b); hi = t.x; lo += t.y; }
+    float b = P[2u * (R.nk * g + k)];
+    if (is_sum) { float2 t = two_sum(hi, b); hi = t.x; lo += t.y + P[2u * (R.nk * g + k) + 1u]; }
     else if (is_min) hi = min(hi, b);
     else hi = max(hi, b);
   }
@@ -2007,8 +2030,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bRed = p->alloc((size_t) kRedGroups * 9 * 4);
     p->bCsrPar = p->alloc(2 * sizeof(CsrParH));
     p->bStats = p->alloc(16 * 4);
-    p->bMom = p->alloc((size_t) kRedGroups * 25 * 4);
-    p->bMom2 = p->alloc((size_t) kRedGroups * 22 * 4);
+    p->bMom = p->alloc((size_t) kRedGroups * 25 * 8);
+    p->bMom2 = p->alloc((size_t) kRedGroups * 22 * 8);
     p->bSlots = p->alloc((size_t) BMAD_DEV_MOM_SLOTS * BMAD_DEV_MOM_STRIDE * 4);
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);

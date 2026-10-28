@@ -251,6 +251,7 @@ real(c_float), allocatable, private, save :: p0c32(:)
 ! time at the current slice start, and tz0 = t_i - res_t_base + z_i/(beta_i c) (invariant across device
 ! slices) is kept on the device for the lcavity kernel, computed when first needed after an upload.
 real(rp), private, save :: res_t_base = 0
+real(rp), private, save :: res_qs = 1        ! n / sum |charge| of the uploaded bunch (scale of the moment sums)
 logical, private, save :: tz0_valid = .false.
 real(c_float), allocatable, private, save :: tz032(:)
 integer(c_int32_t), allocatable, private, save :: st32(:), loc32(:), tag32(:)
@@ -684,6 +685,7 @@ subroutine bunch_device_sync_device (soa)
 
 type (bunch_soa_struct) soa
 integer i, ierr
+real(rp) qsum
 character(256) reason
 character(*), parameter :: r_name = 'bunch_device_sync_device'
 
@@ -711,6 +713,13 @@ if (ierr /= 0) then
 endif
 res_dev_current = .true.
 res_host_current = .true.
+! Scale of the device moment sums: a power of two near n / sum |q| (serial sum: deterministic).
+qsum = 0
+do i = 1, soa%n
+  qsum = qsum + abs(soa%charge(i))
+enddo
+res_qs = 1
+if (qsum > 0) res_qs = 2.0_rp**nint(log(soa%n / qsum) / log(2.0_rp))
 res_dt_ref = 0
 res_tag = 0
 stats_valid = .false.
@@ -1119,7 +1128,7 @@ subroutine bunch_device_save_enqueue (soa, bunch, n_pt, s_save, done)
 
 type (bunch_soa_struct) soa
 type (bunch_struct) bunch
-real(rp) s_save, qsum, qs
+real(rp) s_save, qs
 integer n_pt, i, ierr
 logical done
 character(256) reason
@@ -1131,13 +1140,8 @@ if (n_pend >= n_pend_max) return
 if (.not. tz0_valid) call tz0_upload (soa)
 if (.not. res_active) return
 
-! Charge weights relative to the mean |charge| (the host charges are not changed by the device).
-qsum = 0
-do i = 1, soa%n
-  qsum = qsum + abs(soa%charge(i))
-enddo
-qs = 1
-if (qsum > 0) qs = soa%n / qsum
+! Charge weights relative to the mean |charge| (set at the upload; the device does not change charges).
+qs = res_qs
 reason = ''
 ierr = bmad_dev_moments_enqueue (real(res_mass, c_double), real(qs, c_double), int(n_pend, c_int), reason, len(reason))
 if (ierr /= 0) then
