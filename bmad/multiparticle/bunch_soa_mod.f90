@@ -168,6 +168,7 @@ type fast_slice_struct
   integer :: rf_flags(fast_max_rf) = 0
   real(rp) :: rf_ds(fast_max_rf) = 0, rf_scale(fast_max_rf) = 0, rf_p1c(fast_max_rf) = 0
   real(rp) :: rf_ts(fast_max_rf) = 0, rf_tm(fast_max_rf) = 0   ! step%time and the multipass lord's step%time
+  real(rp) :: rf_p0c(fast_max_rf) = 0, rf_e0(fast_max_rf) = 0  ! Reference momentum and energy of the drift region
 end type
 
 contains
@@ -753,6 +754,8 @@ do ix = ix_start, ix_end
   fs%rf_p1c(k) = step%p1c
   fs%rf_ts(k) = step%time
   fs%rf_tm(k) = mlord%rf%steps(step%ix_step)%time
+  fs%rf_p0c(k) = step%p0c
+  fs%rf_e0(k) = step%E_tot0
 enddo
 fs%rf_n = k
 ok = .true.

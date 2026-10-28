@@ -37,7 +37,7 @@ int    bmad_backend_bunch_upload (int n, const float *x, const float *px, const 
                                   const float *p0c, char *reason, int reason_len);
 int    bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py, float *z, float *pz,
                                     int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
-int    bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
+int    bmad_backend_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len);
 int    bmad_backend_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
 int    bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len);
 int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
@@ -277,7 +277,7 @@ kernel void interp_kick (const device float* Ex [[buffer(0)]], const device floa
 constant int ALIVE = 1, LOST = 2, LOST_NEG_X = 3, LOST_POS_X = 4, LOST_NEG_Y = 5, LOST_POS_Y = 6, LOST_PZ = 8;
 constant int UPSTREAM_END = 1, DOWNSTREAM_END = 2, INSIDE = 3;
 constant int AP_AUTO = 1, AP_RECT = 2, AP_ELLIPSE = 3;
-constant int KIND_DRIFT = 1, KIND_QUAD = 2, KIND_THICK = 3, KIND_BEND = 4, KIND_LCAV = 5;
+constant int KIND_DRIFT = 1, KIND_QUAD = 2, KIND_THICK = 3, KIND_BEND = 4, KIND_LCAV = 5, KIND_LCAV_STD = 6;
 constant float C_LIGHT = 299792458.0f;
 
 // Mirrored by bmad_dev_slice_par (C) and bmad_dev_slice_par_struct (Fortran). All members are 4 bytes.
@@ -303,7 +303,10 @@ struct SlicePar {
   float lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor;
   int fr_type, fr_on;                      // bend fringe: 1 exact, 2 hwang; fr_on bit 0 entrance, bit 1 exit
   float fr_e[2], fr_fg[2], fr_g, fr_g_dir, fr_beta0, fr_pad;
+  int rf_n, rf_abs;
+  float rf_grad, rf_omega_e, rf_omega_t, rf_ff, rf_p0c_end, rf_pad;
 };
+struct RfStep { float ds, cphase, damp, rr, dd, cpond, p0c; int flags; };
 
 struct Lane { float x, px, y, py, z, pz; int state; };
 
@@ -996,13 +999,88 @@ inline bool lcav_rk_f (thread Lane& o, constant SlicePar& P, float mass, thread 
   return true;
 }
 
+
+// ------------------------------------------------------------------------------------------------
+// bmad_standard lcavity (track_a_lcavity, forward, no multipoles, solenoid field or coupler kick).
+// The time of a particle at step k is t_ref(k) + tz0 - z/(beta c) (the drift, kicks and offsets keep
+// t + z/(beta c) - t_ref fixed), so its RF phase is cphase(k) + omega_t (tz0 - z/(beta c)) with the
+// large part cphase(k) formed on the host. dpc uses the cancellation-free form of dpc_given_dE.
+
+inline float std_beta (float pz, float p0c, float mass) {
+  float pc = p0c * (1.0f + pz);
+  return pc / sqrt(pc * pc + mass * mass);
+}
+
+inline float std_phase (constant SlicePar& P, float cphase, float tz0, thread Lane& o, float beta) {
+  float tt = (P.rf_abs ? tz0 : 0.0f) - o.z / (beta * C_LIGHT);
+  return cphase + P.rf_omega_t * tt;
+}
+
+// Energy change dE at fixed position: pz, and z scaled so that z/beta is kept. False if lost.
+inline bool std_energy_change (thread Lane& o, float dE, float p0c, float mass) {
+  float pc = p0c * (1.0f + o.pz);
+  float E = sqrt(pc * pc + mass * mass);
+  if (E + dE <= mass) { o.state = LOST_PZ; return false; }
+  float del2 = dE * (dE + 2.0f * E);
+  float dpc = del2 / (sqrt(pc * pc + del2) + pc);
+  float b_old = pc / E;
+  float pc_new = pc + dpc;
+  float b_new = pc_new / (E + dE);
+  o.pz += dpc / p0c;
+  o.z *= b_new / b_old;
+  return true;
+}
+
+inline bool lcav_std_f (thread Lane& o, constant SlicePar& P, constant RfStep* T, float mass, thread float& p0c, float tz0) {
+  for (int k = 0; k < P.rf_n; k++) {
+    p0c = T[k].p0c;
+    drift_f(o, T[k].ds, mass, p0c);
+    if (o.state != ALIVE) return false;
+    int fl = T[k].flags;
+    for (int a = 0; a < 5; a++) {
+      // Actions in track_a_lcavity order: entrance fringe, pondermotive, energy kick, pondermotive, exit fringe.
+      int bit = (a == 0) ? 0 : (a == 1) ? 3 : (a == 2) ? 1 : (a == 3) ? 4 : 2;
+      if (!(fl & (1 << bit))) continue;
+      if (bit == 3 || bit == 4) {
+        // The kick after the energy kick sees the new reference momentum: cpond scales as 1/p0c^2.
+        float rel_p = 1.0f + o.pz;
+        float coef = ((bit == 4) ? T[k].cpond * T[k].rr * T[k].rr : T[k].cpond) / rel_p;
+        o.px -= coef * o.x;
+        o.py -= coef * o.y;
+        o.z += -0.5f * coef * (o.x * o.x + o.y * o.y) / rel_p;
+        continue;
+      }
+      float beta = std_beta(o.pz, p0c, mass);
+      float phase = std_phase(P, T[k].cphase, tz0, o, beta);
+      if (bit == 1) {
+        if (!std_energy_change(o, T[k].damp * cos(phase), p0c, mass)) return false;
+        o.px *= T[k].rr;
+        o.py *= T[k].rr;
+        o.pz = o.pz * T[k].rr - T[k].dd;
+        p0c = (k + 1 < P.rf_n) ? T[k + 1].p0c : P.rf_p0c_end;
+      } else {
+        float ff = ((bit == 0) ? 1.0f : -1.0f) * P.rf_ff;
+        float ez = P.rf_grad * cos(phase);
+        float dez = P.rf_grad * sin(phase) * P.rf_omega_e;
+        float dE = -ff * 0.5f * dez * (o.x * o.x + o.y * o.y);
+        float x = o.x, y = o.y;
+        if (!std_energy_change(o, dE, p0c, mass)) return false;
+        o.px -= ff / p0c * ez * x;
+        o.py -= ff / p0c * ez * y;
+      }
+    }
+  }
+  p0c = P.rf_p0c_end;
+  return true;
+}
+
 kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffer(1)]],
                          device float* Y [[buffer(2)]], device float* PY [[buffer(3)]],
                          device float* Z [[buffer(4)]], device float* PZ [[buffer(5)]],
                          device int* STATE [[buffer(6)]], device int* LOC [[buffer(7)]],
                          device int* LOST_TAG [[buffer(8)]], device float* P0C [[buffer(9)]],
                          constant SlicePar& P [[buffer(10)]], constant uint& n [[buffer(11)]],
-                         const device float* TZ0 [[buffer(12)]],
+                         const device float* TZ0 [[buffer(12)]], constant RfStep* RF [[buffer(13)]],
                          uint gid [[thread_position_in_grid]]) {
   if (gid >= n) return;
   if (STATE[gid] != ALIVE) return;
@@ -1058,6 +1136,11 @@ kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffe
     } else if (P.kind == KIND_LCAV) {
       if (P.offset_on) offset_set_f(o, P);
       bool ok = lcav_rk_f(o, P, mass, p0c, TZ0[gid]);
+      P0C[gid] = p0c;
+      if (ok && P.offset_on) offset_unset_f(o, P);
+    } else if (P.kind == KIND_LCAV_STD) {
+      if (P.offset_on) offset_set_f(o, P);
+      bool ok = (o.state == ALIVE) && lcav_std_f(o, P, RF, mass, p0c, TZ0[gid]);
       P0C[gid] = p0c;
       if (ok && P.offset_on) offset_unset_f(o, P);
     }
@@ -2052,7 +2135,7 @@ int bmad_backend_bunch_download (int n, float *x, float *px, float *y, float *py
   }
 }
 
-int bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len)
+int bmad_backend_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len)
 {
   @autoreleasepool {
     Impl *p = gImpl;
@@ -2069,6 +2152,13 @@ int bmad_backend_track_slice (const bmad_dev_slice_par *par, char *reason, int r
     [e setBytes:par length:sizeof(bmad_dev_slice_par) atIndex:10];
     [e setBytes:&n length:4 atIndex:11];
     [e setBuffer:p->bTZ0 offset:0 atIndex:12];
+    {
+      static const bmad_dev_rf_step dummy = {0, 0, 0, 0, 0, 0, 0, 0};
+      int nrf = (par->kind == 6 && rf != NULL) ? par->rf_n : 0;
+      if (nrf > BMAD_DEV_MAX_RF) { put_reason(reason, reason_len, "too many RF steps"); return 1; }
+      if (nrf > 0) [e setBytes:rf length:(NSUInteger) nrf * sizeof(bmad_dev_rf_step) atIndex:13];
+      else         [e setBytes:&dummy length:sizeof(dummy) atIndex:13];
+    }
     [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     return 0;
   }

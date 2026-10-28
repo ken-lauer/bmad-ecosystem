@@ -68,7 +68,20 @@ typedef struct {
   /* Bend fringe (bend_edge_kick). */
   int32_t fr_type, fr_on;
   float fr_e[2], fr_fg[2], fr_g, fr_g_dir, fr_beta0, fr_pad;
+  /* bmad_standard lcavity (kind 6): the step table is passed separately (bmad_dev_rf_step). */
+  int32_t rf_n, rf_abs;
+  float rf_grad, rf_omega_e, rf_omega_t, rf_ff, rf_p0c_end, rf_pad;
 } bmad_dev_slice_par;
+/* One RF stair step of a bmad_standard lcavity slice: drift ds with reference momentum p0c, then the
+   actions in flags (bit 0 entrance fringe, 1 energy kick, 2 exit fringe, 3/4 pondermotive kick before/after
+   the energy kick). cphase: RF phase of a particle with tz0 = z = 0 at this step (radians); damp: energy
+   gain amplitude [eV]; rr = p0c/p1c and dd = (p1c - p0c)/p1c for the reference energy change; cpond:
+   pondermotive coefficient times (1 + pz). */
+typedef struct {
+  float ds, cphase, damp, rr, dd, cpond, p0c;
+  int32_t flags;
+} bmad_dev_rf_step;
+#define BMAD_DEV_MAX_RF 120
 
 /* Load the backend named `backend` ("metal", "cuda") if not yet loaded and ask whether a device is usable. */
 int bmad_dev_available (const char *backend, char *reason, int reason_len);
@@ -118,7 +131,7 @@ int bmad_dev_bunch_download (int n, float *x, float *px, float *y, float *py, fl
                              int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
 /* Per particle t - t_base + z/(beta c) at the upload (float32), which the lcavity kernel needs for the RF time. */
 int bmad_dev_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
-int bmad_dev_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len);
+int bmad_dev_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len);
 /* Sums over the live resident particles: out = {n_live, sum z/beta, sum |q|}. */
 int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len);
 /* Bounds of the live resident particles: out = {min x, min y, min zs, max x, max y, max zs}, zs = z - dct*beta. */
@@ -154,7 +167,7 @@ typedef int    (*bmad_backend_bunch_upload_fn) (int, const float *, const float 
 typedef int    (*bmad_backend_bunch_download_fn) (int, float *, float *, float *, float *, float *, float *,
                                                   int32_t *, int32_t *, int32_t *, float *, char *, int);
 typedef int    (*bmad_backend_bunch_set_tz0_fn) (int, const float *, char *, int);
-typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, char *, int);
+typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, const bmad_dev_rf_step *, char *, int);
 typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
 typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);
 typedef int    (*bmad_backend_sc_step_resident_fn) (const bmad_dev_sc_par *, char *, int);

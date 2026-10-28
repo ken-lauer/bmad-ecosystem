@@ -56,7 +56,16 @@ type, bind(c) :: bmad_dev_slice_par_struct
   real(c_float) :: lc_edge2, lc_zk, lc_rel_tol, lc_abs_tol, lc_init_ds, lc_min_ds, lc_fatal_ds, lc_ds_tiny, lc_charge, lc_rel_floor
   integer(c_int32_t) :: fr_type, fr_on
   real(c_float) :: fr_e(2), fr_fg(2), fr_g, fr_g_dir, fr_beta0, fr_pad
+  integer(c_int32_t) :: rf_n, rf_abs
+  real(c_float) :: rf_grad, rf_omega_e, rf_omega_t, rf_ff, rf_p0c_end, rf_pad
 end type
+
+! Mirror of bmad_dev_rf_step.
+type, bind(c) :: bmad_dev_rf_step_struct
+  real(c_float) :: ds = 0, cphase = 0, damp = 0, rr = 0, dd = 0, cpond = 0, p0c = 0
+  integer(c_int32_t) :: flags = 0
+end type
+integer, parameter, private :: dev_max_rf = 120
 
 ! Mirror of bmad_dev_csr_par.
 type, bind(c) :: bmad_dev_csr_par_struct
@@ -124,9 +133,10 @@ interface
     character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
-  function bmad_dev_track_slice (par, reason, reason_len) bind(c, name = 'bmad_dev_track_slice') result (ierr)
-    import :: c_char, c_int, bmad_dev_slice_par_struct
+  function bmad_dev_track_slice (par, rf, reason, reason_len) bind(c, name = 'bmad_dev_track_slice') result (ierr)
+    import :: c_char, c_int, bmad_dev_slice_par_struct, bmad_dev_rf_step_struct
     type (bmad_dev_slice_par_struct) :: par
+    type (bmad_dev_rf_step_struct) :: rf(*)
     character(kind=c_char) :: reason(*)
     integer(c_int), value :: reason_len
     integer(c_int) :: ierr
@@ -820,8 +830,11 @@ type (ele_struct) ele
 type (lat_param_struct) param
 type (fast_slice_struct) fs
 type (bmad_dev_slice_par_struct) par
+type (bmad_dev_rf_step_struct) rf(dev_max_rf)
 type (coord_struct) orb0
-integer ierr
+real(rp) r_ref, beta0, ph
+real(qp) t_k
+integer ierr, k
 logical tracked, err
 character(256) reason
 character(200) why
@@ -833,8 +846,8 @@ character(*), parameter :: r_name = 'bunch_device_track_slice'
 tracked = .false.
 if (.not. res_active .or. .not. dev_ok) return
 call fast_slice_prepare (ele, param, fs, err, why, for_device = .true.)
-if (.not. err .and. fs%kind == fast_lcav_std$) then
-  err = .true.;  why = 'bmad_standard lcavity (CPU kernel only)'
+if (.not. err .and. fs%kind == fast_lcav_std$ .and. fs%rf_n > dev_max_rf) then
+  err = .true.;  why = 'too many RF steps for the device'
 endif
 if (err) then
   ! BMAD_DEVICE_WHY=1: report why slices are left to the CPU (debug).
@@ -880,6 +893,32 @@ if (fs%kind == fast_lcav$) then
   endif
 endif
 
+! bmad_standard lcavity: the step table. The reference time advance over a drift is ds/(beta0 c) with the
+! drift region's reference velocity (track_a_drift keeps t + z/(beta c) - that); r_ref accumulates it.
+r_ref = 0
+if (fs%kind == fast_lcav_std$) then
+  if (.not. tz0_valid) call tz0_upload (soa)
+  if (.not. res_active) return
+  do k = 1, fs%rf_n
+    beta0 = fs%rf_p0c(k) / fs%rf_e0(k)
+    r_ref = r_ref + fs%rf_ds(k) / (beta0 * c_light)
+    if (fs%rf_abs) then
+      t_k = real(res_t_base, qp) + real(res_dt_ref, qp) + real(r_ref, qp)
+      ph = twopi * (fs%rf_phi0 + (real(modulo2(t_k, 0.5_qp / fs%rf_freq), rp) - fs%rf_ref_shift - fs%rf_tm(k)) * fs%rf_freq)
+    else
+      ph = twopi * (fs%rf_phi0 + (fs%rf_ts(k) - fs%rf_tm(k)) * fs%rf_freq)
+    endif
+    rf(k)%ds = real(fs%rf_ds(k), c_float)
+    rf(k)%cphase = real(modulo2(ph, pi), c_float)
+    rf(k)%damp = real(fs%rf_volt * fs%rf_scale(k) * fs%rf_fauto, c_float)
+    rf(k)%rr = real(fs%rf_p0c(k) / fs%rf_p1c(k), c_float)
+    rf(k)%dd = real((fs%rf_p1c(k) - fs%rf_p0c(k)) / fs%rf_p1c(k), c_float)
+    rf(k)%cpond = real(fs%rf_pond / (16.0_rp * fs%rf_p0c(k)**2 * fs%rf_nstep), c_float)
+    rf(k)%p0c = real(fs%rf_p0c(k), c_float)
+    rf(k)%flags = fs%rf_flags(k)
+  enddo
+endif
+
 res_tag = res_tag + 1
 res_rng_ctr = res_rng_ctr + 1
 tag_s_start(res_tag) = fs%s_start;  tag_s_end(res_tag) = fs%s_end
@@ -888,7 +927,7 @@ tag_p0c(res_tag) = fs%p0c_ele
 call slice_to_par (fs, par)
 
 reason = ''
-ierr = bmad_dev_track_slice (par, reason, len(reason))
+ierr = bmad_dev_track_slice (par, rf, reason, len(reason))
 if (ierr /= 0) then
   call out_io (s_warn$, r_name, 'Slice tracking failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
   dev_ok = .false.
@@ -896,6 +935,8 @@ if (ierr /= 0) then
 endif
 if (fs%kind == fast_lcav$) then
   res_dt_ref = res_dt_ref + fs%lc_dt_ref_rk     ! odeint_bmad advances t_ref at the lord's average rate
+elseif (fs%kind == fast_lcav_std$) then
+  res_dt_ref = res_dt_ref + r_ref
 else
   res_dt_ref = res_dt_ref + fs%delta_ref_time
 endif
@@ -1274,6 +1315,10 @@ par%lc_rel_tol = real(fs%lc_rel_tol, c_float);  par%lc_abs_tol = real(fs%lc_abs_
 par%lc_init_ds = real(fs%lc_init_ds, c_float);  par%lc_min_ds = real(fs%lc_min_ds, c_float)
 par%lc_fatal_ds = real(fs%lc_fatal_ds, c_float); par%lc_ds_tiny = real(fs%lc_ds_tiny, c_float)
 par%lc_charge = real(fs%lc_charge, c_float);    par%lc_rel_floor = real(fs%lc_rel_floor, c_float)
+par%rf_n = fs%rf_n;  par%rf_abs = merge(1, 0, fs%rf_abs)
+par%rf_grad = real(fs%rf_grad, c_float);  par%rf_omega_e = real(fs%rf_omega, c_float)
+par%rf_omega_t = real(twopi * fs%rf_freq, c_float);  par%rf_ff = real(fs%rf_ff, c_float)
+par%rf_p0c_end = real(fs%p0c_ele, c_float);  par%rf_pad = 0
 par%fr_type = fs%fr_type
 par%fr_on = merge(1, 0, fs%fr_on(1)) + merge(2, 0, fs%fr_on(2))
 par%fr_e = real(fs%fr_e, c_float);  par%fr_fg = real(fs%fr_fg, c_float)

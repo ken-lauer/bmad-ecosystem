@@ -171,10 +171,10 @@ int bmad_dev_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_le
   return p_set_tz0(n, tz0, reason, reason_len);
 }
 
-int bmad_dev_track_slice (const bmad_dev_slice_par *par, char *reason, int reason_len)
+int bmad_dev_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len)
 {
   if (handle == NULL) { put_reason(reason, reason_len, "no device backend loaded"); return 1; }
-  return p_track(par, reason, reason_len);
+  return p_track(par, rf, reason, reason_len);
 }
 
 int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len)
