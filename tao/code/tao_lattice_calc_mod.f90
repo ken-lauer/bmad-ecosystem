@@ -605,6 +605,7 @@ do
           endif
         endif
 
+        if (hold) call bunch_hold_release (beam%bunch(1))   ! save_a_bunch_step reads bunch%particle.
         do i = 1, size(beam%bunch)
           call track1_bunch (beam%bunch(i), slice_ele, err, tao_branch%orbit, bunch_track = bunch_params_comb(i))
           if (associated(bunch_params_comb)) call save_a_bunch_step(slice_ele, beam%bunch(i), bunch_params_comb(i))
