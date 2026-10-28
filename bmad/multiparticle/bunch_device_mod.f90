@@ -21,6 +21,7 @@ use open_spacecharge_mod, only: mesh3d_struct, osc_get_rgrn_freespace, osc_mesh_
 use bunch_soa_mod, only: fast_track_enabled, fast_track_device, bunch_soa_struct, fast_slice_struct, fast_slice_prepare, &
                          fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_lcav$, fast_max_ap, qp_add_dp
 use random_mod, only: ran_seed_get
+use beam_utils, only: calc_emittances_and_twiss_from_sigma_matrix
 use, intrinsic :: iso_c_binding
 !$ use omp_lib, only: omp_in_parallel
 
@@ -72,6 +73,14 @@ interface
     real(c_double) :: out_stats(*), out_layout(*), out1(*), out2(*)
     character(kind=c_char) :: reason(*)
     integer(c_int), value :: reason_len
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_bunch_moments (pass, mass, avg, out, reason, reason_len) bind(c, name = 'bmad_dev_bunch_moments') result (ierr)
+    import :: c_char, c_int, c_double
+    integer(c_int), value :: pass, reason_len
+    real(c_double), value :: mass
+    real(c_double) :: avg(*), out(*)
+    character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
   function bmad_dev_bunch_stats (mass, dct, out, reason, reason_len) bind(c, name = 'bmad_dev_bunch_stats') result (ierr)
@@ -997,6 +1006,112 @@ dev_ok = .false.
 end subroutine fail
 
 end subroutine bunch_device_sc_kick_resident
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+!
+! calc_bunch_params_soa of the resident bunch computed from device moments, without bringing the host
+! copy up to date. done is False (nothing computed) if the device copy is not current or the charge
+! is not set; the caller then uses the host path.
+!-
+
+subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+
+type (bunch_soa_struct) soa
+type (bunch_struct) bunch
+type (bunch_params_struct) bunch_params
+real(c_double) m1(25), m2(22), avg(7)
+real(rp) charge_live, t0, average_pc
+integer i, ierr, n_live, idx, r, c
+logical done, error
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_bunch_params'
+
+done = .false.
+if (.not. res_active .or. .not. dev_ok .or. .not. res_dev_current) return
+if (.not. tz0_valid) call tz0_upload (soa)
+if (.not. res_active) return
+
+reason = ''
+avg = 0
+ierr = bmad_dev_bunch_moments (1_c_int, real(res_mass, c_double), avg, m1, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'Moments failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.
+  return
+endif
+
+n_live = nint(m1(1))
+charge_live = m1(3)
+if (m1(2) == 0 .or. (n_live > 0 .and. charge_live == 0)) return   ! calc_bunch_params reports these.
+
+bunch_params = bunch_params_struct()
+bunch_params%twiss_valid = .false.
+do i = soa%n, 1, -1
+  if (soa%state(i) /= alive$) cycle
+  bunch_params%centroid = bunch%particle(i)
+  bunch_params%centroid%state = alive$
+  if (res_tag > 0) then
+    bunch_params%centroid%p0c = tag_p0c(res_tag)
+    bunch_params%centroid%s = tag_s_end(res_tag)
+    bunch_params%centroid%location = downstream_end$
+    bunch_params%centroid%ix_ele = tag_ix_ele(res_tag);  bunch_params%centroid%ix_branch = tag_ix_branch(res_tag)
+  else
+    bunch_params%centroid%p0c = soa%p0c(i)
+    bunch_params%centroid%s = soa%s(i)
+    bunch_params%centroid%location = soa%location(i)
+    bunch_params%centroid%ix_ele = soa%ix_ele(i);  bunch_params%centroid%ix_branch = soa%ix_branch(i)
+  endif
+  bunch_params%ix_ele = bunch_params%centroid%ix_ele
+  bunch_params%location = bunch_params%centroid%location
+  exit
+enddo
+
+bunch_params%n_good_steps = bunch%n_good
+bunch_params%n_bad_steps = bunch%n_bad
+bunch_params%n_particle_tot = soa%n
+bunch_params%n_particle_live = n_live
+bunch_params%charge_live = charge_live
+bunch_params%charge_tot = m1(2)
+bunch%charge_tot = bunch_params%charge_tot
+bunch%charge_live = bunch_params%charge_live
+bunch_params%centroid%charge = charge_live
+done = .true.
+if (n_live == 0) return
+
+! Centroid, time (relative to the reference time at the current slice start) and extrema.
+avg = m1(4:10) / charge_live
+t0 = res_t_base + res_dt_ref
+bunch_params%centroid%vec = avg(1:6)
+bunch_params%centroid%t = t0 + avg(7)
+bunch_params%s = bunch_params%centroid%s
+bunch_params%t = bunch_params%centroid%t
+bunch_params%rel_min = m1(12:18) - avg
+bunch_params%rel_max = m1(19:25) - avg
+
+ierr = bmad_dev_bunch_moments (2_c_int, real(res_mass, c_double), avg, m2, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'Moments failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.;  done = .false.
+  return
+endif
+idx = 0
+do r = 1, 6
+  do c = r, 6
+    idx = idx + 1
+    bunch_params%sigma(r, c) = m2(idx) / charge_live
+    bunch_params%sigma(c, r) = bunch_params%sigma(r, c)
+  enddo
+enddo
+bunch_params%sigma_t = sqrt(max(0.0_rp, m2(22) / charge_live))
+
+average_pc = (1 + bunch_params%centroid%vec(6)) * bunch_params%centroid%p0c
+call convert_pc_to (average_pc, res_species, beta = bunch_params%centroid%beta)
+if (n_live < 6) return
+call calc_emittances_and_twiss_from_sigma_matrix (bunch_params%sigma, bunch_params, error, .false.)
+
+end subroutine bunch_device_bunch_params
 
 !--------------------------------------------------------------------------
 !+

@@ -442,10 +442,7 @@ do i_step = 0, n_step
   if (use_soa) then
     if (fast_track_fp32_proxy .and. .not. use_dev) call soa_round_fp32 (csr_soa)
     bunch_stale = .true.
-    if (bunch_track_save_due(s0_step)) then
-      call dev_to_host()
-      call save_soa_step(s0_step)
-    endif
+    if (bunch_track_save_due(s0_step)) call save_soa_step(s0_step)
   else
     call save_a_bunch_step (ele, bunch, bunch_track, s0_step)
   endif
@@ -516,7 +513,7 @@ end subroutine host_changed
 subroutine save_soa_step (s_body)
 real(rp) s_body
 integer n_pt
-logical error
+logical error, done
 
 if (bmad_com%spin_tracking_on .or. csr_soa%has_spin .or. csr_soa%species(1) == photon$) then  ! Not handled by calc_bunch_params_soa.
   call sync_bunch()
@@ -531,6 +528,9 @@ endif
 if (bunch_track%n_pt < 0) bunch_track%n_pt = -1
 
 call bunch_track_add_pt (bunch_track, n_pt)
+call bunch_device_bunch_params (csr_soa, bunch, bunch_track%pt(n_pt), done)
+if (done) return
+call dev_to_host()
 call calc_bunch_params_soa (csr_soa, bunch, bunch_track%pt(n_pt), error, ele)
 end subroutine save_soa_step
 

@@ -101,6 +101,10 @@ int bmad_dev_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double ou
 /* All statistics of the live resident particles in one pass:
    out = {n_live, sum z/beta, sum |q|, min x, min y, min zs, max x, max y, max zs}, zs = z - dct*beta. */
 int bmad_dev_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
+/* Bunch moments of the live particles (calc_bunch_params). pass 1: out[25] = n_live, sum q (all), sum q (live),
+   sum q v[7], sum q p0c, min v[7], max v[7] with v = (x, px, y, py, z, pz, t - t0), t - t0 = tz0 - z/(beta c).
+   pass 2: out[22] = sum q (v - avg)_i (v - avg)_j, i <= j, over the first six coordinates, sum q (v7 - avg7)^2. */
+int bmad_dev_bunch_moments (int pass, double mass, const double *avg, double *out, char *reason, int reason_len);
 /* CSR kick: pz += interpolation of kick[n_bin] at z (zc1 = z_center of bin 1). */
 int bmad_dev_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len);
 
@@ -157,6 +161,7 @@ typedef int    (*bmad_backend_sc_step_resident_fn) (const bmad_dev_sc_par *, cha
 typedef int    (*bmad_backend_csr_kick_fn) (const bmad_dev_csr_par *, const float *, char *, int);
 typedef int    (*bmad_backend_csr_step_fn) (double, int, int, int, double *, double *, double *, double *, char *, int);
 typedef int    (*bmad_backend_bunch_stats_fn) (double, double, double *, char *, int);
+typedef int    (*bmad_backend_bunch_moments_fn) (int, double, const double *, double *, char *, int);
 typedef double (*bmad_backend_seconds_fn) (void);
 typedef void   (*bmad_backend_timing_fn) (double *);
 typedef int    (*bmad_backend_fault_fn) (void);

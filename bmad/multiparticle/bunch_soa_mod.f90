@@ -2884,4 +2884,44 @@ r = transfer(x, r)
 
 end function qp_add_dp
 
+!--------------------------------------------------------------------------
+! The quad precision value rounded to double (nearest even), in integer arithmetic: the software
+! conversion raises the inexact flag, which costs more than the rest of a statistics loop.
+
+elemental function qp_to_dp (t) result (d)
+
+real(qp), intent(in) :: t
+real(rp) d
+integer, parameter :: i16 = selected_int_kind(38)
+integer(i16) bt, m, low, half, one
+integer(int64) md, bd
+integer et, ed
+
+bt = transfer(t, bt)
+et = int(iand(shiftr(bt, 112), int(z'7FFF', i16)))
+if (et < 16383 - 1021 .or. et > 16383 + 1023) then   ! Zero, tiny, huge, inf, nan: let the compiler do it.
+  d = real(t, rp)
+  return
+endif
+
+one = 1
+m = iand(bt, shiftl(one, 112) - 1)
+md = int(shiftr(m, 60), int64)
+low = iand(m, shiftl(one, 60) - 1)
+half = shiftl(one, 59)
+if (low > half .or. (low == half .and. iand(md, 1_int64) == 1)) md = md + 1
+ed = et - 16383 + 1023
+if (md == shiftl(1_int64, 52)) then
+  md = 0;  ed = ed + 1
+endif
+if (ed >= 2047) then
+  d = real(t, rp)
+  return
+endif
+bd = ior(shiftl(int(ed, int64), 52), md)
+if (bt < 0) bd = ior(bd, shiftl(1_int64, 63))
+d = transfer(bd, d)
+
+end function qp_to_dp
+
 end module bunch_soa_mod

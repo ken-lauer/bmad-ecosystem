@@ -1561,6 +1561,8 @@ end subroutine calc_bunch_params
 
 subroutine calc_bunch_params_view (v, bunch, bunch_params, error, print_err, n_mat, is_time_coords, ele)
 
+use bunch_soa_mod, only: qp_to_dp
+
 implicit none
 
 type (bunch_view_struct) v
@@ -1569,10 +1571,8 @@ type (bunch_params_struct) bunch_params
 type (ele_struct), optional :: ele
 
 real(rp), optional :: n_mat(6,6)
-real(rp) :: charge_live, average_pc, sum_s
-real(rp), allocatable :: charge(:), part(:,:)
-real(qp) sum_t, sum_t2
-real(qp), allocatable :: part_qp(:,:)
+real(rp) :: charge_live, average_pc, sum_s, sum_t, sum_t2, t_ref, dt
+real(rp), allocatable :: charge(:), part(:,:), part_t(:,:)
 
 integer i, species, n, nb, ib, i0, i1, n_live
 integer, allocatable :: n_live_b(:)
@@ -1589,7 +1589,7 @@ allocate (charge(n))
 species = bunch%particle(1)%species
 
 nb = (n + bunch_sum_block - 1) / bunch_sum_block
-allocate (part(6, nb), n_live_b(nb), part_qp(2, nb))
+allocate (part(6, nb), n_live_b(nb), part_t(2, nb))
 
 !$OMP parallel do private(i0, i1, i) if (nb > 1)
 do ib = 1, nb
@@ -1649,17 +1649,28 @@ if (charge_live == 0) then
   charge_live = bunch_params%n_particle_live
 endif
 
-!$OMP parallel do private(i0, i1, i) if (nb > 1)
+! Time relative to the first live particle, in double precision (the spread of t is far below what double
+! resolves at that offset); the quad precision arithmetic would cost more than the rest of the statistics.
+
+t_ref = 0
+do i = 1, n
+  if (v%state(i) /= alive$) cycle
+  t_ref = qp_to_dp(v%t(i))
+  exit
+enddo
+
+!$OMP parallel do private(i0, i1, i, dt) if (nb > 1)
 do ib = 1, nb
   i0 = (ib - 1) * bunch_sum_block + 1
   i1 = min(ib * bunch_sum_block, n)
   part(6, ib) = 0
-  part_qp(:, ib) = 0
+  part_t(:, ib) = 0
   do i = i0, i1
     if (v%state(i) /= alive$) cycle
     part(6, ib) = part(6, ib) + v%s(i) * charge(i)
-    part_qp(1, ib) = part_qp(1, ib) + v%t(i) * charge(i)
-    part_qp(2, ib) = part_qp(2, ib) + v%t(i)**2 * charge(i)
+    dt = qp_to_dp(v%t(i)) - t_ref
+    part_t(1, ib) = part_t(1, ib) + dt * charge(i)
+    part_t(2, ib) = part_t(2, ib) + dt**2 * charge(i)
   enddo
 enddo
 !$OMP end parallel do
@@ -1667,16 +1678,15 @@ enddo
 sum_s = 0;  sum_t = 0;  sum_t2 = 0
 do ib = 1, nb
   sum_s = sum_s + part(6, ib)
-  sum_t = sum_t + part_qp(1, ib)
-  sum_t2 = sum_t2 + part_qp(2, ib)
+  sum_t = sum_t + part_t(1, ib)
+  sum_t2 = sum_t2 + part_t(2, ib)
 enddo
 
 bunch_params%centroid%s = sum_s / charge_live
-bunch_params%centroid%t = sum_t / charge_live
+bunch_params%centroid%t = t_ref + sum_t / charge_live
 bunch_params%s = bunch_params%centroid%s
 bunch_params%t = bunch_params%centroid%t
-bunch_params%sigma_t = sum_t2 / charge_live
-bunch_params%sigma_t = sqrt(max(0.0_rp, bunch_params%sigma_t - bunch_params%t**2))
+bunch_params%sigma_t = sqrt(max(0.0_rp, sum_t2 / charge_live - (sum_t / charge_live)**2))
 
 if (bmad_com%spin_tracking_on) call calc_spin_params (bunch, bunch_params)
   
@@ -2218,6 +2228,8 @@ end subroutine calc_spin_params
 
 subroutine calc_bunch_sigma_matrix_etc (v, charge, bunch_params, is_time_coords, ele)
 
+use bunch_soa_mod, only: qp_to_dp
+
 implicit none
 
 type (bunch_view_struct) v
@@ -2346,7 +2358,7 @@ real(rp) vec(7)
 ! Time coords uses a different basis for the sigma matrix.
 
 if (.not. is_time) then
-  vec = [real(rp):: v%x(i), v%px(i), v%y(i), v%py(i), v%z(i), v%pz(i), v%t(i)]
+  vec = [v%x(i), v%px(i), v%y(i), v%py(i), v%z(i), v%pz(i), qp_to_dp(v%t(i))]
   return
 endif
 

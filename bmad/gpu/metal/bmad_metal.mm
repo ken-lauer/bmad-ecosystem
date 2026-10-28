@@ -44,6 +44,7 @@ int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *
 int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
 int    bmad_backend_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len);
 int    bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
+int    bmad_backend_bunch_moments (int pass, double mass, const double *avg, double *out, char *reason, int reason_len);
 int    bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double out_stats[9], double out_layout[4],
                               double *out1, double *out2, char *reason, int reason_len);
 double bmad_backend_seconds (void);
@@ -1086,6 +1087,7 @@ kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffe
 // over the threadgroup, partials per threadgroup; the host adds the partials in double, in order.
 
 struct RedPar { uint n; float dct; float mass; uint pad; };
+struct MomPar { uint n; float inv_c; float mass; uint pad; float avg[7]; float pad2; };
 
 inline float beta_of (float pz, float p0c, float mass) {
   float pc = p0c * (1.0f + pz);
@@ -1150,6 +1152,78 @@ kernel void reduce_all (const device float* X [[buffer(0)]], const device float*
     threadgroup_barrier(mem_flags::mem_threadgroup);
   }
   if (tid == 0) for (int k = 0; k < 9; k++) out[9 * tg + k] = sh[k][0];
+}
+
+
+// Bunch moments of the live particles for calc_bunch_params, per threadgroup in fixed order (host sums
+// the partials in double). v = (x, px, y, py, z, pz, t - t0) with t - t0 = tz0 - z/(beta c).
+// Pass 1 (25 per group): n_live, sum q (all), sum q (live), sum q v[7], sum q p0c, min v[7], max v[7].
+kernel void moments1 (const device float* X [[buffer(0)]], const device float* PX [[buffer(1)]],
+                      const device float* Y [[buffer(2)]], const device float* PY [[buffer(3)]],
+                      const device float* Z [[buffer(4)]], const device float* PZ [[buffer(5)]],
+                      const device float* P0C [[buffer(6)]], const device int* STATE [[buffer(7)]],
+                      const device float* Q [[buffer(8)]], const device float* TZ0 [[buffer(9)]],
+                      device float* out [[buffer(10)]], constant MomPar& M [[buffer(11)]],
+                      uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
+                      uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float sh[25][256];
+  float a[25];
+  for (int k = 0; k < 11; k++) a[k] = 0.0f;
+  for (int k = 11; k < 18; k++) a[k] = 3.0e38f;
+  for (int k = 18; k < 25; k++) a[k] = -3.0e38f;
+  for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
+    float q = Q[i];
+    a[1] += q;
+    if (STATE[i] != ALIVE) continue;
+    float pc = P0C[i] * (1.0f + PZ[i]);
+    float beta = pc / sqrt(pc * pc + M.mass * M.mass);
+    float v[7] = {X[i], PX[i], Y[i], PY[i], Z[i], PZ[i], TZ0[i] - Z[i] * M.inv_c / beta};
+    a[0] += 1.0f;  a[2] += q;  a[10] += q * P0C[i];
+    for (int k = 0; k < 7; k++) { a[3 + k] += q * v[k]; a[11 + k] = min(a[11 + k], v[k]); a[18 + k] = max(a[18 + k], v[k]); }
+  }
+  for (int k = 0; k < 25; k++) sh[k][tid] = a[k];
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint s = tgs / 2; s > 0; s >>= 1) {
+    if (tid < s) {
+      for (int k = 0; k < 11; k++) sh[k][tid] += sh[k][tid + s];
+      for (int k = 11; k < 18; k++) sh[k][tid] = min(sh[k][tid], sh[k][tid + s]);
+      for (int k = 18; k < 25; k++) sh[k][tid] = max(sh[k][tid], sh[k][tid + s]);
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0) for (int k = 0; k < 25; k++) out[25 * tg + k] = sh[k][0];
+}
+
+// Pass 2 (22 per group): sum q (v - avg)_i (v - avg)_j, i <= j, over the first six coordinates, and sum q (v6 - avg6)^2.
+kernel void moments2 (const device float* X [[buffer(0)]], const device float* PX [[buffer(1)]],
+                      const device float* Y [[buffer(2)]], const device float* PY [[buffer(3)]],
+                      const device float* Z [[buffer(4)]], const device float* PZ [[buffer(5)]],
+                      const device float* P0C [[buffer(6)]], const device int* STATE [[buffer(7)]],
+                      const device float* Q [[buffer(8)]], const device float* TZ0 [[buffer(9)]],
+                      device float* out [[buffer(10)]], constant MomPar& M [[buffer(11)]],
+                      uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
+                      uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float sh[22][256];
+  float a[22];
+  for (int k = 0; k < 22; k++) a[k] = 0.0f;
+  for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
+    if (STATE[i] != ALIVE) continue;
+    float q = Q[i];
+    float d[6] = {X[i] - M.avg[0], PX[i] - M.avg[1], Y[i] - M.avg[2], PY[i] - M.avg[3], Z[i] - M.avg[4], PZ[i] - M.avg[5]};
+    int idx = 0;
+    for (int r = 0; r < 6; r++) for (int c = r; c < 6; c++) a[idx++] += q * d[r] * d[c];
+    float pc = P0C[i] * (1.0f + PZ[i]);
+    float beta = pc / sqrt(pc * pc + M.mass * M.mass);
+    float dt = TZ0[i] - Z[i] * M.inv_c / beta - M.avg[6];
+    a[21] += q * dt * dt;
+  }
+  for (int k = 0; k < 22; k++) sh[k][tid] = a[k];
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint s = tgs / 2; s > 0; s >>= 1) {
+    if (tid < s) for (int k = 0; k < 22; k++) sh[k][tid] += sh[k][tid + s];
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0) for (int k = 0; k < 22; k++) out[22 * tg + k] = sh[k][0];
 }
 
 kernel void reduce_bounds (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
@@ -1467,6 +1541,7 @@ struct ScParH {
 };
 
 struct RedParH { uint32_t n; float dct; float mass; uint32_t pad; };
+struct MomParH { uint32_t n; float inv_c; float mass; uint32_t pad; float avg[7]; float pad2; };
 struct CsrParH {
   uint32_t n, n_bin, pbs, pass;
   float z_min, dz_slice, dz_particle, inv_dz2;
@@ -1500,7 +1575,8 @@ struct Impl {
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
   uint32_t n_bin_max = 0;
   id<MTLComputePipelineState> psoCsrBinsTG = nil, psoCsrReduce = nil, psoCsrKick = nil, psoCsrX0 = nil, psoRedAll = nil;
-  id<MTLComputePipelineState> psoCsrLayout = nil;
+  id<MTLComputePipelineState> psoCsrLayout = nil, psoMom1 = nil, psoMom2 = nil;
+  id<MTLBuffer> bMom = nil;
   id<MTLBuffer> bCsrAcc2 = nil, bCsrPart = nil;   // per-threadgroup partial bin sums
   id<MTLBuffer> bCsrPar = nil, bStats = nil;      // device-written bin layout (2 passes) and statistics
   size_t csr_part_bytes = 0;
@@ -1522,6 +1598,7 @@ struct Impl {
   int nmax = 0;
   bool green_set = false;
   bool timing = false;
+  double csr_wall = 0, csr_busy = 0;  long csr_calls = 0;   // BMAD_DEVICE_TIMING: CSR step waits
   double busy = 0;
   double phase[4] = {0, 0, 0, 0};
 
@@ -1698,6 +1775,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoCsrBinsTG = pso(@"csr_bins_tg");
     p->psoCsrReduce = pso(@"csr_bins_reduce");
     p->psoCsrLayout = pso(@"csr_layout");
+    p->psoMom1 = pso(@"moments1");
+    p->psoMom2 = pso(@"moments2");
     p->psoCsrKick = pso(@"csr_kick");
     p->psoCsrX0 = pso(@"csr_x0");
     p->psoRedAll = pso(@"reduce_all");
@@ -1714,6 +1793,7 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bRed = p->alloc((size_t) kRedGroups * 9 * 4);
     p->bCsrPar = p->alloc(2 * sizeof(CsrParH));
     p->bStats = p->alloc(16 * 4);
+    p->bMom = p->alloc((size_t) kRedGroups * 25 * 4);
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);
     p->bB = p->alloc(nm2 * 8);
@@ -1741,6 +1821,9 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
 
 void bmad_backend_close (void)
 {
+  if (gImpl != NULL && gImpl->timing && gImpl->csr_calls > 0)
+    fprintf(stderr, "bmad_metal timing: csr_step calls %ld, wait %.3f s (%.3f ms/call), GPU busy %.3f s (%.3f ms/call)\n",
+            gImpl->csr_calls, gImpl->csr_wall, 1e3 * gImpl->csr_wall / gImpl->csr_calls, gImpl->csr_busy, 1e3 * gImpl->csr_busy / gImpl->csr_calls);
   @autoreleasepool {
     if (gImpl == NULL) return;
     gImpl->sync();
@@ -2186,6 +2269,45 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
   }
 }
 
+int bmad_backend_bunch_moments (int pass, double mass, const double *avg, double *out, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    MomParH M;
+    memset(&M, 0, sizeof(M));
+    M.n = (uint32_t) p->n_res;  M.inv_c = (float) (1.0 / 299792458.0);  M.mass = (float) mass;
+    if (pass == 2) for (int k = 0; k < 7; k++) M.avg[k] = (float) avg[k];
+    int nout = (pass == 1) ? 25 : 22;
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:(pass == 1) ? p->psoMom1 : p->psoMom2];
+    [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bPX offset:0 atIndex:1];
+    [e setBuffer:p->bY offset:0 atIndex:2]; [e setBuffer:p->bPY offset:0 atIndex:3];
+    [e setBuffer:p->bZ offset:0 atIndex:4]; [e setBuffer:p->bPZ offset:0 atIndex:5];
+    [e setBuffer:p->bP0c offset:0 atIndex:6]; [e setBuffer:p->bState offset:0 atIndex:7];
+    [e setBuffer:p->bQ offset:0 atIndex:8]; [e setBuffer:p->bTZ0 offset:0 atIndex:9];
+    [e setBuffer:p->bMom offset:0 atIndex:10];
+    [e setBytes:&M length:sizeof(M) atIndex:11];
+    [e dispatchThreadgroups:MTLSizeMake(kRedGroups, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    p->sync();
+    if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
+    const float *r = (const float *) p->bMom.contents;
+    for (int k = 0; k < nout; k++) out[k] = 0;
+    if (pass == 1) { for (int k = 11; k < 18; k++) out[k] = 3.0e38; for (int k = 18; k < 25; k++) out[k] = -3.0e38; }
+    for (uint32_t g = 0; g < kRedGroups; g++) {
+      const float *rg = r + nout * g;
+      if (pass == 1) {
+        for (int k = 0; k < 11; k++) out[k] += rg[k];
+        for (int k = 11; k < 18; k++) if (rg[k] < out[k]) out[k] = rg[k];
+        for (int k = 18; k < 25; k++) if (rg[k] > out[k]) out[k] = rg[k];
+      } else {
+        for (int k = 0; k < 22; k++) out[k] += rg[k];
+      }
+    }
+    return 0;
+  }
+}
+
 int bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len)
 {
   @autoreleasepool {
@@ -2259,7 +2381,14 @@ int bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, doubl
       [e dispatchThreads:MTLSizeMake(nbin, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
       csr_encode_pass(p, e, n, nbin, 2, p->bCsrAcc2);
     }
+    double t0 = p->timing ? bmad_backend_seconds() : 0.0, b0 = p->busy;
     p->sync();
+    if (p->timing) {
+      p->csr_wall += bmad_backend_seconds() - t0; p->csr_busy += p->busy - b0; p->csr_calls++;
+      if (p->csr_calls % 500 == 0)
+        fprintf(stderr, "bmad_metal timing: csr_step calls %ld, wait %.3f s (%.3f ms/call), GPU busy %.3f s (%.3f ms/call)\n",
+                p->csr_calls, p->csr_wall, 1e3 * p->csr_wall / p->csr_calls, p->csr_busy, 1e3 * p->csr_busy / p->csr_calls);
+    }
     if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
     const float *st = (const float *) p->bStats.contents;
     for (int k = 0; k < 9; k++) out_stats[k] = st[k];
