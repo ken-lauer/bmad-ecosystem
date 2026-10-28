@@ -38,9 +38,11 @@ implicit none
 
 private :: powi, quad_z_coef, low_e_dz, orbit_too_large_lane, aperture_lane, apertures_lane, ab_kick_lane, radiation_lane
 private :: track_block_drift, track_block_quad, track_block_thick, track_block_bend, bend_body_lane, entrance_block, exit_block, fast_note_why
-private :: bend_fringe_lane, bend_fringe_setup
+private :: bend_fringe_lane, bend_fringe_setup, track_block_lcav_std, lcav_std_lane
 
 integer, parameter :: fast_none$ = 0, fast_drift$ = 1, fast_quad$ = 2, fast_thick$ = 3, fast_bend$ = 4, fast_lcav$ = 5
+integer, parameter :: fast_lcav_std$ = 6         ! bmad_standard lcavity (track_a_lcavity)
+integer, parameter :: fast_max_rf = 130          ! Max RF stair step entries in one slice
 
 integer, parameter :: fast_block_size = 256
 
@@ -156,6 +158,16 @@ type fast_slice_struct
   real(rp) :: lc_rel_tol = 0, lc_abs_tol = 0, lc_init_ds = 0, lc_min_ds = 0, lc_fatal_ds = 0, lc_ds_tiny = 0
   real(rp) :: lc_charge = 0
   real(rp) :: lc_rel_floor = 0             ! float32 floor of the relative tolerance after the sqrt(N) scaling
+  ! bmad_standard lcavity (track_a_lcavity, forward). One entry per RF stair step the slice touches: a drift
+  ! of rf_ds, then the actions in rf_flags (bit 0 entrance fringe, 1 energy kick, 2 exit fringe, 3 pondermotive
+  ! kick before the energy kick, 4 after).
+  integer :: rf_n = 0
+  logical :: rf_abs = .false., rf_tw = .false.
+  real(rp) :: rf_volt = 0, rf_fauto = 0, rf_grad = 0, rf_pond = 0, rf_nstep = 0, rf_freq = 0, rf_omega = 0
+  real(rp) :: rf_phi0 = 0, rf_ref_shift = 0, rf_ff = 0
+  integer :: rf_flags(fast_max_rf) = 0
+  real(rp) :: rf_ds(fast_max_rf) = 0, rf_scale(fast_max_rf) = 0, rf_p1c(fast_max_rf) = 0
+  real(rp) :: rf_ts(fast_max_rf) = 0, rf_tm(fast_max_rf) = 0   ! step%time and the multipass lord's step%time
 end type
 
 contains
@@ -382,6 +394,7 @@ select case (ele%key)
 case (drift$);       kind = fast_drift$
 case (quadrupole$);  kind = fast_quad$
 case (sbend$);       kind = fast_bend$
+case (lcavity$);     kind = fast_lcav_std$
 ! track_a_thick_multipole keys, minus elseparator (electric kick), ac_kicker (time dependent amplitude)
 ! and collimators (momentum apertures in check_aperture_limit).
 case (pipe$, monitor$, instrument$, kicker$, hkicker$, vkicker$, sextupole$, octupole$, thick_multipole$)
@@ -491,6 +504,13 @@ endif
 
 !------------------------------------------
 ! Runge-Kutta lcavity (device kernel)
+
+if (fs%kind == fast_lcav_std$) then
+  if (.not. lcav_std_setup()) return
+  call misalign_setup ()
+  err_flag = .false.
+  return
+endif
 
 if (fs%kind == fast_lcav$) then
   if (ele%orientation /= 1) then
@@ -615,6 +635,129 @@ if (fs%offset_on) then
 endif
 
 end subroutine misalign_setup
+
+!------------------------
+! bmad_standard lcavity: the RF stair steps of track_a_lcavity this slice touches, with everything
+! this_energy_kick, this_pondermotive_transverse_kick, fringe_kick and this_rf_phase use, for a forward
+! particle (s_dir = body_dir = 1).
+
+function lcav_std_setup () result (ok)
+
+type (ele_struct), pointer :: lord, mlord
+type (rf_stair_step_struct), pointer :: step
+type (ele_pointer_struct), allocatable :: chain(:)
+real(rp) s_now, s_end, ds
+integer ix_start, ix_end, n_steps, ix, k, ix_pass, n_links, fl, n_step_v, ix_mag, ix_elec
+logical ok, fr_in, fr_out
+
+ok = .false.
+lord => pointer_to_super_lord(ele)
+if (ele%orientation /= 1 .or. lord%orientation /= 1) then
+  call set_why('reversed element');  return
+endif
+if (ele%value(l$) == 0) then
+  call set_why('zero length lcavity');  return
+endif
+if (nint(lord%value(n_rf_steps$)) == 0 .or. .not. associated(lord%rf)) then
+  call set_why('lcavity without RF stair steps');  return
+endif
+if (ele%value(rf_frequency$) == 0 .or. lord%value(rf_frequency$) == 0) then
+  call set_why('lcavity with zero rf_frequency');  return
+endif
+if (lord%value(ks$) /= 0) then
+  call set_why('lcavity with solenoid field');  return
+endif
+if (lord%value(coupler_strength$) /= 0 .or. ele%value(coupler_strength$) /= 0) then
+  call set_why('rf coupler kick');  return
+endif
+if (ele%value(hkick$) /= 0 .or. ele%value(vkick$) /= 0) then
+  call set_why('lcavity with kicks');  return
+endif
+if (ele%bookkeeping_state%has_misalign .and. .not. has_orientation_attributes(ele)) then
+  call set_why('misaligned without orientation attributes');  return
+endif
+call multipole_ele_to_ab (ele, .false., ix_mag, an, bn, magnetic$, include_kicks$)
+call multipole_ele_to_ab (ele, .false., ix_elec, an, bn, electric$)
+if (ix_mag > -1 .or. ix_elec > -1) then
+  call set_why('lcavity multipoles');  return
+endif
+
+mlord => lord
+if (lord%slave_status == multipass_slave$) mlord => pointer_to_lord(lord, 1)
+fs%rf_abs = absolute_time_tracking(lord)
+fs%rf_ref_shift = 0
+if (fs%rf_abs .and. bmad_com%absolute_time_ref_shift) then
+  if (lord%slave_status == multipass_slave$) then
+    call multipass_chain(lord, ix_pass, n_links, chain)
+    fs%rf_ref_shift = chain(1)%ele%value(ref_time_start$)
+  else
+    fs%rf_ref_shift = lord%value(ref_time_start$)
+  endif
+endif
+fs%rf_phi0 = lord%value(phi0_err$) + lord%value(phi0$)
+if (.not. bmad_com%absolute_time_tracking) fs%rf_phi0 = fs%rf_phi0 + lord%value(phi0_multipass$)
+fs%rf_freq = lord%value(rf_frequency$)
+fs%rf_omega = twopi * ele%value(rf_frequency$) / c_light
+fs%rf_volt = lord%value(voltage$) + lord%value(voltage_err$)
+fs%rf_fauto = lord%value(field_autoscale$)
+fs%rf_tw = (nint(lord%value(cavity_type$)) == traveling_wave$)
+fs%rf_ff = charge_of(param%particle) / (2.0_rp * charge_of(lord%ref_species))
+n_step_v = nint(lord%value(n_rf_steps$))
+fs%rf_nstep = n_step_v
+if (lord%value(l_active$) /= 0) then
+  fs%rf_grad = lord%value(voltage_tot$) * lord%value(field_autoscale$) / lord%value(l_active$)
+  fs%rf_pond = (lord%value(field_autoscale$)*lord%value(voltage_tot$)/lord%value(l_active$))**2 * lord%value(l_active$)
+endif
+
+fr_in  = (nint(lord%value(fringe_type$)) /= none$ .and. at_this_ele_end(entrance_end$, nint(lord%value(fringe_at$))))
+fr_out = (nint(lord%value(fringe_type$)) /= none$ .and. at_this_ele_end(exit_end$, nint(lord%value(fringe_at$))))
+fr_in = fr_in .and. lord%value(l_active$) /= 0
+fr_out = fr_out .and. lord%value(l_active$) /= 0
+
+n_steps = ubound(lord%rf%steps, 1) - 1
+s_now = ele%s_start - lord%s_start
+s_end = ele%s       - lord%s_start
+ix_start = ele_rf_step_index(ele%value(E_tot_start$), s_now, lord)
+ix_end   = ele_rf_step_index(ele%value(E_tot$), s_end, lord)
+if (ix_start < 0 .or. ix_end < 0) then
+  call set_why('RF step bookkeeping');  return
+endif
+if (ix_end - ix_start + 1 > fast_max_rf) then
+  call set_why('too many RF steps');  return
+endif
+
+k = 0
+do ix = ix_start, ix_end
+  step => lord%rf%steps(ix)
+  if (ix == ix_end) then
+    ds = s_end - s_now
+    s_now = s_end
+  else
+    ds = step%s - s_now
+    s_now = step%s
+  endif
+  fl = 0
+  if (ix == 0 .and. s_now == step%s .and. fr_in) fl = ibset(fl, 0)
+  if (ix /= ix_end) then
+    fl = ibset(fl, 1)
+    if (.not. fs%rf_tw .and. lord%value(l_active$) /= 0) then
+      if (step%ix_step /= 0) fl = ibset(fl, 3)
+      if (step%ix_step /= n_step_v) fl = ibset(fl, 4)
+    endif
+  endif
+  if (ix == n_steps .and. s_now == step%s .and. fr_out) fl = ibset(fl, 2)
+  k = k + 1
+  fs%rf_ds(k) = ds
+  fs%rf_flags(k) = fl
+  fs%rf_scale(k) = step%scale
+  fs%rf_p1c(k) = step%p1c
+  fs%rf_ts(k) = step%time
+  fs%rf_tm(k) = mlord%rf%steps(step%ix_step)%time
+enddo
+fs%rf_n = k
+ok = .true.
+
+end function lcav_std_setup
 
 !------------------------
 ! Runge-Kutta lcavity: everything odeint_bmad, kick_vector_calc, em_field_calc (bmad_standard cavity),
@@ -1596,6 +1739,8 @@ do ib = 1, n_block
     call track_block_thick (soa, fs, i0, i1)
   case (fast_bend$)
     call track_block_bend (soa, fs, i0, i1)
+  case (fast_lcav_std$)
+    call track_block_lcav_std (soa, fs, i0, i1)
   end select
 enddo
 !$OMP end parallel do
@@ -2126,6 +2271,173 @@ soa%z(i) = z + soa%beta(i) * step_len / fs%beta_ref - rel_p * L_p / pt
 end subroutine bend_body_lane
 
 !--------------------------------------------------------------------------
+! track1_bmad lcavity$ branch with n_rf_steps > 0: track_a_lcavity for a forward particle, without
+! multipoles, solenoid field, coupler kick or spin. The RF phase uses the particle time relative to the
+! block's first live particle in double precision (one quad precision modulo per block instead of one per
+! particle per stair step); the time itself is advanced in quad precision as track_a_drift does.
+
+subroutine track_block_lcav_std (soa, fs, i0, i1)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+real(qp) t_ref
+real(rp) m_ref
+integer i0, i1, i
+logical go(i0:i1)
+
+call entrance_block (soa, fs, i0, i1, go)
+
+t_ref = 0;  m_ref = 0
+if (fs%rf_abs) then
+  do i = i0, i1
+    if (.not. go(i)) cycle
+    t_ref = soa%t(i)
+    m_ref = modulo2(soa%t(i), 0.5_qp / fs%rf_freq) - fs%rf_ref_shift
+    exit
+  enddo
+endif
+
+do i = i0, i1
+  if (go(i)) call lcav_std_lane (soa, fs, i, t_ref, m_ref)
+enddo
+
+call exit_block (soa, fs, i0, i1, go)
+
+end subroutine track_block_lcav_std
+
+!--------------------------------------------------------------------------
+
+subroutine lcav_std_lane (soa, fs, i, t_ref, m_ref)
+
+type (bunch_soa_struct) soa
+type (fast_slice_struct) fs
+real(qp) t_ref, dq
+real(rp) m_ref, phase, mc2, d0, t_acc
+integer i, k, fl
+
+mc2 = fs%mass
+! Particle time relative to the block reference: exact at the start, then the increments in double.
+d0 = 0;  t_acc = 0
+if (fs%rf_abs) then
+  dq = soa%t(i) - t_ref
+  if (abs(dq) > 0.5_qp / fs%rf_freq) dq = modulo2(dq, 0.5_qp / fs%rf_freq)   ! Keeps d0 small (exact phase).
+  d0 = real(dq, rp)
+endif
+if (fs%offset_on) call offset_set_lane (soa, fs, i, t_acc)
+
+do k = 1, fs%rf_n
+  call drift_lane (soa, fs, i, fs%rf_ds(k), .true., t_acc)
+  if (soa%state(i) /= alive$) return
+  fl = fs%rf_flags(k)
+  if (btest(fl, 0)) then
+    phase = rf_phase(k)
+    call fringe_kick (1.0_rp)
+    if (soa%state(i) /= alive$) return
+  endif
+  if (btest(fl, 1)) then
+    if (btest(fl, 3)) call pondermotive_kick ()
+    phase = rf_phase(k)
+    call energy_kick (k)
+    if (soa%state(i) /= alive$) return
+    if (btest(fl, 4)) call pondermotive_kick ()
+  endif
+  if (btest(fl, 2)) then
+    phase = rf_phase(k)
+    call fringe_kick (-1.0_rp)
+    if (soa%state(i) /= alive$) return
+  endif
+enddo
+
+if (fs%offset_on) call offset_unset_lane (soa, fs, i, t_acc)
+
+!------------------------
+contains
+
+! this_rf_phase
+function rf_phase (k) result (ph)
+integer k
+real(rp) ph, particle_time
+if (fs%rf_abs) then
+  particle_time = m_ref + (d0 + t_acc)
+  particle_time = particle_time - fs%rf_tm(k)
+else
+  particle_time = -soa%z(i) / (soa%beta(i) * c_light) + fs%rf_ts(k) - fs%rf_tm(k)
+endif
+ph = twopi * (fs%rf_phi0 + particle_time * fs%rf_freq)
+ph = modulo2(ph, pi)
+end function rf_phase
+
+! this_energy_kick (s_dir = 1, no multipoles), to_energy_coords, to_momentum_coords and
+! orbit_reference_energy_correction.
+subroutine energy_kick (k)
+integer k
+real(rp) dE, rel_p, pc_start, pz_end, p0c, p1c, pc, v6, p_rel
+p0c = soa%p0c(i)
+dE = fs%rf_volt * fs%rf_scale(k) * fs%rf_fauto * cos(phase)
+rel_p = 1 + soa%pz(i)
+pc_start = rel_p * p0c
+if (sqrt(pc_start**2 + mc2**2) + dE <= mc2) then
+  soa%state(i) = lost_pz$
+  return
+endif
+pz_end = soa%pz(i) + dpc_given_dE(p0c*rel_p, mc2, dE) / p0c
+soa%z(i) = soa%z(i) / soa%beta(i)
+v6 = (1 + soa%pz(i)) / soa%beta(i)
+v6 = v6 + dE / p0c
+pc = (1 + pz_end) * p0c
+soa%beta(i) = pc / (p0c * v6)
+soa%z(i) = soa%z(i) * soa%beta(i)
+soa%pz(i) = pz_end
+p1c = fs%rf_p1c(k)
+p_rel = p0c / p1c
+soa%px(i) = soa%px(i) * p_rel
+soa%py(i) = soa%py(i) * p_rel
+soa%pz(i) = (soa%pz(i) * p0c - (p1c - p0c)) / p1c
+soa%p0c(i) = p1c
+end subroutine energy_kick
+
+! this_pondermotive_transverse_kick (body_dir = time_dir = 1).
+subroutine pondermotive_kick ()
+real(rp) coef, rel_p, dz
+rel_p = 1.0_rp + soa%pz(i)
+coef = fs%rf_pond / (16.0_rp * soa%p0c(i)**2 * rel_p * fs%rf_nstep)
+soa%px(i) = soa%px(i) - coef * soa%x(i)
+soa%py(i) = soa%py(i) - coef * soa%y(i)
+dz = -0.5_rp * coef * (soa%x(i)**2 + soa%y(i)**2) / rel_p
+soa%z(i) = soa%z(i) + dz
+call add_time (soa, i, -dz / (c_light * soa%beta(i)))
+t_acc = t_acc - dz / (c_light * soa%beta(i))
+end subroutine pondermotive_kick
+
+! fringe_kick (body_dir = time_dir = 1), edge = +1 entrance, -1 exit.
+subroutine fringe_kick (edge)
+real(rp) edge, ff, f, pc, ez_field, dez_dz_field, dE, pz_end, p0c, v6, pcn
+p0c = soa%p0c(i)
+ff = edge * fs%rf_ff
+f = ff / p0c
+pc = p0c * (1 + soa%pz(i))
+ez_field = fs%rf_grad * cos(phase)
+dez_dz_field = fs%rf_grad * sin(phase) * fs%rf_omega
+dE = -ff * 0.5_rp * dez_dz_field * (soa%x(i)**2 + soa%y(i)**2)
+if (sqrt(pc**2 + mc2**2) + dE <= mc2) then
+  soa%state(i) = lost_pz$
+  return
+endif
+pz_end = soa%pz(i) + dpc_given_dE(pc, mc2, dE) / p0c
+soa%z(i) = soa%z(i) / soa%beta(i)
+v6 = (1 + soa%pz(i)) / soa%beta(i)
+soa%px(i) = soa%px(i) - f * ez_field * soa%x(i)
+soa%py(i) = soa%py(i) - f * ez_field * soa%y(i)
+v6 = v6 + dE / p0c
+pcn = (1 + pz_end) * p0c
+soa%beta(i) = pcn / (p0c * v6)
+soa%z(i) = soa%z(i) * soa%beta(i)
+soa%pz(i) = pz_end
+end subroutine fringe_kick
+
+end subroutine lcav_std_lane
+
+!--------------------------------------------------------------------------
 ! track1_bmad drift$ branch: track_a_drift (orbit, ele%value(l$)*orbit%time_dir)
 ! with orbit%direction = 1, ele_orientation absent (rel_z_vel = 1), include_ref_motion = True.
 
@@ -2154,12 +2466,13 @@ end subroutine track_block_drift
 ! do_time = False omits the orbit%t update (used where the caller overwrites orbit%t afterwards).
 ! orb%s is not updated: track1_bmad overwrites it.
 
-subroutine drift_lane (soa, fs, i, length, do_time)
+subroutine drift_lane (soa, fs, i, length, do_time, dt_sum)
 
 type (bunch_soa_struct) soa
 type (fast_slice_struct) fs
 
 real(rp) length, delta, rel_pc, px_rel, py_rel, pxy2, ps_rel, dz, dt, mc2
+real(rp), optional :: dt_sum
 integer i, rel_z_vel
 logical do_time
 
@@ -2187,6 +2500,7 @@ if (soa%beta(i) > 0) then
   if (do_time) then
     dt = rel_z_vel * length / (soa%beta(i) * ps_rel * c_light)
     call add_time (soa, i, dt)
+    if (present(dt_sum)) dt_sum = dt_sum + dt
   endif
 else
   dz = length * (1 - 1/ps_rel)
@@ -2361,10 +2675,11 @@ end subroutine track_block_quad
 !--------------------------------------------------------------------------
 ! offset_particle, set$, non-bend, orientation = direction = time_dir = 1, set_hvkicks = False.
 
-subroutine offset_set_lane (soa, fs, i)
+subroutine offset_set_lane (soa, fs, i, dt_sum)
 
 type (bunch_soa_struct) soa
 type (fast_slice_struct) fs
+real(rp), optional :: dt_sum
 
 real(rp) rel_p, r(3), r2(3), pz, p0(3), p(3), s_body, ds
 integer i
@@ -2393,7 +2708,7 @@ else
 endif
 
 ds = fs%s_target_set - s_body
-if (abs(ds) > 1d-14 .and. soa%state(i) == alive$) call offset_drift_lane (soa, i, ds)
+if (abs(ds) > 1d-14 .and. soa%state(i) == alive$) call offset_drift_lane (soa, i, ds, dt_sum)
 
 if (fs%do_tilt .and. fs%tilt_tot /= 0) call tilt_lane (soa, i, fs%cos_t, fs%sin_t)
 
@@ -2402,10 +2717,11 @@ end subroutine offset_set_lane
 !--------------------------------------------------------------------------
 ! offset_particle, unset$, mirror of offset_set_lane.
 
-subroutine offset_unset_lane (soa, fs, i)
+subroutine offset_unset_lane (soa, fs, i, dt_sum)
 
 type (bunch_soa_struct) soa
 type (fast_slice_struct) fs
+real(rp), optional :: dt_sum
 
 real(rp) rel_p, r(3), r2(3), pz, p0(3), p(3), s_lab, ds
 integer i
@@ -2438,7 +2754,7 @@ else
 endif
 
 ds = fs%s_target_unset - s_lab
-if (abs(ds) > 1d-14 .and. soa%state(i) == alive$) call offset_drift_lane (soa, i, ds)
+if (abs(ds) > 1d-14 .and. soa%state(i) == alive$) call offset_drift_lane (soa, i, ds, dt_sum)
 
 end subroutine offset_unset_lane
 
@@ -2446,9 +2762,11 @@ end subroutine offset_unset_lane
 ! track_a_drift (orbit, ds, ele_orientation = 1, include_ref_motion = .false.)
 ! The time update in track_a_drift is not applied: track_a_quadrupole overwrites orbit%t.
 
-subroutine offset_drift_lane (soa, i, length)
+subroutine offset_drift_lane (soa, i, length, dt_sum)
 
 type (bunch_soa_struct) soa
+real(rp), optional :: dt_sum
+real(rp) dt
 real(rp) length, rel_pc, px_rel, py_rel, pxy2, ps_rel, dz
 integer i, rel_z_vel
 
@@ -2470,6 +2788,13 @@ soa%x(i) = soa%x(i) + length * px_rel / ps_rel
 soa%y(i) = soa%y(i) + length * py_rel / ps_rel
 dz = -length /ps_rel
 soa%z(i) = soa%z(i) + rel_z_vel * dz
+! track_a_drift (include_ref_motion = False) also advances t; the kernels that get t from the net z
+! change leave it out (dt_sum absent).
+if (present(dt_sum) .and. soa%beta(i) > 0) then
+  dt = rel_z_vel * length / (soa%beta(i) * ps_rel * c_light)
+  call add_time (soa, i, dt)
+  dt_sum = dt_sum + dt
+endif
 
 end subroutine offset_drift_lane
 

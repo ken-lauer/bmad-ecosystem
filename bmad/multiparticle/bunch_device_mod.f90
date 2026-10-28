@@ -19,7 +19,7 @@ use bmad_interface
 use open_spacecharge_mod, only: mesh3d_struct, osc_get_rgrn_freespace, osc_mesh_resize, osc_mesh_resize_bounds, &
                                 osc_ordered_sum, deposit_particles, space_charge_3d, interpolate_field_batch
 use bunch_soa_mod, only: fast_track_enabled, fast_track_device, bunch_soa_struct, fast_slice_struct, fast_slice_prepare, &
-                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_lcav$, fast_max_ap, qp_add_dp
+                         fast_none$, fast_drift$, fast_quad$, fast_thick$, fast_bend$, fast_lcav$, fast_lcav_std$, fast_max_ap, qp_add_dp
 use random_mod, only: ran_seed_get
 use beam_utils, only: calc_emittances_and_twiss_from_sigma_matrix
 use, intrinsic :: iso_c_binding
@@ -833,6 +833,9 @@ character(*), parameter :: r_name = 'bunch_device_track_slice'
 tracked = .false.
 if (.not. res_active .or. .not. dev_ok) return
 call fast_slice_prepare (ele, param, fs, err, why, for_device = .true.)
+if (.not. err .and. fs%kind == fast_lcav_std$) then
+  err = .true.;  why = 'bmad_standard lcavity (CPU kernel only)'
+endif
 if (err) then
   ! BMAD_DEVICE_WHY=1: report why slices are left to the CPU (debug).
   if (.not. why_init) then
