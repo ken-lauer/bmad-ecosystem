@@ -143,6 +143,9 @@ int bmad_dev_bunch_download (int n, float *x, float *px, float *y, float *py, fl
                              int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
 /* Per particle t - t_base + z/(beta c) at the upload (float32), which the lcavity kernel needs for the RF time. */
 int bmad_dev_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
+/* Momentum kicks of the live resident particles: px += dp[i], py += dp[n + i], pz += dp[2n + i] for the
+   components selected by mask (1: px, 2: py, 4: pz). */
+int bmad_dev_bunch_add_kicks (int n, int mask, const float *dp, char *reason, int reason_len);
 int bmad_dev_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len);
 /* Sums over the live resident particles: out = {n_live, sum z/beta, sum |q|}. */
 int bmad_dev_bunch_sums (double mass, double out[3], char *reason, int reason_len);
@@ -180,6 +183,7 @@ typedef int    (*bmad_backend_bunch_upload_fn) (int, const float *, const float 
 typedef int    (*bmad_backend_bunch_download_fn) (int, float *, float *, float *, float *, float *, float *,
                                                   int32_t *, int32_t *, int32_t *, float *, char *, int);
 typedef int    (*bmad_backend_bunch_set_tz0_fn) (int, const float *, char *, int);
+typedef int    (*bmad_backend_bunch_add_kicks_fn) (int, int, const float *, char *, int);
 typedef int    (*bmad_backend_track_slice_fn) (const bmad_dev_slice_par *, const bmad_dev_rf_step *, char *, int);
 typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
 typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);

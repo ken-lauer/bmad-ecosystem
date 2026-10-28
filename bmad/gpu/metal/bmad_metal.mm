@@ -41,6 +41,7 @@ int    bmad_backend_bunch_download (int n, float *x, float *px, float *y, float 
                                     int32_t *state, int32_t *loc, int32_t *lost_tag, float *p0c, char *reason, int reason_len);
 int    bmad_backend_track_slice (const bmad_dev_slice_par *par, const bmad_dev_rf_step *rf, char *reason, int reason_len);
 int    bmad_backend_bunch_set_tz0 (int n, const float *tz0, char *reason, int reason_len);
+int    bmad_backend_bunch_add_kicks (int n, int mask, const float *dp, char *reason, int reason_len);
 int    bmad_backend_bunch_sums (double mass, double out[3], char *reason, int reason_len);
 int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *reason, int reason_len);
 int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
@@ -1436,6 +1437,17 @@ kernel void mom_reduce (const device float* P [[buffer(0)]], device float* SLOT 
 }
 
 // The charge weighted means of the seven coordinates for the centred second pass (slot floats 50..56).
+// Momentum kicks of the live particles: K holds the px, py and pz kicks (n each), mask selects them.
+struct KickPar { uint n, mask; };
+kernel void add_kicks (device float* PX [[buffer(0)]], device float* PY [[buffer(1)]], device float* PZ [[buffer(2)]],
+                       const device float* K [[buffer(3)]], const device int* STATE [[buffer(4)]],
+                       constant KickPar& Q [[buffer(5)]], uint i [[thread_position_in_grid]]) {
+  if (i >= Q.n || STATE[i] != ALIVE) return;
+  if (Q.mask & 1u) PX[i] += K[i];
+  if (Q.mask & 2u) PY[i] += K[Q.n + i];
+  if (Q.mask & 4u) PZ[i] += K[2u * Q.n + i];
+}
+
 kernel void mom_avg (device float* SLOT [[buffer(0)]], uint k [[thread_position_in_grid]]) {
   if (k >= 7u) return;
   float q = SLOT[4] + SLOT[5];
@@ -1805,7 +1817,8 @@ struct Impl {
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
   uint32_t n_bin_max = 0;
   id<MTLComputePipelineState> psoCsrBinsTG = nil, psoCsrReduce = nil, psoCsrKick = nil, psoCsrX0 = nil, psoRedAll = nil;
-  id<MTLComputePipelineState> psoCsrLayout = nil, psoMom1 = nil, psoMom2 = nil, psoMomRed = nil, psoMomAvg = nil;
+  id<MTLComputePipelineState> psoCsrLayout = nil, psoMom1 = nil, psoMom2 = nil, psoMomRed = nil, psoMomAvg = nil, psoKicks = nil;
+  id<MTLBuffer> bKick = nil;   // add_kicks input (3 n floats), allocated on first use
   id<MTLBuffer> bMom = nil, bMom2 = nil, bSlots = nil;   // moments partials (pass 1, pass 2) and save slots
   id<MTLBuffer> bCsrAcc2 = nil, bCsrPart = nil;   // per-threadgroup partial bin sums
   id<MTLBuffer> bCsrPar = nil, bStats = nil;      // device-written bin layout (2 passes) and statistics
@@ -2013,6 +2026,7 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoMom1 = pso(@"moments1");
     p->psoMomRed = pso(@"mom_reduce");
     p->psoMomAvg = pso(@"mom_avg");
+    p->psoKicks = pso(@"add_kicks");
     p->psoMom2 = pso(@"moments2");
     p->psoCsrKick = pso(@"csr_kick");
     p->psoCsrX0 = pso(@"csr_x0");
@@ -2282,6 +2296,28 @@ int bmad_backend_bunch_set_tz0 (int n, const float *tz0, char *reason, int reaso
     if (n != p->n_res) { put_reason(reason, reason_len, "tz0 size differs from the resident bunch"); return 1; }
     p->sync();
     memcpy(p->bTZ0.contents, tz0, (size_t) n * 4);
+    return 0;
+  }
+}
+
+int bmad_backend_bunch_add_kicks (int n, int mask, const float *dp, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (n != p->n_res) { put_reason(reason, reason_len, "kick size differs from the resident bunch"); return 1; }
+    if (n == 0 || mask == 0) return 0;
+    if (p->bKick == nil || p->bKick.length < (NSUInteger) p->nmax * 12) p->bKick = p->alloc((size_t) p->nmax * 12);
+    p->sync();
+    memcpy(p->bKick.contents, dp, (size_t) n * 12);
+    struct { uint32_t n, mask; } Q = {(uint32_t) n, (uint32_t) mask};
+    id<MTLComputeCommandEncoder> e = p->encoder();
+    [e setComputePipelineState:p->psoKicks];
+    [e setBuffer:p->bPX offset:0 atIndex:0]; [e setBuffer:p->bPY offset:0 atIndex:1];
+    [e setBuffer:p->bPZ offset:0 atIndex:2]; [e setBuffer:p->bKick offset:0 atIndex:3];
+    [e setBuffer:p->bState offset:0 atIndex:4];
+    [e setBytes:&Q length:sizeof(Q) atIndex:5];
+    [e dispatchThreads:MTLSizeMake(n, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
     return 0;
   }
 }

@@ -422,7 +422,7 @@ real(rp), pointer, intent(in) :: z(:), x(:), y(:), charge(:), pz(:)
 integer ix_z(:)
 
 real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:)
-real(rp) arg, f0, ff, dz, z_prev
+real(rp) arg, f0, ff, dz, z_prev, b_sin, b_cos
 integer n_live, i, j, jj, k, nm, j0, j1, nc
 
 !
@@ -464,30 +464,33 @@ do j0 = 1, n_live, sr_wake_chunk
 
   ! Recurrence.
 
-  do jj = 1, j1 - j0 + 1
-    ele%wake%sr%z_ref_long = pd(1, jj)
-    f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
-    if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
+  ! The modes are independent: one mode at a time, its sums held in locals.
 
-    do i = 1, nm
-      mode => ele%wake%sr%long(i)
+  ele%wake%sr%z_ref_long = pd(1, j1 - j0 + 1)
+  do i = 1, nm
+    mode => ele%wake%sr%long(i)
+    b_sin = mode%b_sin;  b_cos = mode%b_cos
+    do jj = 1, j1 - j0 + 1
+      f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
+      if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
       ff = f0 * mode%amp
-      w(i, jj) = mode%b_sin * ef(i, jj) * cs(2, i, jj) + mode%b_cos * ef(i, jj) * cs(1, i, jj)
+      w(i, jj) = b_sin * ef(i, jj) * cs(2, i, jj) + b_cos * ef(i, jj) * cs(1, i, jj)
 
       ! Add to wake. The monopole wake does not have any skew components.
 
       select case (mode%position_dependence)
       case (none$, x_trailing$, y_trailing$)
-        mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj)
-        mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj)
+        b_sin = b_sin * ef(i, jj) + ff * cs(3, i, jj)
+        b_cos = b_cos * ef(i, jj) + ff * cs(4, i, jj)
       case (x_leading$)
-        mode%b_sin = mode%b_sin * ef(i, jj) + pd(2, jj) * ff * cs(3, i, jj)
-        mode%b_cos = mode%b_cos * ef(i, jj) + pd(2, jj) * ff * cs(4, i, jj)
+        b_sin = b_sin * ef(i, jj) + pd(2, jj) * ff * cs(3, i, jj)
+        b_cos = b_cos * ef(i, jj) + pd(2, jj) * ff * cs(4, i, jj)
       case (y_leading$)
-        mode%b_sin = mode%b_sin * ef(i, jj) + pd(3, jj) * ff * cs(3, i, jj)
-        mode%b_cos = mode%b_cos * ef(i, jj) + pd(3, jj) * ff * cs(4, i, jj)
+        b_sin = b_sin * ef(i, jj) + pd(3, jj) * ff * cs(3, i, jj)
+        b_cos = b_cos * ef(i, jj) + pd(3, jj) * ff * cs(4, i, jj)
       end select
     enddo
+    mode%b_sin = b_sin;  mode%b_cos = b_cos
   enddo
 
   ! Kicks: existing wake, then self kick, mode by mode.
@@ -556,7 +559,7 @@ real(rp), pointer, intent(in) :: z(:), x(:), y(:), charge(:), px(:), py(:)
 integer ix_z(:)
 
 real(rp), allocatable :: ef(:,:), cs(:,:,:), pd(:,:), w(:,:,:)
-real(rp) arg, f0, ff, dz, z_prev
+real(rp) arg, f0, ff, dz, z_prev, b_sin, b_cos, a_sin, a_cos
 integer n_live, i, j, jj, k, nm, j0, j1, nc
 
 !
@@ -594,37 +597,40 @@ do j0 = 1, n_live, sr_wake_chunk
   enddo
   !$OMP end parallel do
 
-  do jj = 1, j1 - j0 + 1
-    ele%wake%sr%z_ref_trans = pd(1, jj)
-    f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
-    if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
+  ! The modes are independent: one mode at a time, its sums held in locals.
 
-    do i = 1, nm
-      mode => ele%wake%sr%trans(i)
+  ele%wake%sr%z_ref_trans = pd(1, j1 - j0 + 1)
+  do i = 1, nm
+    mode => ele%wake%sr%trans(i)
+    b_sin = mode%b_sin;  b_cos = mode%b_cos;  a_sin = mode%a_sin;  a_cos = mode%a_cos
+    do jj = 1, j1 - j0 + 1
+      f0 = ele%wake%sr%amp_scale * pd(4, jj) / ele%value(p0c$)
+      if (ele%wake%sr%scale_with_length) f0 = f0 * ele%value(l$) 
       ff = f0 * mode%amp
-      w(1, i, jj) = mode%b_sin * ef(i, jj) * cs(2, i, jj) + mode%b_cos * ef(i, jj) * cs(1, i, jj)
-      w(2, i, jj) = mode%a_sin * ef(i, jj) * cs(2, i, jj) + mode%a_cos * ef(i, jj) * cs(1, i, jj)
+      w(1, i, jj) = b_sin * ef(i, jj) * cs(2, i, jj) + b_cos * ef(i, jj) * cs(1, i, jj)
+      w(2, i, jj) = a_sin * ef(i, jj) * cs(2, i, jj) + a_cos * ef(i, jj) * cs(1, i, jj)
 
       if (mode%polarization /= y_polarization$) then
         if (mode%position_dependence == leading$) then
-          mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(2, jj)
-          mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(2, jj)
+          b_sin = b_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(2, jj)
+          b_cos = b_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(2, jj)
         else
-          mode%b_sin = mode%b_sin * ef(i, jj) + ff * cs(3, i, jj)
-          mode%b_cos = mode%b_cos * ef(i, jj) + ff * cs(4, i, jj)
+          b_sin = b_sin * ef(i, jj) + ff * cs(3, i, jj)
+          b_cos = b_cos * ef(i, jj) + ff * cs(4, i, jj)
         endif
       endif
 
       if (mode%polarization /= x_polarization$) then
         if (mode%position_dependence == leading$) then
-          mode%a_sin = mode%a_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(3, jj)
-          mode%a_cos = mode%a_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(3, jj)
+          a_sin = a_sin * ef(i, jj) + ff * cs(3, i, jj) * pd(3, jj)
+          a_cos = a_cos * ef(i, jj) + ff * cs(4, i, jj) * pd(3, jj)
         else
-          mode%a_sin = mode%a_sin * ef(i, jj) + ff * cs(3, i, jj)
-          mode%a_cos = mode%a_cos * ef(i, jj) + ff * cs(4, i, jj)
+          a_sin = a_sin * ef(i, jj) + ff * cs(3, i, jj)
+          a_cos = a_cos * ef(i, jj) + ff * cs(4, i, jj)
         endif
       endif
     enddo
+    mode%b_sin = b_sin;  mode%b_cos = b_cos;  mode%a_sin = a_sin;  mode%a_cos = a_cos
   enddo
 
   !$OMP parallel do private(jj, k, i, mode) if (j1 - j0 > 10000)

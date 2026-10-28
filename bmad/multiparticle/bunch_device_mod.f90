@@ -132,6 +132,13 @@ interface
     character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
+  function bmad_dev_bunch_add_kicks (n, mask, dp, reason, reason_len) bind(c, name = 'bmad_dev_bunch_add_kicks') result (ierr)
+    import :: c_char, c_int, c_float
+    integer(c_int), value :: n, mask, reason_len
+    real(c_float) :: dp(*)
+    character(kind=c_char) :: reason(*)
+    integer(c_int) :: ierr
+  end function
   function bmad_dev_bunch_set_tz0 (n, tz0, reason, reason_len) bind(c, name = 'bmad_dev_bunch_set_tz0') result (ierr)
     import :: c_char, c_int, c_float
     integer(c_int), value :: n, reason_len
@@ -253,6 +260,7 @@ real(c_float), allocatable, private, save :: p0c32(:)
 real(rp), private, save :: res_t_base = 0
 real(rp), private, save :: res_qs = 1        ! n / sum |charge| of the uploaded bunch (scale of the moment sums)
 logical, private, save :: tz0_valid = .false.
+real(c_float), allocatable, private, save :: kick32(:)
 real(c_float), allocatable, private, save :: tz032(:)
 integer(c_int32_t), allocatable, private, save :: st32(:), loc32(:), tag32(:)
 ! Comb saves waiting for their device moments (bunch_device_save_enqueue / bunch_device_saves_finalize).
@@ -800,6 +808,86 @@ res_tag = 0
 res_host_current = .true.
 
 end subroutine bunch_device_sync_host
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_get_coords (soa, x, y, z, state, ok)
+!
+! Routine to read x, y, z and the states of the resident bunch from the device copy, leaving the host copy
+! as it is.
+!
+! Output:
+!   x(:), y(:), z(:) -- real(rp): Coordinates (soa%n).
+!   state(:)         -- integer: States.
+!   ok               -- logical: False if the device copy is not the current one (nothing done).
+!-
+
+subroutine bunch_device_get_coords (soa, x, y, z, state, ok)
+
+type (bunch_soa_struct) soa
+real(rp) x(:), y(:), z(:)
+integer state(:), i, ierr
+logical ok
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_get_coords'
+
+ok = .false.
+if (.not. res_active .or. .not. dev_ok .or. .not. res_dev_current) return
+reason = ''
+ierr = bmad_dev_bunch_download (int(soa%n, c_int), x32, px32, y32, py32, z32, pz32, st32, loc32, tag32, p0c32, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_error$, r_name, 'Download failed: ' // trim(from_c(reason)), 'Bunch state is undefined from here on.')
+  dev_ok = .false.;  res_active = .false.
+  return
+endif
+
+!$OMP PARALLEL DO IF (soa%n > 10000)
+do i = 1, soa%n
+  x(i) = x32(i);  y(i) = y32(i);  z(i) = z32(i)
+  state(i) = st32(i)
+enddo
+!$OMP END PARALLEL DO
+ok = .true.
+
+end subroutine bunch_device_get_coords
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_add_kicks (soa, dpx, dpy, dpz, mask)
+!
+! Routine to add momentum kicks to the live particles of the resident bunch on the device (after
+! bunch_device_get_coords). mask selects the components: 1: px, 2: py, 4: pz.
+!-
+
+subroutine bunch_device_add_kicks (soa, dpx, dpy, dpz, mask)
+
+type (bunch_soa_struct) soa
+real(rp) dpx(:), dpy(:), dpz(:)
+integer mask, i, n, ierr
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_add_kicks'
+
+n = soa%n
+if (.not. allocated(kick32)) then
+  allocate (kick32(3*n))
+elseif (size(kick32) < 3*n) then
+  deallocate (kick32);  allocate (kick32(3*n))
+endif
+!$OMP PARALLEL DO IF (n > 10000)
+do i = 1, n
+  kick32(i) = real(dpx(i), c_float);  kick32(n+i) = real(dpy(i), c_float);  kick32(2*n+i) = real(dpz(i), c_float)
+enddo
+!$OMP END PARALLEL DO
+reason = ''
+ierr = bmad_dev_bunch_add_kicks (int(n, c_int), int(mask, c_int), kick32, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_error$, r_name, 'Kick upload failed: ' // trim(from_c(reason)), 'Bunch state is undefined from here on.')
+  dev_ok = .false.;  res_active = .false.
+  return
+endif
+res_host_current = .false.
+
+end subroutine bunch_device_add_kicks
 
 !--------------------------------------------------------------------------
 ! tz0 = t - res_t_base + z/(beta c) of every particle at the upload, from the host copy (soa%t is the

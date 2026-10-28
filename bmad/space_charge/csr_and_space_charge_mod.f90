@@ -160,7 +160,11 @@ type, private :: soa_session_struct
   real(rp) :: p0c_checked = -1        ! See fast_track1_soa.
 end type
 private soa_track_slice, soa_track_wake_slice, soa_sync_bunch, soa_dev_to_host, soa_host_changed
-private soa_save_step, soa_save_due, soa_save_due_end
+private soa_save_step, soa_save_due, soa_save_due_end, soa_sr_wake
+
+! Scratch for the wake kicks of a device resident bunch (soa_sr_wake).
+real(rp), allocatable, target, private, save :: wk_x(:), wk_y(:), wk_z(:), wk_px(:), wk_py(:), wk_pz(:)
+integer, allocatable, target, private, save :: wk_state(:), wk_state0(:)
 
 contains
 
@@ -709,13 +713,7 @@ else
   call soa_track_slice (ss, bunch, half, param, tracked)
 endif
 
-call soa_dev_to_host(ss)
-n = csr_soa%n
-call re_allocate (bunch%ix_z, n)
-call order_in_z (csr_soa%z(1:n), csr_soa%state(1:n), bunch%ix_z, bunch%n_live)
-call track1_sr_wake_arr (wake_ele, bunch%ix_z, bunch%n_live, csr_soa%x(1:n), csr_soa%px(1:n), csr_soa%y(1:n), &
-                 csr_soa%py(1:n), csr_soa%z(1:n), csr_soa%pz(1:n), csr_soa%charge(1:n), csr_soa%state(1:n))
-call soa_host_changed(ss)
+call soa_sr_wake (ss, bunch, wake_ele)
 ss%stale = .true.
 
 if (r%value(l$) /= 0) then
@@ -726,6 +724,56 @@ if (r%value(l$) /= 0) then
 endif
 tracked = .true.
 end subroutine soa_track_wake_slice
+
+! Short range wake kicks of wake_ele on csr_soa. With the bunch on the device: from the device copy of x, y
+! and z, with only the momentum kicks sent back.
+
+subroutine soa_sr_wake (ss, bunch, wake_ele)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
+type (ele_struct) wake_ele
+integer n, mask
+logical ok
+
+n = csr_soa%n
+call re_allocate (bunch%ix_z, n)
+ok = .false.
+if (ss%use_dev) then
+  if (allocated(wk_z)) then
+    if (size(wk_z) < n) deallocate (wk_x, wk_y, wk_z, wk_px, wk_py, wk_pz, wk_state, wk_state0)
+  endif
+  if (.not. allocated(wk_z)) allocate (wk_x(n), wk_y(n), wk_z(n), wk_px(n), wk_py(n), wk_pz(n), wk_state(n), wk_state0(n))
+  call bunch_device_get_coords (csr_soa, wk_x(1:n), wk_y(1:n), wk_z(1:n), wk_state(1:n), ok)
+endif
+
+if (ok) then
+  wk_px(1:n) = 0;  wk_py(1:n) = 0;  wk_pz(1:n) = 0
+  wk_state0(1:n) = wk_state(1:n)
+  call order_in_z (wk_z(1:n), wk_state(1:n), bunch%ix_z, bunch%n_live)
+  call track1_sr_wake_arr (wake_ele, bunch%ix_z, bunch%n_live, wk_x(1:n), wk_px(1:n), wk_y(1:n), &
+                   wk_py(1:n), wk_z(1:n), wk_pz(1:n), csr_soa%charge(1:n), wk_state(1:n))
+  if (all(wk_state(1:n) == wk_state0(1:n))) then
+    mask = 4
+    if (size(wake_ele%wake%sr%trans) /= 0) mask = 7
+    call bunch_device_add_kicks (csr_soa, wk_px(1:n), wk_py(1:n), wk_pz(1:n), mask)
+  else
+    ! Particles lost (bunch too long for the wake): kicks and states on the host copy.
+    call soa_dev_to_host(ss)
+    csr_soa%px(1:n) = csr_soa%px(1:n) + wk_px(1:n)
+    csr_soa%py(1:n) = csr_soa%py(1:n) + wk_py(1:n)
+    csr_soa%pz(1:n) = csr_soa%pz(1:n) + wk_pz(1:n)
+    where (wk_state(1:n) /= wk_state0(1:n)) csr_soa%state(1:n) = wk_state(1:n)
+    call soa_host_changed(ss)
+  endif
+  return
+endif
+
+call soa_dev_to_host(ss)
+call order_in_z (csr_soa%z(1:n), csr_soa%state(1:n), bunch%ix_z, bunch%n_live)
+call track1_sr_wake_arr (wake_ele, bunch%ix_z, bunch%n_live, csr_soa%x(1:n), csr_soa%px(1:n), csr_soa%y(1:n), &
+                 csr_soa%py(1:n), csr_soa%z(1:n), csr_soa%pz(1:n), csr_soa%charge(1:n), csr_soa%state(1:n))
+call soa_host_changed(ss)
+end subroutine soa_sr_wake
 
 ! Write csr_soa back to bunch%particle if it has changed since the last write.
 
