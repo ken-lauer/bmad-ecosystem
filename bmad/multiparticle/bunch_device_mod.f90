@@ -74,14 +74,20 @@ type, bind(c) :: bmad_dev_csr_par_struct
 end type
 
 interface
-  function bmad_dev_csr_step (mass, n_bin, pbs, n_bin_eff, out_stats, out_layout, out1, out2, reason, reason_len) &
-                                                                      bind(c, name = 'bmad_dev_csr_step') result (ierr)
+  function bmad_dev_csr_layout (mass, n_bin, pbs, n_bin_eff, lite, out_stats, out_layout, reason, reason_len) &
+                                                                      bind(c, name = 'bmad_dev_csr_layout') result (ierr)
     import :: c_char, c_int, c_double
     real(c_double), value :: mass
-    integer(c_int), value :: n_bin, pbs, n_bin_eff
-    real(c_double) :: out_stats(*), out_layout(*), out1(*), out2(*)
+    integer(c_int), value :: n_bin, pbs, n_bin_eff, lite, reason_len
+    real(c_double) :: out_stats(9), out_layout(4)
     character(kind=c_char) :: reason(*)
-    integer(c_int), value :: reason_len
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_csr_sums (n_bin, out1, out2, reason, reason_len) bind(c, name = 'bmad_dev_csr_sums') result (ierr)
+    import :: c_char, c_int, c_double
+    integer(c_int), value :: n_bin, reason_len
+    real(c_double) :: out1(*), out2(*)
+    character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
   function bmad_dev_moments_enqueue (mass, qs, slot, reason, reason_len) bind(c, name = 'bmad_dev_moments_enqueue') result (ierr)
@@ -1445,36 +1451,34 @@ end subroutine bunch_device_bunch_params
 
 !--------------------------------------------------------------------------
 !+
-! Subroutine bunch_device_csr_step (soa, n_bin, pbs, n_bin_eff, z_lo, z_hi, x_abs, y_abs, n_live, q_abs,
-!                                   z_min, dz_slice, dz_particle, sums1, sums2, done)
+! Subroutine bunch_device_csr_layout (soa, n_bin, pbs, n_bin_eff, lite, z_lo, z_hi, x_abs, y_abs, n_live, q_abs,
+!                                     z_min, dz_slice, dz_particle, done)
 !
-! One CSR step of csr_bin_view on the resident bunch in one device submission: the live count, extent
-! and |charge| of the bunch, the bin layout (laid out on the device as csr_bin_view does it, so the
-! caller must use these values), and the bin sums: sums1(1:4, ib) = overlap, charge, x*charge, y*charge;
-! sums2(1:2, ib) = |x - x0|*charge, |y - y0|*charge with the per-bin centroids formed on the device.
+! First half of one CSR step of csr_bin_view on the resident bunch: the live count, extent and |charge| of
+! the bunch and the bin layout (laid out on the device as csr_bin_view does it, so the caller must use these
+! values). The binning then runs on the device while the caller goes on; bunch_device_csr_sums returns the
+! sums. lite: overlap and charge sums only (for CSR without slice space charge).
 !-
 
-subroutine bunch_device_csr_step (soa, n_bin, pbs, n_bin_eff, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, &
-                                                                  z_min, dz_slice, dz_particle, sums1, sums2, done)
+subroutine bunch_device_csr_layout (soa, n_bin, pbs, n_bin_eff, lite, z_lo, z_hi, x_abs, y_abs, n_live, q_abs, &
+                                                                         z_min, dz_slice, dz_particle, done)
 
 type (bunch_soa_struct) soa
-real(rp) z_lo, z_hi, x_abs, y_abs, q_abs, z_min, dz_slice, dz_particle, sums1(:,:), sums2(:,:)
+real(rp) z_lo, z_hi, x_abs, y_abs, q_abs, z_min, dz_slice, dz_particle
 real(c_double) layout(4)
-real(c_double), allocatable :: out1(:), out2(:)
 integer n_bin, pbs, n_bin_eff, n_live, ierr
-logical done
+logical lite, done
 character(256) reason
-character(*), parameter :: r_name = 'bunch_device_csr_step'
+character(*), parameter :: r_name = 'bunch_device_csr_layout'
 
 done = .false.
 if (.not. res_active .or. .not. dev_ok) return
 call bunch_device_sync_device (soa)
 if (.not. res_active) return
 
-allocate (out1(4 * n_bin), out2(2 * n_bin))
 reason = ''
-ierr = bmad_dev_csr_step (real(res_mass, c_double), int(n_bin, c_int), int(pbs, c_int), int(n_bin_eff, c_int), &
-                                                                 stats9, layout, out1, out2, reason, len(reason))
+ierr = bmad_dev_csr_layout (real(res_mass, c_double), int(n_bin, c_int), int(pbs, c_int), int(n_bin_eff, c_int), &
+                                                    merge(1_c_int, 0_c_int, lite), stats9, layout, reason, len(reason))
 if (ierr /= 0) then
   call out_io (s_warn$, r_name, 'CSR step failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
   dev_ok = .false.
@@ -1486,12 +1490,44 @@ q_abs = stats9(3)
 z_lo = stats9(6);  z_hi = stats9(9)
 x_abs = max(abs(stats9(4)), abs(stats9(7)));  y_abs = max(abs(stats9(5)), abs(stats9(8)))
 z_min = layout(1);  dz_slice = layout(2);  dz_particle = layout(3)
+done = .true.
+
+end subroutine bunch_device_csr_layout
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_csr_sums (n_bin, sums1, sums2, done)
+!
+! Second half of the CSR step (after bunch_device_csr_layout): waits for the binning and returns the bin
+! sums: sums1(1:4, ib) = overlap, charge, x*charge, y*charge; sums2(1:2, ib) = |x - x0|*charge,
+! |y - y0|*charge with the per-bin centroids formed on the device (lite: zero except overlap and charge).
+!-
+
+subroutine bunch_device_csr_sums (n_bin, sums1, sums2, done)
+
+real(rp) sums1(:,:), sums2(:,:)
+real(c_double), allocatable :: out1(:), out2(:)
+integer n_bin, ierr
+logical done
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_csr_sums'
+
+done = .false.
+if (.not. res_active .or. .not. dev_ok) return
+allocate (out1(4 * n_bin), out2(2 * n_bin))
+reason = ''
+ierr = bmad_dev_csr_sums (int(n_bin, c_int), out1, out2, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_warn$, r_name, 'CSR step failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
+  dev_ok = .false.
+  return
+endif
 sums1(1:4, 1:n_bin) = reshape(out1, [4, n_bin])
 sums2(1:2, 1:n_bin) = reshape(out2, [2, n_bin])
 if (iand(bmad_dev_fault(), 2) /= 0) call out_io (s_warn$, r_name, 'Particle outside the CSR bins on the device.')
 done = .true.
 
-end subroutine bunch_device_csr_step
+end subroutine bunch_device_csr_sums
 
 !--------------------------------------------------------------------------
 !+

@@ -107,13 +107,16 @@ typedef struct {
   double z_min, dz_slice, dz_particle, scale[4], zc1;
   int32_t n_bin, pbs, pass, pad;
 } bmad_dev_csr_par;
-/* One CSR step of csr_bin_view on the resident bunch, in one submission: the statistics of
-   bmad_dev_bunch_stats (dct = 0) in out_stats, the bin layout laid out on the device as csr_bin_view
-   does it in out_layout = {z_min, dz_slice, dz_particle, zc1}, and the bin sums: out1[4*n_bin] =
-   overlap, charge, x*charge, y*charge per bin; out2[2*n_bin] = |x - x0|*charge, |y - y0|*charge per bin
-   with the centroids x0, y0 formed on the device. The sums are deterministic (fixed point). */
-int bmad_dev_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double out_stats[9], double out_layout[4],
-                       double *out1, double *out2, char *reason, int reason_len);
+/* One CSR step of csr_bin_view on the resident bunch, in two calls. bmad_dev_csr_layout: the statistics of
+   bmad_dev_bunch_stats (dct = 0) in out_stats and the bin layout laid out on the device as csr_bin_view does
+   it in out_layout = {z_min, dz_slice, dz_particle, zc1}; the binning is then started without waiting for it.
+   bmad_dev_csr_sums waits for it and returns the bin sums: out1[4*n_bin] = overlap, charge, x*charge,
+   y*charge per bin; out2[2*n_bin] = |x - x0|*charge, |y - y0|*charge with the per-bin centroids x0, y0 formed
+   on the device. lite = 1: overlap and charge only (the other sums are returned as zero). The sums are
+   deterministic (fixed point). */
+int bmad_dev_csr_layout (double mass, int n_bin, int pbs, int n_bin_eff, int lite, double out_stats[9],
+                         double out_layout[4], char *reason, int reason_len);
+int bmad_dev_csr_sums (int n_bin, double *out1, double *out2, char *reason, int reason_len);
 /* All statistics of the live resident particles in one pass:
    out = {n_live, sum z/beta, sum |q|, min x, min y, min zs, max x, max y, max zs}, zs = z - dct*beta. */
 int bmad_dev_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
@@ -189,7 +192,8 @@ typedef int    (*bmad_backend_bunch_sums_fn) (double, double *, char *, int);
 typedef int    (*bmad_backend_bunch_bounds_fn) (double, double, double *, char *, int);
 typedef int    (*bmad_backend_sc_step_resident_fn) (const bmad_dev_sc_par *, char *, int);
 typedef int    (*bmad_backend_csr_kick_fn) (const bmad_dev_csr_par *, const float *, char *, int);
-typedef int    (*bmad_backend_csr_step_fn) (double, int, int, int, double *, double *, double *, double *, char *, int);
+typedef int    (*bmad_backend_csr_layout_fn) (double, int, int, int, int, double *, double *, char *, int);
+typedef int    (*bmad_backend_csr_sums_fn) (int, double *, double *, char *, int);
 typedef int    (*bmad_backend_bunch_stats_fn) (double, double, double *, char *, int);
 typedef int    (*bmad_backend_moments_enqueue_fn) (double, double, int, char *, int);
 typedef int    (*bmad_backend_moments_read_fn) (int, double *, char *, int);

@@ -229,7 +229,7 @@ integer i, j, n, ie, ns, nb, n_step, n_live, i_step
 integer :: iu_wake
 
 character(*), parameter :: r_name = 'track1_bunch_csr'
-logical err, err_flag, parallel0, parallel1, use_soa, tracked
+logical err, err_flag, parallel0, parallel1, use_soa, tracked, overlap
 
 ! Init
 
@@ -404,8 +404,17 @@ do i_step = 0, n_step
   csr%gamma2 = csr%gamma**2
   csr%rel_mass = mass_of(branch%param%particle) / m_electron 
 
+  ! On the device, a CSR-only step overlaps the host's source point search (csr_bin_kicks phase 1) with the
+  ! binning on the device (csr_bin_view phase 1 starts it, phase 2 collects it). Same results.
+
+  overlap = (ss%use_dev .and. ele%csr_method == one_dim$ .and. ele%space_charge_method /= slice$ .and. &
+             space_charge_com%n_shield_images == 0)
   if (ele%space_charge_method == slice$ .or. (ele%csr_method == one_dim$ .and. .not. ss%use_dev)) call dev_to_host()
-  call csr_bin_view (ele, v, csr, err_flag)
+  if (overlap) then
+    call csr_bin_view (ele, v, csr, err_flag, phase = 1)
+  else
+    call csr_bin_view (ele, v, csr, err_flag)
+  endif
   ss%stale = (ss%stale .or. (use_soa .and. err_flag))
   if (err_flag) then
     call finish()
@@ -423,7 +432,20 @@ do i_step = 0, n_step
 
   ! ns = 0 is the unshielded kick.
 
-  if (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) then
+  if (overlap) then
+    csr%kick_factor = 1
+    if (i_step == 0 .or. i_step == n_step) csr%kick_factor = csr%kick_factor / 2
+    csr%y_source = 0
+    call csr_bin_kicks (ele, s0_step, csr, err_flag, phase = 1)
+    if (.not. err_flag) call csr_bin_view (ele, v, csr, err_flag, phase = 2)
+    if (.not. err_flag) call csr_bin_kicks (ele, s0_step, csr, err_flag, phase = 2)
+    if (err_flag) then
+      ss%stale = .true.
+      call finish()
+      return
+    endif
+
+  elseif (ele%space_charge_method == slice$ .or. ele%csr_method == one_dim$) then
     do ns = 0, space_charge_com%n_shield_images
       ! The factor of -1^ns accounts for the sign of the image currents
       ! Take into account that at the endpoints we are only putting in a half kick.
@@ -1478,7 +1500,7 @@ end subroutine csr_eleinfo_fill
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
 !+
-! Subroutine csr_bin_view (ele, v, csr, err_flag)
+! Subroutine csr_bin_view (ele, v, csr, err_flag, phase)
 !
 ! Routine to bin the particles longitudinally in s. 
 !
@@ -1490,6 +1512,8 @@ end subroutine csr_eleinfo_fill
 ! Input:
 !   ele                  -- ele_struct: Element being tracked through.
 !   v                    -- csr_particle_view_struct: View of the particles (csr_view_particles or csr_view_soa).
+!   phase                -- integer, optional: With a resident device bunch, 1: only the layout (z range, bin
+!                             edges), the binning left running on the device; 2: the rest. Default: both.
 !
 ! Other:
 !   space_charge_com     -- space_charge_common_struct: Space charge/CSR common block
@@ -1503,7 +1527,7 @@ end subroutine csr_eleinfo_fill
 !   err_flag             -- logical: Set True if there is an error.
 !-
 
-subroutine csr_bin_view (ele, v, csr, err_flag)
+subroutine csr_bin_view (ele, v, csr, err_flag, phase)
 
 !$ use omp_lib
 implicit none
@@ -1513,7 +1537,8 @@ type (csr_particle_view_struct) v
 type (csr_struct), target :: csr
 type (csr_bunch_slice_struct), pointer :: slice
 
-real(rp) z_center, z_min, z_max, dz_particle, dz, z_maxval, z_minval, c_tot, n_tot
+real(rp) z_center, z_max, dz, c_tot, n_tot
+real(rp), save :: z_min, dz_particle, z_maxval, z_minval   ! Saved for phase 2 (check_device_bins).
 real(rp) zp_center, zp0, zp1, zb0, zb1, charge, overlap_fraction, charge_tot, sig_x_ave, sig_y_ave, f
 integer i, j, n, ix0, ib, ib2, ib_center, n_bin_eff, n_bin, pbs
 
@@ -1524,10 +1549,14 @@ real(rp), allocatable :: acc(:,:,:), zb0s(:), zb1s(:), x0s(:), y0s(:), dsums(:,:
 real(rp), pointer, contiguous :: ovl(:,:)
 integer, pointer, contiguous :: ix0s(:)
 real(rp) :: inv_dz2, x_abs, y_abs, q_abs
-integer :: nt, it, n_live_d
+integer :: nt, it, ph
+integer, save :: n_live_d
+integer, optional :: phase
 integer, parameter :: bin_block = 8192
 
-logical err_flag, use_dev, done
+logical err_flag, use_dev, done, lite
+logical, save :: chk_init = .false., chk_on = .false.
+character(8) val
 
 character(*), parameter :: r_name = 'csr_bin_view'
 
@@ -1552,15 +1581,23 @@ endif
 
 n_bin = space_charge_com%n_bin
 pbs = space_charge_com%particle_bin_span
+ph = integer_option(0, phase)
 
 ! With a resident device bunch the extent, the bin layout, the bin sums and the widths come from the
-! device in one submission (the layout is laid out on the device in float32; the host uses those values).
+! device (the layout is laid out on the device in float32; the host uses those values). Without slice
+! space charge only the charge sums are needed (x0, y0 and the widths are for its kicks).
 
 use_dev = bunch_device_resident()
+if (.not. chk_init) then
+  call get_environment_variable ('BMAD_DEVICE_CSR_CHECK', val)
+  chk_on = (val == '1');  chk_init = .true.
+endif
+lite = (ele%space_charge_method /= slice$ .and. .not. chk_on)
+
+if (ph /= 2) then
 if (use_dev) then
-  allocate (dsums(4, n_bin), dsums2(2, n_bin))
-  call bunch_device_csr_step (csr_soa, n_bin, pbs, n_bin_eff, z_minval, z_maxval, x_abs, y_abs, n_live_d, q_abs, &
-                                                          z_min, csr%dz_slice, dz_particle, dsums, dsums2, done)
+  call bunch_device_csr_layout (csr_soa, n_bin, pbs, n_bin_eff, lite, z_minval, z_maxval, x_abs, y_abs, n_live_d, q_abs, &
+                                                          z_min, csr%dz_slice, dz_particle, done)
   if (.not. done) then
     call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
     err_flag = .true.
@@ -1619,6 +1656,9 @@ enddo
 ! The contribution to the charge in a bin from a particle is computed from the overlap
 ! between the particle and the bin.
 
+if (use_dev .and. ph == 1) return
+endif
+
 inv_dz2 = 1.0_rp / dz_particle**2
 
 ! Bin sums are accumulated per block of bin_block particles and the blocks added in order, so the
@@ -1631,6 +1671,13 @@ zb0s = csr%slice(1:n_bin)%z0_edge
 zb1s = csr%slice(1:n_bin)%z1_edge
 
 if (use_dev) then
+  allocate (dsums(4, n_bin), dsums2(2, n_bin))
+  call bunch_device_csr_sums (n_bin, dsums, dsums2, done)
+  if (.not. done) then
+    call out_io (s_error$, r_name, 'Device CSR binning failed; bins are undefined.')
+    err_flag = .true.
+    return
+  endif
   do ib = 1, n_bin
     csr%slice(ib)%n_particle = dsums(1, ib)
     csr%slice(ib)%charge = dsums(2, ib)
@@ -1922,7 +1969,7 @@ end subroutine csr_bin_view
 !   err_flag     -- logical: Set True if there is an error. False otherwise
 !-
 
-subroutine csr_bin_kicks (ele, ds_kick_pt, csr, err_flag)
+subroutine csr_bin_kicks (ele, ds_kick_pt, csr, err_flag, phase)
 
 implicit none
 
@@ -1932,7 +1979,8 @@ type (branch_struct), pointer :: branch
 
 real(rp) ds_kick_pt, coef
 
-integer i, n_bin, m_fft
+integer i, n_bin, m_fft, ph
+integer, optional :: phase
 logical err_flag
 
 ! Contiguous arrays for vectorized convolution
@@ -1949,6 +1997,7 @@ character(16) :: r_name = 'csr_bin_kicks'
 ! (source behind kicked particle). Negative bins have dz <= 0 and I_csr returns 0.
 
 err_flag = .false.
+ph = integer_option(0, phase)
 
 ! The source point of each bin is searched for starting from the source element of the previous bin.
 ! The bins are split into chunks of csr_kick_chunk that are done in parallel, each starting its
@@ -1956,12 +2005,18 @@ err_flag = .false.
 ! does not depend on where the search starts except at the round-off level (s_source_calc's guards
 ! at element ends). I_csr needs the previous bin's I_csr so it is evaluated afterwards.
 
+! phase 1 (y_source = 0 only): the source points and I_csr, which need the bin width but not the bin
+! charges; phase 2: the rest. The default is both.
+
 if (csr%y_source == 0) then
   ! CSR only: skip negative bins since I_csr = 0 for dz_particles <= 0
-  call source_points (1, ubound(csr%kick1, 1));  if (err_flag) return
-  do i = 1, ubound(csr%kick1, 1)
-    call I_csr (csr%kick1(i), i, csr)
-  enddo
+  if (ph /= 2) then
+    call source_points (1, ubound(csr%kick1, 1));  if (err_flag) return
+    do i = 1, ubound(csr%kick1, 1)
+      call I_csr (csr%kick1(i), i, csr)
+    enddo
+  endif
+  if (ph == 1) return
 
 else
   ! Image charges: need full range for both positive and negative separations

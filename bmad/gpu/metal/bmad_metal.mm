@@ -49,8 +49,9 @@ int    bmad_backend_csr_kick (const bmad_dev_csr_par *par, const float *kick, ch
 int    bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
 int    bmad_backend_moments_enqueue (double mass, double qs, int slot, char *reason, int reason_len);
 int    bmad_backend_moments_read (int n_slot, double *out, char *reason, int reason_len);
-int    bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double out_stats[9], double out_layout[4],
-                              double *out1, double *out2, char *reason, int reason_len);
+int    bmad_backend_csr_layout (double mass, int n_bin, int pbs, int n_bin_eff, int lite, double out_stats[9],
+                                double out_layout[4], char *reason, int reason_len);
+int    bmad_backend_csr_sums (int n_bin, double *out1, double *out2, char *reason, int reason_len);
 double bmad_backend_seconds (void);
 void   bmad_backend_timing (double *t);
 int    bmad_backend_fault (void);
@@ -1711,8 +1712,10 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
       if (C.pass == 1u) {
         acc_fixed_tg(sh, base,      overlap * C.scale0);
         acc_fixed_tg(sh, base + 1u, charge * C.scale1);
-        acc_fixed_tg(sh, base + 2u, x * charge * C.scale2);
-        acc_fixed_tg(sh, base + 3u, y * charge * C.scale3);
+        if (W.ns == 4u) {                                       // ns = 2: overlap and charge only
+          acc_fixed_tg(sh, base + 2u, x * charge * C.scale2);
+          acc_fixed_tg(sh, base + 3u, y * charge * C.scale3);
+        }
       } else {
         acc_fixed_tg(sh, base,      fabs(x - X0[ibl]) * charge * C.scale0);
         acc_fixed_tg(sh, base + 1u, fabs(y - Y0[ibl]) * charge * C.scale1);
@@ -1807,8 +1810,11 @@ struct Impl {
   id<MTLLibrary> lib = nil;
   id<MTLComputePipelineState> psoZero = nil, psoDeposit = nil, psoRho = nil, psoR2C = nil, psoFft = nil;
   id<MTLComputePipelineState> psoCmul = nil, psoExtract = nil, psoKick = nil;
-  id<MTLCommandBuffer> cb = nil;
+  id<MTLCommandBuffer> cb = nil, cb_flight = nil;   // open, and committed but not waited for (flush)
   id<MTLComputeCommandEncoder> enc = nil;
+  id<MTLSharedEvent> ev = nil;                      // mark / wait_mark
+  MTLSharedEventListener *ev_lis = nil;
+  uint64_t ev_val = 0;
   id<MTLBuffer> bX = nil, bY = nil, bZ = nil, bQ = nil, bF = nil, bPX = nil, bPY = nil, bPZ = nil;
   // bG[0]: spectrum of gx + i gy (Ex and Ey from one inverse transform), bG[1]: spectrum of gz.
   id<MTLBuffer> bRho = nil, bA = nil, bB = nil, bG[3] = {nil, nil, nil}, bE[3] = {nil, nil, nil}, bFault = nil;
@@ -1843,6 +1849,7 @@ struct Impl {
   bool green_set = false;
   bool timing = false;
   double csr_wall = 0, csr_busy = 0;  long csr_calls = 0;   // BMAD_DEVICE_TIMING: CSR step waits
+  bool csr_lite = false;
   double busy = 0;
   long n_sync = 0;
   double phase[4] = {0, 0, 0, 0};
@@ -1871,15 +1878,52 @@ struct Impl {
     return enc;
   }
 
-  // The only place that commits. Every upload or download goes through here first.
-  void sync () {
+  // A point in the open command buffer that wait_mark can wait for after it is committed (flush), while
+  // the work encoded after the mark keeps running.
+  uint64_t mark () {
+    if (ev == nil) {
+      ev = [dev newSharedEvent];
+      ev_lis = [[MTLSharedEventListener alloc] initWithDispatchQueue:dispatch_queue_create("bmad_metal.ev", DISPATCH_QUEUE_SERIAL)];
+    }
+    encoder();
+    [enc endEncoding];
+    [cb encodeSignalEvent:ev value:++ev_val];
+    enc = [cb computeCommandEncoder];
+    return ev_val;
+  }
+
+  void wait_mark (uint64_t v) {
+    if (ev.signaledValue >= v) return;
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    [ev notifyListener:ev_lis atValue:v block:^(id<MTLSharedEvent> e, uint64_t val) { dispatch_semaphore_signal(sem); }];
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+  }
+
+  // Commit the open command buffer without waiting for it (sync waits for it).
+  void flush () {
     if (cb == nil) return;
     [enc endEncoding];
     [cb commit];
-    [cb waitUntilCompleted];
-    busy += [cb GPUEndTime] - [cb GPUStartTime];
+    if (cb_flight != nil) finish(cb_flight);
+    cb_flight = cb;
+    cb = nil;
+    enc = nil;
+  }
+
+  void finish (id<MTLCommandBuffer> c) {
+    [c waitUntilCompleted];
+    busy += [c GPUEndTime] - [c GPUStartTime];
     n_sync++;
-    if (cb.error != nil) snprintf(err, sizeof(err), "command buffer failed: %s", cb.error.localizedDescription.UTF8String);
+    if (c.error != nil) snprintf(err, sizeof(err), "command buffer failed: %s", c.error.localizedDescription.UTF8String);
+  }
+
+  void sync () {
+    if (cb != nil) {
+      [enc endEncoding];
+      [cb commit];
+    }
+    if (cb_flight != nil) { finish(cb_flight); cb_flight = nil; }
+    if (cb != nil) finish(cb);
     cb = nil;
     enc = nil;
   }
@@ -2550,11 +2594,13 @@ static void csr_par_fill (CsrParH *C, const bmad_dev_csr_par *par, uint32_t n)
 
 // One binning pass over the resident bunch into acc[8 n_bin] (fixed point, two words per sum), by bin
 // windows that fit the threadgroup memory (32 bytes per bin).
-static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n, uint32_t nbin, uint32_t pass, id<MTLBuffer> acc)
+// ns: sums per bin (pass 1: 4, or 2 for overlap and charge only; pass 2: 2). Fewer sums, wider windows.
+static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n, uint32_t nbin, uint32_t pass, uint32_t ns,
+                             id<MTLBuffer> acc)
 {
   NSUInteger par_off = (NSUInteger) (pass - 1) * sizeof(CsrParH);
   WinParH W = {0, 0, 0, 0, 0, 0, 0, 0};
-  W.ns = (pass == 1) ? 4u : 2u;                 // sums per bin: pass 2 needs only two, so its windows are twice as wide
+  W.ns = ns;
   NSUInteger tgs = p->psoCsrBinsTG.maxTotalThreadsPerThreadgroup;
   if (tgs > 1024) tgs = 1024;
   // About 256 threadgroups, each looping over a chunk of particles.
@@ -2679,9 +2725,11 @@ int bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reas
   }
 }
 
-// Both binning passes in one command buffer: pass 1 sums, per-bin centroids on the device, pass 2 widths.
-int bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double out_stats[9], double out_layout[4],
-                           double *out1, double *out2, char *reason, int reason_len)
+// CSR step, first call: statistics and layout (waited for and returned), then the binning passes committed
+// without waiting (pass 1 sums, per-bin centroids on the device, pass 2 widths; lite: pass 1 overlap and
+// charge only). bmad_backend_csr_sums waits for them.
+int bmad_backend_csr_layout (double mass, int n_bin, int pbs, int n_bin_eff, int lite, double out_stats[9],
+                             double out_layout[4], char *reason, int reason_len)
 {
   @autoreleasepool {
     Impl *p = gImpl;
@@ -2705,23 +2753,48 @@ int bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, doubl
     [e setBytes:&S length:sizeof(S) atIndex:3];
     [e setBytes:&ng length:4 atIndex:4];
     [e dispatchThreadgroups:MTLSizeMake(1, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-    if (n == 0) {
-      uint32_t nwords = 8 * nbin;
+    uint64_t mk = p->mark();
+
+    p->csr_lite = (lite != 0);
+    e = p->encoder();
+    uint32_t nwords = 8 * nbin;
+    if (n == 0 || p->csr_lite) {
       [e setComputePipelineState:p->psoZero];
       [e setBuffer:p->bCsrAcc offset:0 atIndex:0];
       [e setBytes:&nwords length:4 atIndex:1];
       [e dispatchThreads:MTLSizeMake(nwords, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
       [e setBuffer:p->bCsrAcc2 offset:0 atIndex:0];
       [e dispatchThreads:MTLSizeMake(nwords, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-    } else {
-      csr_encode_pass(p, e, n, nbin, 1, p->bCsrAcc);
+    }
+    if (n != 0 && p->csr_lite) {
+      csr_encode_pass(p, e, n, nbin, 1, 2u, p->bCsrAcc);
+    } else if (n != 0) {
+      csr_encode_pass(p, e, n, nbin, 1, 4u, p->bCsrAcc);
       [e setComputePipelineState:p->psoCsrX0];
       [e setBuffer:p->bCsrAcc offset:0 atIndex:0];
       [e setBuffer:p->bCsrX0 offset:0 atIndex:1]; [e setBuffer:p->bCsrY0 offset:0 atIndex:2];
       [e setBuffer:p->bCsrPar offset:0 atIndex:3];
       [e dispatchThreads:MTLSizeMake(nbin, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
-      csr_encode_pass(p, e, n, nbin, 2, p->bCsrAcc2);
+      csr_encode_pass(p, e, n, nbin, 2, 2u, p->bCsrAcc2);
     }
+    p->flush();
+    double t0 = p->timing ? wall_seconds() : 0.0;
+    p->wait_mark(mk);
+    if (p->timing) p->csr_wall += wall_seconds() - t0;
+    const float *st = (const float *) p->bStats.contents;
+    for (int k = 0; k < 9; k++) out_stats[k] = st[k];
+    const CsrParH *CP = (const CsrParH *) p->bCsrPar.contents;
+    out_layout[0] = CP[0].z_min; out_layout[1] = CP[0].dz_slice; out_layout[2] = CP[0].dz_particle; out_layout[3] = CP[0].zc1;
+    return 0;
+  }
+}
+
+int bmad_backend_csr_sums (int n_bin, double *out1, double *out2, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    uint32_t nbin = (uint32_t) n_bin;
     double t0 = p->timing ? wall_seconds() : 0.0, b0 = p->busy;
     p->sync();
     if (p->timing) {
@@ -2731,10 +2804,7 @@ int bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, doubl
                 p->csr_calls, p->csr_wall, 1e3 * p->csr_wall / p->csr_calls, p->csr_busy, 1e3 * p->csr_busy / p->csr_calls);
     }
     if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
-    const float *st = (const float *) p->bStats.contents;
-    for (int k = 0; k < 9; k++) out_stats[k] = st[k];
     const CsrParH *CP = (const CsrParH *) p->bCsrPar.contents;
-    out_layout[0] = CP[0].z_min; out_layout[1] = CP[0].dz_slice; out_layout[2] = CP[0].dz_particle; out_layout[3] = CP[0].zc1;
     const uint32_t *S1 = (const uint32_t *) p->bCsrAcc.contents;
     const uint32_t *S2 = (const uint32_t *) p->bCsrAcc2.contents;
     double sinv1[4] = {1.0 / CP[0].scale0, 1.0 / CP[0].scale1, 1.0 / CP[0].scale2, 1.0 / CP[0].scale3};
