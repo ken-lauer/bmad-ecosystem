@@ -1806,9 +1806,9 @@ end subroutine bunch_track_add_pt
 !----------------------------------------------------------------------
 !----------------------------------------------------------------------
 !+
-! Subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
+! Subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele, print_err)
 !
-! Routine to compute what calc_bunch_params (with print_err, n_mat and is_time_coords not present) computes
+! Routine to compute what calc_bunch_params (with n_mat and is_time_coords not present) computes
 ! for bunch after soa_to_bunch (soa, bunch), without writing soa to bunch%particle: the same sums
 ! (calc_bunch_params_view) are taken over the SoA arrays. Only the components of bunch_params%centroid
 ! that are not computed (spin, phase, etc.) are taken from bunch%particle.
@@ -1819,6 +1819,7 @@ end subroutine bunch_track_add_pt
 !   soa           -- bunch_soa_struct: Particle positions. bunch%particle(:) may be out of date.
 !   bunch         -- bunch_struct: Bunch that soa was loaded from.
 !   ele           -- ele_struct, optional: Element being tracked through. Used in error messages.
+!   print_err     -- logical, optional: As for calc_bunch_params.
 !
 ! Output:
 !   bunch         -- bunch_struct: %charge_tot and %charge_live set as calc_bunch_params does.
@@ -1826,7 +1827,7 @@ end subroutine bunch_track_add_pt
 !   error         -- logical: Set True if there is an error.
 !-
 
-subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele)
+subroutine calc_bunch_params_soa (soa, bunch, bunch_params, error, ele, print_err)
 
 use bunch_soa_mod, only: bunch_soa_struct
 
@@ -1840,6 +1841,7 @@ type (ele_struct), optional :: ele
 
 integer i
 logical error
+logical, optional :: print_err
 
 ! Init
 
@@ -1866,7 +1868,7 @@ do i = soa%n, 1, -1
 enddo
 
 call bunch_view_soa (soa, v)
-call calc_bunch_params_view (v, bunch, bunch_params, error, ele = ele)
+call calc_bunch_params_view (v, bunch, bunch_params, error, print_err, ele = ele)
 
 end subroutine calc_bunch_params_soa
 

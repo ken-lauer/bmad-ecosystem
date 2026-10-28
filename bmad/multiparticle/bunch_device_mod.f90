@@ -811,6 +811,58 @@ end subroutine bunch_device_sync_host
 
 !--------------------------------------------------------------------------
 !+
+! Subroutine bunch_device_z_range (soa, z_lo, z_hi, n_live, ok)
+!
+! The z range and number of the live particles of the resident bunch, from the device copy. ok False: the
+! device copy is not the current one (nothing done).
+!-
+
+subroutine bunch_device_z_range (soa, z_lo, z_hi, n_live, ok)
+
+type (bunch_soa_struct) soa
+real(rp) z_lo, z_hi
+real(c_double) st(9)
+integer n_live, ierr
+logical ok
+character(256) reason
+
+ok = .false.
+if (.not. res_active .or. .not. dev_ok .or. .not. res_dev_current) return
+reason = ''
+ierr = bmad_dev_bunch_stats (real(res_mass, c_double), 0.0_c_double, st, reason, len(reason))
+if (ierr /= 0) return
+n_live = nint(st(1));  z_lo = st(6);  z_hi = st(9)
+ok = .true.
+
+end subroutine bunch_device_z_range
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_resident_check (soa, mesh3d, ok)
+!
+! Routine to continue with the resident bunch for an element with space charge mesh mesh3d. If the device
+! cannot take the mesh as allocated, the bunch is brought back to the host and bound anew.
+!
+! Output:
+!   ok    -- logical: False if the bunch is no longer on the device (the host copy is current).
+!-
+
+subroutine bunch_device_resident_check (soa, mesh3d, ok)
+
+type (bunch_soa_struct) soa
+type (mesh3d_struct) mesh3d
+logical ok
+
+ok = (res_active .and. dev_ok)
+if (.not. ok) return
+if (all(mesh3d%nhi - mesh3d%nlo + 1 == dev_mesh_n) .and. soa%n <= dev_n_max) return
+call bunch_device_resident_end (soa)
+call bunch_device_resident_begin (soa, mesh3d, res_species, ok)
+
+end subroutine bunch_device_resident_check
+
+!--------------------------------------------------------------------------
+!+
 ! Subroutine bunch_device_get_coords (soa, x, y, z, state, ok)
 !
 ! Routine to read x, y, z and the states of the resident bunch from the device copy, leaving the host copy

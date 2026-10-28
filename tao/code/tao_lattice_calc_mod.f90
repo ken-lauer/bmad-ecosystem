@@ -437,7 +437,8 @@ subroutine tao_beam_track (u, tao_lat, ix_branch, beam, calc_ok)
 use wake_mod, only: zero_lr_wakes_in_lat
 use beam_utils, only: calc_bunch_params
 use radiation_mod, only: radiation_map_setup
-use csr_and_space_charge_mod, only: track1_bunch_sliced, track1_bunch_sliced_ok
+use csr_and_space_charge_mod, only: track1_bunch_sliced, track1_bunch_sliced_ok, bunch_hold_begin, bunch_hold_end, &
+                                    bunch_hold_release, bunch_hold_params, bunch_hold_n_dead
 use bunch_soa_mod, only: fast_track_enabled
 
 implicit none
@@ -471,7 +472,7 @@ integer, allocatable :: ix_ele(:)
 character(*), parameter :: r_name = "tao_beam_track"
 
 logical calc_ok, print_err, err, new_beam_file, can_save
-logical comb_calc_on, csr_sc_on, radiation_on
+logical comb_calc_on, csr_sc_on, radiation_on, hold
 
 ! Initialize 
 
@@ -542,6 +543,13 @@ n_loop = 0    ! Used for debugging
 n_lost_old = 0
 ie = ie_start
 s_target = s_start
+
+! With the fast kernels a single bunch is held between elements (bunch_hold_begin): its particles stay in
+! the fast tracking layout (and on the device) and are only written back where this loop needs them.
+
+hold = (fast_track_enabled() .and. size(beam%bunch) == 1 .and. .not. radiation_on .and. &
+        .not. s%com%use_saved_beam_in_tracking .and. u%beam%dump_file == '')
+if (hold) call bunch_hold_begin()
 ele => point_to_this_ele (branch%ele(ie), rad_map_save)
 ix_slice = -1  ! ix_slice will equal -1 if not tracking internally in a sliced element.
 n_slice = max(1, int(1.01_rp*ele%value(l$) / ds_save))
@@ -607,6 +615,7 @@ do
 
       if (err) then
         ix_track = ie
+        if (hold) call bunch_hold_release (beam%bunch(1))
         tao_model_ele(ie)%beam = beam   ! Make sure we save lost info.
         calc_ok = .false.
         exit
@@ -614,7 +623,10 @@ do
     endif
 
     can_save = (ie == ie_start .or. ie == ie_end .or. ele%key == fork$ .or. ele%key == photon_fork$)
-    if (ix_slice == -1 .and. (tao_model_ele(ie)%save_beam_internally .or. can_save)) tao_model_ele(ie)%beam = beam
+    if (ix_slice == -1 .and. (tao_model_ele(ie)%save_beam_internally .or. can_save)) then
+      if (hold) call bunch_hold_release (beam%bunch(1))
+      tao_model_ele(ie)%beam = beam
+    endif
 
     if (ix_slice == -1 .and. (u%beam%dump_file /= '' .and. tao_model_ele(ie)%save_beam_to_file)) then
       if (index(u%beam%dump_file, '.h5') == 0 .and. index(u%beam%dump_file, '.hdf5') == 0) then
@@ -629,7 +641,7 @@ do
   ! Lost particles
 
   n_bunch = s%global%bunch_to_plot
-  n_lost = tao_n_dead_particles(beam%bunch(n_bunch))
+  n_lost = bunch_hold_n_dead(beam%bunch(n_bunch))
   if (n_lost /= n_lost_old) then
     n = size(beam%bunch(n_bunch)%particle(:))
     if (size(s%u) == 1) then
@@ -646,8 +658,9 @@ do
     n_lost_old = n_lost
   endif
 
-  if (tao_too_many_particles_lost(beam)) then
+  if (too_many_lost()) then
     ix_track = ie
+    if (hold) call bunch_hold_release (beam%bunch(1))
     call out_io (s_warn$, r_name, &
             'TOO MANY PARTICLES HAVE BEEN LOST AT ELEMENT ' // trim(ele_loc_name(ele)) // ': ' // trim(ele%name), &
             'PERCENTAGE OF DEAD PARTICLES OVER GLOBAL%BEAM_DEAD_CUTOFF OF: ' // real_str(s%global%beam_dead_cutoff, 6, 4), &
@@ -658,7 +671,7 @@ do
 
   ! Calc bunch params
 
-  call calc_bunch_params (beam%bunch(s%global%bunch_to_plot), bunch_params, err, print_err)
+  call bunch_hold_params (beam%bunch(s%global%bunch_to_plot), bunch_params, err, print_err)
   ! Only generate error message once per tracking
   if (err .and. print_err) then
     sig = bunch_params%sigma
@@ -707,6 +720,7 @@ do
   endif
 enddo
 
+if (hold) call bunch_hold_end (beam%bunch(1))
 if (associated(ele%rad_map)) ele%rad_map = rad_map_save
 
 ! slice_ele is a local temporary. Fortran does not deallocate the pointer components (EG %rad_map)
@@ -765,6 +779,19 @@ tao_model_ele(ie)%beam = beam   ! Make sure the beam tracked so far is saved.
 calc_ok = .false.
 
 end subroutine stop_beam_track_on_rad_error
+
+!------------------------------------------------------------------------------
+
+! tao_too_many_particles_lost, with a held bunch from n_lost (the lost count of the one bunch).
+
+function too_many_lost () result (no_beam)
+logical no_beam
+if (hold) then
+  no_beam = (n_lost * (1.0000001_rp) >= size(beam%bunch(1)%particle) * s%global%beam_dead_cutoff)
+else
+  no_beam = tao_too_many_particles_lost(beam)
+endif
+end function too_many_lost
 
 !------------------------------------------------------------------------------
 

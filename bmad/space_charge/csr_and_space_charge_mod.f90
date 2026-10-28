@@ -160,7 +160,16 @@ type, private :: soa_session_struct
   real(rp) :: p0c_checked = -1        ! See fast_track1_soa.
 end type
 private soa_track_slice, soa_track_wake_slice, soa_sync_bunch, soa_dev_to_host, soa_host_changed
-private soa_save_step, soa_save_due, soa_save_due_end, soa_sr_wake
+private soa_save_step, soa_save_due, soa_save_due_end, soa_sr_wake, soa_acquire, soa_leave
+
+! A bunch held between tracking calls (bunch_hold_begin): csr_soa (and with a device backend the device
+! copy) then stays the current copy of the bunch's particles from one element to the next, and
+! bunch%particle is only written back by bunch_hold_release.
+logical, private, save :: hold_on = .false.          ! Holding enabled.
+logical, private, save :: hold_active = .false.      ! csr_soa holds the particles of the bunch identified below.
+integer(8), private, save :: hold_id = 0
+integer, private, save :: hold_n = 0
+type (soa_session_struct), private, save :: hold_ss
 
 ! Scratch for the wake kicks of a device resident bunch (soa_sr_wake).
 real(rp), allocatable, target, private, save :: wk_x(:), wk_y(:), wk_z(:), wk_px(:), wk_py(:), wk_pz(:)
@@ -239,6 +248,7 @@ if (centroid(ele%ix_ele)%state /= alive$) then
           'CENTROID REFERENCE PARTICLE FOR CSR SPACE CHARGE CALC HAS BEEN LOST AT ELEMENT: ' // ele_full_name(ele), &
           'THE CALCULATION CANNOT BE DONE.', &
           'ALL PARTICLES IN THE BUNCH WILL BE MARKED AS LOST.')
+  call bunch_hold_release (bunch)
   bunch%particle%state = lost$
   return
 endif
@@ -247,7 +257,11 @@ endif
 ! And taylor elements get ignored.
 
 if (ele%value(l$) == 0 .or. ele%key == taylor$) then
-  call track1_bunch_hom (bunch, ele)
+  call track1_bunch_hold_hom (bunch, ele, tracked)
+  if (.not. tracked) then
+    call bunch_hold_release (bunch)
+    call track1_bunch_hom (bunch, ele)
+  endif
   err = .false.
   return
 endif
@@ -273,6 +287,7 @@ if (space_charge_com%n_bin <= space_charge_com%particle_bin_span + 1) then
             'ALL PARTICLES IN THE BUNCH WILL BE MARKED AS LOST.', &
              i_array = [space_charge_com%n_bin, space_charge_com%particle_bin_span])
   endif
+  call bunch_hold_release (bunch)
   bunch%particle%state = lost$
   return
 endif
@@ -304,35 +319,33 @@ csr%species = bunch%particle(1)%species
 csr%ix_ele_kick = ele%ix_ele
 csr%actual_track_step = csr%ds_track_step * (csr%eleinfo(ele%ix_ele)%L_chord / ele%value(l$))
 
-call save_a_bunch_step (ele, bunch, bunch_track, s_start)
-
 ! With the fast kernels on, the bunch is held as a SoA bunch for the whole element. Runts the kernels
 ! support are tracked in place, and bunch%particle is only brought up to date (sync_bunch) when needed:
 ! for runts tracked by track1_bunch_hom, for bunch_track saves, and on return.
-
-use_soa = csr_use_soa(ele, branch%param)
-ss%stale = .false.
-ss%p0c_checked = -1
-if (use_soa) then
-  !$OMP parallel do if (size(bunch%particle) > 10000)
-  do j = 1, size(bunch%particle)
-    bunch%particle(j)%direction = 1   ! As track1_bunch_hom does.
-  enddo
-  !$OMP end parallel do
-  call bunch_to_soa (bunch, csr_soa)
-  call csr_view_soa (csr_soa, v)
-else
-  call csr_view_particles (bunch%particle, v)
-endif
-
 ! With a device backend the SoA bunch lives on the device across the steps; the host copy is brought
 ! up to date (dev_to_host) only where the CPU reads it, and the device told (host_changed) where the
 ! CPU writes it.
 
-ss%use_dev = .false.
+use_soa = csr_use_soa(ele, branch%param)
 if (use_soa) then
   if (ele%space_charge_method /= fft_3d$) csr%mesh3d%nhi = space_charge_com%space_charge_mesh_size
-  call bunch_device_resident_begin (csr_soa, csr%mesh3d, branch%param%particle, ss%use_dev)
+  if (bunch_held(bunch)) then
+    call soa_acquire (ss, bunch, csr%mesh3d, branch%param%particle)
+    if (present(s_start)) then
+      if (soa_save_due(bunch_track, s_start + ele%s_start)) call save_soa_step (s_start)
+    else
+      if (soa_save_due_end(ss, bunch_track, ele%s_start)) call soa_save_step (ss, bunch, ele, bunch_track)
+    endif
+  else
+    call save_a_bunch_step (ele, bunch, bunch_track, s_start)
+    call soa_acquire (ss, bunch, csr%mesh3d, branch%param%particle)
+  endif
+  call csr_view_soa (csr_soa, v)
+else
+  call bunch_hold_release (bunch)
+  call save_a_bunch_step (ele, bunch, bunch_track, s_start)
+  ss = soa_session_struct()
+  call csr_view_particles (bunch%particle, v)
 endif
 
 !----------------------------------------------------------------------------------------
@@ -486,9 +499,11 @@ call soa_sync_bunch (ss, bunch)
 end subroutine sync_bunch
 
 subroutine finish()
-if (ss%use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
-if (ss%use_dev) call bunch_device_resident_end (csr_soa)
-call sync_bunch()
+if (use_soa) then
+  call soa_leave (ss, bunch, bunch_track)
+else
+  call sync_bunch()
+endif
 call csr_eleinfo_put (csr)
 end subroutine finish
 
@@ -562,15 +577,8 @@ logical err, tracked
 err = .false.
 branch => pointer_to_branch(ele)
 
-!$OMP parallel do if (size(bunch%particle) > 10000)
-do j = 1, size(bunch%particle)
-  bunch%particle(j)%direction = 1   ! As track1_bunch_hom does.
-enddo
-!$OMP end parallel do
-call bunch_to_soa (bunch, csr_soa)
-ss = soa_session_struct()
 mesh3d%nhi = space_charge_com%space_charge_mesh_size
-call bunch_device_resident_begin (csr_soa, mesh3d, branch%param%particle, ss%use_dev)
+call soa_acquire (ss, bunch, mesh3d, branch%param%particle)
 
 do i = 1, n_slice
   call element_slice_iterator (ele, branch%param, i, n_slice, slice)
@@ -592,13 +600,10 @@ do i = 1, n_slice
   endif
 
   ! save_a_bunch_step without s_body, as tao_beam_track calls it after the slice.
-  if (soa_save_due_end(ss, bunch_track, slice)) call soa_save_step (ss, bunch, slice, bunch_track)
+  if (soa_save_due_end(ss, bunch_track, slice%s)) call soa_save_step (ss, bunch, slice, bunch_track)
 enddo
 
-if (ss%use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
-if (ss%use_dev) call bunch_device_resident_end (csr_soa)
-call soa_sync_bunch (ss, bunch)
-bunch%charge_live = bunch_charge_live(bunch)
+call soa_leave (ss, bunch, bunch_track)
 bunch%ix_ele = slice%ix_ele
 if (slice%value(l$) /= 0) bunch%t0 = real_garbage$
 call deallocate_ele_pointers (slice)
@@ -646,6 +651,220 @@ wake_ele => pointer_to_wake_ele(ele, ds_wake)
 if (associated(wake_ele)) ok = (size(wake_ele%wake%lr%mode) == 0)
 
 end function track1_bunch_sliced_ok
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!+
+! Subroutine bunch_hold_begin ()
+!
+! Routine to start holding bunches between tracking calls: after track1_bunch_csr, track1_bunch_sliced or
+! track1_bunch_hold_hom the particles stay in the SoA bunch (on the device with a device backend) and
+! bunch%particle is out of date until bunch_hold_release. Only one bunch is held at a time. While a bunch
+! is held, only these routines, track1_bunch, bunch_hold_params and bunch_hold_n_dead may be given it;
+! anything else must call bunch_hold_release first.
+!-
+
+subroutine bunch_hold_begin ()
+hold_on = .true.
+end subroutine bunch_hold_begin
+
+!----------------------------------------------------------------------------
+!+
+! Subroutine bunch_hold_end (bunch)
+!
+! Routine to write the held bunch back (bunch_hold_release) and stop holding.
+!-
+
+subroutine bunch_hold_end (bunch)
+type (bunch_struct) bunch
+call bunch_hold_release (bunch)
+hold_on = .false.
+end subroutine bunch_hold_end
+
+!----------------------------------------------------------------------------
+!+
+! Function bunch_held (bunch) result (held)
+!
+! True if the particles of bunch are held (see bunch_hold_begin): bunch%particle is out of date.
+!-
+
+function bunch_held (bunch) result (held)
+type (bunch_struct) bunch
+logical held
+held = hold_active
+if (.not. held) return
+held = allocated(bunch%particle)
+if (held) held = (loc(bunch%particle) == hold_id .and. size(bunch%particle) == hold_n)
+end function bunch_held
+
+!----------------------------------------------------------------------------
+!+
+! Subroutine bunch_hold_release (bunch)
+!
+! Routine to bring bunch%particle up to date if bunch is held, and to stop holding it.
+!-
+
+subroutine bunch_hold_release (bunch)
+type (bunch_struct) bunch
+if (.not. hold_active) return
+if (.not. bunch_held(bunch)) then
+  call out_io (s_fatal$, 'bunch_hold_release', 'A DIFFERENT BUNCH IS HELD.')
+  if (global_com%exit_on_error) call err_exit
+  return
+endif
+hold_active = .false.
+if (hold_ss%use_dev) call bunch_device_resident_end (csr_soa)
+call soa_sync_bunch (hold_ss, bunch)
+end subroutine bunch_hold_release
+
+!----------------------------------------------------------------------------
+!+
+! Subroutine bunch_hold_params (bunch, bunch_params, error, print_err)
+!
+! calc_bunch_params for a bunch that may be held: computed from the held SoA bunch (with a device backend,
+! from device moments, error then False) without writing bunch%particle.
+!-
+
+subroutine bunch_hold_params (bunch, bunch_params, error, print_err)
+type (bunch_struct) bunch
+type (bunch_params_struct) bunch_params
+logical error, done
+logical, optional :: print_err
+
+if (.not. bunch_held(bunch)) then
+  call calc_bunch_params (bunch, bunch_params, error, print_err)
+  return
+endif
+if (hold_ss%use_dev) then
+  call bunch_device_bunch_params (csr_soa, bunch, bunch_params, done)
+  if (done) then
+    error = .false.
+    return
+  endif
+  call bunch_device_sync_host (csr_soa)
+endif
+call calc_bunch_params_soa (csr_soa, bunch, bunch_params, error, print_err = print_err)
+end subroutine bunch_hold_params
+
+!----------------------------------------------------------------------------
+!+
+! Function bunch_hold_n_dead (bunch) result (n_dead)
+!
+! The number of particles neither alive nor pre_born, for a bunch that may be held.
+!-
+
+function bunch_hold_n_dead (bunch) result (n_dead)
+type (bunch_struct) bunch
+integer n_dead, n_live, n
+
+if (.not. bunch_held(bunch)) then
+  n_dead = count(bunch%particle%state /= alive$ .and. bunch%particle%state /= pre_born$)
+  return
+endif
+n = csr_soa%n
+if (hold_ss%use_dev) then
+  ! The device leaves pre_born particles alone, so the host copy's count of them is current.
+  n_live = bunch_device_n_live(csr_soa)
+  n_dead = n - n_live - count(csr_soa%state(1:n) == pre_born$)
+  return
+endif
+n_dead = count(csr_soa%state(1:n) /= alive$ .and. csr_soa%state(1:n) /= pre_born$)
+end function bunch_hold_n_dead
+
+!----------------------------------------------------------------------------
+!+
+! Subroutine track1_bunch_hold_hom (bunch, ele, done, bunch_track)
+!
+! track1_bunch_hom (direction 1) for a held bunch, on the SoA bunch. Not done (bunch untouched): the bunch
+! is not held, or ele needs what only track1_bunch_hom does (wake hook, long range wakes, taylor tracking,
+! radiation).
+!-
+
+subroutine track1_bunch_hold_hom (bunch, ele, done, bunch_track)
+type (bunch_struct), target :: bunch
+type (ele_struct), target :: ele
+type (bunch_track_struct), optional :: bunch_track
+type (ele_struct), pointer :: wake_ele
+type (branch_struct), pointer :: branch
+type (soa_session_struct) ss
+type (mesh3d_struct) mesh3d
+real(rp) ds_wake
+logical done, tracked
+
+done = .false.
+if (.not. bunch_held(bunch)) return
+if (associated(track1_wake_hook_ptr) .or. ele%tracking_method == taylor$ .or. &
+    bmad_com%radiation_damping_on .or. bmad_com%radiation_fluctuations_on) return
+wake_ele => pointer_to_wake_ele(ele, ds_wake)
+if (associated(wake_ele)) then
+  if (bmad_com%lr_wakes_on .and. size(wake_ele%wake%lr%mode) /= 0) return
+endif
+
+branch => pointer_to_branch(ele)
+mesh3d%nhi = space_charge_com%space_charge_mesh_size
+call soa_acquire (ss, bunch, mesh3d, branch%param%particle)
+if (soa_save_due(bunch_track, 0.0_rp + ele%s_start)) call soa_save_step (ss, bunch, ele, bunch_track, 0.0_rp)
+if (bunch_wake_here(ele)) then
+  call soa_track_wake_slice (ss, bunch, ele, branch%param, tracked)
+  if (ele%value(l$) /= 0) then
+    if (soa_save_due(bunch_track, ele%value(l$) + ele%s_start)) &
+                                    call soa_save_step (ss, bunch, ele, bunch_track, ele%value(l$))
+  endif
+else
+  call soa_track_slice (ss, bunch, ele, branch%param, tracked)
+endif
+call soa_leave (ss, bunch, bunch_track)
+done = .true.
+end subroutine track1_bunch_hold_hom
+
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+!----------------------------------------------------------------------------
+! Start a session on csr_soa for bunch: continue the held one, else convert bunch and bind it to the device.
+
+subroutine soa_acquire (ss, bunch, mesh3d, particle)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
+type (mesh3d_struct) mesh3d
+integer particle, j
+
+if (bunch_held(bunch)) then
+  ss = hold_ss
+  ss%p0c_checked = -1
+  hold_active = .false.
+  if (ss%use_dev) call bunch_device_resident_check (csr_soa, mesh3d, ss%use_dev)
+  return
+endif
+call bunch_hold_release (bunch)   ! A different bunch held: error.
+
+!$OMP parallel do if (size(bunch%particle) > 10000)
+do j = 1, size(bunch%particle)
+  bunch%particle(j)%direction = 1   ! As track1_bunch_hom does.
+enddo
+!$OMP end parallel do
+call bunch_to_soa (bunch, csr_soa)
+ss = soa_session_struct()
+call bunch_device_resident_begin (csr_soa, mesh3d, particle, ss%use_dev)
+end subroutine soa_acquire
+
+! End a session: hold the bunch if holding is on, else write it back.
+
+subroutine soa_leave (ss, bunch, bunch_track)
+type (soa_session_struct) ss
+type (bunch_struct) bunch
+type (bunch_track_struct), optional :: bunch_track
+
+if (ss%use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
+if (hold_on) then
+  hold_active = .true.
+  hold_id = loc(bunch%particle);  hold_n = size(bunch%particle)
+  hold_ss = ss
+  return
+endif
+if (ss%use_dev) call bunch_device_resident_end (csr_soa)
+call soa_sync_bunch (ss, bunch)
+end subroutine soa_leave
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------
@@ -732,10 +951,28 @@ subroutine soa_sr_wake (ss, bunch, wake_ele)
 type (soa_session_struct) ss
 type (bunch_struct) bunch
 type (ele_struct) wake_ele
-integer n, mask
+real(rp) z_lo, z_hi
+real(rp), pointer :: zp(:)
+integer, pointer :: sp(:)
+integer n, mask, n_live
 logical ok
 
 n = csr_soa%n
+if (sr_wake_null(wake_ele)) then
+  ! No kicks (see track1_bunch_hom); only the bunch length check.
+  if (ss%use_dev) then
+    call bunch_device_z_range (csr_soa, z_lo, z_hi, n_live, ok)
+    if (ok) then
+      if (n_live == 0 .or. wake_ele%wake%sr%z_max <= 0 .or. z_hi - z_lo <= wake_ele%wake%sr%z_max) return
+    endif
+  endif
+  call soa_dev_to_host(ss)
+  zp => csr_soa%z(1:n);  sp => csr_soa%state(1:n)
+  call sr_wake_length_check (wake_ele, zp, sp)
+  call soa_host_changed(ss)
+  return
+endif
+
 call re_allocate (bunch%ix_z, n)
 ok = .false.
 if (ss%use_dev) then
@@ -843,14 +1080,13 @@ if (bunch_track%n_pt < 0) return
 is_due = (s_here >= bunch_track%pt(bunch_track%n_pt)%s + bunch_track%ds_save)
 end function soa_save_due
 
-! The test of save_a_bunch_step without s_body (on the mean s of the live particles), for csr_soa at the end
-! of slice r. On the device, where s is not kept per particle, the slice end is used.
+! The test of save_a_bunch_step without s_body (on the mean s of the live particles), for csr_soa. On the
+! device, where s is not kept per particle, s_dev (the position of the bunch) is used.
 
-function soa_save_due_end (ss, bunch_track, r) result (is_due)
+function soa_save_due_end (ss, bunch_track, s_dev) result (is_due)
 type (soa_session_struct) ss
 type (bunch_track_struct), optional :: bunch_track
-type (ele_struct) r
-real(rp) s_last, s_due, s_lo, s_hi, s_err, s_here
+real(rp) s_dev, s_last, s_due, s_lo, s_hi, s_err, s_here
 integer i, n
 logical is_due, not_finite
 
@@ -864,7 +1100,7 @@ endif
 s_due = s_last + bunch_track%ds_save
 
 if (ss%use_dev) then
-  is_due = (r%s >= s_due)
+  is_due = (s_dev >= s_due)
   return
 endif
 

@@ -250,7 +250,8 @@ end subroutine track1_beam
 
 subroutine track1_bunch (bunch, ele, err, centroid, direction, bunch_track)
 
-use csr_and_space_charge_mod, only: track1_bunch_csr, track1_bunch_csr3d
+use csr_and_space_charge_mod, only: track1_bunch_csr, track1_bunch_csr3d, bunch_held, bunch_hold_release, &
+                                    track1_bunch_hold_hom
 use beam_utils, only: track1_bunch_hom
 use space_charge_mod, only: track_bunch_to_t, track_bunch_to_s
 
@@ -267,11 +268,15 @@ type (bunch_track_struct), optional :: bunch_track
 integer, optional :: direction
 integer i, j, n, im, ix_pass, ixs, ix, n_links
 
-logical csr_sc_on, err, finished, sc_fft_on, time_rk_tracking, track1_bunch_space_charge_called
+logical csr_sc_on, err, finished, sc_fft_on, time_rk_tracking, track1_bunch_space_charge_called, done
 
 character(*), parameter :: r_name = 'track1_bunch'
 
 ! Custom tracking
+
+! A held bunch (bunch_hold_begin) is written back unless the route below continues from the held copy.
+if (bunch_held(bunch) .and. (associated(track1_bunch_hook_ptr) .or. bunch%drift_between_t_and_s .or. &
+                                integer_option(1, direction) /= 1)) call bunch_hold_release (bunch)
 
 if (associated(track1_bunch_hook_ptr)) then
   call track1_bunch_hook_ptr (bunch, ele, err, centroid, direction, finished, bunch_track)
@@ -315,10 +320,12 @@ endif
 
 if (csr_sc_on .and. ele%key /= match$) then
   if (ele%csr_method == off$ .and. sc_fft_on .and. time_rk_tracking) then 
+    call bunch_hold_release (bunch)
     call track1_bunch_space_charge (bunch, ele, err, bunch_track = bunch_track)
     track1_bunch_space_charge_called = .true.
 
   elseif (ele%csr_method == steady_state_3d$) then
+    call bunch_hold_release (bunch)
     if (bunch%drift_between_t_and_s) call correct_s_t_tracking_conversion(bunch, ele)
     call track1_bunch_csr3d(bunch, ele, centroid, err, bunch_track = bunch_track)
      
@@ -337,8 +344,12 @@ if (csr_sc_on .and. ele%key /= match$) then
 ! Non csr / non space-charge tracking
 else
   err = .false.
-  if (bunch%drift_between_t_and_s) call correct_s_t_tracking_conversion(bunch, ele)
-  call track1_bunch_hom (bunch, ele, direction, bunch_track = bunch_track)
+  call track1_bunch_hold_hom (bunch, ele, done, bunch_track)
+  if (.not. done) then
+    call bunch_hold_release (bunch)
+    if (bunch%drift_between_t_and_s) call correct_s_t_tracking_conversion(bunch, ele)
+    call track1_bunch_hom (bunch, ele, direction, bunch_track = bunch_track)
+  endif
   bunch%ix_ele = ele%ix_ele
 endif
 
@@ -376,6 +387,7 @@ return
 ! Mark all particles as lost and return
 
 9000 continue
+call bunch_hold_release (bunch)
 bunch%particle%state = lost$
 err = .true.
 return
