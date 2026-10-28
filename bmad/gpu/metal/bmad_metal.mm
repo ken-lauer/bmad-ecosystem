@@ -1547,7 +1547,7 @@ struct CsrPar {
   float scale0, scale1, scale2, scale3;
   float zc1, pad1, pad2, pad3;
 };
-struct WinPar { uint b0, nb_win, n_group, pad; };          // bin window [b0, b0 + nb_win) of one dispatch
+struct WinPar { uint b0, nb_win, n_group, chunk; };   // chunk: particles per threadgroup          // bin window [b0, b0 + nb_win) of one dispatch
 struct CsrSetup { uint n, n_bin, pbs, n_bin_eff; float mass, pad1, pad2, pad3; };
 
 // 2^(61 - exponent(big)): the fixed-point scale that keeps a sum bounded by big below 2^61.
@@ -1644,12 +1644,16 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
                          const device float* X0 [[buffer(6)]], const device float* Y0 [[buffer(7)]],
                          const device CsrPar& C [[buffer(8)]], device atomic_uint* fault [[buffer(9)]],
                          constant WinPar& W [[buffer(10)]], threadgroup atomic_uint* sh [[threadgroup(0)]],
-                         uint gid [[thread_position_in_grid]], uint tid [[thread_index_in_threadgroup]],
+                         uint tid [[thread_index_in_threadgroup]],
                          uint tg [[threadgroup_position_in_grid]], uint tgs [[threads_per_threadgroup]]) {
   uint nw = 8u * W.nb_win;
   for (uint w = tid; w < nw; w += tgs) atomic_store_explicit(&sh[w], 0u, memory_order_relaxed);
   threadgroup_barrier(mem_flags::mem_threadgroup);
-  if (gid < C.n && STATE[gid] == ALIVE) {
+  // Each threadgroup bins a chunk of particles (fewer, larger groups: less partial-sum traffic). The sums are
+  // integers, so the result does not depend on the grouping.
+  uint i_end = min(C.n, (tg + 1u) * W.chunk);
+  for (uint gid = tg * W.chunk + tid; gid < i_end; gid += tgs) {
+    if (STATE[gid] != ALIVE) continue;
     float zp_center = Z[gid];
     float zp0 = zp_center - C.dz_particle / 2.0f;
     float zp1 = zp_center + C.dz_particle / 2.0f;
@@ -1741,7 +1745,7 @@ struct CsrParH {
   float scale0, scale1, scale2, scale3;
   float zc1, pad1, pad2, pad3;
 };
-struct WinParH { uint32_t b0, nb_win, n_group, pad; };
+struct WinParH { uint32_t b0, nb_win, n_group, chunk; };
 struct CsrSetupH { uint32_t n, n_bin, pbs, n_bin_eff; float mass, pad1, pad2, pad3; };
 static const uint32_t kRedGroups = 512;
 
@@ -2492,7 +2496,11 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
   WinParH W = {0, 0, 0, 0};
   NSUInteger tgs = p->psoCsrBinsTG.maxTotalThreadsPerThreadgroup;
   if (tgs > 1024) tgs = 1024;
-  uint32_t ngroup = (n + (uint32_t) tgs - 1) / (uint32_t) tgs;
+  // About 256 threadgroups, each looping over a chunk of particles.
+  uint32_t per = (uint32_t) tgs * ((n + (uint32_t) tgs * 256u - 1u) / ((uint32_t) tgs * 256u));
+  if (per < (uint32_t) tgs) per = (uint32_t) tgs;
+  uint32_t ngroup = (n + per - 1) / per;
+  W.chunk = per;
   uint32_t win_max = (uint32_t) (p->dev.maxThreadgroupMemoryLength / 32);
   static int win_env = -1;                      // BMAD_DEVICE_CSR_WIN: smaller windows, for testing the window path
   if (win_env < 0) { const char *ev = getenv("BMAD_DEVICE_CSR_WIN"); win_env = ev ? atoi(ev) : 0; }
