@@ -494,6 +494,7 @@ bunch_stale = .false.
 end subroutine sync_bunch
 
 subroutine finish()
+if (use_dev .and. present(bunch_track)) call bunch_device_saves_finalize (bunch, bunch_track)
 if (use_dev) call bunch_device_resident_end (csr_soa)
 call sync_bunch()
 call csr_eleinfo_put (csr)
@@ -528,7 +529,7 @@ endif
 if (bunch_track%n_pt < 0) bunch_track%n_pt = -1
 
 call bunch_track_add_pt (bunch_track, n_pt)
-call bunch_device_bunch_params (csr_soa, bunch, bunch_track%pt(n_pt), done)
+call bunch_device_save_enqueue (csr_soa, bunch, n_pt, bunch_track%pt(n_pt)%s, done)
 if (done) return
 call dev_to_host()
 call calc_bunch_params_soa (csr_soa, bunch, bunch_track%pt(n_pt), error, ele)

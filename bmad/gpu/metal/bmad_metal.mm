@@ -46,7 +46,8 @@ int    bmad_backend_bunch_bounds (double mass, double dct, double out[6], char *
 int    bmad_backend_sc_step_resident (const bmad_dev_sc_par *par, char *reason, int reason_len);
 int    bmad_backend_csr_kick (const bmad_dev_csr_par *par, const float *kick, char *reason, int reason_len);
 int    bmad_backend_bunch_stats (double mass, double dct, double out[9], char *reason, int reason_len);
-int    bmad_backend_bunch_moments (int pass, double mass, const double *avg, double *out, char *reason, int reason_len);
+int    bmad_backend_moments_enqueue (double mass, double qs, int slot, char *reason, int reason_len);
+int    bmad_backend_moments_read (int n_slot, double *out, char *reason, int reason_len);
 int    bmad_backend_csr_step (double mass, int n_bin, int pbs, int n_bin_eff, double out_stats[9], double out_layout[4],
                               double *out1, double *out2, char *reason, int reason_len);
 double bmad_backend_seconds (void);
@@ -1226,7 +1227,8 @@ kernel void track_slice (device float* X [[buffer(0)]], device float* PX [[buffe
 // over the threadgroup, partials per threadgroup; the host adds the partials in double, in order.
 
 struct RedPar { uint n; float dct; float mass; uint pad; };
-struct MomPar { uint n; float inv_c; float mass; uint pad; float avg[7]; float pad2; };
+// qs: charge weight scale (1/mean |q|), ts: time unit scale (1e12, ps): keeps q (dt)^2 above float underflow.
+struct MomPar { uint n; float inv_c; float mass; uint pad; float qs; float ts; float avg[5]; float pad2; };
 
 inline float beta_of (float pz, float p0c, float mass) {
   float pc = p0c * (1.0f + pz);
@@ -1311,12 +1313,12 @@ kernel void moments1 (const device float* X [[buffer(0)]], const device float* P
   for (int k = 11; k < 18; k++) a[k] = 3.0e38f;
   for (int k = 18; k < 25; k++) a[k] = -3.0e38f;
   for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
-    float q = Q[i];
+    float q = Q[i] * M.qs;
     a[1] += q;
     if (STATE[i] != ALIVE) continue;
     float pc = P0C[i] * (1.0f + PZ[i]);
     float beta = pc / sqrt(pc * pc + M.mass * M.mass);
-    float v[7] = {X[i], PX[i], Y[i], PY[i], Z[i], PZ[i], TZ0[i] - Z[i] * M.inv_c / beta};
+    float v[7] = {X[i], PX[i], Y[i], PY[i], Z[i], PZ[i], (TZ0[i] - Z[i] * M.inv_c / beta) * M.ts};
     a[0] += 1.0f;  a[2] += q;  a[10] += q * P0C[i];
     for (int k = 0; k < 7; k++) { a[3 + k] += q * v[k]; a[11 + k] = min(a[11 + k], v[k]); a[18 + k] = max(a[18 + k], v[k]); }
   }
@@ -1333,13 +1335,14 @@ kernel void moments1 (const device float* X [[buffer(0)]], const device float* P
   if (tid == 0) for (int k = 0; k < 25; k++) out[25 * tg + k] = sh[k][0];
 }
 
-// Pass 2 (22 per group): sum q (v - avg)_i (v - avg)_j, i <= j, over the first six coordinates, and sum q (v6 - avg6)^2.
+// Pass 2 (22 per group, centred on AVG, the slot means written by mom_avg): sum q (v - avg)_i (v - avg)_j, i <= j, over the first six coordinates, and sum q (v6 - avg6)^2.
 kernel void moments2 (const device float* X [[buffer(0)]], const device float* PX [[buffer(1)]],
                       const device float* Y [[buffer(2)]], const device float* PY [[buffer(3)]],
                       const device float* Z [[buffer(4)]], const device float* PZ [[buffer(5)]],
                       const device float* P0C [[buffer(6)]], const device int* STATE [[buffer(7)]],
                       const device float* Q [[buffer(8)]], const device float* TZ0 [[buffer(9)]],
                       device float* out [[buffer(10)]], constant MomPar& M [[buffer(11)]],
+                      const device float* AVG [[buffer(12)]],
                       uint tid [[thread_index_in_threadgroup]], uint tg [[threadgroup_position_in_grid]],
                       uint ntg [[threadgroups_per_grid]], uint tgs [[threads_per_threadgroup]]) {
   threadgroup float sh[22][256];
@@ -1347,13 +1350,13 @@ kernel void moments2 (const device float* X [[buffer(0)]], const device float* P
   for (int k = 0; k < 22; k++) a[k] = 0.0f;
   for (uint i = tg * tgs + tid; i < M.n; i += ntg * tgs) {
     if (STATE[i] != ALIVE) continue;
-    float q = Q[i];
-    float d[6] = {X[i] - M.avg[0], PX[i] - M.avg[1], Y[i] - M.avg[2], PY[i] - M.avg[3], Z[i] - M.avg[4], PZ[i] - M.avg[5]};
+    float q = Q[i] * M.qs;
+    float d[6] = {X[i] - AVG[0], PX[i] - AVG[1], Y[i] - AVG[2], PY[i] - AVG[3], Z[i] - AVG[4], PZ[i] - AVG[5]};
     int idx = 0;
     for (int r = 0; r < 6; r++) for (int c = r; c < 6; c++) a[idx++] += q * d[r] * d[c];
     float pc = P0C[i] * (1.0f + PZ[i]);
     float beta = pc / sqrt(pc * pc + M.mass * M.mass);
-    float dt = TZ0[i] - Z[i] * M.inv_c / beta - M.avg[6];
+    float dt = (TZ0[i] - Z[i] * M.inv_c / beta) * M.ts - AVG[6];
     a[21] += q * dt * dt;
   }
   for (int k = 0; k < 22; k++) sh[k][tid] = a[k];
@@ -1363,6 +1366,57 @@ kernel void moments2 (const device float* X [[buffer(0)]], const device float* P
     threadgroup_barrier(mem_flags::mem_threadgroup);
   }
   if (tid == 0) for (int k = 0; k < 22; k++) out[22 * tg + k] = sh[k][0];
+}
+
+// Partials of moments1/moments2 (ng groups x nk columns) reduced in group order into a save slot: columns
+// [0, n_sum) are sums kept as hi + lo float pairs (two-sum compensation, about double precision), the next
+// n_min columns minima and then n_max columns maxima (stored with lo = 0).
+struct MomRed { uint ng, nk, n_sum, n_min, off, pad0, pad1, pad2; };
+// One threadgroup (256 threads) per column k. Sums: each thread adds its groups g = tid, tid + 256, ...
+// with two-sum compensation, then a fixed-shape tree adds the (hi, lo) pairs; the order is fixed, so the
+// result is deterministic.
+inline float2 two_sum (float a, float b) {
+  float s = a + b;
+  float bb = s - a;
+  return float2(s, (a - (s - bb)) + (b - bb));
+}
+kernel void mom_reduce (const device float* P [[buffer(0)]], device float* SLOT [[buffer(1)]],
+                        constant MomRed& R [[buffer(2)]], uint k [[threadgroup_position_in_grid]],
+                        uint tid [[thread_index_in_threadgroup]], uint tgs [[threads_per_threadgroup]]) {
+  threadgroup float shh[256];
+  threadgroup float shl[256];
+  if (k >= R.nk) return;
+  bool is_sum = (k < R.n_sum), is_min = (!is_sum && k < R.n_sum + R.n_min);
+  float hi = is_sum ? 0.0f : (is_min ? 3.0e38f : -3.0e38f), lo = 0.0f;
+  for (uint g = tid; g < R.ng; g += tgs) {
+    float b = P[R.nk * g + k];
+    if (is_sum) { float2 t = two_sum(hi, b); hi = t.x; lo += t.y; }
+    else if (is_min) hi = min(hi, b);
+    else hi = max(hi, b);
+  }
+  shh[tid] = hi;  shl[tid] = lo;
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint st = tgs / 2u; st > 0u; st >>= 1u) {
+    if (tid < st) {
+      if (is_sum) {
+        float2 t = two_sum(shh[tid], shh[tid + st]);
+        shh[tid] = t.x;  shl[tid] = shl[tid] + shl[tid + st] + t.y;
+      } else if (is_min) shh[tid] = min(shh[tid], shh[tid + st]);
+      else shh[tid] = max(shh[tid], shh[tid + st]);
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  if (tid == 0u) {
+    SLOT[R.off + 2u * k] = shh[0];
+    SLOT[R.off + 2u * k + 1u] = is_sum ? shl[0] : 0.0f;
+  }
+}
+
+// The charge weighted means of the seven coordinates for the centred second pass (slot floats 50..56).
+kernel void mom_avg (device float* SLOT [[buffer(0)]], uint k [[thread_position_in_grid]]) {
+  if (k >= 7u) return;
+  float q = SLOT[4] + SLOT[5];
+  SLOT[50u + k] = (q == 0.0f) ? 0.0f : (SLOT[2u * (3u + k)] + SLOT[2u * (3u + k) + 1u]) / q;
 }
 
 kernel void reduce_bounds (const device float* X [[buffer(0)]], const device float* Y [[buffer(1)]],
@@ -1680,7 +1734,7 @@ struct ScParH {
 };
 
 struct RedParH { uint32_t n; float dct; float mass; uint32_t pad; };
-struct MomParH { uint32_t n; float inv_c; float mass; uint32_t pad; float avg[7]; float pad2; };
+struct MomParH { uint32_t n; float inv_c; float mass; uint32_t pad; float qs; float ts; float avg[5]; float pad2; };
 struct CsrParH {
   uint32_t n, n_bin, pbs, pass;
   float z_min, dz_slice, dz_particle, inv_dz2;
@@ -1724,8 +1778,8 @@ struct Impl {
   id<MTLBuffer> bCsrAcc = nil, bCsrX0 = nil, bCsrY0 = nil, bCsrK = nil;           // 1D CSR bins
   uint32_t n_bin_max = 0;
   id<MTLComputePipelineState> psoCsrBinsTG = nil, psoCsrReduce = nil, psoCsrKick = nil, psoCsrX0 = nil, psoRedAll = nil;
-  id<MTLComputePipelineState> psoCsrLayout = nil, psoMom1 = nil, psoMom2 = nil;
-  id<MTLBuffer> bMom = nil;
+  id<MTLComputePipelineState> psoCsrLayout = nil, psoMom1 = nil, psoMom2 = nil, psoMomRed = nil, psoMomAvg = nil;
+  id<MTLBuffer> bMom = nil, bMom2 = nil, bSlots = nil;   // moments partials (pass 1, pass 2) and save slots
   id<MTLBuffer> bCsrAcc2 = nil, bCsrPart = nil;   // per-threadgroup partial bin sums
   id<MTLBuffer> bCsrPar = nil, bStats = nil;      // device-written bin layout (2 passes) and statistics
   size_t csr_part_bytes = 0;
@@ -1930,6 +1984,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->psoCsrReduce = pso(@"csr_bins_reduce");
     p->psoCsrLayout = pso(@"csr_layout");
     p->psoMom1 = pso(@"moments1");
+    p->psoMomRed = pso(@"mom_reduce");
+    p->psoMomAvg = pso(@"mom_avg");
     p->psoMom2 = pso(@"moments2");
     p->psoCsrKick = pso(@"csr_kick");
     p->psoCsrX0 = pso(@"csr_x0");
@@ -1948,6 +2004,8 @@ int bmad_backend_init (int n_particle_max, const int32_t mesh_n[3], char *reason
     p->bCsrPar = p->alloc(2 * sizeof(CsrParH));
     p->bStats = p->alloc(16 * 4);
     p->bMom = p->alloc((size_t) kRedGroups * 25 * 4);
+    p->bMom2 = p->alloc((size_t) kRedGroups * 22 * 4);
+    p->bSlots = p->alloc((size_t) BMAD_DEV_MOM_SLOTS * BMAD_DEV_MOM_STRIDE * 4);
     p->bRho = p->alloc(nm * 8);
     p->bA = p->alloc(nm2 * 8);
     p->bB = p->alloc(nm2 * 8);
@@ -2462,40 +2520,61 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
   }
 }
 
-int bmad_backend_bunch_moments (int pass, double mass, const double *avg, double *out, char *reason, int reason_len)
+int bmad_backend_moments_enqueue (double mass, double qs, int slot, char *reason, int reason_len)
 {
   @autoreleasepool {
     Impl *p = gImpl;
     if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (slot < 0 || slot >= BMAD_DEV_MOM_SLOTS) { put_reason(reason, reason_len, "moments slot out of range"); return 1; }
     MomParH M;
     memset(&M, 0, sizeof(M));
     M.n = (uint32_t) p->n_res;  M.inv_c = (float) (1.0 / 299792458.0);  M.mass = (float) mass;
-    if (pass == 2) for (int k = 0; k < 7; k++) M.avg[k] = (float) avg[k];
-    int nout = (pass == 1) ? 25 : 22;
+    M.qs = (float) qs;  M.ts = (float) BMAD_DEV_MOM_TSCALE;
+    NSUInteger soff = (NSUInteger) slot * BMAD_DEV_MOM_STRIDE * 4;
     id<MTLComputeCommandEncoder> e = p->encoder();
-    [e setComputePipelineState:(pass == 1) ? p->psoMom1 : p->psoMom2];
-    [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bPX offset:0 atIndex:1];
-    [e setBuffer:p->bY offset:0 atIndex:2]; [e setBuffer:p->bPY offset:0 atIndex:3];
-    [e setBuffer:p->bZ offset:0 atIndex:4]; [e setBuffer:p->bPZ offset:0 atIndex:5];
-    [e setBuffer:p->bP0c offset:0 atIndex:6]; [e setBuffer:p->bState offset:0 atIndex:7];
-    [e setBuffer:p->bQ offset:0 atIndex:8]; [e setBuffer:p->bTZ0 offset:0 atIndex:9];
-    [e setBuffer:p->bMom offset:0 atIndex:10];
-    [e setBytes:&M length:sizeof(M) atIndex:11];
-    [e dispatchThreadgroups:MTLSizeMake(kRedGroups, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    for (int pass = 1; pass <= 2; pass++) {
+      id<MTLBuffer> part = (pass == 1) ? p->bMom : p->bMom2;
+      [e setComputePipelineState:(pass == 1) ? p->psoMom1 : p->psoMom2];
+      [e setBuffer:p->bX offset:0 atIndex:0]; [e setBuffer:p->bPX offset:0 atIndex:1];
+      [e setBuffer:p->bY offset:0 atIndex:2]; [e setBuffer:p->bPY offset:0 atIndex:3];
+      [e setBuffer:p->bZ offset:0 atIndex:4]; [e setBuffer:p->bPZ offset:0 atIndex:5];
+      [e setBuffer:p->bP0c offset:0 atIndex:6]; [e setBuffer:p->bState offset:0 atIndex:7];
+      [e setBuffer:p->bQ offset:0 atIndex:8]; [e setBuffer:p->bTZ0 offset:0 atIndex:9];
+      [e setBuffer:part offset:0 atIndex:10];
+      [e setBytes:&M length:sizeof(M) atIndex:11];
+      [e setBuffer:p->bSlots offset:soff + 50 * 4 atIndex:12];
+      [e dispatchThreadgroups:MTLSizeMake(kRedGroups, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      struct { uint32_t ng, nk, n_sum, n_min, off, pad0, pad1, pad2; } R =
+        {kRedGroups, (pass == 1) ? 25u : 22u, (pass == 1) ? 11u : 22u, (pass == 1) ? 7u : 0u, (pass == 1) ? 0u : 64u, 0, 0, 0};
+      [e setComputePipelineState:p->psoMomRed];
+      [e setBuffer:part offset:0 atIndex:0];
+      [e setBuffer:p->bSlots offset:soff atIndex:1];
+      [e setBytes:&R length:sizeof(R) atIndex:2];
+      [e dispatchThreadgroups:MTLSizeMake(R.nk, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+      if (pass == 1) {
+        [e setComputePipelineState:p->psoMomAvg];
+        [e setBuffer:p->bSlots offset:soff atIndex:0];
+        [e dispatchThreads:MTLSizeMake(7, 1, 1) threadsPerThreadgroup:MTLSizeMake(32, 1, 1)];
+      }
+    }
+    return 0;
+  }
+}
+
+int bmad_backend_moments_read (int n_slot, double *out, char *reason, int reason_len)
+{
+  @autoreleasepool {
+    Impl *p = gImpl;
+    if (p == NULL) { put_reason(reason, reason_len, "device not initialized"); return 1; }
+    if (n_slot < 0 || n_slot > BMAD_DEV_MOM_SLOTS) { put_reason(reason, reason_len, "moments slot count out of range"); return 1; }
     p->sync();
     if (p->err[0]) { put_reason(reason, reason_len, p->err); return 1; }
-    const float *r = (const float *) p->bMom.contents;
-    for (int k = 0; k < nout; k++) out[k] = 0;
-    if (pass == 1) { for (int k = 11; k < 18; k++) out[k] = 3.0e38; for (int k = 18; k < 25; k++) out[k] = -3.0e38; }
-    for (uint32_t g = 0; g < kRedGroups; g++) {
-      const float *rg = r + nout * g;
-      if (pass == 1) {
-        for (int k = 0; k < 11; k++) out[k] += rg[k];
-        for (int k = 11; k < 18; k++) if (rg[k] < out[k]) out[k] = rg[k];
-        for (int k = 18; k < 25; k++) if (rg[k] > out[k]) out[k] = rg[k];
-      } else {
-        for (int k = 0; k < 22; k++) out[k] += rg[k];
-      }
+    const float *sl = (const float *) p->bSlots.contents;
+    for (int s = 0; s < n_slot; s++) {
+      const float *q = sl + (size_t) s * BMAD_DEV_MOM_STRIDE;
+      double *o = out + (size_t) s * 47;
+      for (int k = 0; k < 25; k++) o[k] = (double) q[2 * k] + (double) q[2 * k + 1];
+      for (int k = 0; k < 22; k++) o[25 + k] = (double) q[64 + 2 * k] + (double) q[64 + 2 * k + 1];
     }
     return 0;
   }

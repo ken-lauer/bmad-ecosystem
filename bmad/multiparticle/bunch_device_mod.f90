@@ -84,11 +84,17 @@ interface
     integer(c_int), value :: reason_len
     integer(c_int) :: ierr
   end function
-  function bmad_dev_bunch_moments (pass, mass, avg, out, reason, reason_len) bind(c, name = 'bmad_dev_bunch_moments') result (ierr)
+  function bmad_dev_moments_enqueue (mass, qs, slot, reason, reason_len) bind(c, name = 'bmad_dev_moments_enqueue') result (ierr)
     import :: c_char, c_int, c_double
-    integer(c_int), value :: pass, reason_len
-    real(c_double), value :: mass
-    real(c_double) :: avg(*), out(*)
+    real(c_double), value :: mass, qs
+    integer(c_int), value :: slot, reason_len
+    character(kind=c_char) :: reason(*)
+    integer(c_int) :: ierr
+  end function
+  function bmad_dev_moments_read (n_slot, out, reason, reason_len) bind(c, name = 'bmad_dev_moments_read') result (ierr)
+    import :: c_char, c_int, c_double
+    integer(c_int), value :: n_slot, reason_len
+    real(c_double) :: out(*)
     character(kind=c_char) :: reason(*)
     integer(c_int) :: ierr
   end function
@@ -248,11 +254,23 @@ real(rp), private, save :: res_t_base = 0
 logical, private, save :: tz0_valid = .false.
 real(c_float), allocatable, private, save :: tz032(:)
 integer(c_int32_t), allocatable, private, save :: st32(:), loc32(:), tag32(:)
+! Comb saves waiting for their device moments (bunch_device_save_enqueue / bunch_device_saves_finalize).
+integer, parameter, private :: n_pend_max = 256
+real(rp), parameter, private :: BMAD_DEV_MOM_TSCALE = 1.0e12_rp   ! Mirror of the C macro
+type, private :: pending_save_struct
+  integer :: n_pt = -1
+  type (coord_struct) :: tmpl                 ! The centroid's bookkeeping fields at the time of the save
+  real(rp) :: t0 = 0                          ! Reference time the device time offsets are relative to
+  integer :: n_good = 0, n_bad = 0, n_tot = 0
+  real(rp) :: qs = 1                          ! Charge weight scale of the device sums
+end type
+type (pending_save_struct), private, save :: pend(n_pend_max)
+integer, private, save :: n_pend = 0
 ! Statistics of the resident bunch (dct = 0), valid until the device changes it.
 logical, private, save :: stats_valid = .false.
 real(c_double), private, save :: stats9(9) = 0
 
-private :: c_str, from_c, ensure_arrays, ensure_resident_arrays, slice_to_par, device_mesh_setup, tz0_upload
+private :: c_str, from_c, ensure_arrays, ensure_resident_arrays, slice_to_par, device_mesh_setup, tz0_upload, params_from_moments
 
 contains
 
@@ -1088,93 +1106,156 @@ end subroutine bunch_device_sc_kick_resident
 
 !--------------------------------------------------------------------------
 !+
-! Subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+! Subroutine bunch_device_save_enqueue (soa, bunch, n_pt, s_save, done)
 !
-! calc_bunch_params_soa of the resident bunch computed from device moments, without bringing the host
-! copy up to date. done is False (nothing computed) if the device copy is not current or the charge
-! is not set; the caller then uses the host path.
+! A comb save (calc_bunch_params_soa) of the resident bunch into bunch_track%pt(n_pt), computed from device
+! moments without bringing the host copy up to date and without waiting: bunch_device_saves_finalize fills
+! the point. s_save is the point's %s, known at once (all live particles of a resident bunch share it), which
+! the caller needs before the point is filled (bunch_track_save_due). done is False (nothing queued) if the
+! device copy is not current; the caller then uses the host path.
 !-
 
-subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+subroutine bunch_device_save_enqueue (soa, bunch, n_pt, s_save, done)
 
 type (bunch_soa_struct) soa
 type (bunch_struct) bunch
-type (bunch_params_struct) bunch_params
-real(c_double) m1(25), m2(22), avg(7)
-real(rp) charge_live, t0, average_pc
-integer i, ierr, n_live, idx, r, c
-logical done, error
+real(rp) s_save, qsum, qs
+integer n_pt, i, ierr
+logical done
 character(256) reason
-character(*), parameter :: r_name = 'bunch_device_bunch_params'
+character(*), parameter :: r_name = 'bunch_device_save_enqueue'
 
 done = .false.
 if (.not. res_active .or. .not. dev_ok .or. .not. res_dev_current) return
+if (n_pend >= n_pend_max) return
 if (.not. tz0_valid) call tz0_upload (soa)
 if (.not. res_active) return
 
+! Charge weights relative to the mean |charge| (the host charges are not changed by the device).
+qsum = 0
+do i = 1, soa%n
+  qsum = qsum + abs(soa%charge(i))
+enddo
+qs = 1
+if (qsum > 0) qs = soa%n / qsum
 reason = ''
-avg = 0
-ierr = bmad_dev_bunch_moments (1_c_int, real(res_mass, c_double), avg, m1, reason, len(reason))
+ierr = bmad_dev_moments_enqueue (real(res_mass, c_double), real(qs, c_double), int(n_pend, c_int), reason, len(reason))
 if (ierr /= 0) then
   call out_io (s_warn$, r_name, 'Moments failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
   dev_ok = .false.
   return
 endif
 
-n_live = nint(m1(1))
-charge_live = m1(3)
-if (m1(2) == 0 .or. (n_live > 0 .and. charge_live == 0)) return   ! calc_bunch_params reports these.
+n_pend = n_pend + 1
+associate (pd => pend(n_pend))
+pd%n_pt = n_pt
+pd%tmpl = coord_struct()
+do i = soa%n, 1, -1
+  if (soa%state(i) /= alive$) cycle
+  pd%tmpl = bunch%particle(i)
+  pd%tmpl%state = alive$
+  if (res_tag > 0) then
+    pd%tmpl%p0c = tag_p0c(res_tag)
+    pd%tmpl%s = tag_s_end(res_tag)
+    pd%tmpl%location = downstream_end$
+    pd%tmpl%ix_ele = tag_ix_ele(res_tag);  pd%tmpl%ix_branch = tag_ix_branch(res_tag)
+  else
+    pd%tmpl%p0c = soa%p0c(i)
+    pd%tmpl%s = soa%s(i)
+    pd%tmpl%location = soa%location(i)
+    pd%tmpl%ix_ele = soa%ix_ele(i);  pd%tmpl%ix_branch = soa%ix_branch(i)
+  endif
+  exit
+enddo
+pd%t0 = res_t_base + res_dt_ref
+pd%n_good = bunch%n_good;  pd%n_bad = bunch%n_bad;  pd%n_tot = soa%n
+pd%qs = qs
+s_save = pd%tmpl%s
+end associate
+done = .true.
+
+end subroutine bunch_device_save_enqueue
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_saves_finalize (bunch, bunch_track)
+!
+! Waits for the device and fills the comb points queued by bunch_device_save_enqueue. A point whose moments
+! show a bunch without charge is filled as calc_bunch_params leaves it (only the counts set).
+!-
+
+subroutine bunch_device_saves_finalize (bunch, bunch_track)
+
+type (bunch_struct) bunch
+type (bunch_track_struct) bunch_track
+real(c_double), allocatable :: m(:,:)
+integer ierr, k
+character(256) reason
+character(*), parameter :: r_name = 'bunch_device_saves_finalize'
+
+if (n_pend == 0) return
+allocate (m(47, n_pend))
+reason = ''
+ierr = bmad_dev_moments_read (int(n_pend, c_int), m, reason, len(reason))
+if (ierr /= 0) then
+  call out_io (s_error$, r_name, 'Reading the device moments failed: ' // trim(from_c(reason)), 'The comb points are not set.')
+  dev_ok = .false.
+  n_pend = 0
+  return
+endif
+do k = 1, n_pend
+  ! Undo the charge and time scales of the device sums.
+  m(2:11, k) = m(2:11, k) / pend(k)%qs
+  m(10, k) = m(10, k) / BMAD_DEV_MOM_TSCALE
+  m(18, k) = m(18, k) / BMAD_DEV_MOM_TSCALE;  m(25, k) = m(25, k) / BMAD_DEV_MOM_TSCALE
+  m(26:47, k) = m(26:47, k) / pend(k)%qs
+  m(47, k) = m(47, k) / BMAD_DEV_MOM_TSCALE**2
+  call params_from_moments (m(1:25, k), m(26:47, k), pend(k), bunch, bunch_track%pt(pend(k)%n_pt))
+enddo
+n_pend = 0
+
+end subroutine bunch_device_saves_finalize
+
+!--------------------------------------------------------------------------
+! calc_bunch_params from the device moments of bunch_device_save_enqueue.
+
+subroutine params_from_moments (m1, m2, pd, bunch, bunch_params)
+
+real(c_double) m1(25), m2(22)
+type (pending_save_struct) pd
+type (bunch_struct) bunch
+type (bunch_params_struct) bunch_params
+real(rp) avg(7), charge_live, average_pc
+integer n_live, idx, r, c
+logical error
 
 bunch_params = bunch_params_struct()
 bunch_params%twiss_valid = .false.
-do i = soa%n, 1, -1
-  if (soa%state(i) /= alive$) cycle
-  bunch_params%centroid = bunch%particle(i)
-  bunch_params%centroid%state = alive$
-  if (res_tag > 0) then
-    bunch_params%centroid%p0c = tag_p0c(res_tag)
-    bunch_params%centroid%s = tag_s_end(res_tag)
-    bunch_params%centroid%location = downstream_end$
-    bunch_params%centroid%ix_ele = tag_ix_ele(res_tag);  bunch_params%centroid%ix_branch = tag_ix_branch(res_tag)
-  else
-    bunch_params%centroid%p0c = soa%p0c(i)
-    bunch_params%centroid%s = soa%s(i)
-    bunch_params%centroid%location = soa%location(i)
-    bunch_params%centroid%ix_ele = soa%ix_ele(i);  bunch_params%centroid%ix_branch = soa%ix_branch(i)
-  endif
-  bunch_params%ix_ele = bunch_params%centroid%ix_ele
-  bunch_params%location = bunch_params%centroid%location
-  exit
-enddo
-
-bunch_params%n_good_steps = bunch%n_good
-bunch_params%n_bad_steps = bunch%n_bad
-bunch_params%n_particle_tot = soa%n
+n_live = nint(m1(1))
+charge_live = m1(3)
+bunch_params%centroid = pd%tmpl
+bunch_params%ix_ele = pd%tmpl%ix_ele
+bunch_params%location = pd%tmpl%location
+bunch_params%n_good_steps = pd%n_good
+bunch_params%n_bad_steps = pd%n_bad
+bunch_params%n_particle_tot = pd%n_tot
 bunch_params%n_particle_live = n_live
 bunch_params%charge_live = charge_live
 bunch_params%charge_tot = m1(2)
 bunch%charge_tot = bunch_params%charge_tot
 bunch%charge_live = bunch_params%charge_live
+if (m1(2) == 0) return
 bunch_params%centroid%charge = charge_live
-done = .true.
-if (n_live == 0) return
+if (n_live == 0 .or. charge_live == 0) return
 
-! Centroid, time (relative to the reference time at the current slice start) and extrema.
+! Centroid, time (relative to the reference time at the slice start of the save) and extrema.
 avg = m1(4:10) / charge_live
-t0 = res_t_base + res_dt_ref
 bunch_params%centroid%vec = avg(1:6)
-bunch_params%centroid%t = t0 + avg(7)
+bunch_params%centroid%t = pd%t0 + avg(7)
 bunch_params%s = bunch_params%centroid%s
 bunch_params%t = bunch_params%centroid%t
 bunch_params%rel_min = m1(12:18) - avg
 bunch_params%rel_max = m1(19:25) - avg
-
-ierr = bmad_dev_bunch_moments (2_c_int, real(res_mass, c_double), avg, m2, reason, len(reason))
-if (ierr /= 0) then
-  call out_io (s_warn$, r_name, 'Moments failed: ' // trim(from_c(reason)), 'Using the CPU path from now on.')
-  dev_ok = .false.;  done = .false.
-  return
-endif
 idx = 0
 do r = 1, 6
   do c = r, 6
@@ -1189,6 +1270,32 @@ average_pc = (1 + bunch_params%centroid%vec(6)) * bunch_params%centroid%p0c
 call convert_pc_to (average_pc, res_species, beta = bunch_params%centroid%beta)
 if (n_live < 6) return
 call calc_emittances_and_twiss_from_sigma_matrix (bunch_params%sigma, bunch_params, error, .false.)
+
+end subroutine params_from_moments
+
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+!
+! calc_bunch_params_soa of the resident bunch from device moments, synchronously (one save queued and read).
+!-
+
+subroutine bunch_device_bunch_params (soa, bunch, bunch_params, done)
+
+type (bunch_soa_struct) soa
+type (bunch_struct) bunch
+type (bunch_params_struct) bunch_params
+type (bunch_track_struct) bt
+real(rp) s_dummy
+logical done
+
+done = .false.
+if (n_pend /= 0) return
+call bunch_device_save_enqueue (soa, bunch, 0, s_dummy, done)
+if (.not. done) return
+allocate (bt%pt(0:0))
+call bunch_device_saves_finalize (bunch, bt)
+bunch_params = bt%pt(0)
 
 end subroutine bunch_device_bunch_params
 
