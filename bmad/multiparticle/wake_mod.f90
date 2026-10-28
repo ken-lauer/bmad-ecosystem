@@ -938,6 +938,9 @@ end subroutine order_particles_in_z
 ! Input:
 !   z(:)      -- real(rp): Particle z.
 !   state(:)  -- integer: Particle states.
+!   ix_z(:)   -- integer: If a permutation of 1..size(z) (as left by a previous call), the keys are sorted
+!                  starting from this order, which is faster when the particles have kept their order.
+!                  The result is the same up to the order of equal z.
 !
 ! Output:
 !   ix_z(:)   -- integer: Order from large z to small z, live particles first. Same size as z.
@@ -949,10 +952,13 @@ subroutine order_in_z (z, state, ix_z, n_live)
 implicit none
 
 real(rp), pointer, intent(in) :: z(:)
-real(rp), allocatable :: z_key(:)
+real(rp), allocatable :: z_key(:), key2(:)
 integer, pointer, intent(in) :: state(:)
 integer ix_z(:)
+integer, allocatable :: perm(:), ix_new(:)
 integer n_live, ix, nm, n_max
+logical(1), allocatable :: seen(:)
+logical warm
 
 !
 
@@ -984,7 +990,38 @@ do ix = 1, n_max
 enddo
 !$OMP end parallel do
 
-call index_sort_blocked (z_key, ix_z)
+! Warm start from the previous order if ix_z is a permutation (n values in range, every index seen).
+
+warm = (size(ix_z) == n_max .and. n_max > 1)
+if (warm) warm = (minval(ix_z) >= 1 .and. maxval(ix_z) <= n_max)
+if (warm) then
+  allocate (seen(n_max))
+  seen = .false.
+  !$OMP parallel do if (n_max > 10000)
+  do ix = 1, n_max
+    seen(ix_z(ix)) = .true.
+  enddo
+  !$OMP end parallel do
+  warm = all(seen)
+endif
+
+if (warm) then
+  allocate (key2(n_max), perm(n_max), ix_new(n_max))
+  !$OMP parallel do if (n_max > 10000)
+  do ix = 1, n_max
+    key2(ix) = z_key(ix_z(ix))
+  enddo
+  !$OMP end parallel do
+  call index_sort_blocked (key2, perm)
+  !$OMP parallel do if (n_max > 10000)
+  do ix = 1, n_max
+    ix_new(ix) = ix_z(perm(ix))
+  enddo
+  !$OMP end parallel do
+  ix_z = ix_new
+else
+  call index_sort_blocked (z_key, ix_z)
+endif
 n_live = nm
 
 end subroutine order_in_z
