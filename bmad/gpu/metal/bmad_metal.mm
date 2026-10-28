@@ -1547,7 +1547,7 @@ struct CsrPar {
   float scale0, scale1, scale2, scale3;
   float zc1, pad1, pad2, pad3;
 };
-struct WinPar { uint b0, nb_win, n_group, chunk; };   // chunk: particles per threadgroup          // bin window [b0, b0 + nb_win) of one dispatch
+struct WinPar { uint b0, nb_win, n_group, chunk, ns, pad0, pad1, pad2; };   // chunk: particles per threadgroup, ns: sums per bin          // bin window [b0, b0 + nb_win) of one dispatch
 struct CsrSetup { uint n, n_bin, pbs, n_bin_eff; float mass, pad1, pad2, pad3; };
 
 // 2^(61 - exponent(big)): the fixed-point scale that keeps a sum bounded by big below 2^61.
@@ -1646,7 +1646,7 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
                          constant WinPar& W [[buffer(10)]], threadgroup atomic_uint* sh [[threadgroup(0)]],
                          uint tid [[thread_index_in_threadgroup]],
                          uint tg [[threadgroup_position_in_grid]], uint tgs [[threads_per_threadgroup]]) {
-  uint nw = 8u * W.nb_win;
+  uint nw = 2u * W.ns * W.nb_win;
   for (uint w = tid; w < nw; w += tgs) atomic_store_explicit(&sh[w], 0u, memory_order_relaxed);
   threadgroup_barrier(mem_flags::mem_threadgroup);
   // Each threadgroup bins a chunk of particles (fewer, larger groups: less partial-sum traffic). The sums are
@@ -1671,7 +1671,7 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
       z1_over = max(zp_center, zb0);  z2_over = min(zp1, zb1);
       if (z2_over > z1_over) overlap += 2.0f * ((z1_over - zp1) * (z1_over - zp1) - (z2_over - zp1) * (z2_over - zp1)) * C.inv_dz2;
       float charge = overlap * q;
-      uint base = 4u * (ibl - W.b0);
+      uint base = W.ns * (ibl - W.b0);
       if (C.pass == 1u) {
         acc_fixed_tg(sh, base,      overlap * C.scale0);
         acc_fixed_tg(sh, base + 1u, charge * C.scale1);
@@ -1692,7 +1692,7 @@ kernel void csr_bins_tg (const device float* X [[buffer(0)]], const device float
 // as a single fixed-point accumulator) into the bin sums S[8 n_bin].
 kernel void csr_bins_reduce (const device uint* PART [[buffer(0)]], device uint* S [[buffer(1)]],
                              constant WinPar& W [[buffer(2)]], uint c [[thread_position_in_grid]]) {
-  uint ncell = 4u * W.nb_win;
+  uint ncell = W.ns * W.nb_win;
   if (c >= ncell) return;
   uint nw = 2u * ncell;
   ulong acc = 0;
@@ -1700,7 +1700,7 @@ kernel void csr_bins_reduce (const device uint* PART [[buffer(0)]], device uint*
     const device uint* p = PART + (ulong) g * nw + 2u * c;
     acc += ((ulong) p[1] << 32) | (ulong) p[0];
   }
-  uint w = 2u * (4u * W.b0 + c);
+  uint w = 2u * (4u * (W.b0 + c / W.ns) + c % W.ns);     // the bin sums keep 4 slots per bin
   S[w] = (uint) acc;
   S[w + 1u] = (uint) (acc >> 32);
 }
@@ -1745,7 +1745,7 @@ struct CsrParH {
   float scale0, scale1, scale2, scale3;
   float zc1, pad1, pad2, pad3;
 };
-struct WinParH { uint32_t b0, nb_win, n_group, chunk; };
+struct WinParH { uint32_t b0, nb_win, n_group, chunk, ns, pad0, pad1, pad2; };
 struct CsrSetupH { uint32_t n, n_bin, pbs, n_bin_eff; float mass, pad1, pad2, pad3; };
 static const uint32_t kRedGroups = 512;
 
@@ -2493,7 +2493,8 @@ static void csr_par_fill (CsrParH *C, const bmad_dev_csr_par *par, uint32_t n)
 static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n, uint32_t nbin, uint32_t pass, id<MTLBuffer> acc)
 {
   NSUInteger par_off = (NSUInteger) (pass - 1) * sizeof(CsrParH);
-  WinParH W = {0, 0, 0, 0};
+  WinParH W = {0, 0, 0, 0, 0, 0, 0, 0};
+  W.ns = (pass == 1) ? 4u : 2u;                 // sums per bin: pass 2 needs only two, so its windows are twice as wide
   NSUInteger tgs = p->psoCsrBinsTG.maxTotalThreadsPerThreadgroup;
   if (tgs > 1024) tgs = 1024;
   // About 256 threadgroups, each looping over a chunk of particles.
@@ -2501,13 +2502,13 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
   if (per < (uint32_t) tgs) per = (uint32_t) tgs;
   uint32_t ngroup = (n + per - 1) / per;
   W.chunk = per;
-  uint32_t win_max = (uint32_t) (p->dev.maxThreadgroupMemoryLength / 32);
+  uint32_t win_max = (uint32_t) (p->dev.maxThreadgroupMemoryLength / (8u * W.ns));
   static int win_env = -1;                      // BMAD_DEVICE_CSR_WIN: smaller windows, for testing the window path
   if (win_env < 0) { const char *ev = getenv("BMAD_DEVICE_CSR_WIN"); win_env = ev ? atoi(ev) : 0; }
   if (win_env > 0 && win_max > (uint32_t) win_env) win_max = (uint32_t) win_env;
   if (win_max < 1) win_max = 1;
   uint32_t win = nbin < win_max ? nbin : win_max;
-  size_t part_bytes = (size_t) ngroup * 8 * win * 4;
+  size_t part_bytes = (size_t) ngroup * 2 * W.ns * win * 4;
   if (part_bytes > p->csr_part_bytes) { p->bCsrPart = p->alloc(part_bytes); p->csr_part_bytes = part_bytes; }
   for (uint32_t b0 = 0; b0 < nbin; b0 += win) {
     W.b0 = b0;  W.nb_win = (nbin - b0 < win) ? nbin - b0 : win;  W.n_group = ngroup;
@@ -2519,12 +2520,12 @@ static void csr_encode_pass (Impl *p, id<MTLComputeCommandEncoder> e, uint32_t n
     [e setBuffer:p->bCsrPar offset:par_off atIndex:8];
     [e setBuffer:p->bFault offset:0 atIndex:9];
     [e setBytes:&W length:sizeof(W) atIndex:10];
-    [e setThreadgroupMemoryLength:(NSUInteger) W.nb_win * 32 atIndex:0];
+    [e setThreadgroupMemoryLength:(NSUInteger) W.nb_win * 8 * W.ns atIndex:0];
     [e dispatchThreadgroups:MTLSizeMake(ngroup, 1, 1) threadsPerThreadgroup:MTLSizeMake(tgs, 1, 1)];
     [e setComputePipelineState:p->psoCsrReduce];
     [e setBuffer:p->bCsrPart offset:0 atIndex:0]; [e setBuffer:acc offset:0 atIndex:1];
     [e setBytes:&W length:sizeof(W) atIndex:2];
-    [e dispatchThreads:MTLSizeMake(4 * W.nb_win, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
+    [e dispatchThreads:MTLSizeMake(W.ns * W.nb_win, 1, 1) threadsPerThreadgroup:MTLSizeMake(256, 1, 1)];
   }
 }
 
