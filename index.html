@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tao in the browser</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Tao <span>Bmad in WebAssembly</span></h1>
+  <label>Example
+    <select id="example"></select>
+  </label>
+  <label>Startup arguments
+    <input id="init-args" type="text" spellcheck="false" autocomplete="off">
+  </label>
+  <button id="start" class="primary" disabled>Start Tao</button>
+  <button id="upload">Add files…</button>
+  <input id="upload-input" type="file" multiple hidden>
+  <span id="status" role="status">Loading…</span>
+</header>
+
+<main>
+  <section id="plot-pane" aria-label="Plot">
+    <div id="plot-bar">
+      <label>Region <select id="plot-region"></select></label>
+      <label>Template <select id="plot-template"></select></label>
+      <button id="plot-place" disabled>Place</button>
+      <button id="plot-scale" disabled title="scale all">Autoscale</button>
+      <button id="plot-xscale" disabled title="x_scale all">Autoscale x</button>
+    </div>
+    <div id="plot-holder">
+      <canvas id="plot"></canvas>
+      <p id="plot-empty">Plots appear here once Tao is started.</p>
+    </div>
+  </section>
+
+  <section id="side-pane">
+    <nav role="tablist">
+      <button role="tab" id="tab-console" aria-selected="true" aria-controls="console-panel">Console</button>
+      <button role="tab" id="tab-files" aria-selected="false" aria-controls="files-panel">Files</button>
+    </nav>
+
+    <div id="console-panel" role="tabpanel" aria-labelledby="tab-console">
+      <div id="quick">
+        <button data-cmd="show lattice">show lattice</button>
+        <button data-cmd="show universe">show universe</button>
+        <button data-cmd="show data">show data</button>
+        <button data-cmd="show variable">show variable</button>
+        <button data-cmd="show plot">show plot</button>
+      </div>
+      <pre id="output" tabindex="0" aria-live="polite"></pre>
+      <div id="completions" hidden></div>
+      <form id="command-form">
+        <label for="command">Tao&gt;</label>
+        <input id="command" type="text" spellcheck="false" autocomplete="off" autocapitalize="off"
+               placeholder="Press Start Tao first." disabled>
+      </form>
+    </div>
+
+    <div id="files-panel" role="tabpanel" aria-labelledby="tab-files" hidden>
+      <div id="file-bar">
+        <select id="file-list" aria-label="File"></select>
+        <button id="file-save" disabled>Save</button>
+        <span id="file-note"></span>
+      </div>
+      <textarea id="file-text" spellcheck="false" aria-label="File contents"></textarea>
+      <p class="hint">Files live in the browser's memory only. Save, then press Start Tao to run with the changes.</p>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
