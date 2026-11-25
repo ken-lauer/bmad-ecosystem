@@ -559,7 +559,8 @@ end subroutine pmd_write_real_to_pseudo_dataset
 subroutine pmd_write_complex_to_dataset_rank1 (root_id, dataset_name, complex_t, descrip_name, unit, array, error)
 
 type (pmd_unit_struct) unit
-complex(rp), target :: array(:), cc(size(array,1))
+complex(rp), target :: array(:)
+complex(rp), target, allocatable :: cc(:)
 integer h5_err
 integer(hid_t) :: root_id, dspace_id, z_id, complex_t
 integer(hsize_t) dims(1)
@@ -574,6 +575,7 @@ logical err, error
 !endif
 
 ! Need to use cc for temp storage since array argument may not be stored in contiguous memory.
+! cc is allocatable, and allocated by the assignment, so that a large array does not overflow the stack.
 
 dims = size(array)
 call H5Screate_simple_f(1, dims, dspace_id, h5_err)  ! Create dataspace
@@ -610,7 +612,8 @@ end subroutine pmd_write_complex_to_dataset_rank1
 subroutine pmd_write_complex_to_dataset_rank2 (root_id, dataset_name, complex_t, descrip_name, unit, array, error)
 
 type (pmd_unit_struct) unit
-complex(rp), target :: array(:,:), cc(size(array,1),size(array,2))
+complex(rp), target :: array(:,:)
+complex(rp), target, allocatable :: cc(:,:)
 integer h5_err
 integer(hid_t) :: root_id, dspace_id, z_id, complex_t
 integer(hsize_t) dims(2)
@@ -625,6 +628,7 @@ logical error, err
 !endif
 
 ! Need to use cc for temp storage since array argument may not be stored in contiguous memory.
+! cc is allocatable, and allocated by the assignment, so that a large array does not overflow the stack.
 
 dims = shape(array)
 call H5Screate_simple_f(2, dims, dspace_id, h5_err)  ! Create dataspace
@@ -661,7 +665,8 @@ end subroutine pmd_write_complex_to_dataset_rank2
 subroutine pmd_write_complex_to_dataset_rank3 (root_id, dataset_name, complex_t, descrip_name, unit, array, error)
 
 type (pmd_unit_struct) unit
-complex(rp), target :: array(:,:,:), cc(size(array,1),size(array,2),size(array,3))
+complex(rp), target :: array(:,:,:)
+complex(rp), target, allocatable :: cc(:,:,:)
 integer h5_err
 integer(hid_t) :: root_id, dspace_id, z_id, complex_t
 integer(hsize_t) dims(3)
@@ -676,6 +681,7 @@ logical err, error
 !endif
 
 ! Need to use cc for temp storage since array argument may not be stored in contiguous memory.
+! cc is allocatable, and allocated by the assignment, so that a large array does not overflow the stack.
 
 dims = shape(array)
 call H5Screate_simple_f(3, dims, dspace_id, h5_err)  ! Create dataspace
