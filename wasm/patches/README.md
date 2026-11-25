@@ -9,3 +9,6 @@ Applied by `wasm/build_toolchain.sh` on top of https://github.com/r-wasm/llvm-pr
 - `flang-wasm32-bind-c-character.patch`: flang passes the hidden length of a `CHARACTER` argument
   also to `BIND(C)` procedures. That is harmless elsewhere, but in WebAssembly a call whose signature
   differs from the callee does not link (it traps at run time). The length is left out for wasm.
+- `flang-nint-llround.patch`: `NINT` with a 64 bit result was compiled to C's `lround`, which returns
+  a `long`. That is 32 bit on wasm32, and the module then fails validation. It is `llround` now,
+  which is 64 bit on every target. Nothing in Bmad or Tao has such a `NINT`; Lucifer and toml-f do.

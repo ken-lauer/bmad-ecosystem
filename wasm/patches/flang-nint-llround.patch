@@ -1,0 +1,19 @@
+diff --git a/flang/lib/Optimizer/Builder/IntrinsicCall.cpp b/flang/lib/Optimizer/Builder/IntrinsicCall.cpp
+index dd36043ec..77401f7ff 100644
+--- a/flang/lib/Optimizer/Builder/IntrinsicCall.cpp
++++ b/flang/lib/Optimizer/Builder/IntrinsicCall.cpp
+@@ -1454,10 +1454,11 @@ static constexpr MathOperation mathOperations[] = {
+      genLibCall},
+     {"nearbyint", RTNAME_STRING(NearbyintF128), FuncTypeReal16Real16,
+      genLibF128Call},
+-    // llvm.lround behaves the same way as libm's lround.
+-    {"nint", "llvm.lround.i64.f64", genFuncType<Ty::Integer<8>, Ty::Real<8>>,
++    // llvm.lround behaves the same way as libm's lround, whose result is a C
++    // long. That is 32 bits on wasm32, so a 64-bit result takes llround.
++    {"nint", "llvm.llround.i64.f64", genFuncType<Ty::Integer<8>, Ty::Real<8>>,
+      genLibCall},
+-    {"nint", "llvm.lround.i64.f32", genFuncType<Ty::Integer<8>, Ty::Real<4>>,
++    {"nint", "llvm.llround.i64.f32", genFuncType<Ty::Integer<8>, Ty::Real<4>>,
+      genLibCall},
+     {"nint", RTNAME_STRING(LlroundF128), FuncTypeInteger8Real16,
+      genLibF128Call},
