@@ -48,6 +48,19 @@ libraries are cached: the first run takes hours, later ones under an hour.
 - Three small fixes that any compiler benefits from: a missing explicit interface for `err_exit`,
   `use omp_lib` without the OpenMP sentinel, and a `size_t` argument declared as `hsize_t`.
 
+## The SDK
+
+The workflow `.github/workflows/wasm-pages.yml` also packs what another program needs to build
+against this Bmad for WebAssembly, and uploads it to the rolling release `wasm-sdk` as
+`bmad-wasm-sdk-linux-x86_64.tar.zst`:
+
+- `toolchain/`: the Fortran compiler (a Linux x86-64 binary), its modules and runtime, and
+  `prefix/` with the libraries. This is `BMAD_WASM_TOOLCHAIN` without the build trees.
+- `bmad/`: `lib/` and `mod/` of `wasm/build`.
+- `SDK_INFO`: the commit, the Bmad release, and the Emscripten and flang versions.
+
+Lucifer's WebAssembly build is its user.
+
 ## Testing
 
 ```bash

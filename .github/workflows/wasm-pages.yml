@@ -124,6 +124,35 @@ jobs:
           node wasm/test/run_tao.mjs bmad-doc/tao_examples/fodo "-init tao.init" "show lattice"
           node wasm/test/run_tao.mjs bmad-doc/tao_examples/cesr "-init tao.init" "show universe" | tail -40
 
+      # What another program needs to build against this Bmad for WebAssembly (Lucifer does):
+      # the Fortran compiler with its modules and runtime, the libraries, and Bmad's own
+      # archives and modules. The compiler is a Linux x86-64 binary. One rolling release holds
+      # the latest, and SDK_INFO inside names the commit and the Bmad release it was built from.
+      - name: Package the SDK
+        run: |
+          sdk="$RUNNER_TEMP/bmad-wasm-sdk"
+          mkdir -p "$sdk/toolchain/build" "$sdk/bmad"
+          cp -a "$BMAD_WASM_TOOLCHAIN/build/bin" "$BMAD_WASM_TOOLCHAIN/build/include" "$sdk/toolchain/build/"
+          cp -a "$BMAD_WASM_TOOLCHAIN/wasm" "$BMAD_WASM_TOOLCHAIN/prefix" "$sdk/toolchain/"
+          cp -a wasm/build/lib wasm/build/mod "$sdk/bmad/"
+          {
+            echo "commit=$GITHUB_SHA"
+            echo "bmad_release=$(grep -oE '[0-9]{8}-[0-9]+' bmad/modules/bmad_version_mod.f90 | head -1)"
+            echo "emscripten=$EMSCRIPTEN_VERSION"
+            echo "flang=$("$sdk/toolchain/build/bin/flang" --version | head -1)"
+          } > "$sdk/SDK_INFO"
+          cat "$sdk/SDK_INFO"
+          tar -C "$RUNNER_TEMP" -cf - bmad-wasm-sdk | zstd -T0 -10 -o "$RUNNER_TEMP/bmad-wasm-sdk-linux-x86_64.tar.zst"
+          ls -lh "$RUNNER_TEMP/bmad-wasm-sdk-linux-x86_64.tar.zst"
+
+      - name: Publish the SDK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view wasm-sdk >/dev/null 2>&1 || gh release create wasm-sdk --prerelease \
+            --title "Bmad WebAssembly SDK" --notes "The latest SDK built by the wasm-pages workflow. See wasm/README.md."
+          gh release upload wasm-sdk "$RUNNER_TEMP/bmad-wasm-sdk-linux-x86_64.tar.zst" --clobber
+
       - name: Publish to gh-pages
         run: |
           site=wasm/build/web
