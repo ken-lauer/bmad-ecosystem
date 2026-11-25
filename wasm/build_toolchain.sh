@@ -8,6 +8,7 @@
 # then compiles the Fortran runtime library to WebAssembly with Emscripten.
 #
 # Needs: a C++ compiler, cmake, ninja and Emscripten (emcc) on the PATH.
+# LLVM_CMAKE_ARGS: extra cmake options for the LLVM build (EG to limit the memory used by linking).
 
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -35,7 +36,8 @@ if [ ! -x "$FLANG" ]; then
     -DFLANG_INCLUDE_TESTS=OFF -DFLANG_ENABLE_FLANG_RT=OFF \
     -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_BENCHMARKS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF \
     -DCLANG_INCLUDE_TESTS=OFF \
-    -DLLVM_ENABLE_ZSTD=OFF -DLLVM_ENABLE_ZLIB=OFF -DLLVM_ENABLE_LIBXML2=OFF
+    -DLLVM_ENABLE_ZSTD=OFF -DLLVM_ENABLE_ZLIB=OFF -DLLVM_ENABLE_LIBXML2=OFF \
+    ${LLVM_CMAKE_ARGS:-}
   TERM=dumb cmake --build build --target flang lld
 fi
 

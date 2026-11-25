@@ -1,0 +1,136 @@
+name: Bmad-ecosystem - Tao web page (WebAssembly)
+
+# Builds Tao for WebAssembly (see wasm/README.md) and publishes the web page to the gh-pages branch.
+
+on:
+  push:
+    branches:
+      - wasm-tao
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wasm-pages
+  cancel-in-progress: false
+
+env:
+  BMAD_WASM_TOOLCHAIN: /home/runner/bmad-wasm-toolchain
+  EMSCRIPTEN_VERSION: 7.0.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ninja-build clang lld
+
+      - name: Install Emscripten
+        run: |
+          git clone --depth=1 https://github.com/emscripten-core/emsdk.git "$HOME/emsdk"
+          "$HOME/emsdk/emsdk" install "$EMSCRIPTEN_VERSION"
+          "$HOME/emsdk/emsdk" activate "$EMSCRIPTEN_VERSION"
+          source "$HOME/emsdk/emsdk_env.sh"
+          echo "$HOME/emsdk" >> "$GITHUB_PATH"
+          echo "$HOME/emsdk/upstream/emscripten" >> "$GITHUB_PATH"
+          echo "$(dirname "$EMSDK_NODE")" >> "$GITHUB_PATH"
+          echo "EMSDK=$EMSDK" >> "$GITHUB_ENV"
+
+      # The Fortran compiler: only the compiler, its intrinsic modules and the runtime library are
+      # kept (250 MB). The LLVM build tree they come from is 15 GB.
+      - name: Restore the Fortran compiler
+        id: toolchain
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/build/bin
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/build/include/flang
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/wasm
+          key: wasm-toolchain-${{ runner.os }}-em${{ env.EMSCRIPTEN_VERSION }}-${{ hashFiles('wasm/build_toolchain.sh', 'wasm/patches/*.patch') }}
+
+      - name: Free disk space for the LLVM build
+        if: steps.toolchain.outputs.cache-hit != 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - name: Build the Fortran compiler
+        if: steps.toolchain.outputs.cache-hit != 'true'
+        env:
+          LLVM_CMAKE_ARGS: >-
+            -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+            -DLLVM_USE_LINKER=lld -DLLVM_PARALLEL_LINK_JOBS=1
+            -DFLANG_PARALLEL_COMPILE_JOBS=2
+        run: |
+          wasm/build_toolchain.sh
+          # Keep what the cache holds and drop the rest of the build tree.
+          cd "$BMAD_WASM_TOOLCHAIN"
+          mkdir keep
+          mv build/bin keep/bin
+          mkdir keep/include
+          mv build/include/flang keep/include/flang
+          rm -rf build build-rt llvm-project
+          mv keep build
+          find build/bin -type f ! -name 'flang*' -delete
+          du -sh build wasm
+
+      - name: Save the Fortran compiler
+        if: steps.toolchain.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/build/bin
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/build/include/flang
+            ${{ env.BMAD_WASM_TOOLCHAIN }}/wasm
+          key: ${{ steps.toolchain.outputs.cache-primary-key }}
+
+      - name: Restore the libraries
+        id: deps
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.BMAD_WASM_TOOLCHAIN }}/prefix
+          key: wasm-deps-${{ steps.toolchain.outputs.cache-primary-key }}-${{ hashFiles('wasm/build_deps.sh', 'wasm/emflang', 'wasm/env.sh', 'wasm/cmake/**', 'wasm/src/fftw_wasm_cycle.h') }}
+
+      - name: Build the libraries
+        if: steps.deps.outputs.cache-hit != 'true'
+        run: |
+          wasm/build_deps.sh
+          rm -rf "$BMAD_WASM_TOOLCHAIN/deps-build" "$BMAD_WASM_TOOLCHAIN/ext"
+
+      - name: Save the libraries
+        if: steps.deps.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.BMAD_WASM_TOOLCHAIN }}/prefix
+          key: ${{ steps.deps.outputs.cache-primary-key }}
+
+      - name: Build Tao
+        run: |
+          python3 wasm/gen_ninja.py
+          ninja -C wasm/build
+          python3 wasm/build_web.py
+
+      - name: Test
+        run: |
+          node wasm/test/run_tao.mjs bmad-doc/tao_examples/fodo "-init tao.init" "show lattice"
+          node wasm/test/run_tao.mjs bmad-doc/tao_examples/cesr "-init tao.init" "show universe" | tail -40
+
+      - name: Publish to gh-pages
+        run: |
+          site=wasm/build/web
+          touch "$site/.nojekyll"
+          git -C "$site" init -q -b gh-pages
+          git -C "$site" config user.name "github-actions[bot]"
+          git -C "$site" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$site" add -A
+          git -C "$site" commit -q -m "Tao web page built from ${GITHUB_SHA::9}"
+          git -C "$site" push --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" gh-pages
