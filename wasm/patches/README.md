@@ -12,3 +12,6 @@ Applied by `wasm/build_toolchain.sh` on top of https://github.com/r-wasm/llvm-pr
 - `flang-nint-llround.patch`: `NINT` with a 64 bit result was compiled to C's `lround`, which returns
   a `long`. That is 32 bit on wasm32, and the module then fails validation. It is `llround` now,
   which is 64 bit on every target. Nothing in Bmad or Tao has such a `NINT`; Lucifer and toml-f do.
+  The same change is proposed upstream as https://github.com/llvm/llvm-project/pull/224580 (open on
+  2026-11-25). Drop this patch once the r-wasm branch carries it: `build_toolchain.sh` skips a patch
+  that no longer applies.
