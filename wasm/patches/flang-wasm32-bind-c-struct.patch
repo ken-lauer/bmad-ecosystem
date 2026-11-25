@@ -1,0 +1,56 @@
+diff --git a/flang/lib/Optimizer/CodeGen/Target.cpp b/flang/lib/Optimizer/CodeGen/Target.cpp
+index f006f7163..182297482 100644
+--- a/flang/lib/Optimizer/CodeGen/Target.cpp
++++ b/flang/lib/Optimizer/CodeGen/Target.cpp
+@@ -1928,6 +1928,51 @@ struct TargetWasm32 : public GenericTarget<TargetWasm32> {
+                           AT{/*alignment=*/4, /*byval=*/false, /*sret=*/true});
+     return marshal;
+   }
++
++  /// The scalar type a BIND(C) derived type is passed as, if it has a single
++  /// scalar member (possibly nested). Otherwise null: the struct is passed in
++  /// memory. This is the WebAssembly "basic C ABI" used by Emscripten.
++  mlir::Type singleScalarMember(mlir::Location loc, mlir::Type ty) const {
++    if (auto recTy = mlir::dyn_cast<fir::RecordType>(ty)) {
++      auto members = recTy.getTypeList();
++      if (members.size() != 1)
++        return {};
++      return singleScalarMember(loc, members[0].second);
++    }
++    if (mlir::isa<mlir::IntegerType, mlir::FloatType>(ty))
++      return ty;
++    if (mlir::isa<fir::SequenceType>(ty) || fir::isa_complex(ty))
++      return {};
++    auto sizeAndAlign =
++        fir::getTypeSizeAndAlignmentOrCrash(loc, ty, getDataLayout(), kindMap);
++    return mlir::IntegerType::get(ty.getContext(), sizeAndAlign.first * 8);
++  }
++
++  CodeGenSpecifics::Marshalling
++  structType(mlir::Location loc, fir::RecordType recTy, bool isResult) const {
++    CodeGenSpecifics::Marshalling marshal;
++    if (mlir::Type scalarTy = singleScalarMember(loc, recTy)) {
++      marshal.emplace_back(scalarTy, AT{});
++      return marshal;
++    }
++    auto sizeAndAlign = fir::getTypeSizeAndAlignmentOrCrash(
++        loc, recTy, getDataLayout(), kindMap);
++    marshal.emplace_back(fir::ReferenceType::get(recTy),
++                         AT{sizeAndAlign.second, /*byval=*/!isResult,
++                            /*sret=*/isResult});
++    return marshal;
++  }
++
++  CodeGenSpecifics::Marshalling
++  structArgumentType(mlir::Location loc, fir::RecordType recTy,
++                     const Marshalling &) const override {
++    return structType(loc, recTy, /*isResult=*/false);
++  }
++
++  CodeGenSpecifics::Marshalling
++  structReturnType(mlir::Location loc, fir::RecordType recTy) const override {
++    return structType(loc, recTy, /*isResult=*/true);
++  }
+ };
+ } // namespace
+ 

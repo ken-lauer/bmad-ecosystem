@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""
+Fortran compiler driver for WebAssembly, for build systems that expect a single Fortran compiler
+(EG CMake): flang compiles and Emscripten links.
+
+`emflang -c x.f90` runs flang. Without `-c` (or another compile-only option) the Fortran sources
+are compiled with flang and everything is linked with emcc and the Fortran runtime library.
+"""
+
+from __future__ import annotations
+
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+TOOLCHAIN = Path(os.environ.get("BMAD_WASM_TOOLCHAIN", Path.home() / ".cache" / "bmad-wasm-toolchain"))
+FLANG = TOOLCHAIN / "build" / "bin" / "flang"
+RTLIB = TOOLCHAIN / "wasm" / "lib" / "libflang_rt.runtime.a"
+
+COMPILE_ONLY = {"-c", "-E", "-S", "-fsyntax-only", "--version", "-v", "-dumpversion", "--help"}
+FORTRAN_SUFFIXES = {".f", ".for", ".f90", ".f95", ".f03", ".f08"}
+# Options that take a separate argument.
+COMPILE_ARG_OPTIONS = {"-module-dir", "-J", "-I", "-D", "-U", "-include"}
+LINK_ARG_OPTIONS = {"-o", "-L", "-l", "-s", "--js-library", "--pre-js", "--post-js", "--embed-file", "--preload-file"}
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    if not args or COMPILE_ONLY & set(args):
+        return subprocess.call([FLANG, *args])
+
+    sources: list[str] = []
+    compile_args: list[str] = []
+    link_args: list[str] = []
+    it = iter(args)
+    for arg in it:
+        if Path(arg).suffix.lower() in FORTRAN_SUFFIXES:
+            sources.append(arg)
+        elif arg in LINK_ARG_OPTIONS:
+            link_args += [arg, next(it)]
+        elif arg in COMPILE_ARG_OPTIONS:
+            compile_args += [arg, next(it)]
+        elif arg.startswith(("-l", "-L", "-s", "-Wl,", "--")) or not arg.startswith("-"):
+            link_args.append(arg)
+        elif arg.startswith(("-O", "-g")):
+            compile_args.append(arg)
+            link_args.append(arg)
+        else:
+            compile_args.append(arg)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        objects = []
+        for index, source in enumerate(sources):
+            obj = str(Path(tmp) / f"{index}_{Path(source).stem}.o")
+            status = subprocess.call([FLANG, *compile_args, "-c", source, "-o", obj])
+            if status:
+                return status
+            objects.append(obj)
+        status = subprocess.call(["emcc", *objects, *link_args, str(RTLIB)])
+    if status == 0 and "-o" in args:
+        expose_info_strings(Path(args[args.index("-o") + 1]))
+    return status
+
+
+def expose_info_strings(output: Path) -> None:
+    """
+    Copy `INFO:name[value]` strings from the .wasm file into the .js file.
+
+    CMake learns about a compiler (ABI, Fortran name mangling) by searching the test executable
+    for such strings. The executable CMake knows about is the JavaScript loader, while the
+    strings are in the WebAssembly file next to it.
+    """
+    wasm = output.with_suffix(".wasm")
+    if output.suffix != ".js" or not wasm.exists():
+        return
+    found = sorted(set(re.findall(rb"INFO:[A-Za-z0-9_]+\[[^\]\n]*\]", wasm.read_bytes())))
+    if found:
+        with output.open("ab") as stream:
+            stream.write(b"\n" + b"".join(b"// " + info + b"\n" for info in found))
+
+
+if __name__ == "__main__":
+    sys.exit(main())

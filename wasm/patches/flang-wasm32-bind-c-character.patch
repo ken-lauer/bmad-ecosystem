@@ -1,0 +1,116 @@
+diff --git a/flang/lib/Optimizer/CodeGen/TargetRewrite.cpp b/flang/lib/Optimizer/CodeGen/TargetRewrite.cpp
+index 0ce27abce..5ed3b2cab 100644
+--- a/flang/lib/Optimizer/CodeGen/TargetRewrite.cpp
++++ b/flang/lib/Optimizer/CodeGen/TargetRewrite.cpp
+@@ -54,7 +54,8 @@ struct FixupTy {
+     ReturnType,
+     Split,
+     Trailing,
+-    TrailingCharProc
++    TrailingCharProc,
++    CharBindC
+   };
+ 
+   FixupTy(Codes code, std::size_t index, std::size_t second = 0)
+@@ -125,6 +126,7 @@ public:
+         fir::getTargetABI(mod), *dl, fir::getTuneCPU(mod));
+ 
+     setMembers(specifics.get(), &rewriter, &*dl);
++    omitBindCCharLen = fir::getTargetTriple(mod).isWasm();
+ 
+     // Perform type conversion on signatures and call sites.
+     if (mlir::failed(convertTypes(mod))) {
+@@ -162,6 +164,27 @@ public:
+ 
+   mlir::ModuleOp getModule() { return getOperation(); }
+ 
++  /// Is the hidden CHARACTER length argument left out for this BIND(C)
++  /// function or call? Passing the length to a C function that does not expect
++  /// it is harmless with most ABIs, but in WebAssembly the signature of a call
++  /// must match the callee exactly.
++  bool omitCharLen(mlir::Operation *op) {
++    if (!omitBindCCharLen)
++      return false;
++    if (fir::hasBindcAttr(op))
++      return true;
++    mlir::SymbolRefAttr callee;
++    if (auto call = mlir::dyn_cast<fir::CallOp>(op))
++      callee = call.getCalleeAttr();
++    else if (auto addr = mlir::dyn_cast<fir::AddrOfOp>(op))
++      callee = addr.getSymbol();
++    if (!callee)
++      return false;
++    auto func = getModule().lookupSymbol<mlir::func::FuncOp>(
++        callee.getRootReference());
++    return func && fir::hasBindcAttr(func.getOperation());
++  }
++
+   template <typename Ty, typename Callback>
+   std::optional<std::function<mlir::Value(mlir::Operation *)>>
+   rewriteCallResultType(mlir::Location loc, mlir::Type originalResTy,
+@@ -450,6 +473,8 @@ public:
+               auto attr =
+                   std::get<fir::CodeGenSpecifics::Attributes>(e.value());
+               auto argTy = std::get<mlir::Type>(e.value());
++              if (attr.isAppend() && omitCharLen(callOp.getOperation()))
++                continue;
+               if (attr.isAppend()) {
+                 trailingInTys.push_back(argTy);
+                 trailingOpers.push_back(unbox.getResult(idx));
+@@ -729,6 +754,8 @@ public:
+               for (auto &tup : specifics->boxcharArgumentType(box.getEleTy())) {
+                 auto attr = std::get<fir::CodeGenSpecifics::Attributes>(tup);
+                 auto argTy = std::get<mlir::Type>(tup);
++                if (attr.isAppend() && omitCharLen(addrOp.getOperation()))
++                  continue;
+                 if (attr.isAppend())
+                   trailingInTys.push_back(argTy);
+                 else
+@@ -939,10 +966,13 @@ public:
+                    specifics->boxcharArgumentType(boxTy.getEleTy())) {
+                 auto attr = std::get<fir::CodeGenSpecifics::Attributes>(tup);
+                 auto argTy = std::get<mlir::Type>(tup);
++                bool omitLen = omitCharLen(func.getOperation());
+                 if (attr.isAppend()) {
+-                  trailingTys.push_back(argTy);
++                  if (!omitLen)
++                    trailingTys.push_back(argTy);
+                 } else {
+-                  fixups.emplace_back(FixupTy::Codes::Trailing,
++                  fixups.emplace_back(omitLen ? FixupTy::Codes::CharBindC
++                                              : FixupTy::Codes::Trailing,
+                                       newInTyAndAttrs.size(),
+                                       trailingTys.size());
+                   newInTyAndAttrs.push_back(tup);
+@@ -1152,6 +1182,23 @@ public:
+           func.getArgument(fixup.index + 1).replaceAllUsesWith(box);
+           func.front().eraseArgument(fixup.index + 1);
+         } break;
++        case FixupTy::Codes::CharBindC: {
++          // A BIND(C) procedure gets a CHARACTER argument as an address only.
++          // Such an argument always has a length of one.
++          auto newBufArg =
++              func.front().insertArgument(fixup.index, fixupType, loc);
++          auto boxTy = oldArgTys[fixup.index - offset];
++          auto m = specifics->boxcharArgumentType(
++              mlir::cast<fir::BoxCharType>(boxTy).getEleTy());
++          rewriter->setInsertionPointToStart(&func.front());
++          fir::FirOpBuilder builder(*rewriter, getModule());
++          mlir::Value len =
++              builder.createIntegerConstant(loc, std::get<mlir::Type>(m[1]), 1);
++          auto box =
++              fir::EmboxCharOp::create(*rewriter, loc, boxTy, newBufArg, len);
++          func.getArgument(fixup.index + 1).replaceAllUsesWith(box);
++          func.front().eraseArgument(fixup.index + 1);
++        } break;
+         case FixupTy::Codes::TrailingCharProc: {
+           // The FIR character procedure argument tuple must be split into a
+           // pair of distinct arguments. The first part of the pair appears in
+@@ -1401,6 +1448,7 @@ private:
+   }
+ 
+   fir::CodeGenSpecifics *specifics = nullptr;
++  bool omitBindCCharLen = false;
+   mlir::OpBuilder *rewriter = nullptr;
+   mlir::DataLayout *dataLayout = nullptr;
+ };

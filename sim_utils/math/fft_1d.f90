@@ -16,7 +16,7 @@
 
 subroutine fft_1d (arr, isign)
 
-use output_mod, only: out_io, rp, global_com, s_error$, real_garbage$
+use output_mod, only: out_io, rp, global_com, s_error$, real_garbage$, err_exit
 use, intrinsic :: iso_c_binding
 
 implicit none

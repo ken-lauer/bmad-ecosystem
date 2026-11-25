@@ -21,7 +21,9 @@ logical, save :: write_lat_debug_flag = .false.
 
 interface re_str
   module procedure re_str_rp
+#if !defined (ACC_NO_QUAD_PRECISION)
   module procedure re_str_qp
+#endif
 end interface
 
 contains
@@ -202,6 +204,7 @@ end function re_str_rp
 !-------------------------------------------------------
 !-------------------------------------------------------
 
+#if !defined (ACC_NO_QUAD_PRECISION)
 function re_str_qp(rel) result (str_out)
 
 implicit none
@@ -218,6 +221,7 @@ else
 endif
 
 end function re_str_qp
+#endif
 
 !-------------------------------------------------------
 !-------------------------------------------------------

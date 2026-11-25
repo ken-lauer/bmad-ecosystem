@@ -109,7 +109,7 @@ end
 
 subroutine fft_cache_init()
 use, intrinsic :: iso_c_binding
-use omp_lib
+!$ use omp_lib
 implicit none
 include 'fftw3.f03'
 integer :: n_threads

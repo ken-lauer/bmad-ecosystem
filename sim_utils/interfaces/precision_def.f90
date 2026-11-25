@@ -1,7 +1,11 @@
 module precision_def
 
 integer, parameter :: rp = selected_real_kind(11)    ! "Real precision" is double precision
+#if defined (ACC_NO_QUAD_PRECISION)
+integer, parameter :: quadp = rp                     ! Platform (EG WebAssembly) without a quad precision type.
+#else
 integer, parameter :: quadp = selected_real_kind(20) ! Quad precision
+#endif
 integer, parameter :: qp = quadp                     ! Define qp so that in an emergency Bmad can be compiled with qp = rp.
 integer, parameter :: sp = kind(1e0)                 ! Single precision
 integer, parameter :: dp = selected_real_kind(2*precision(1e0_sp))  ! Double precision

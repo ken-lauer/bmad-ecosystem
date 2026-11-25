@@ -34,7 +34,7 @@ integer(hid_t) f_id, f2_id, z_id, complex_t
 integer i, j, k, it, n0(3), n1(3), iver, h5_err, n_grid, storage_type, max_corder
 integer n_links, h5_stat
 integer(hsize_t) idx
-integer(hsize_t) this_size
+integer(size_t) this_size
 
 logical, optional :: combine
 logical err_flag, err

@@ -1,0 +1,20 @@
+diff --git a/flang-rt/lib/runtime/iso_c_binding.f90 b/flang-rt/lib/runtime/iso_c_binding.f90
+index 619b1f2e5..16349facc 100644
+--- a/flang-rt/lib/runtime/iso_c_binding.f90
++++ b/flang-rt/lib/runtime/iso_c_binding.f90
+@@ -45,14 +45,10 @@ module iso_c_binding
+   integer, parameter, public :: &
+     c_int = c_int32_t, &
+     c_short = c_int16_t, &
+-#if defined(_WIN32)
+     c_long = c_int32_t, &
+-#else
+-    c_long = c_int64_t, &
+-#endif
+     c_long_long = c_int64_t, &
+     c_signed_char = c_int8_t, &
+-    c_size_t = kind(c_sizeof(1)), &
++    c_size_t = c_int32_t, &
+     ! Currently both gcc and clang define intmax_t to be 64 bit.
+     c_intmax_t = c_int64_t, &
+     c_intptr_t = c_size_t, &

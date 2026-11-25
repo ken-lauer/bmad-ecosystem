@@ -21,7 +21,9 @@ use precision_def
 interface modulo2
   module procedure modulo2_sp 
   module procedure modulo2_dp
+#if !defined (ACC_NO_QUAD_PRECISION)
   module procedure modulo2_qp
+#endif
   module procedure modulo2_int
 end interface
 
@@ -118,6 +120,7 @@ end function
 !   mod2 -- Real(rp): Result
 !-
 
+#if !defined (ACC_NO_QUAD_PRECISION)
 elemental function modulo2_qp (x, amp) result (mod2)
 
 
@@ -134,6 +137,7 @@ elemental function modulo2_qp (x, amp) result (mod2)
   if (mod2 >= amp) mod2 = mod2 - 2*amp
 
 end function
+#endif
 
 !-------------------------------------------------------------------------
 !-------------------------------------------------------------------------
