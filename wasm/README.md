@@ -22,6 +22,9 @@ python3 -m http.server -d wasm/build/web     # Then open http://localhost:8000
 The compiler and the libraries go to `$BMAD_WASM_TOOLCHAIN` (default `~/.cache/bmad-wasm-toolchain`).
 Nothing of the regular Bmad build system (`util/`) is used.
 
+`wasm/publish_pages.sh <remote>` builds the page and pushes it to the `gh-pages` branch of a remote,
+replacing that branch, to serve it with GitHub Pages.
+
 ## How it works
 
 - **Compiler.** LLVM flang cannot generate WebAssembly out of the box. The R project maintains a
